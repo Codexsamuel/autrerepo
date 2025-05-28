@@ -16,7 +16,7 @@ import {
   MessageSquare,
   Calendar,
   BarChart3,
-  Image,
+  ImageIcon,
   Sparkles,
   Terminal,
   GitBranch,
@@ -323,7 +323,7 @@ export default function NovaCoreHub() {
               <div className="relative">
                 <div className="absolute -top-10 -left-10 w-40 h-40 bg-indigo-400 rounded-full opacity-30 blur-3xl"></div>
                 <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-purple-400 rounded-full opacity-30 blur-3xl"></div>
-                <img
+                <ImageIcon
                   src="/placeholder.svg?height=400&width=600"
                   alt="NovaCore Dashboard"
                   className="rounded-xl shadow-2xl relative z-10"
@@ -334,684 +334,687 @@ export default function NovaCoreHub() {
         </div>
       </section>
 
-      {/* Tabs Navigation */}
-      <section className="py-8 px-4 bg-white border-b border-gray-200 sticky top-20 z-40">
-        <div className="container mx-auto">
-          <Tabs defaultValue="overview" className="w-full" onValueChange={setActiveTab}>
-            <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2">
-              <TabsTrigger value="overview">Vue d'ensemble</TabsTrigger>
-              <TabsTrigger value="novasocial">NovaSocial</TabsTrigger>
-              <TabsTrigger value="novadevstudio">NovaDevStudio</TabsTrigger>
-              <TabsTrigger value="pricing">Tarifs</TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
-      </section>
-
-      {/* Main Content based on active tab */}
+      {/* Main Content with Tabs */}
       <section className="py-16 px-4">
         <div className="container mx-auto">
-          <TabsContent value="overview" className="space-y-16">
-            {/* Features Overview */}
-            <div>
-              <div className="text-center mb-16">
-                <Badge className="mb-4 bg-indigo-100 text-indigo-700">Fonctionnalités</Badge>
-                <h2 className="text-3xl lg:text-5xl font-bold mb-6 text-gray-800">
-                  Une plateforme{" "}
-                  <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                    tout-en-un
-                  </span>
-                </h2>
-                <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                  NovaCore combine des technologies IA avancées pour automatiser vos processus métier et booster votre
-                  productivité.
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {features.map((feature, index) => (
-                  <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all">
-                    <CardContent className="p-6">
-                      <div className="w-16 h-16 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center mb-6">
-                        <feature.icon className="h-8 w-8 text-white" />
-                      </div>
-                      <h3 className="text-xl font-bold mb-3 text-gray-800">{feature.title}</h3>
-                      <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-                    </CardContent>
-                  </Card>
-                ))}
+          <Tabs defaultValue="overview" className="w-full" onValueChange={setActiveTab}>
+            {/* Tabs Navigation */}
+            <div className="py-8 px-4 bg-white border-b border-gray-200 sticky top-20 z-40 -mx-4 -mt-16 mb-16">
+              <div className="container mx-auto">
+                <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                  <TabsTrigger value="overview">Vue d'ensemble</TabsTrigger>
+                  <TabsTrigger value="novasocial">NovaSocial</TabsTrigger>
+                  <TabsTrigger value="novadevstudio">NovaDevStudio</TabsTrigger>
+                  <TabsTrigger value="pricing">Tarifs</TabsTrigger>
+                </TabsList>
               </div>
             </div>
 
-            {/* Modules Overview */}
-            <div className="grid lg:grid-cols-2 gap-12">
-              {/* NovaSocial */}
-              <Card className="border-0 shadow-xl hover:shadow-2xl transition-all overflow-hidden">
-                <div className="h-2 bg-gradient-to-r from-pink-500 to-orange-500"></div>
-                <CardContent className="p-8">
-                  <div className="flex items-center space-x-4 mb-6">
-                    <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-orange-500 rounded-xl flex items-center justify-center">
-                      <Instagram className="h-6 w-6 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold">NovaSocial</h3>
-                  </div>
-                  <p className="text-gray-600 mb-6">
-                    Module IA Community Manager qui automatise entièrement la gestion de contenu digital — de la
-                    création à la publication, analyse et optimisation.
+            {/* Tab Contents */}
+            <TabsContent value="overview" className="space-y-16">
+              {/* Features Overview */}
+              <div>
+                <div className="text-center mb-16">
+                  <Badge className="mb-4 bg-indigo-100 text-indigo-700">Fonctionnalités</Badge>
+                  <h2 className="text-3xl lg:text-5xl font-bold mb-6 text-gray-800">
+                    Une plateforme{" "}
+                    <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                      tout-en-un
+                    </span>
+                  </h2>
+                  <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                    NovaCore combine des technologies IA avancées pour automatiser vos processus métier et booster votre
+                    productivité.
                   </p>
-                  <div className="space-y-3 mb-8">
-                    <div className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <p className="ml-3 text-gray-600">Génération automatique de contenu pour tous les réseaux</p>
-                    </div>
-                    <div className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <p className="ml-3 text-gray-600">Montage vidéo et photo intelligent via CapCut API</p>
-                    </div>
-                    <div className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <p className="ml-3 text-gray-600">Analytics avancés et optimisation continue</p>
-                    </div>
-                  </div>
-                  <Button className="w-full bg-gradient-to-r from-pink-500 to-orange-500" asChild>
-                    <a href="/novacore/novasocial">
-                      Explorer NovaSocial
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </a>
-                  </Button>
-                </CardContent>
-              </Card>
+                </div>
 
-              {/* NovaDevStudio */}
-              <Card className="border-0 shadow-xl hover:shadow-2xl transition-all overflow-hidden">
-                <div className="h-2 bg-gradient-to-r from-cyan-500 to-blue-500"></div>
-                <CardContent className="p-8">
-                  <div className="flex items-center space-x-4 mb-6">
-                    <div className="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center">
-                      <Code className="h-6 w-6 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold">NovaDevStudio</h3>
-                  </div>
-                  <p className="text-gray-600 mb-6">
-                    Module Code IA qui permet de coder assisté par intelligence artificielle dans un environnement
-                    complet et intuitif.
-                  </p>
-                  <div className="space-y-3 mb-8">
-                    <div className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <p className="ml-3 text-gray-600">Éditeur multi-fichiers avec auto-complétion IA</p>
-                    </div>
-                    <div className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <p className="ml-3 text-gray-600">Exécution de code et déploiement rapide</p>
-                    </div>
-                    <div className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <p className="ml-3 text-gray-600">Intégration avec Supabase et gestion des versions</p>
-                    </div>
-                  </div>
-                  <Button className="w-full bg-gradient-to-r from-cyan-500 to-blue-500" asChild>
-                    <a href="/novacore/novadevstudio">
-                      Explorer NovaDevStudio
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </a>
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Integrations */}
-            <div>
-              <div className="text-center mb-16">
-                <Badge className="mb-4 bg-indigo-100 text-indigo-700">Intégrations</Badge>
-                <h2 className="text-3xl lg:text-5xl font-bold mb-6 text-gray-800">
-                  Connecté à vos{" "}
-                  <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                    outils favoris
-                  </span>
-                </h2>
-                <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                  NovaCore s'intègre parfaitement avec les meilleures technologies pour offrir une expérience fluide et
-                  puissante.
-                </p>
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                  {features.map((feature, index) => (
+                    <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all">
+                      <CardContent className="p-6">
+                        <div className="w-16 h-16 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center mb-6">
+                          <feature.icon className="h-8 w-8 text-white" />
+                        </div>
+                        <h3 className="text-xl font-bold mb-3 text-gray-800">{feature.title}</h3>
+                        <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                {integrations.map((integration, index) => (
-                  <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all">
-                    <CardContent className="p-6 flex flex-col items-center text-center">
-                      <div className="w-16 h-16 rounded-full overflow-hidden mb-4">
-                        <img
-                          src={integration.logo || "/placeholder.svg"}
-                          alt={integration.name}
-                          className="w-full h-full object-cover"
-                        />
+              {/* Modules Overview */}
+              <div className="grid lg:grid-cols-2 gap-12">
+                {/* NovaSocial */}
+                <Card className="border-0 shadow-xl hover:shadow-2xl transition-all overflow-hidden">
+                  <div className="h-2 bg-gradient-to-r from-pink-500 to-orange-500"></div>
+                  <CardContent className="p-8">
+                    <div className="flex items-center space-x-4 mb-6">
+                      <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-orange-500 rounded-xl flex items-center justify-center">
+                        <Instagram className="h-6 w-6 text-white" />
                       </div>
-                      <h3 className="font-bold mb-2">{integration.name}</h3>
-                      <p className="text-sm text-gray-600">{integration.description}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
+                      <h3 className="text-2xl font-bold">NovaSocial</h3>
+                    </div>
+                    <p className="text-gray-600 mb-6">
+                      Module IA Community Manager qui automatise entièrement la gestion de contenu digital — de la
+                      création à la publication, analyse et optimisation.
+                    </p>
+                    <div className="space-y-3 mb-8">
+                      <div className="flex items-start">
+                        <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                        <p className="ml-3 text-gray-600">Génération automatique de contenu pour tous les réseaux</p>
+                      </div>
+                      <div className="flex items-start">
+                        <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                        <p className="ml-3 text-gray-600">Montage vidéo et photo intelligent via CapCut API</p>
+                      </div>
+                      <div className="flex items-start">
+                        <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                        <p className="ml-3 text-gray-600">Analytics avancés et optimisation continue</p>
+                      </div>
+                    </div>
+                    <Button className="w-full bg-gradient-to-r from-pink-500 to-orange-500" asChild>
+                      <a href="/novacore/novasocial">
+                        Explorer NovaSocial
+                        <ArrowRight className="ml-2 h-5 w-5" />
+                      </a>
+                    </Button>
+                  </CardContent>
+                </Card>
 
-            {/* Testimonials */}
-            <div className="bg-indigo-50 rounded-2xl p-8 lg:p-12">
-              <div className="text-center mb-12">
-                <Badge className="mb-4 bg-indigo-100 text-indigo-700">Témoignages</Badge>
-                <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-gray-800">
-                  Ce que disent nos{" "}
-                  <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                    clients
-                  </span>
-                </h2>
+                {/* NovaDevStudio */}
+                <Card className="border-0 shadow-xl hover:shadow-2xl transition-all overflow-hidden">
+                  <div className="h-2 bg-gradient-to-r from-cyan-500 to-blue-500"></div>
+                  <CardContent className="p-8">
+                    <div className="flex items-center space-x-4 mb-6">
+                      <div className="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center">
+                        <Code className="h-6 w-6 text-white" />
+                      </div>
+                      <h3 className="text-2xl font-bold">NovaDevStudio</h3>
+                    </div>
+                    <p className="text-gray-600 mb-6">
+                      Module Code IA qui permet de coder assisté par intelligence artificielle dans un environnement
+                      complet et intuitif.
+                    </p>
+                    <div className="space-y-3 mb-8">
+                      <div className="flex items-start">
+                        <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                        <p className="ml-3 text-gray-600">Éditeur multi-fichiers avec auto-complétion IA</p>
+                      </div>
+                      <div className="flex items-start">
+                        <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                        <p className="ml-3 text-gray-600">Exécution de code et déploiement rapide</p>
+                      </div>
+                      <div className="flex items-start">
+                        <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                        <p className="ml-3 text-gray-600">Intégration avec Supabase et gestion des versions</p>
+                      </div>
+                    </div>
+                    <Button className="w-full bg-gradient-to-r from-cyan-500 to-blue-500" asChild>
+                      <a href="/novacore/novadevstudio">
+                        Explorer NovaDevStudio
+                        <ArrowRight className="ml-2 h-5 w-5" />
+                      </a>
+                    </Button>
+                  </CardContent>
+                </Card>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-8">
-                {testimonials.map((testimonial, index) => (
-                  <Card key={index} className="border-0 shadow-xl">
-                    <CardContent className="p-6">
-                      <div className="flex items-center mb-6">
-                        <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
+              {/* Integrations */}
+              <div>
+                <div className="text-center mb-16">
+                  <Badge className="mb-4 bg-indigo-100 text-indigo-700">Intégrations</Badge>
+                  <h2 className="text-3xl lg:text-5xl font-bold mb-6 text-gray-800">
+                    Connecté à vos{" "}
+                    <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                      outils favoris
+                    </span>
+                  </h2>
+                  <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                    NovaCore s'intègre parfaitement avec les meilleures technologies pour offrir une expérience fluide
+                    et puissante.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  {integrations.map((integration, index) => (
+                    <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all">
+                      <CardContent className="p-6 flex flex-col items-center text-center">
+                        <div className="w-16 h-16 rounded-full overflow-hidden mb-4">
                           <img
-                            src={testimonial.avatar || "/placeholder.svg"}
-                            alt={testimonial.name}
+                            src={integration.logo || "/placeholder.svg"}
+                            alt={integration.name}
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <div>
-                          <h4 className="font-bold text-gray-800">{testimonial.name}</h4>
-                          <p className="text-sm text-gray-600">
-                            {testimonial.position}, {testimonial.company}
-                          </p>
-                        </div>
-                      </div>
-                      <p className="text-gray-600 italic">"{testimonial.content}"</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="novasocial" className="space-y-16">
-            {/* NovaSocial Hero */}
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <Badge className="mb-4 bg-pink-100 text-pink-700">Module IA Community Manager</Badge>
-                <h2 className="text-3xl lg:text-5xl font-bold mb-6 text-gray-800">
-                  <span className="bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent">
-                    NovaSocial
-                  </span>
-                </h2>
-                <p className="text-lg text-gray-600 leading-relaxed mb-8">
-                  Automatisez entièrement votre stratégie de contenu digital grâce à l'intelligence artificielle.
-                  NovaSocial crée, publie, analyse et optimise votre présence sur les réseaux sociaux sans intervention
-                  humaine.
-                </p>
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-start">
-                    <div className="mt-1 bg-pink-100 rounded-full p-1">
-                      <CheckCircle className="h-5 w-5 text-pink-600" />
-                    </div>
-                    <p className="ml-4 text-gray-600">
-                      <span className="font-medium text-gray-800">Gain de temps massif</span> - Économisez jusqu'à 20
-                      heures par semaine sur la gestion de vos réseaux sociaux
-                    </p>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="mt-1 bg-pink-100 rounded-full p-1">
-                      <CheckCircle className="h-5 w-5 text-pink-600" />
-                    </div>
-                    <p className="ml-4 text-gray-600">
-                      <span className="font-medium text-gray-800">Contenu optimisé</span> - L'IA analyse les tendances
-                      et crée du contenu qui performe mieux que la moyenne
-                    </p>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="mt-1 bg-pink-100 rounded-full p-1">
-                      <CheckCircle className="h-5 w-5 text-pink-600" />
-                    </div>
-                    <p className="ml-4 text-gray-600">
-                      <span className="font-medium text-gray-800">Cohérence parfaite</span> - Maintenez une identité de
-                      marque cohérente sur toutes les plateformes
-                    </p>
-                  </div>
-                </div>
-                <Button className="bg-gradient-to-r from-pink-500 to-orange-500">
-                  Essayer NovaSocial
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </div>
-              <div className="relative">
-                <div className="absolute -top-10 -left-10 w-40 h-40 bg-pink-100 rounded-full opacity-50 blur-3xl"></div>
-                <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-orange-100 rounded-full opacity-50 blur-3xl"></div>
-                <img
-                  src="/placeholder.svg?height=400&width=600"
-                  alt="NovaSocial Dashboard"
-                  className="rounded-xl shadow-2xl relative z-10"
-                />
-              </div>
-            </div>
-
-            {/* NovaSocial Features */}
-            <div>
-              <div className="text-center mb-16">
-                <Badge className="mb-4 bg-pink-100 text-pink-700">Fonctionnalités</Badge>
-                <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-gray-800">
-                  Tout ce dont vous avez besoin pour{" "}
-                  <span className="bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent">
-                    exceller
-                  </span>{" "}
-                  sur les réseaux
-                </h2>
-              </div>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {novaSocialFeatures.map((feature, index) => (
-                  <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all">
-                    <CardContent className="p-6">
-                      <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-orange-500 rounded-2xl flex items-center justify-center mb-6">
-                        <feature.icon className="h-8 w-8 text-white" />
-                      </div>
-                      <h3 className="text-xl font-bold mb-3 text-gray-800">{feature.title}</h3>
-                      <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            {/* NovaSocial Workflow */}
-            <div className="bg-gradient-to-r from-pink-50 to-orange-50 rounded-2xl p-8 lg:p-12">
-              <div className="text-center mb-16">
-                <Badge className="mb-4 bg-pink-100 text-pink-700">Workflow Automatisé</Badge>
-                <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-gray-800">
-                  Comment fonctionne{" "}
-                  <span className="bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent">
-                    NovaSocial
-                  </span>
-                </h2>
-                <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                  Un processus entièrement automatisé qui transforme votre stratégie social media
-                </p>
-              </div>
-
-              <div className="relative">
-                <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-pink-200 to-orange-200 transform -translate-y-1/2"></div>
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                  <div className="relative">
-                    <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
-                      <span className="text-white font-bold">1</span>
-                    </div>
-                    <div className="text-center">
-                      <h3 className="font-bold mb-2">Définition des objectifs</h3>
-                      <p className="text-sm text-gray-600">
-                        Choisissez vos objectifs marketing : notoriété, ventes, fidélisation...
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="relative">
-                    <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
-                      <span className="text-white font-bold">2</span>
-                    </div>
-                    <div className="text-center">
-                      <h3 className="font-bold mb-2">Création de contenu IA</h3>
-                      <p className="text-sm text-gray-600">
-                        L'IA génère textes, visuels et vidéos adaptés à chaque plateforme
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="relative">
-                    <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
-                      <span className="text-white font-bold">3</span>
-                    </div>
-                    <div className="text-center">
-                      <h3 className="font-bold mb-2">Publication automatique</h3>
-                      <p className="text-sm text-gray-600">
-                        Planification et publication aux moments optimaux sur tous les réseaux
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="relative">
-                    <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
-                      <span className="text-white font-bold">4</span>
-                    </div>
-                    <div className="text-center">
-                      <h3 className="font-bold mb-2">Analyse et optimisation</h3>
-                      <p className="text-sm text-gray-600">
-                        L'IA analyse les performances et ajuste la stratégie en continu
-                      </p>
-                    </div>
-                  </div>
+                        <h3 className="font-bold mb-2">{integration.name}</h3>
+                        <p className="text-sm text-gray-600">{integration.description}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
                 </div>
               </div>
-            </div>
 
-            {/* NovaSocial Demo CTA */}
-            <div className="text-center">
-              <h2 className="text-3xl font-bold mb-6">Prêt à révolutionner votre présence sur les réseaux sociaux ?</h2>
-              <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
-                Rejoignez les entreprises qui ont transformé leur stratégie social media grâce à NovaSocial
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-gradient-to-r from-pink-500 to-orange-500">
-                  Démarrer l'essai gratuit
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-                <Button size="lg" variant="outline" className="border-pink-200 text-pink-700">
-                  Voir une démo
-                </Button>
-              </div>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="novadevstudio" className="space-y-16">
-            {/* NovaDevStudio Hero */}
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="order-2 lg:order-1">
-                <Badge className="mb-4 bg-cyan-100 text-cyan-700">Module Code IA</Badge>
-                <h2 className="text-3xl lg:text-5xl font-bold mb-6 text-gray-800">
-                  <span className="bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">
-                    NovaDevStudio
-                  </span>
-                </h2>
-                <p className="text-lg text-gray-600 leading-relaxed mb-8">
-                  Développez plus rapidement et intelligemment grâce à notre environnement de codage assisté par IA.
-                  NovaDevStudio comprend votre code, suggère des améliorations et accélère votre workflow de
-                  développement.
-                </p>
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-start">
-                    <div className="mt-1 bg-cyan-100 rounded-full p-1">
-                      <CheckCircle className="h-5 w-5 text-cyan-600" />
-                    </div>
-                    <p className="ml-4 text-gray-600">
-                      <span className="font-medium text-gray-800">Productivité augmentée</span> - Codez jusqu'à 40% plus
-                      rapidement avec l'assistance IA
-                    </p>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="mt-1 bg-cyan-100 rounded-full p-1">
-                      <CheckCircle className="h-5 w-5 text-cyan-600" />
-                    </div>
-                    <p className="ml-4 text-gray-600">
-                      <span className="font-medium text-gray-800">Moins d'erreurs</span> - L'IA détecte et corrige les
-                      bugs avant même qu'ils n'apparaissent
-                    </p>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="mt-1 bg-cyan-100 rounded-full p-1">
-                      <CheckCircle className="h-5 w-5 text-cyan-600" />
-                    </div>
-                    <p className="ml-4 text-gray-600">
-                      <span className="font-medium text-gray-800">Déploiement simplifié</span> - De l'écriture du code
-                      au déploiement en production en quelques clics
-                    </p>
-                  </div>
-                </div>
-                <Button className="bg-gradient-to-r from-cyan-500 to-blue-500">
-                  Essayer NovaDevStudio
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </div>
-              <div className="order-1 lg:order-2 relative">
-                <div className="absolute -top-10 -left-10 w-40 h-40 bg-cyan-100 rounded-full opacity-50 blur-3xl"></div>
-                <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-blue-100 rounded-full opacity-50 blur-3xl"></div>
-                <img
-                  src="/placeholder.svg?height=400&width=600"
-                  alt="NovaDevStudio Interface"
-                  className="rounded-xl shadow-2xl relative z-10"
-                />
-              </div>
-            </div>
-
-            {/* NovaDevStudio Features */}
-            <div>
-              <div className="text-center mb-16">
-                <Badge className="mb-4 bg-cyan-100 text-cyan-700">Fonctionnalités</Badge>
-                <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-gray-800">
-                  Outils de développement{" "}
-                  <span className="bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">
-                    nouvelle génération
-                  </span>
-                </h2>
-              </div>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {novaDevStudioFeatures.map((feature, index) => (
-                  <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all">
-                    <CardContent className="p-6">
-                      <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center mb-6">
-                        <feature.icon className="h-8 w-8 text-white" />
-                      </div>
-                      <h3 className="text-xl font-bold mb-3 text-gray-800">{feature.title}</h3>
-                      <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            {/* Code Editor Preview */}
-            <div className="bg-gradient-to-r from-cyan-50 to-blue-50 rounded-2xl p-8 lg:p-12">
-              <div className="text-center mb-12">
-                <Badge className="mb-4 bg-cyan-100 text-cyan-700">Éditeur Intelligent</Badge>
-                <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-gray-800">Codez comme jamais auparavant</h2>
-                <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                  Un environnement de développement complet avec assistance IA en temps réel
-                </p>
-              </div>
-
-              <div className="bg-gray-900 rounded-xl shadow-2xl overflow-hidden">
-                <div className="flex items-center space-x-2 bg-gray-800 px-4 py-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  <div className="ml-4 text-gray-400 text-sm">app.js</div>
-                </div>
-                <div className="p-6 text-gray-300 font-mono text-sm">
-                  <pre className="whitespace-pre-wrap">
-                    <span className="text-blue-400">import</span> React, &#123; useState &#125;{" "}
-                    <span className="text-blue-400">from</span> <span className="text-green-400">'react'</span>;
-                    <br />
-                    <br />
-                    <span className="text-blue-400">function</span> <span className="text-yellow-400">App</span>()
-                    &#123;
-                    <br />
-                    &nbsp;&nbsp;<span className="text-blue-400">const</span> [count, setCount] = useState(0);
-                    <br />
-                    <br />
-                    &nbsp;&nbsp;<span className="text-blue-400">return</span> (
-                    <br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span className="text-yellow-400">div</span>&gt;
-                    <br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span className="text-yellow-400">h1</span>&gt;Counter
-                    App&lt;/<span className="text-yellow-400">h1</span>&gt;
-                    <br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span className="text-yellow-400">p</span>&gt;You clicked{" "}
-                    &#123;count&#125; times&lt;/<span className="text-yellow-400">p</span>&gt;
-                    <br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span className="text-yellow-400">button</span>{" "}
-                    <span className="text-purple-400">onClick</span>=&#123;() =&gt; setCount(count + 1)&#125;&gt;
-                    <br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Click me
-                    <br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span className="text-yellow-400">button</span>&gt;
-                    <br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span className="text-yellow-400">div</span>&gt;
-                    <br />
-                    &nbsp;&nbsp;);
-                    <br />
-                    &#125;
-                    <br />
-                    <br />
-                    <span className="text-blue-400">export</span> <span className="text-blue-400">default</span> App;
-                    <br />
-                    <br />
-                    <span className="text-gray-500">
-                      // IA Suggestion: Consider adding a reset button and a custom increment value
+              {/* Testimonials */}
+              <div className="bg-indigo-50 rounded-2xl p-8 lg:p-12">
+                <div className="text-center mb-12">
+                  <Badge className="mb-4 bg-indigo-100 text-indigo-700">Témoignages</Badge>
+                  <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-gray-800">
+                    Ce que disent nos{" "}
+                    <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                      clients
                     </span>
-                  </pre>
+                  </h2>
+                </div>
+
+                <div className="grid md:grid-cols-3 gap-8">
+                  {testimonials.map((testimonial, index) => (
+                    <Card key={index} className="border-0 shadow-xl">
+                      <CardContent className="p-6">
+                        <div className="flex items-center mb-6">
+                          <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img
+                              src={testimonial.avatar || "/placeholder.svg"}
+                              alt={testimonial.name}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-gray-800">{testimonial.name}</h4>
+                            <p className="text-sm text-gray-600">
+                              {testimonial.position}, {testimonial.company}
+                            </p>
+                          </div>
+                        </div>
+                        <p className="text-gray-600 italic">"{testimonial.content}"</p>
+                      </CardContent>
+                    </Card>
+                  ))}
                 </div>
               </div>
-            </div>
+            </TabsContent>
 
-            {/* NovaDevStudio Demo CTA */}
-            <div className="text-center">
-              <h2 className="text-3xl font-bold mb-6">Prêt à transformer votre façon de coder ?</h2>
-              <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
-                Rejoignez les développeurs qui ont adopté NovaDevStudio pour accélérer leur workflow
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-gradient-to-r from-cyan-500 to-blue-500">
-                  Démarrer l'essai gratuit
+            <TabsContent value="novasocial" className="space-y-16">
+              {/* NovaSocial Hero */}
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                  <Badge className="mb-4 bg-pink-100 text-pink-700">Module IA Community Manager</Badge>
+                  <h2 className="text-3xl lg:text-5xl font-bold mb-6 text-gray-800">
+                    <span className="bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent">
+                      NovaSocial
+                    </span>
+                  </h2>
+                  <p className="text-lg text-gray-600 leading-relaxed mb-8">
+                    Automatisez entièrement votre stratégie de contenu digital grâce à l'intelligence artificielle.
+                    NovaSocial crée, publie, analyse et optimise votre présence sur les réseaux sociaux sans
+                    intervention humaine.
+                  </p>
+                  <div className="space-y-4 mb-8">
+                    <div className="flex items-start">
+                      <div className="mt-1 bg-pink-100 rounded-full p-1">
+                        <CheckCircle className="h-5 w-5 text-pink-600" />
+                      </div>
+                      <p className="ml-4 text-gray-600">
+                        <span className="font-medium text-gray-800">Gain de temps massif</span> - Économisez jusqu'à 20
+                        heures par semaine sur la gestion de vos réseaux sociaux
+                      </p>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="mt-1 bg-pink-100 rounded-full p-1">
+                        <CheckCircle className="h-5 w-5 text-pink-600" />
+                      </div>
+                      <p className="ml-4 text-gray-600">
+                        <span className="font-medium text-gray-800">Contenu optimisé</span> - L'IA analyse les tendances
+                        et crée du contenu qui performe mieux que la moyenne
+                      </p>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="mt-1 bg-pink-100 rounded-full p-1">
+                        <CheckCircle className="h-5 w-5 text-pink-600" />
+                      </div>
+                      <p className="ml-4 text-gray-600">
+                        <span className="font-medium text-gray-800">Cohérence parfaite</span> - Maintenez une identité
+                        de marque cohérente sur toutes les plateformes
+                      </p>
+                    </div>
+                  </div>
+                  <Button className="bg-gradient-to-r from-pink-500 to-orange-500">
+                    Essayer NovaSocial
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </div>
+                <div className="relative">
+                  <div className="absolute -top-10 -left-10 w-40 h-40 bg-pink-100 rounded-full opacity-50 blur-3xl"></div>
+                  <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-orange-100 rounded-full opacity-50 blur-3xl"></div>
+                  <ImageIcon
+                    src="/placeholder.svg?height=400&width=600"
+                    alt="NovaSocial Dashboard"
+                    className="rounded-xl shadow-2xl relative z-10"
+                  />
+                </div>
+              </div>
+
+              {/* NovaSocial Features */}
+              <div>
+                <div className="text-center mb-16">
+                  <Badge className="mb-4 bg-pink-100 text-pink-700">Fonctionnalités</Badge>
+                  <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-gray-800">
+                    Tout ce dont vous avez besoin pour{" "}
+                    <span className="bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent">
+                      exceller
+                    </span>{" "}
+                    sur les réseaux
+                  </h2>
+                </div>
+
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {novaSocialFeatures.map((feature, index) => (
+                    <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all">
+                      <CardContent className="p-6">
+                        <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-orange-500 rounded-2xl flex items-center justify-center mb-6">
+                          <feature.icon className="h-8 w-8 text-white" />
+                        </div>
+                        <h3 className="text-xl font-bold mb-3 text-gray-800">{feature.title}</h3>
+                        <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+
+              {/* NovaSocial Workflow */}
+              <div className="bg-gradient-to-r from-pink-50 to-orange-50 rounded-2xl p-8 lg:p-12">
+                <div className="text-center mb-16">
+                  <Badge className="mb-4 bg-pink-100 text-pink-700">Workflow Automatisé</Badge>
+                  <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-gray-800">
+                    Comment fonctionne{" "}
+                    <span className="bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent">
+                      NovaSocial
+                    </span>
+                  </h2>
+                  <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                    Un processus entièrement automatisé qui transforme votre stratégie social media
+                  </p>
+                </div>
+
+                <div className="relative">
+                  <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-pink-200 to-orange-200 transform -translate-y-1/2"></div>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="relative">
+                      <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
+                        <span className="text-white font-bold">1</span>
+                      </div>
+                      <div className="text-center">
+                        <h3 className="font-bold mb-2">Définition des objectifs</h3>
+                        <p className="text-sm text-gray-600">
+                          Choisissez vos objectifs marketing : notoriété, ventes, fidélisation...
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="relative">
+                      <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
+                        <span className="text-white font-bold">2</span>
+                      </div>
+                      <div className="text-center">
+                        <h3 className="font-bold mb-2">Création de contenu IA</h3>
+                        <p className="text-sm text-gray-600">
+                          L'IA génère textes, visuels et vidéos adaptés à chaque plateforme
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="relative">
+                      <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
+                        <span className="text-white font-bold">3</span>
+                      </div>
+                      <div className="text-center">
+                        <h3 className="font-bold mb-2">Publication automatique</h3>
+                        <p className="text-sm text-gray-600">
+                          Planification et publication aux moments optimaux sur tous les réseaux
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="relative">
+                      <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
+                        <span className="text-white font-bold">4</span>
+                      </div>
+                      <div className="text-center">
+                        <h3 className="font-bold mb-2">Analyse et optimisation</h3>
+                        <p className="text-sm text-gray-600">
+                          L'IA analyse les performances et ajuste la stratégie en continu
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* NovaSocial Demo CTA */}
+              <div className="text-center">
+                <h2 className="text-3xl font-bold mb-6">
+                  Prêt à révolutionner votre présence sur les réseaux sociaux ?
+                </h2>
+                <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
+                  Rejoignez les entreprises qui ont transformé leur stratégie social media grâce à NovaSocial
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button size="lg" className="bg-gradient-to-r from-pink-500 to-orange-500">
+                    Démarrer l'essai gratuit
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                  <Button size="lg" variant="outline" className="border-pink-200 text-pink-700">
+                    Voir une démo
+                  </Button>
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="novadevstudio" className="space-y-16">
+              {/* NovaDevStudio Hero */}
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <div className="order-2 lg:order-1">
+                  <Badge className="mb-4 bg-cyan-100 text-cyan-700">Module Code IA</Badge>
+                  <h2 className="text-3xl lg:text-5xl font-bold mb-6 text-gray-800">
+                    <span className="bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">
+                      NovaDevStudio
+                    </span>
+                  </h2>
+                  <p className="text-lg text-gray-600 leading-relaxed mb-8">
+                    Développez plus rapidement et intelligemment grâce à notre environnement de codage assisté par IA.
+                    NovaDevStudio comprend votre code, suggère des améliorations et accélère votre workflow de
+                    développement.
+                  </p>
+                  <div className="space-y-4 mb-8">
+                    <div className="flex items-start">
+                      <div className="mt-1 bg-cyan-100 rounded-full p-1">
+                        <CheckCircle className="h-5 w-5 text-cyan-600" />
+                      </div>
+                      <p className="ml-4 text-gray-600">
+                        <span className="font-medium text-gray-800">Productivité augmentée</span> - Codez jusqu'à 40%
+                        plus rapidement avec l'assistance IA
+                      </p>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="mt-1 bg-cyan-100 rounded-full p-1">
+                        <CheckCircle className="h-5 w-5 text-cyan-600" />
+                      </div>
+                      <p className="ml-4 text-gray-600">
+                        <span className="font-medium text-gray-800">Moins d'erreurs</span> - L'IA détecte et corrige les
+                        bugs avant même qu'ils n'apparaissent
+                      </p>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="mt-1 bg-cyan-100 rounded-full p-1">
+                        <CheckCircle className="h-5 w-5 text-cyan-600" />
+                      </div>
+                      <p className="ml-4 text-gray-600">
+                        <span className="font-medium text-gray-800">Déploiement simplifié</span> - De l'écriture du code
+                        au déploiement en production en quelques clics
+                      </p>
+                    </div>
+                  </div>
+                  <Button className="bg-gradient-to-r from-cyan-500 to-blue-500">
+                    Essayer NovaDevStudio
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </div>
+                <div className="order-1 lg:order-2 relative">
+                  <div className="absolute -top-10 -left-10 w-40 h-40 bg-cyan-100 rounded-full opacity-50 blur-3xl"></div>
+                  <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-blue-100 rounded-full opacity-50 blur-3xl"></div>
+                  <ImageIcon
+                    src="/placeholder.svg?height=400&width=600"
+                    alt="NovaDevStudio Interface"
+                    className="rounded-xl shadow-2xl relative z-10"
+                  />
+                </div>
+              </div>
+
+              {/* NovaDevStudio Features */}
+              <div>
+                <div className="text-center mb-16">
+                  <Badge className="mb-4 bg-cyan-100 text-cyan-700">Fonctionnalités</Badge>
+                  <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-gray-800">
+                    Outils de développement{" "}
+                    <span className="bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">
+                      nouvelle génération
+                    </span>
+                  </h2>
+                </div>
+
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {novaDevStudioFeatures.map((feature, index) => (
+                    <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all">
+                      <CardContent className="p-6">
+                        <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center mb-6">
+                          <feature.icon className="h-8 w-8 text-white" />
+                        </div>
+                        <h3 className="text-xl font-bold mb-3 text-gray-800">{feature.title}</h3>
+                        <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+
+              {/* Code Editor Preview */}
+              <div className="bg-gradient-to-r from-cyan-50 to-blue-50 rounded-2xl p-8 lg:p-12">
+                <div className="text-center mb-12">
+                  <Badge className="mb-4 bg-cyan-100 text-cyan-700">Éditeur Intelligent</Badge>
+                  <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-gray-800">Codez comme jamais auparavant</h2>
+                  <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                    Un environnement de développement complet avec assistance IA en temps réel
+                  </p>
+                </div>
+
+                <div className="bg-gray-900 rounded-xl shadow-2xl overflow-hidden">
+                  <div className="flex items-center space-x-2 bg-gray-800 px-4 py-2">
+                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                    <div className="ml-4 text-gray-400 text-sm">app.js</div>
+                  </div>
+                  <div className="p-6 text-gray-300 font-mono text-sm">
+                    <pre className="whitespace-pre-wrap">
+                      <span className="text-blue-400">import</span> React, &#123; useState &#125;{" "}
+                      <span className="text-blue-400">from</span> <span className="text-green-400">'react'</span>;
+                      <br />
+                      <br />
+                      <span className="text-blue-400">function</span> <span className="text-yellow-400">App</span>()
+                      &#123;
+                      <br />
+                      &nbsp;&nbsp;<span className="text-blue-400">const</span> [count, setCount] = useState(0);
+                      <br />
+                      <br />
+                      &nbsp;&nbsp;<span className="text-blue-400">return</span> (
+                      <br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span className="text-yellow-400">div</span>&gt;
+                      <br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span className="text-yellow-400">h1</span>&gt;Counter
+                      App&lt;/<span className="text-yellow-400">h1</span>&gt;
+                      <br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span className="text-yellow-400">p</span>&gt;You clicked{" "}
+                      &#123;count&#125; times&lt;/<span className="text-yellow-400">p</span>&gt;
+                      <br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span className="text-yellow-400">button</span>{" "}
+                      <span className="text-purple-400">onClick</span>=&#123;() =&gt; setCount(count + 1)&#125;&gt;
+                      <br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Click me
+                      <br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span className="text-yellow-400">button</span>&gt;
+                      <br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span className="text-yellow-400">div</span>&gt;
+                      <br />
+                      &nbsp;&nbsp;);
+                      <br />
+                      &#125;
+                      <br />
+                      <br />
+                      <span className="text-blue-400">export</span> <span className="text-blue-400">default</span> App;
+                      <br />
+                      <br />
+                      <span className="text-gray-500">
+                        // IA Suggestion: Consider adding a reset button and a custom increment value
+                      </span>
+                    </pre>
+                  </div>
+                </div>
+              </div>
+
+              {/* NovaDevStudio Demo CTA */}
+              <div className="text-center">
+                <h2 className="text-3xl font-bold mb-6">Prêt à transformer votre façon de coder ?</h2>
+                <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
+                  Rejoignez les développeurs qui ont adopté NovaDevStudio pour accélérer leur workflow
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button size="lg" className="bg-gradient-to-r from-cyan-500 to-blue-500">
+                    Démarrer l'essai gratuit
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                  <Button size="lg" variant="outline" className="border-cyan-200 text-cyan-700">
+                    Voir une démo
+                  </Button>
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="pricing" className="space-y-16">
+              {/* Pricing Plans */}
+              <div>
+                <div className="text-center mb-16">
+                  <Badge className="mb-4 bg-indigo-100 text-indigo-700">Tarifs</Badge>
+                  <h2 className="text-3xl lg:text-5xl font-bold mb-6 text-gray-800">
+                    Des formules adaptées à{" "}
+                    <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                      tous les besoins
+                    </span>
+                  </h2>
+                  <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                    Choisissez le plan qui correspond le mieux à vos objectifs et à votre budget
+                  </p>
+                </div>
+
+                <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                  {pricingPlans.map((plan, index) => (
+                    <Card
+                      key={index}
+                      className={`border-0 ${
+                        plan.popular ? "shadow-2xl ring-2 ring-indigo-500 scale-105 z-10" : "shadow-lg hover:shadow-xl"
+                      } transition-all`}
+                    >
+                      {plan.popular && (
+                        <div className="absolute -top-5 left-0 right-0 mx-auto w-32">
+                          <Badge className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-1 px-3">
+                            Recommandé
+                          </Badge>
+                        </div>
+                      )}
+                      <CardContent className="p-8">
+                        <h3 className="text-2xl font-bold mb-2 text-gray-800">{plan.name}</h3>
+                        <div className="flex items-baseline mb-6">
+                          <span className="text-4xl font-bold text-indigo-600">{plan.price}</span>
+                          {plan.price !== "Sur mesure" && <span className="text-gray-500 ml-2">/mois</span>}
+                        </div>
+                        <p className="text-gray-600 mb-6">{plan.description}</p>
+                        <div className="space-y-4 mb-8">
+                          {plan.features.map((feature, idx) => (
+                            <div key={idx} className="flex items-start">
+                              <CheckCircle className="h-5 w-5 text-indigo-600 mt-0.5 flex-shrink-0" />
+                              <span className="ml-3 text-gray-600">{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                        <Button
+                          className={`w-full ${
+                            plan.popular
+                              ? "bg-gradient-to-r from-indigo-600 to-purple-600"
+                              : "bg-indigo-600 hover:bg-indigo-700"
+                          }`}
+                        >
+                          {plan.cta}
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+
+              {/* FAQ */}
+              <div className="bg-indigo-50 rounded-2xl p-8 lg:p-12">
+                <div className="text-center mb-12">
+                  <Badge className="mb-4 bg-indigo-100 text-indigo-700">FAQ</Badge>
+                  <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-gray-800">Questions fréquentes</h2>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                  <div>
+                    <h3 className="text-xl font-bold mb-3 text-gray-800">Puis-je essayer NovaCore gratuitement ?</h3>
+                    <p className="text-gray-600">
+                      Oui, nous proposons un essai gratuit de 14 jours pour tous nos plans, sans engagement et sans
+                      carte bancaire.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-3 text-gray-800">
+                      Quelles sont les différences entre NovaSocial et NovaDevStudio ?
+                    </h3>
+                    <p className="text-gray-600">
+                      NovaSocial est dédié à l'automatisation des réseaux sociaux, tandis que NovaDevStudio est un
+                      environnement de développement assisté par IA.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-3 text-gray-800">Puis-je changer de plan à tout moment ?</h3>
+                    <p className="text-gray-600">
+                      Oui, vous pouvez passer à un plan supérieur à tout moment. La différence sera calculée au prorata.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-3 text-gray-800">
+                      Comment fonctionne l'intégration avec mes outils existants ?
+                    </h3>
+                    <p className="text-gray-600">
+                      NovaCore s'intègre facilement avec les principales plateformes via des API sécurisées et des
+                      connecteurs prédéfinis.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-3 text-gray-800">
+                      Quelle est la politique de confidentialité des données ?
+                    </h3>
+                    <p className="text-gray-600">
+                      Nous respectons strictement le RGPD et ne partageons jamais vos données. Vous en restez
+                      propriétaire à 100%.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-3 text-gray-800">
+                      Quel support est inclus dans mon abonnement ?
+                    </h3>
+                    <p className="text-gray-600">
+                      Tous les plans incluent un support par email. Les plans Business et Enterprise bénéficient d'un
+                      support prioritaire 24/7.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Enterprise CTA */}
+              <div className="text-center">
+                <h2 className="text-3xl font-bold mb-6">Besoin d'une solution sur mesure ?</h2>
+                <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
+                  Contactez notre équipe commerciale pour discuter de vos besoins spécifiques et obtenir une offre
+                  personnalisée.
+                </p>
+                <Button size="lg" className="bg-gradient-to-r from-indigo-600 to-purple-600">
+                  Contacter l'équipe commerciale
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button size="lg" variant="outline" className="border-cyan-200 text-cyan-700">
-                  Voir une démo
-                </Button>
               </div>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="pricing" className="space-y-16">
-            {/* Pricing Plans */}
-            <div>
-              <div className="text-center mb-16">
-                <Badge className="mb-4 bg-indigo-100 text-indigo-700">Tarifs</Badge>
-                <h2 className="text-3xl lg:text-5xl font-bold mb-6 text-gray-800">
-                  Des formules adaptées à{" "}
-                  <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                    tous les besoins
-                  </span>
-                </h2>
-                <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                  Choisissez le plan qui correspond le mieux à vos objectifs et à votre budget
-                </p>
-              </div>
-
-              <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                {pricingPlans.map((plan, index) => (
-                  <Card
-                    key={index}
-                    className={`border-0 ${
-                      plan.popular ? "shadow-2xl ring-2 ring-indigo-500 scale-105 z-10" : "shadow-lg hover:shadow-xl"
-                    } transition-all`}
-                  >
-                    {plan.popular && (
-                      <div className="absolute -top-5 left-0 right-0 mx-auto w-32">
-                        <Badge className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-1 px-3">
-                          Recommandé
-                        </Badge>
-                      </div>
-                    )}
-                    <CardContent className="p-8">
-                      <h3 className="text-2xl font-bold mb-2 text-gray-800">{plan.name}</h3>
-                      <div className="flex items-baseline mb-6">
-                        <span className="text-4xl font-bold text-indigo-600">{plan.price}</span>
-                        {plan.price !== "Sur mesure" && <span className="text-gray-500 ml-2">/mois</span>}
-                      </div>
-                      <p className="text-gray-600 mb-6">{plan.description}</p>
-                      <div className="space-y-4 mb-8">
-                        {plan.features.map((feature, idx) => (
-                          <div key={idx} className="flex items-start">
-                            <CheckCircle className="h-5 w-5 text-indigo-600 mt-0.5 flex-shrink-0" />
-                            <span className="ml-3 text-gray-600">{feature}</span>
-                          </div>
-                        ))}
-                      </div>
-                      <Button
-                        className={`w-full ${
-                          plan.popular
-                            ? "bg-gradient-to-r from-indigo-600 to-purple-600"
-                            : "bg-indigo-600 hover:bg-indigo-700"
-                        }`}
-                      >
-                        {plan.cta}
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            {/* FAQ */}
-            <div className="bg-indigo-50 rounded-2xl p-8 lg:p-12">
-              <div className="text-center mb-12">
-                <Badge className="mb-4 bg-indigo-100 text-indigo-700">FAQ</Badge>
-                <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-gray-800">Questions fréquentes</h2>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                <div>
-                  <h3 className="text-xl font-bold mb-3 text-gray-800">Puis-je essayer NovaCore gratuitement ?</h3>
-                  <p className="text-gray-600">
-                    Oui, nous proposons un essai gratuit de 14 jours pour tous nos plans, sans engagement et sans carte
-                    bancaire.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold mb-3 text-gray-800">
-                    Quelles sont les différences entre NovaSocial et NovaDevStudio ?
-                  </h3>
-                  <p className="text-gray-600">
-                    NovaSocial est dédié à l'automatisation des réseaux sociaux, tandis que NovaDevStudio est un
-                    environnement de développement assisté par IA.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold mb-3 text-gray-800">Puis-je changer de plan à tout moment ?</h3>
-                  <p className="text-gray-600">
-                    Oui, vous pouvez passer à un plan supérieur à tout moment. La différence sera calculée au prorata.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold mb-3 text-gray-800">
-                    Comment fonctionne l'intégration avec mes outils existants ?
-                  </h3>
-                  <p className="text-gray-600">
-                    NovaCore s'intègre facilement avec les principales plateformes via des API sécurisées et des
-                    connecteurs prédéfinis.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold mb-3 text-gray-800">
-                    Quelle est la politique de confidentialité des données ?
-                  </h3>
-                  <p className="text-gray-600">
-                    Nous respectons strictement le RGPD et ne partageons jamais vos données. Vous en restez propriétaire
-                    à 100%.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold mb-3 text-gray-800">
-                    Quel support est inclus dans mon abonnement ?
-                  </h3>
-                  <p className="text-gray-600">
-                    Tous les plans incluent un support par email. Les plans Business et Enterprise bénéficient d'un
-                    support prioritaire 24/7.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Enterprise CTA */}
-            <div className="text-center">
-              <h2 className="text-3xl font-bold mb-6">Besoin d'une solution sur mesure ?</h2>
-              <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
-                Contactez notre équipe commerciale pour discuter de vos besoins spécifiques et obtenir une offre
-                personnalisée.
-              </p>
-              <Button size="lg" className="bg-gradient-to-r from-indigo-600 to-purple-600">
-                Contacter l'équipe commerciale
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </div>
-          </TabsContent>
+            </TabsContent>
+          </Tabs>
         </div>
       </section>
 

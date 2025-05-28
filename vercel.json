@@ -1,0 +1,10 @@
+{
+  "domains": ["daveandlucesolutions.com", "www.daveandlucesolutions.com"],
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "https://daveandlucesolutions.com/$1",
+      "permanent": true
+    }
+  ]
+}

@@ -281,7 +281,7 @@ export default function NovaCoreHub() {
               <Button variant="outline" className="border-indigo-200 text-indigo-700 hidden lg:flex" asChild>
                 <a href="/devis">Devis IA</a>
               </Button>
-              <Button className="bg-gradient-to-r from-indigo-600 to-purple-600 text-indigo-600" asChild>
+              <Button className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white" asChild>
                 <a href="/novacore">NovaCore</a>
               </Button>
             </div>
@@ -301,7 +301,9 @@ export default function NovaCoreHub() {
               </Badge>
               <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6">
                 NovaCore
-                <span className="block text-2xl lg:text-3xl mt-2 font-normal">La puissance de l'IA au service de votre business</span>
+                <span className="block text-2xl lg:text-3xl mt-2 font-normal">
+                  La puissance de l'IA au service de votre business
+                </span>
               </h1>
               <p className="text-xl text-indigo-100 mb-8 leading-relaxed">
                 Une plateforme SaaS révolutionnaire propulsée par l'IA qui automatise votre community management et
@@ -394,8 +396,8 @@ export default function NovaCoreHub() {
                     <h3 className="text-2xl font-bold">NovaSocial</h3>
                   </div>
                   <p className="text-gray-600 mb-6">
-                    Module IA Community Manager qui automatise entièrement la gestion de contenu digital — de la création
-                    à la publication, analyse et optimisation.
+                    Module IA Community Manager qui automatise entièrement la gestion de contenu digital — de la
+                    création à la publication, analyse et optimisation.
                   </p>
                   <div className="space-y-3 mb-8">
                     <div className="flex items-start">
@@ -562,8 +564,8 @@ export default function NovaCoreHub() {
                       <CheckCircle className="h-5 w-5 text-pink-600" />
                     </div>
                     <p className="ml-4 text-gray-600">
-                      <span className="font-medium text-gray-800">Contenu optimisé</span> - L'IA analyse les tendances et
-                      crée du contenu qui performe mieux que la moyenne
+                      <span className="font-medium text-gray-800">Contenu optimisé</span> - L'IA analyse les tendances
+                      et crée du contenu qui performe mieux que la moyenne
                     </p>
                   </div>
                   <div className="flex items-start">
@@ -746,8 +748,8 @@ export default function NovaCoreHub() {
                       <CheckCircle className="h-5 w-5 text-cyan-600" />
                     </div>
                     <p className="ml-4 text-gray-600">
-                      <span className="font-medium text-gray-800">Déploiement simplifié</span> - De l'écriture du code au
-                      déploiement en production en quelques clics
+                      <span className="font-medium text-gray-800">Déploiement simplifié</span> - De l'écriture du code
+                      au déploiement en production en quelques clics
                     </p>
                   </div>
                 </div>
@@ -798,9 +800,7 @@ export default function NovaCoreHub() {
             <div className="bg-gradient-to-r from-cyan-50 to-blue-50 rounded-2xl p-8 lg:p-12">
               <div className="text-center mb-12">
                 <Badge className="mb-4 bg-cyan-100 text-cyan-700">Éditeur Intelligent</Badge>
-                <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-gray-800">
-                  Codez comme jamais auparavant
-                </h2>
+                <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-gray-800">Codez comme jamais auparavant</h2>
                 <p className="text-lg text-gray-600 max-w-3xl mx-auto">
                   Un environnement de développement complet avec assistance IA en temps réel
                 </p>
@@ -819,8 +819,8 @@ export default function NovaCoreHub() {
                     <span className="text-blue-400">from</span> <span className="text-green-400">'react'</span>;
                     <br />
                     <br />
-                    <span className="text-blue-400">function</span>{" "}
-                    <span className="text-yellow-400">App</span>() &#123;
+                    <span className="text-blue-400">function</span> <span className="text-yellow-400">App</span>()
+                    &#123;
                     <br />
                     &nbsp;&nbsp;<span className="text-blue-400">const</span> [count, setCount] = useState(0);
                     <br />
@@ -849,8 +849,7 @@ export default function NovaCoreHub() {
                     &#125;
                     <br />
                     <br />
-                    <span className="text-blue-400">export</span>{" "}
-                    <span className="text-blue-400">default</span> App;
+                    <span className="text-blue-400">export</span> <span className="text-blue-400">default</span> App;
                     <br />
                     <br />
                     <span className="text-gray-500">
@@ -965,9 +964,7 @@ export default function NovaCoreHub() {
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold mb-3 text-gray-800">
-                    Puis-je changer de plan à tout moment ?
-                  </h3>
+                  <h3 className="text-xl font-bold mb-3 text-gray-800">Puis-je changer de plan à tout moment ?</h3>
                   <p className="text-gray-600">
                     Oui, vous pouvez passer à un plan supérieur à tout moment. La différence sera calculée au prorata.
                   </p>
@@ -1074,4 +1071,107 @@ export default function NovaCoreHub() {
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path
                       fillRule="evenodd"
-                      d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 \
+                      d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C9.9 2.013 10.24 2 12.315 2z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div>
+              <h3 className="text-lg font-bold mb-6">Produits</h3>
+              <ul className="space-y-4">
+                <li>
+                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                    NovaSocial
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                    NovaDevStudio
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                    API NovaCore
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                    Intégrations
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-lg font-bold mb-6">Ressources</h3>
+              <ul className="space-y-4">
+                <li>
+                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                    Documentation
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                    Guides
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                    Blog
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                    Support
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-lg font-bold mb-6">Entreprise</h3>
+              <ul className="space-y-4">
+                <li>
+                  <a href="/a-propos" className="text-gray-400 hover:text-white transition-colors">
+                    À propos
+                  </a>
+                </li>
+                <li>
+                  <a href="/contact" className="text-gray-400 hover:text-white transition-colors">
+                    Contact
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                    Carrières
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                    Partenaires
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-gray-800 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <p className="text-gray-400 text-sm">© 2024 DL Solutions. Tous droits réservés.</p>
+              <div className="flex space-x-6 mt-4 md:mt-0">
+                <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
+                  Politique de confidentialité
+                </a>
+                <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
+                  Conditions d'utilisation
+                </a>
+                <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
+                  Mentions légales
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  )
+}

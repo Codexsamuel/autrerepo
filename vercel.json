@@ -2,9 +2,28 @@
   "domains": ["daveandlucesolutions.com", "www.daveandlucesolutions.com"],
   "redirects": [
     {
+      "source": "/",
+      "destination": "/",
+      "permanent": false
+    }
+  ],
+  "headers": [
+    {
       "source": "/(.*)",
-      "destination": "https://daveandlucesolutions.com/$1",
-      "permanent": true
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
     }
   ]
 }

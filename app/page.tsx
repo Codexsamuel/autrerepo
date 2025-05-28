@@ -80,21 +80,21 @@ export default function HomePage() {
       company: "TechStart SAS",
       content: "DL Solutions a transformé notre approche client avec leur CRM. +40% de conversions en 3 mois !",
       rating: 5,
-      avatar: "/placeholder.svg?height=60&width=60",
+      avatar: "/placeholder.svg?height=60&width=60&query=portrait%20of%20professional%20woman",
     },
     {
       name: "Pierre Martin",
       company: "Innovate Corp",
       content: "L'IA développée par l'équipe nous fait gagner 15h/semaine. Un investissement rentabilisé rapidement.",
       rating: 5,
-      avatar: "/placeholder.svg?height=60&width=60",
+      avatar: "/placeholder.svg?height=60&width=60&query=portrait%20of%20business%20man",
     },
     {
       name: "Sophie Laurent",
       company: "Creative Agency",
       content: "Designs exceptionnels et accompagnement professionnel. Je recommande vivement !",
       rating: 5,
-      avatar: "/placeholder.svg?height=60&width=60",
+      avatar: "/placeholder.svg?height=60&width=60&query=portrait%20of%20creative%20woman",
     },
   ]
 
@@ -117,7 +117,11 @@ export default function HomePage() {
           <div className="flex items-center justify-between h-20">
             <div className="flex items-center space-x-3">
               <div className="h-16 w-16 rounded-full overflow-hidden border-2 border-teal-200 flex items-center justify-center bg-white shadow-md">
-                <img src="/images/dl-logo.jpg" alt="DL Solutions Logo" className="h-14 w-14 object-contain" />
+                <img
+                  src="/placeholder.svg?height=56&width=56&query=DL%20logo"
+                  alt="DL Solutions Logo"
+                  className="h-14 w-14 object-contain"
+                />
               </div>
             </div>
 
@@ -213,9 +217,9 @@ export default function HomePage() {
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Video Background */}
         <div className="absolute inset-0 z-0">
-          <video id="hero-video" autoPlay muted loop playsInline className="w-full h-full object-cover">
-            <source src="/videos/background-novacore.mp4" type="video/mp4" />
-          </video>
+          <div className="w-full h-full bg-gradient-to-r from-teal-600 to-blue-600">
+            {/* Fallback background color gradient instead of video */}
+          </div>
           <div className="absolute inset-0 bg-black/40"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-teal-900/30 to-blue-900/30"></div>
         </div>
@@ -318,7 +322,7 @@ export default function HomePage() {
                 <CardContent className="p-8">
                   <div className="mb-6">
                     <div className="w-16 h-16 bg-gradient-to-r from-teal-600 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                      <service.icon className="h-8 w-8 text-white" />
+                      {service.icon && <service.icon className="h-8 w-8 text-white" />}
                     </div>
                     <h3 className="text-xl font-bold mb-3 text-gray-800">{service.title}</h3>
                     <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
@@ -349,7 +353,7 @@ export default function HomePage() {
 
       {/* CTA Section */}
       <section className="py-20 px-4 bg-gradient-to-r from-teal-600 via-blue-600 to-indigo-600 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fillRule='evenodd'%3E%3Cg fill='%23ffffff' fillOpacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+        <div className="absolute inset-0 opacity-20"></div>
         <div className="container mx-auto text-center relative z-10">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6">Prêt à révolutionner votre business ?</h2>
@@ -409,7 +413,7 @@ export default function HomePage() {
                   <p className="text-gray-600 mb-8 italic text-lg leading-relaxed">"{testimonial.content}"</p>
                   <div className="flex items-center">
                     <img
-                      src={testimonial.avatar || "/placeholder.svg"}
+                      src={testimonial.avatar || "/placeholder.svg?height=60&width=60"}
                       alt={testimonial.name}
                       className="w-14 h-14 rounded-full mr-4 border-2 border-teal-100"
                     />
@@ -441,7 +445,11 @@ export default function HomePage() {
             <div>
               <div className="mb-8">
                 <div className="h-20 w-20 rounded-full overflow-hidden border-2 border-gray-700 flex items-center justify-center bg-white">
-                  <img src="/images/dl-logo.jpg" alt="DL Solutions Logo" className="h-16 w-16 object-contain" />
+                  <img
+                    src="/placeholder.svg?height=64&width=64&query=DL%20logo"
+                    alt="DL Solutions Logo"
+                    className="h-16 w-16 object-contain"
+                  />
                 </div>
               </div>
               <p className="text-gray-400 mb-8 leading-relaxed">

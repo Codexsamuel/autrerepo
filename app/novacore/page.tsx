@@ -20,10 +20,11 @@ import {
   Star,
   TrendingUp,
   UserCheck,
+  ArrowLeft,
 } from "lucide-react"
 
 export default function NovaCoreHub() {
-  const [userRole] = useState("admin") // Simulé - sera géré par Clerk
+  const [userRole] = useState("admin")
 
   const services = [
     {
@@ -93,8 +94,13 @@ export default function NovaCoreHub() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             <div className="flex items-center space-x-4">
+              <Button variant="ghost" size="icon" asChild>
+                <a href="/">
+                  <ArrowLeft className="h-5 w-5" />
+                </a>
+              </Button>
               <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-indigo-200 flex items-center justify-center bg-white shadow-md">
-                <img src="/images/dl-logo.jpg" alt="DL Solutions Logo" className="h-10 w-10 object-contain" />
+                <img src="/images/dl-logo.png" alt="DL Solutions Logo" className="h-10 w-10 object-contain" />
               </div>
               <div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
@@ -141,6 +147,61 @@ export default function NovaCoreHub() {
       {/* Hero Section */}
       <section className="py-16 px-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-violet-600 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fillRule='evenodd'%3E%3Cg fill='%23ffffff' fillOpacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+        {/* Animated Robot Background */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="robot-walker">
+            <div className="robot-body">
+              {/* Robot Head */}
+              <div className="robot-head">
+                <div className="robot-eye left"></div>
+                <div className="robot-eye right"></div>
+                <div className="robot-antenna"></div>
+              </div>
+
+              {/* Robot Body */}
+              <div className="robot-torso">
+                <div className="robot-chest-light"></div>
+              </div>
+
+              {/* Robot Arms */}
+              <div className="robot-arm left"></div>
+              <div className="robot-arm right"></div>
+
+              {/* Robot Legs */}
+              <div className="robot-leg left"></div>
+              <div className="robot-leg right"></div>
+            </div>
+          </div>
+
+          {/* Cursor Following Dog */}
+          <div className="cursor-dog" id="cursor-dog">
+            <div className="dog-body">
+              {/* Dog Head */}
+              <div className="dog-head">
+                <div className="dog-ear left"></div>
+                <div className="dog-ear right"></div>
+                <div className="dog-eye left"></div>
+                <div className="dog-eye right"></div>
+                <div className="dog-nose"></div>
+              </div>
+
+              {/* Dog Body */}
+              <div className="dog-torso">
+                <div className="dog-spot spot1"></div>
+                <div className="dog-spot spot2"></div>
+              </div>
+
+              {/* Dog Tail */}
+              <div className="dog-tail"></div>
+
+              {/* Dog Legs */}
+              <div className="dog-leg front-left"></div>
+              <div className="dog-leg front-right"></div>
+              <div className="dog-leg back-left"></div>
+              <div className="dog-leg back-right"></div>
+            </div>
+          </div>
+        </div>
         <div className="container mx-auto relative z-10">
           <div className="text-center">
             <Badge className="mb-4 bg-white/20 text-white border-white/30">
@@ -370,7 +431,7 @@ export default function NovaCoreHub() {
             <div>
               <div className="flex items-center space-x-3 mb-4">
                 <div className="h-8 w-8 rounded-full overflow-hidden border border-indigo-400 flex items-center justify-center bg-white">
-                  <img src="/images/dl-logo.jpg" alt="DL Solutions Logo" className="h-6 w-6 object-contain" />
+                  <img src="/images/dl-logo.png" alt="DL Solutions Logo" className="h-6 w-6 object-contain" />
                 </div>
                 <span className="text-lg font-bold">NovaCore</span>
               </div>
@@ -459,6 +520,45 @@ export default function NovaCoreHub() {
           </div>
         </div>
       </footer>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+    document.addEventListener('DOMContentLoaded', function() {
+      const dog = document.getElementById('cursor-dog');
+      let mouseX = 0;
+      let mouseY = 0;
+      let dogX = 0;
+      let dogY = 0;
+      
+      document.addEventListener('mousemove', function(e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+      
+      function updateDogPosition() {
+        const speed = 0.05;
+        dogX += (mouseX - dogX) * speed;
+        dogY += (mouseY - dogY) * speed;
+        
+        if (dog) {
+          dog.style.left = dogX + 'px';
+          dog.style.top = dogY + 'px';
+          
+          // Flip dog based on movement direction
+          const deltaX = mouseX - dogX;
+          if (Math.abs(deltaX) > 5) {
+            dog.style.transform = deltaX > 0 ? 'scaleX(1)' : 'scaleX(-1)';
+          }
+        }
+        
+        requestAnimationFrame(updateDogPosition);
+      }
+      
+      updateDogPosition();
+    });
+  `,
+        }}
+      />
     </div>
   )
 }

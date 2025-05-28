@@ -1,21 +1,22 @@
 export const siteConfig = {
-  name: "Dave and Luce Solutions",
+  name: "DL Solutions SARL",
   shortName: "DL Solutions",
   description:
-    "Solutions CRM, Intelligence Artificielle, formations et créations visuelles pour propulser votre business vers le succès.",
+    "DL Solutions SARL - Solutions CRM, Intelligence Artificielle, formations et créations visuelles. Basé à Yaoundé, Cameroun.",
   url: "https://www.daveandlucesolutions.com",
   ogImage: "https://www.daveandlucesolutions.com/images/dl-logo.jpg",
   links: {
     twitter: "https://twitter.com/daveandlucesolutions",
     github: "https://github.com/daveandlucesolutions",
-    linkedin: "https://linkedin.com/company/daveandlucesolutions",
+    linkedin: "https://www.linkedin.com/company/107208022",
   },
   contact: {
-    email: "contact@daveandlucesolutions.com",
-    phone: "+33 1 23 45 67 89",
-    address: "Paris, France",
+    email: "sobam@daveandlucesolutions.com",
+    phone: "+237 694 341 586",
+    address: "2 rue École de Police, Yaoundé, Cameroun",
   },
   keywords: [
+    "DL Solutions SARL",
     "CRM",
     "Intelligence Artificielle",
     "IA",
@@ -23,8 +24,8 @@ export const siteConfig = {
     "création visuelle",
     "transformation digitale",
     "NovaCore",
-    "Dave and Luce Solutions",
-    "automatisation",
-    "marketing digital",
+    "Yaoundé",
+    "Cameroun",
+    "Samuel OBAM",
   ],
 }

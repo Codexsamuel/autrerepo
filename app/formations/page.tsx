@@ -26,7 +26,7 @@ export default function FormationsPage() {
       duration: "3 jours",
       level: "Débutant à Intermédiaire",
       participants: "8-12 personnes",
-      price: "450€",
+      price: "160$",
       modules: [
         "Techniques de prospection téléphonique",
         "Gestion des objections",
@@ -42,7 +42,7 @@ export default function FormationsPage() {
       duration: "2 jours",
       level: "Tous niveaux",
       participants: "6-10 personnes",
-      price: "350€",
+      price: "160$",
       modules: [
         "Gestion des réclamations",
         "Communication empathique",
@@ -58,7 +58,7 @@ export default function FormationsPage() {
       duration: "5 jours",
       level: "Intermédiaire",
       participants: "6-8 personnes",
-      price: "850€",
+      price: "160$",
       modules: [
         "Fondamentaux de l'IA",
         "Chatbots et automatisation",
@@ -74,7 +74,7 @@ export default function FormationsPage() {
       duration: "4 jours",
       level: "Débutant à Avancé",
       participants: "8-12 personnes",
-      price: "650€",
+      price: "160$",
       modules: ["Stratégie marketing digital", "Google Analytics & SEO", "Publicité en ligne", "Mesure de ROI"],
       slug: "marketing-digital",
     },
@@ -85,7 +85,7 @@ export default function FormationsPage() {
       duration: "3 jours",
       level: "Débutant",
       participants: "6-10 personnes",
-      price: "550€",
+      price: "160$",
       modules: [
         "Principes du design",
         "Outils de création (Canva, Figma)",
@@ -101,9 +101,37 @@ export default function FormationsPage() {
       duration: "2 jours",
       level: "Tous niveaux",
       participants: "8-15 personnes",
-      price: "400€",
+      price: "160$",
       modules: ["Stratégie CRM", "Segmentation client", "Automatisation marketing", "Fidélisation client"],
       slug: "crm-gestion-client",
+    },
+    {
+      icon: Smartphone,
+      title: "Réseaux Sociaux pour Entreprises",
+      description: "Maîtrisez les réseaux sociaux pour développer votre présence en ligne",
+      duration: "2 jours",
+      level: "Débutant",
+      participants: "8-12 personnes",
+      price: "100$",
+      modules: ["Stratégie réseaux sociaux", "Création de contenu", "Publicité sociale"],
+      slug: "reseaux-sociaux",
+    },
+    {
+      icon: BookOpen,
+      title: "E-commerce & Vente en Ligne",
+      description: "Lancez et optimisez votre boutique en ligne avec succès",
+      duration: "4 jours",
+      level: "Intermédiaire",
+      participants: "6-10 personnes",
+      price: "200$",
+      modules: [
+        "Création boutique en ligne",
+        "Optimisation conversions",
+        "Logistique e-commerce",
+        "Marketing e-commerce",
+        "Analytics e-commerce",
+      ],
+      slug: "ecommerce-vente",
     },
   ]
 
@@ -201,7 +229,7 @@ export default function FormationsPage() {
               <div className="text-gray-600">Taux de satisfaction</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl lg:text-4xl font-bold text-teal-600 mb-2">12</div>
+              <div className="text-3xl lg:text-4xl font-bold text-teal-600 mb-2">14</div>
               <div className="text-gray-600">Formations disponibles</div>
             </div>
             <div className="text-center">

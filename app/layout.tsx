@@ -3,11 +3,11 @@ import "@/app/globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 
 export const metadata = {
-  title: "DL Solutions - Transformation Digitale & IA | Dave and Luce Solutions",
+  title: "DL Solutions SARL - Transformation Digitale & IA | Yaoundé, Cameroun",
   description:
-    "Solutions CRM, Intelligence Artificielle, formations et créations visuelles pour propulser votre business vers le succès. Votre partenaire digital de confiance.",
+    "DL Solutions SARL - Solutions CRM, Intelligence Artificielle, formations et créations visuelles. Basé à Yaoundé, Cameroun. Votre partenaire digital de confiance.",
   keywords:
-    "CRM, Intelligence Artificielle, IA, formations, création visuelle, transformation digitale, NovaCore, Dave and Luce Solutions",
+    "DL Solutions SARL, CRM, Intelligence Artificielle, IA, formations, création visuelle, transformation digitale, NovaCore, Yaoundé, Cameroun, Samuel OBAM",
   authors: [{ name: "Dave and Luce Solutions" }],
   creator: "Dave and Luce Solutions",
   publisher: "Dave and Luce Solutions",
@@ -75,7 +75,7 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              name: "Dave and Luce Solutions",
+              name: "DL Solutions SARL",
               alternateName: "DL Solutions",
               url: "https://www.daveandlucesolutions.com",
               logo: "https://www.daveandlucesolutions.com/images/dl-logo.jpg",
@@ -83,14 +83,16 @@ export default function RootLayout({
                 "Solutions CRM, Intelligence Artificielle, formations et créations visuelles pour propulser votre business vers le succès.",
               address: {
                 "@type": "PostalAddress",
-                addressCountry: "FR",
-                addressLocality: "Paris",
+                streetAddress: "2 rue École de Police",
+                addressLocality: "Yaoundé",
+                addressRegion: "Centre",
+                addressCountry: "CM",
               },
               contactPoint: {
                 "@type": "ContactPoint",
-                telephone: "+33-1-23-45-67-89",
+                telephone: "+237-694-341-586",
                 contactType: "customer service",
-                email: "contact@daveandlucesolutions.com",
+                email: "sobam@daveandlucesolutions.com",
               },
               sameAs: ["https://www.daveandlucesolutions.com"],
             }),

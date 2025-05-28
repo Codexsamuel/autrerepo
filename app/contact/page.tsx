@@ -86,16 +86,16 @@ export default function ContactPage() {
     {
       icon: MapPin,
       title: "Adresse",
-      value: "2 Rues École de Police",
+      value: "2 rue École de Police",
       description: "Yaoundé, Cameroun",
-      link: "https://maps.google.com/?q=Yaoundé,Cameroun",
+      link: "https://maps.google.com/?q=2+rue+École+de+Police,Yaoundé,Cameroun",
     },
     {
       icon: Globe,
       title: "Site Web",
       value: "daveandlucesolutions.com",
       description: "Portfolio en ligne",
-      link: "https://daveandlucesolutions.com",
+      link: "https://www.daveandlucesolutions.com",
     },
   ]
 
@@ -197,7 +197,7 @@ export default function ContactPage() {
                     <h3 className="text-2xl font-bold text-gray-800 mb-4">Message envoyé !</h3>
                     <p className="text-gray-600">
                       Merci pour votre message. Nous vous répondrons sous 24h à l'adresse{" "}
-                      <span className="font-medium">{formData.email}</span>.
+                      <span className="font-medium">sobam@daveandlucesolutions.com</span>.
                     </p>
                   </div>
                 ) : (

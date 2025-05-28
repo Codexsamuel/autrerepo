@@ -1,6 +1,4 @@
 "use client"
-
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -16,7 +14,6 @@ import {
   MessageSquare,
   Calendar,
   BarChart3,
-  ImageIcon,
   Sparkles,
   Terminal,
   GitBranch,
@@ -28,8 +25,6 @@ import {
 } from "lucide-react"
 
 export default function NovaCoreHub() {
-  const [activeTab, setActiveTab] = useState("overview")
-
   const features = [
     {
       icon: Brain,
@@ -323,7 +318,7 @@ export default function NovaCoreHub() {
               <div className="relative">
                 <div className="absolute -top-10 -left-10 w-40 h-40 bg-indigo-400 rounded-full opacity-30 blur-3xl"></div>
                 <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-purple-400 rounded-full opacity-30 blur-3xl"></div>
-                <ImageIcon
+                <img
                   src="/placeholder.svg?height=400&width=600"
                   alt="NovaCore Dashboard"
                   className="rounded-xl shadow-2xl relative z-10"
@@ -337,7 +332,7 @@ export default function NovaCoreHub() {
       {/* Main Content with Tabs */}
       <section className="py-16 px-4">
         <div className="container mx-auto">
-          <Tabs defaultValue="overview" className="w-full" onValueChange={setActiveTab}>
+          <Tabs defaultValue="overview" className="w-full">
             {/* Tabs Navigation */}
             <div className="py-8 px-4 bg-white border-b border-gray-200 sticky top-20 z-40 -mx-4 -mt-16 mb-16">
               <div className="container mx-auto">
@@ -586,7 +581,7 @@ export default function NovaCoreHub() {
                 <div className="relative">
                   <div className="absolute -top-10 -left-10 w-40 h-40 bg-pink-100 rounded-full opacity-50 blur-3xl"></div>
                   <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-orange-100 rounded-full opacity-50 blur-3xl"></div>
-                  <ImageIcon
+                  <img
                     src="/placeholder.svg?height=400&width=600"
                     alt="NovaSocial Dashboard"
                     className="rounded-xl shadow-2xl relative z-10"
@@ -763,7 +758,7 @@ export default function NovaCoreHub() {
                 <div className="order-1 lg:order-2 relative">
                   <div className="absolute -top-10 -left-10 w-40 h-40 bg-cyan-100 rounded-full opacity-50 blur-3xl"></div>
                   <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-blue-100 rounded-full opacity-50 blur-3xl"></div>
-                  <ImageIcon
+                  <img
                     src="/placeholder.svg?height=400&width=600"
                     alt="NovaDevStudio Interface"
                     className="rounded-xl shadow-2xl relative z-10"

@@ -104,7 +104,9 @@ export default function TeleveteProspectionPage() {
               <Button variant="outline" className="border-teal-200 text-teal-700" asChild>
                 <a href="/contact">Questions ?</a>
               </Button>
-              <Button className="bg-gradient-to-r from-teal-600 to-blue-600">S'inscrire maintenant</Button>
+              <Button className="bg-gradient-to-r from-teal-600 to-blue-600" asChild>
+                <a href="/formations/checkout?formation=televente-prospection&price=160">S'inscrire maintenant</a>
+              </Button>
             </div>
           </div>
         </div>
@@ -159,8 +161,8 @@ export default function TeleveteProspectionPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-gradient-to-r from-teal-600 to-blue-600">
-                  S'inscrire maintenant
+                <Button size="lg" className="bg-gradient-to-r from-teal-600 to-blue-600" asChild>
+                  <a href="/formations/checkout?formation=televente-prospection&price=160">S'inscrire maintenant</a>
                 </Button>
                 <Button size="lg" variant="outline" className="border-teal-200 text-teal-700">
                   Télécharger le programme
@@ -430,8 +432,10 @@ export default function TeleveteProspectionPage() {
                           <option>12-14 Avril 2024 (Distanciel)</option>
                         </select>
                       </div>
-                      <Button className="w-full bg-gradient-to-r from-teal-600 to-blue-600">
-                        Confirmer l'inscription
+                      <Button className="w-full bg-gradient-to-r from-teal-600 to-blue-600" asChild>
+                        <a href="/formations/checkout?formation=televente-prospection&price=160">
+                          Confirmer l'inscription
+                        </a>
                       </Button>
                     </CardContent>
                   </Card>

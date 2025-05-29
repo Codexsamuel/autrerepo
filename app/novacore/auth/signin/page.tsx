@@ -36,7 +36,7 @@ export default function NovaCorSignIn() {
     setTimeout(() => {
       setIsLoading(false)
       // Redirection vers NovaCore après connexion
-      window.location.href = "/novacore"
+      window.location.href = "/novacore/dashboard"
     }, 2000)
   }
 

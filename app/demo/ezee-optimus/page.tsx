@@ -34,6 +34,11 @@ import {
   Activity,
   Lock,
   Zap,
+  Plus,
+  ArrowRight,
+  ArrowLeftIcon,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react"
 
 interface AIAlert {
@@ -519,6 +524,346 @@ export default function NovaHospitalityERP() {
                   </CardContent>
                 </Card>
               </div>
+            </div>
+          )}
+
+          {activeTab === "reservations" && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold mb-2">Calendrier de Réservations</h2>
+                  <p className="text-muted-foreground">Gestion avancée des réservations avec vue en bande</p>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm">
+                    <Calendar className="h-4 w-4 mr-2" />
+                    Aujourd'hui
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    Vue Semaine
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    Vue Mois
+                  </Button>
+                  <Button size="sm">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Nouvelle Réservation
+                  </Button>
+                </div>
+              </div>
+
+              {/* Filtres et Statistiques */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-muted-foreground">Arrivées Aujourd'hui</p>
+                        <p className="text-2xl font-bold text-blue-600">12</p>
+                      </div>
+                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                        <ArrowRight className="h-5 w-5 text-blue-600" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-muted-foreground">Départs Aujourd'hui</p>
+                        <p className="text-2xl font-bold text-orange-600">8</p>
+                      </div>
+                      <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                        <ArrowLeftIcon className="h-5 w-5 text-orange-600" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-muted-foreground">Taux d'Occupation</p>
+                        <p className="text-2xl font-bold text-green-600">87%</p>
+                      </div>
+                      <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <TrendingUp className="h-5 w-5 text-green-600" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-muted-foreground">Revenus Prévus</p>
+                        <p className="text-2xl font-bold text-purple-600">2.4M FCFA</p>
+                      </div>
+                      <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                        <DollarSign className="h-5 w-5 text-purple-600" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Filtres Avancés */}
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex flex-wrap items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <label className="text-sm font-medium">Type de chambre:</label>
+                      <select className="px-3 py-1 border rounded-md text-sm">
+                        <option>Toutes</option>
+                        <option>Standard</option>
+                        <option>Deluxe</option>
+                        <option>Suite</option>
+                      </select>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <label className="text-sm font-medium">Statut:</label>
+                      <select className="px-3 py-1 border rounded-md text-sm">
+                        <option>Tous</option>
+                        <option>Confirmé</option>
+                        <option>En attente</option>
+                        <option>Annulé</option>
+                      </select>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <label className="text-sm font-medium">Source:</label>
+                      <select className="px-3 py-1 border rounded-md text-sm">
+                        <option>Toutes</option>
+                        <option>Direct</option>
+                        <option>Booking.com</option>
+                        <option>Expedia</option>
+                        <option>Agence</option>
+                      </select>
+                    </div>
+                    <Button variant="outline" size="sm">
+                      <Search className="h-4 w-4 mr-2" />
+                      Rechercher
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Légende des Couleurs */}
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex flex-wrap items-center gap-6">
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 bg-green-500 rounded"></div>
+                      <span className="text-sm">Confirmé</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 bg-yellow-500 rounded"></div>
+                      <span className="text-sm">En attente</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 bg-blue-500 rounded"></div>
+                      <span className="text-sm">Check-in</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 bg-orange-500 rounded"></div>
+                      <span className="text-sm">Check-out</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 bg-red-500 rounded"></div>
+                      <span className="text-sm">Maintenance</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 bg-purple-500 rounded"></div>
+                      <span className="text-sm">Groupe</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Calendrier Principal - Vue en Bande (Tape Chart) */}
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle>Vue en Bande - Janvier 2024</CardTitle>
+                    <div className="flex items-center gap-2">
+                      <Button variant="outline" size="sm">
+                        <ChevronLeft className="h-4 w-4" />
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        <ChevronRight className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="overflow-x-auto">
+                    {/* En-tête du calendrier */}
+                    <div className="flex border-b bg-gray-50">
+                      <div className="w-32 p-3 border-r font-medium text-sm">Chambres</div>
+                      {Array.from({ length: 14 }, (_, i) => {
+                        const date = new Date(2024, 0, 15 + i);
+                        const isToday = i === 0;
+                        return (
+                          <div
+                            key={i}
+                            className={`w-24 p-3 border-r text-center text-xs ${
+                              isToday ? 'bg-blue-100 text-blue-700 font-bold' : ''
+                            }`}
+                          >
+                            <div className="font-medium">
+                              {date.toLocaleDateString('fr-FR', { weekday: 'short' })}
+                            </div>
+                            <div className="text-lg font-bold">{date.getDate()}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Lignes des chambres */}
+                    <div className="divide-y">
+                      {[
+                        { room: '101', type: 'Standard', price: '85,000' },
+                        { room: '102', type: 'Standard', price: '85,000' },
+                        { room: '103', type: 'Standard', price: '85,000' },
+                        { room: '201', type: 'Deluxe', price: '150,000' },
+                        { room: '202', type: 'Deluxe', price: '150,000' },
+                        { room: '203', type: 'Deluxe', price: '150,000' },
+                        { room: '301', type: 'Suite', price: '250,000' },
+                        { room: '302', type: 'Suite', price: '250,000' },
+                      ].map((room, roomIndex) => (
+                        <div key={room.room} className="flex hover:bg-gray-50">
+                          <div className="w-32 p-3 border-r">
+                            <div className="font-medium text-sm">{room.room}</div>
+                            <div className="text-xs text-muted-foreground">{room.type}</div>
+                            <div className="text-xs text-green-600">{room.price} FCFA</div>
+                          </div>
+                          {Array.from({ length: 14 }, (_, dayIndex) => {
+                            // Simulation de réservations
+                            const hasReservation = Math.random() > 0.4;
+                            const reservationLength = Math.floor(Math.random() * 4) + 1;
+                            const reservationStart = dayIndex;
+                            const reservationEnd = Math.min(dayIndex + reservationLength, 13);
+                            
+                            const reservationTypes = [
+                              { color: 'bg-green-500', guest: 'M. Dupont', status: 'Confirmé' },
+                              { color: 'bg-yellow-500', guest: 'Mme Martin', status: 'En attente' },
+                              { color: 'bg-blue-500', guest: 'M. Bernard', status: 'Check-in' },
+                              { color: 'bg-purple-500', guest: 'Groupe ABC', status: 'Groupe' },
+                            ];
+                            
+                            const reservation = reservationTypes[Math.floor(Math.random() * reservationTypes.length)];
+                            
+                            return (
+                              <div
+                                key={dayIndex}
+                                className="w-24 h-16 border-r border-b relative group cursor-pointer"
+                              >
+                                {hasReservation && dayIndex % 3 === 0 && (
+                                  <div
+                                    className={`absolute inset-1 ${reservation.color} rounded text-white text-xs p-1 shadow-sm hover:shadow-md transition-shadow`}
+                                    style={{
+                                      width: `${(reservationEnd - reservationStart) * 96 - 8}px`,
+                                      zIndex: 10,
+                                    }}
+                                  >
+                                    <div className="font-medium truncate">{reservation.guest}</div>
+                                    <div className="text-xs opacity-90">{reservation.status}</div>
+                                  </div>
+                                )}
+                                
+                                {/* Tooltip au survol */}
+                                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-black bg-opacity-10 transition-opacity"></div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Actions Rapides */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Actions Rapides</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <Button className="w-full justify-start" variant="outline">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Nouvelle Réservation
+                    </Button>
+                    <Button className="w-full justify-start" variant="outline">
+                      <Users className="h-4 w-4 mr-2" />
+                      Réservation Groupe
+                    </Button>
+                    <Button className="w-full justify-start" variant="outline">
+                      <Calendar className="h-4 w-4 mr-2" />
+                      Blocage de Chambres
+                    </Button>
+                    <Button className="w-full justify-start" variant="outline">
+                      <DollarSign className="h-4 w-4 mr-2" />
+                      Ajustement Tarifs
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Arrivées Aujourd'hui</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {[
+                      { guest: 'Marie Kouam', room: '205', time: '14:00', status: 'En attente' },
+                      { guest: 'Jean Mbarga', room: '102', time: '15:30', status: 'Confirmé' },
+                      { guest: 'Amina Diallo', room: '301', time: '16:00', status: 'VIP' },
+                    ].map((arrival, idx) => (
+                      <div key={idx} className="flex items-center justify-between p-2 border rounded">
+                        <div>
+                          <p className="font-medium text-sm">{arrival.guest}</p>
+                          <p className="text-xs text-muted-foreground">Ch. {arrival.room} - {arrival.time}</p>
+                        </div>
+                        <Badge variant={arrival.status === 'VIP' ? 'default' : 'secondary'} className="text-xs">
+                          {arrival.status}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Départs Aujourd'hui</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {[
+                      { guest: 'Paul Essomba', room: '101', time: '11:00', status: 'Facturé' },
+                      { guest: 'Grace Biya', room: '203', time: '12:00', status: 'En cours' },
+                      { guest: 'Alice Nkomo', room: '302', time: '10:30', status: 'Terminé' },
+                    ].map((departure, idx) => (
+                      <div key={idx} className="flex items-center justify-between p-2 border rounded">
+                        <div>
+                          <p className="font-medium text-sm">{departure.guest}</p>
+                          <p className="text-xs text-muted-foreground">Ch. {departure.room} - {departure.time}</p>
+                        </div>
+                        <Badge 
+                          variant={departure.status === 'Terminé' ? 'default' : 'secondary'} 
+                          className="text-xs"
+                        >
+                          {departure.status}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           )}
 

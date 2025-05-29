@@ -281,28 +281,501 @@ export default function DLStyleMarketplace() {
           </div>
 
           {/* Navigation */}
+          {/* Navigation avec menus déroulants */}
           <nav className="py-4 border-t">
             <div className="flex items-center space-x-8">
-              <Button variant="ghost" className="flex items-center">
-                <Menu className="h-4 w-4 mr-2" />
-                Toutes les catégories
-                <ChevronDown className="h-4 w-4 ml-2" />
-              </Button>
-              <a href="#" className="text-gray-700 hover:text-indigo-600 font-medium">
-                Deals du jour
-              </a>
-              <a href="#" className="text-gray-700 hover:text-indigo-600 font-medium">
-                Ventes flash
-              </a>
-              <a href="#" className="text-gray-700 hover:text-indigo-600 font-medium">
-                Nouveautés
-              </a>
-              <a href="#" className="text-gray-700 hover:text-indigo-600 font-medium">
-                Meilleures ventes
-              </a>
-              <a href="#" className="text-gray-700 hover:text-indigo-600 font-medium">
-                Outlet
-              </a>
+              {/* Menu Toutes les catégories */}
+              <div className="relative group">
+                <Button variant="ghost" className="flex items-center">
+                  <Menu className="h-4 w-4 mr-2" />
+                  Toutes les catégories
+                  <ChevronDown className="h-4 w-4 ml-2" />
+                </Button>
+
+                {/* Mega Menu */}
+                <div className="absolute top-full left-0 w-screen max-w-6xl bg-white shadow-2xl border rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                  <div className="grid grid-cols-4 gap-8 p-8">
+                    {/* Mode & Vêtements */}
+                    <div>
+                      <h3 className="font-bold text-lg mb-4 text-indigo-600">👕 Mode & Vêtements</h3>
+                      <div className="space-y-3">
+                        <div>
+                          <h4 className="font-semibold mb-2">👨 Homme</h4>
+                          <ul className="space-y-1 text-sm text-gray-600">
+                            <li>
+                              <a href="/dl-style/categories/mode/homme/t-shirts" className="hover:text-indigo-600">
+                                T-shirts & Polos
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/mode/homme/pantalons" className="hover:text-indigo-600">
+                                Pantalons & Jeans
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/mode/homme/vestes" className="hover:text-indigo-600">
+                                Vestes & Manteaux
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/mode/homme/costumes" className="hover:text-indigo-600">
+                                Costumes
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                href="/dl-style/categories/mode/homme/sous-vetements"
+                                className="hover:text-indigo-600"
+                              >
+                                Sous-vêtements
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold mb-2">👩 Femme</h4>
+                          <ul className="space-y-1 text-sm text-gray-600">
+                            <li>
+                              <a href="/dl-style/categories/mode/femme/robes" className="hover:text-indigo-600">
+                                Robes
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/mode/femme/tops" className="hover:text-indigo-600">
+                                Tops & Blouses
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/mode/femme/pantalons" className="hover:text-indigo-600">
+                                Pantalons & Jeans
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/mode/femme/jupes" className="hover:text-indigo-600">
+                                Jupes
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/mode/femme/lingerie" className="hover:text-indigo-600">
+                                Lingerie
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold mb-2">👶 Enfant</h4>
+                          <ul className="space-y-1 text-sm text-gray-600">
+                            <li>
+                              <a href="/dl-style/categories/mode/enfant/bebe" className="hover:text-indigo-600">
+                                Bébé (0-2 ans)
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/mode/enfant/fille" className="hover:text-indigo-600">
+                                Fille (3-16 ans)
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/mode/enfant/garcon" className="hover:text-indigo-600">
+                                Garçon (3-16 ans)
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/mode/enfant/ado" className="hover:text-indigo-600">
+                                Ado (13-18 ans)
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Chaussures & Accessoires */}
+                    <div>
+                      <h3 className="font-bold text-lg mb-4 text-indigo-600">👟 Chaussures & Accessoires</h3>
+                      <div className="space-y-3">
+                        <div>
+                          <h4 className="font-semibold mb-2">👟 Chaussures</h4>
+                          <ul className="space-y-1 text-sm text-gray-600">
+                            <li>
+                              <a href="/dl-style/categories/chaussures/sneakers" className="hover:text-indigo-600">
+                                Sneakers
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/chaussures/sport" className="hover:text-indigo-600">
+                                Chaussures de sport
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/chaussures/ville" className="hover:text-indigo-600">
+                                Chaussures de ville
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/chaussures/bottes" className="hover:text-indigo-600">
+                                Bottes & Bottines
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/chaussures/sandales" className="hover:text-indigo-600">
+                                Sandales
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold mb-2">👜 Sacs & Maroquinerie</h4>
+                          <ul className="space-y-1 text-sm text-gray-600">
+                            <li>
+                              <a href="/dl-style/categories/accessoires/sacs-main" className="hover:text-indigo-600">
+                                Sacs à main
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/accessoires/sacs-dos" className="hover:text-indigo-600">
+                                Sacs à dos
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                href="/dl-style/categories/accessoires/portefeuilles"
+                                className="hover:text-indigo-600"
+                              >
+                                Portefeuilles
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/accessoires/valises" className="hover:text-indigo-600">
+                                Valises
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold mb-2">💍 Bijoux & Montres</h4>
+                          <ul className="space-y-1 text-sm text-gray-600">
+                            <li>
+                              <a href="/dl-style/categories/accessoires/montres" className="hover:text-indigo-600">
+                                Montres
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/accessoires/bijoux" className="hover:text-indigo-600">
+                                Bijoux
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/accessoires/lunettes" className="hover:text-indigo-600">
+                                Lunettes
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* High-Tech */}
+                    <div>
+                      <h3 className="font-bold text-lg mb-4 text-indigo-600">📱 High-Tech</h3>
+                      <div className="space-y-3">
+                        <div>
+                          <h4 className="font-semibold mb-2">📱 Smartphones & Tablettes</h4>
+                          <ul className="space-y-1 text-sm text-gray-600">
+                            <li>
+                              <a href="/dl-style/categories/high-tech/smartphones" className="hover:text-indigo-600">
+                                Smartphones
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/high-tech/tablettes" className="hover:text-indigo-600">
+                                Tablettes
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                href="/dl-style/categories/high-tech/accessoires-mobile"
+                                className="hover:text-indigo-600"
+                              >
+                                Accessoires mobile
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold mb-2">💻 Informatique</h4>
+                          <ul className="space-y-1 text-sm text-gray-600">
+                            <li>
+                              <a href="/dl-style/categories/high-tech/ordinateurs" className="hover:text-indigo-600">
+                                Ordinateurs
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/high-tech/gaming" className="hover:text-indigo-600">
+                                Gaming
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/high-tech/peripheriques" className="hover:text-indigo-600">
+                                Périphériques
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold mb-2">🎧 Audio & Vidéo</h4>
+                          <ul className="space-y-1 text-sm text-gray-600">
+                            <li>
+                              <a href="/dl-style/categories/high-tech/casques" className="hover:text-indigo-600">
+                                Casques & Écouteurs
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/high-tech/enceintes" className="hover:text-indigo-600">
+                                Enceintes
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/high-tech/tv" className="hover:text-indigo-600">
+                                TV & Projecteurs
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Maison & Cuisine */}
+                    <div>
+                      <h3 className="font-bold text-lg mb-4 text-indigo-600">🏠 Maison & Cuisine</h3>
+                      <div className="space-y-3">
+                        <div>
+                          <h4 className="font-semibold mb-2">🍳 Cuisine & Électroménager</h4>
+                          <ul className="space-y-1 text-sm text-gray-600">
+                            <li>
+                              <a href="/dl-style/categories/maison/electromenager" className="hover:text-indigo-600">
+                                Gros électroménager
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                href="/dl-style/categories/maison/petit-electromenager"
+                                className="hover:text-indigo-600"
+                              >
+                                Petit électroménager
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/maison/ustensiles" className="hover:text-indigo-600">
+                                Ustensiles de cuisine
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/maison/vaisselle" className="hover:text-indigo-600">
+                                Vaisselle
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold mb-2">🛏️ Mobilier & Déco</h4>
+                          <ul className="space-y-1 text-sm text-gray-600">
+                            <li>
+                              <a href="/dl-style/categories/maison/mobilier" className="hover:text-indigo-600">
+                                Mobilier
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/maison/decoration" className="hover:text-indigo-600">
+                                Décoration
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/maison/luminaires" className="hover:text-indigo-600">
+                                Luminaires
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/maison/textile" className="hover:text-indigo-600">
+                                Textile maison
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold mb-2">🌱 Jardin & Extérieur</h4>
+                          <ul className="space-y-1 text-sm text-gray-600">
+                            <li>
+                              <a href="/dl-style/categories/maison/jardinage" className="hover:text-indigo-600">
+                                Jardinage
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/maison/barbecue" className="hover:text-indigo-600">
+                                Barbecue & Plancha
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/dl-style/categories/maison/piscine" className="hover:text-indigo-600">
+                                Piscine & Spa
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bannière promotionnelle en bas */}
+                  <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 rounded-b-lg">
+                    <div className="flex items-center justify-between text-white">
+                      <div>
+                        <h4 className="font-bold">🔥 Offres spéciales</h4>
+                        <p className="text-sm">Jusqu'à -70% sur une sélection</p>
+                      </div>
+                      <Button className="bg-white text-indigo-600 hover:bg-gray-100">Voir les offres</Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Autres liens de navigation avec menus */}
+              <div className="relative group">
+                <a href="/dl-style/deals" className="text-gray-700 hover:text-indigo-600 font-medium flex items-center">
+                  Deals du jour
+                  <ChevronDown className="h-3 w-3 ml-1" />
+                </a>
+                <div className="absolute top-full left-0 bg-white shadow-lg border rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 w-64">
+                  <div className="p-4 space-y-2">
+                    <a href="/dl-style/deals/flash" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      ⚡ Ventes flash
+                    </a>
+                    <a href="/dl-style/deals/daily" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      🔥 Deal du jour
+                    </a>
+                    <a href="/dl-style/deals/weekend" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      🎯 Offres weekend
+                    </a>
+                    <a href="/dl-style/deals/clearance" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      💥 Déstockage
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative group">
+                <a
+                  href="/dl-style/ventes-flash"
+                  className="text-gray-700 hover:text-indigo-600 font-medium flex items-center"
+                >
+                  Ventes flash
+                  <ChevronDown className="h-3 w-3 ml-1" />
+                </a>
+                <div className="absolute top-full left-0 bg-white shadow-lg border rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 w-64">
+                  <div className="p-4 space-y-2">
+                    <a href="/dl-style/ventes-flash/high-tech" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      📱 High-Tech
+                    </a>
+                    <a href="/dl-style/ventes-flash/mode" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      👕 Mode
+                    </a>
+                    <a href="/dl-style/ventes-flash/maison" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      🏠 Maison
+                    </a>
+                    <a href="/dl-style/ventes-flash/sport" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      ⚽ Sport
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative group">
+                <a
+                  href="/dl-style/nouveautes"
+                  className="text-gray-700 hover:text-indigo-600 font-medium flex items-center"
+                >
+                  Nouveautés
+                  <ChevronDown className="h-3 w-3 ml-1" />
+                </a>
+                <div className="absolute top-full left-0 bg-white shadow-lg border rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 w-64">
+                  <div className="p-4 space-y-2">
+                    <a href="/dl-style/nouveautes/cette-semaine" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      🆕 Cette semaine
+                    </a>
+                    <a href="/dl-style/nouveautes/ce-mois" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      📅 Ce mois-ci
+                    </a>
+                    <a href="/dl-style/nouveautes/tendances" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      🔥 Tendances
+                    </a>
+                    <a href="/dl-style/nouveautes/exclusivites" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      ⭐ Exclusivités
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative group">
+                <a
+                  href="/dl-style/meilleures-ventes"
+                  className="text-gray-700 hover:text-indigo-600 font-medium flex items-center"
+                >
+                  Meilleures ventes
+                  <ChevronDown className="h-3 w-3 ml-1" />
+                </a>
+                <div className="absolute top-full left-0 bg-white shadow-lg border rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 w-64">
+                  <div className="p-4 space-y-2">
+                    <a href="/dl-style/meilleures-ventes/top-100" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      🏆 Top 100
+                    </a>
+                    <a
+                      href="/dl-style/meilleures-ventes/top-semaine"
+                      className="block px-3 py-2 hover:bg-gray-100 rounded"
+                    >
+                      📈 Top semaine
+                    </a>
+                    <a
+                      href="/dl-style/meilleures-ventes/coups-coeur"
+                      className="block px-3 py-2 hover:bg-gray-100 rounded"
+                    >
+                      💝 Coups de cœur
+                    </a>
+                    <a
+                      href="/dl-style/meilleures-ventes/recommandes"
+                      className="block px-3 py-2 hover:bg-gray-100 rounded"
+                    >
+                      ⭐ Recommandés
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative group">
+                <a
+                  href="/dl-style/outlet"
+                  className="text-gray-700 hover:text-indigo-600 font-medium flex items-center"
+                >
+                  Outlet
+                  <ChevronDown className="h-3 w-3 ml-1" />
+                </a>
+                <div className="absolute top-full left-0 bg-white shadow-lg border rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 w-64">
+                  <div className="p-4 space-y-2">
+                    <a href="/dl-style/outlet/fin-serie" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      📦 Fin de série
+                    </a>
+                    <a href="/dl-style/outlet/retours" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      🔄 Retours clients
+                    </a>
+                    <a href="/dl-style/outlet/destockage" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      💥 Déstockage
+                    </a>
+                    <a href="/dl-style/outlet/occasions" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      ♻️ Occasions
+                    </a>
+                  </div>
+                </div>
+              </div>
+
               <Badge className="bg-red-500 text-white animate-pulse">
                 <Zap className="h-3 w-3 mr-1" />
                 Soldes -70%

@@ -163,8 +163,8 @@ export default function EzeeOptimusDemo() {
     availableRooms: 11,
     outOfOrderRooms: 2,
     occupancyRate: 71.1,
-    adr: 75000, // Average Daily Rate
-    revpar: 53325, // Revenue Per Available Room
+    adr: 75000,
+    revpar: 53325,
     totalRevenue: 2400000,
     checkInsToday: 8,
     checkOutsToday: 6,
@@ -647,10 +647,30 @@ export default function EzeeOptimusDemo() {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-muted-foreground">Taux d'occupation</p>
-                        <p className="text-2xl font-bold">{hotelStats.occupancyRate}%</p>
-                        <p className="text-xs text-green-600">
-                          {hotelStats.occupiedRooms}/{hotelStats.totalRooms} chambres
-                        </p>
+                        {/* For percentage calculations, add validation: */}
+                        {/* \`\`\`typescript */}
+                        {/* const occupancyPercentage = hotelStats.totalRooms > 0  */}
+                        {/*   ? ((hotelStats.occupiedRooms / hotelStats.totalRooms) * 100).toFixed(1) */}
+                        {/*   : "0.0" */}
+                        {/* \`\`\` */}
+                        {/* <p className="text-2xl font-bold">{hotelStats.occupancyRate}%</p> */}
+                        {/* <p className="text-xs text-green-600"> */}
+                        {/*   {hotelStats.occupiedRooms}/{hotelStats.totalRooms} chambres */}
+                        {/* </p> */}
+                        {(() => {
+                          const occupancyPercentage =
+                            hotelStats.totalRooms > 0
+                              ? ((hotelStats.occupiedRooms / hotelStats.totalRooms) * 100).toFixed(1)
+                              : "0.0"
+                          return (
+                            <>
+                              <p className="text-2xl font-bold">{occupancyPercentage}%</p>
+                              <p className="text-xs text-green-600">
+                                {hotelStats.occupiedRooms}/{hotelStats.totalRooms} chambres
+                              </p>
+                            </>
+                          )
+                        })()}
                       </div>
                       <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
                         <Bed className="h-6 w-6 text-blue-600" />
@@ -664,9 +684,22 @@ export default function EzeeOptimusDemo() {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-muted-foreground">Revenus du jour</p>
+                        {/* In any place where we display numeric values, add proper formatting: */}
+                        {/* \`\`\`typescript */}
+                        {/* <p className="text-2xl font-bold"> */}
+                        {/*   {hasPermission("finance") || hasPermission("all") */}
+                        {/*     ? `${Math.round((hotelStats.totalRevenue || 0) / 1000)}K FCFA` */}
+                        {/*     : "***K FCFA"} */}
+                        {/* </p> */}
+                        {/* \`\`\` */}
+                        {/* <p className="text-2xl font-bold"> */}
+                        {/*   {hasPermission("finance") || hasPermission("all") */}
+                        {/*     ? `${(hotelStats.totalRevenue / 1000).toFixed(0)}K FCFA` */}
+                        {/*     : "***K FCFA"} */}
+                        {/* </p> */}
                         <p className="text-2xl font-bold">
                           {hasPermission("finance") || hasPermission("all")
-                            ? `${(hotelStats.totalRevenue / 1000).toFixed(0)}K FCFA`
+                            ? `${Math.round((hotelStats.totalRevenue || 0) / 1000)}K FCFA`
                             : "***K FCFA"}
                         </p>
                         <p className="text-xs text-green-600">+18% vs hier</p>
@@ -683,9 +716,22 @@ export default function EzeeOptimusDemo() {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-muted-foreground">ADR (Tarif moyen)</p>
+                        {/* In any place where we display numeric values, add proper formatting: */}
+                        {/* \`\`\`typescript */}
+                        {/* <p className="text-2xl font-bold"> */}
+                        {/*   {hasPermission("finance") || hasPermission("all") */}
+                        {/*     ? `${Math.round((hotelStats.adr || 0) / 1000)}K FCFA` */}
+                        {/*     : "***K FCFA"} */}
+                        {/* </p> */}
+                        {/* \`\`\` */}
+                        {/* <p className="text-2xl font-bold"> */}
+                        {/*   {hasPermission("finance") || hasPermission("all") */}
+                        {/*     ? `${(hotelStats.adr / 1000).toFixed(0)}K FCFA` */}
+                        {/*     : "***K FCFA"} */}
+                        {/* </p> */}
                         <p className="text-2xl font-bold">
                           {hasPermission("finance") || hasPermission("all")
-                            ? `${(hotelStats.adr / 1000).toFixed(0)}K FCFA`
+                            ? `${Math.round((hotelStats.adr || 0) / 1000)}K FCFA`
                             : "***K FCFA"}
                         </p>
                         <p className="text-xs text-blue-600">
@@ -788,6 +834,14 @@ export default function EzeeOptimusDemo() {
                             </div>
                           </div>
                           <div className="text-right">
+                            {/* In any place where we display numeric values, add proper formatting: */}
+                            {/* \`\`\`typescript */}
+                            {/* <p className="font-medium"> */}
+                            {/*   {hasPermission("finance") || hasPermission("all") */}
+                            {/*     ? `${Math.round((reservation.amount || 0) / 1000)}K FCFA` */}
+                            {/*     : "***K FCFA"} */}
+                            {/* </p> */}
+                            {/* \`\`\` */}
                             <p className="font-medium">
                               {hasPermission("finance") || hasPermission("all")
                                 ? `${(reservation.amount / 1000).toFixed(0)}K FCFA`

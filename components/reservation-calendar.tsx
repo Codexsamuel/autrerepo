@@ -761,8 +761,13 @@ function NewReservationForm({
     if (selectedRoom && formData.checkIn && formData.checkOut) {
       const checkIn = new Date(formData.checkIn)
       const checkOut = new Date(formData.checkOut)
-      const nights = Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24))
-      setFormData((prev) => ({ ...prev, totalAmount: nights * selectedRoom.basePrice }))
+      const timeDiff = checkOut.getTime() - checkIn.getTime()
+      const nights = Math.max(1, Math.ceil(timeDiff / (1000 * 60 * 60 * 24)))
+      const calculatedAmount = nights * selectedRoom.basePrice
+
+      if (!isNaN(calculatedAmount) && calculatedAmount > 0) {
+        setFormData((prev) => ({ ...prev, totalAmount: calculatedAmount }))
+      }
     }
   }, [formData.checkIn, formData.checkOut, formData.roomId, selectedRoom])
 
@@ -819,7 +824,10 @@ function NewReservationForm({
           <Label htmlFor="guests">Nombre de personnes</Label>
           <Select
             value={formData.guests.toString()}
-            onValueChange={(value) => setFormData((prev) => ({ ...prev, guests: Number.parseInt(value) }))}
+            onValueChange={(value) => {
+              const numValue = Number.parseInt(value) || 1
+              setFormData((prev) => ({ ...prev, guests: numValue }))
+            }}
           >
             <SelectTrigger>
               <SelectValue />
@@ -904,8 +912,11 @@ function NewReservationForm({
             <Input
               id="totalAmount"
               type="number"
-              value={formData.totalAmount}
-              onChange={(e) => setFormData((prev) => ({ ...prev, totalAmount: Number.parseInt(e.target.value) }))}
+              value={formData.totalAmount || 0}
+              onChange={(e) => {
+                const value = Number.parseInt(e.target.value) || 0
+                setFormData((prev) => ({ ...prev, totalAmount: value }))
+              }}
               readOnly={!userPermissions.canManageRates}
             />
           </div>

@@ -362,6 +362,12 @@ export default function ReservationDetailPage({ params }: { params: { id: string
     return "text-red-600"
   }
 
+  const getProgressPercentage = () => {
+    const total = reservation.financial.totalAmount || 1
+    const paid = reservation.financial.paidAmount || 0
+    return Math.min(100, Math.max(0, (paid / total) * 100))
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50">
       {/* Header */}
@@ -414,7 +420,6 @@ export default function ReservationDetailPage({ params }: { params: { id: string
           </div>
         </div>
       </div>
-
       <div className="container mx-auto px-4 py-8">
         {/* Alertes en temps réel */}
         {realTimeUpdates.length > 0 && (
@@ -501,12 +506,16 @@ export default function ReservationDetailPage({ params }: { params: { id: string
                     <div className="grid grid-cols-3 gap-4">
                       <div>
                         <p className="text-sm font-medium text-muted-foreground">Check-in</p>
-                        <p className="font-semibold">{new Date(reservation.stay.checkIn).toLocaleDateString("fr-FR")}</p>
+                        <p className="font-semibold">
+                          {new Date(reservation.stay.checkIn).toLocaleDateString("fr-FR")}
+                        </p>
                         <p className="text-sm text-muted-foreground">15:00</p>
                       </div>
                       <div>
                         <p className="text-sm font-medium text-muted-foreground">Check-out</p>
-                        <p className="font-semibold">{new Date(reservation.stay.checkOut).toLocaleDateString("fr-FR")}</p>
+                        <p className="font-semibold">
+                          {new Date(reservation.stay.checkOut).toLocaleDateString("fr-FR")}
+                        </p>
                         <p className="text-sm text-muted-foreground">12:00</p>
                       </div>
                       <div>
@@ -617,25 +626,27 @@ export default function ReservationDetailPage({ params }: { params: { id: string
                     <div className="space-y-3">
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Total:</span>
-                        <span className="font-semibold">{reservation.financial.totalAmount.toLocaleString()} FCFA</span>
+                        <span className="font-semibold">
+                          {(reservation.financial.totalAmount || 0).toLocaleString()} FCFA
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Payé:</span>
                         <span className="font-semibold text-green-600">
-                          {reservation.financial.paidAmount.toLocaleString()} FCFA
+                          {(reservation.financial.paidAmount || 0).toLocaleString()} FCFA
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Solde:</span>
                         <span className="font-semibold text-orange-600">
-                          {reservation.financial.balanceDue.toLocaleString()} FCFA
+                          {(reservation.financial.balanceDue || 0).toLocaleString()} FCFA
                         </span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
                         <div
                           className="bg-green-600 h-2 rounded-full"
                           style={{
-                            width: `${(reservation.financial.paidAmount / reservation.financial.totalAmount) * 100}%`,
+                            width: `${getProgressPercentage()}%`,
                           }}
                         ></div>
                       </div>
@@ -758,7 +769,9 @@ export default function ReservationDetailPage({ params }: { params: { id: string
                     </div>
                     <div>
                       <p className="text-sm font-medium text-muted-foreground">Date de naissance</p>
-                      <p className="font-medium">{new Date(reservation.guest.dateOfBirth).toLocaleDateString("fr-FR")}</p>
+                      <p className="font-medium">
+                        {new Date(reservation.guest.dateOfBirth).toLocaleDateString("fr-FR")}
+                      </p>
                     </div>
                     <div>
                       <p className="text-sm font-medium text-muted-foreground">Passeport</p>
@@ -766,7 +779,9 @@ export default function ReservationDetailPage({ params }: { params: { id: string
                     </div>
                     <div>
                       <p className="text-sm font-medium text-muted-foreground">Expiration</p>
-                      <p className="font-medium">{new Date(reservation.guest.passportExpiry).toLocaleDateString("fr-FR")}</p>
+                      <p className="font-medium">
+                        {new Date(reservation.guest.passportExpiry).toLocaleDateString("fr-FR")}
+                      </p>
                     </div>
                   </div>
 
@@ -806,9 +821,6 @@ export default function ReservationDetailPage({ params }: { params: { id: string
                       <p className="font-medium">{reservation.company.taxId}</p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-muted-foreground">Contact principal</p>
-</cut_off_point>
-div>
                       <p className="text-sm font-medium text-muted-foreground">Contact principal</p>
                       <p className="font-medium">{reservation.company.contactPerson}</p>
                     </div>
@@ -1097,24 +1109,24 @@ div>
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Tarif de base:</span>
-                      <span className="font-medium">{reservation.financial.baseRate.toLocaleString()} FCFA</span>
+                      <span className="font-medium">{(reservation.financial.baseRate || 0).toLocaleString()} FCFA</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Taxes:</span>
-                      <span className="font-medium">{reservation.financial.taxes.toLocaleString()} FCFA</span>
+                      <span className="font-medium">{(reservation.financial.taxes || 0).toLocaleString()} FCFA</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Frais de service:</span>
-                      <span className="font-medium">{reservation.financial.fees.toLocaleString()} FCFA</span>
+                      <span className="font-medium">{(reservation.financial.fees || 0).toLocaleString()} FCFA</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Extras:</span>
-                      <span className="font-medium">{reservation.financial.extras.toLocaleString()} FCFA</span>
+                      <span className="font-medium">{(reservation.financial.extras || 0).toLocaleString()} FCFA</span>
                     </div>
                     <hr />
                     <div className="flex justify-between text-lg font-bold">
                       <span>Total:</span>
-                      <span>{reservation.financial.totalAmount.toLocaleString()} FCFA</span>
+                      <span>{(reservation.financial.totalAmount || 0).toLocaleString()} FCFA</span>
                     </div>
                   </div>
 
@@ -1123,7 +1135,7 @@ div>
                     <div className="flex justify-between">
                       <span>Montant payé:</span>
                       <span className="font-bold text-green-600">
-                        {reservation.financial.paidAmount.toLocaleString()} FCFA
+                        {(reservation.financial.paidAmount || 0).toLocaleString()} FCFA
                       </span>
                     </div>
                   </div>
@@ -1133,7 +1145,10 @@ div>
                     <div className="flex justify-between">
                       <span>À payer:</span>
                       <span className="font-bold text-orange-600">
-                        {reservation.financial.balanceDue.toLocaleString()} FCFA
+                        {(
+                          (reservation.financial.totalAmount || 0) - (reservation.financial.paidAmount || 0)
+                        ).toLocaleString()}{" "}
+                        FCFA
                       </span>
                     </div>
                     <p className="text-sm text-orange-600 mt-2">
@@ -1232,27 +1247,39 @@ div>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex items-center gap-3">
-                      <div className={`w-4 h-4 rounded-full ${reservation.services.roomService ? "bg-green-500" : "bg-gray-300"}`}></div>
+                      <div
+                        className={`w-4 h-4 rounded-full ${reservation.services.roomService ? "bg-green-500" : "bg-gray-300"}`}
+                      ></div>
                       <span>Room Service</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className={`w-4 h-4 rounded-full ${reservation.services.laundry ? "bg-green-500" : "bg-gray-300"}`}></div>
+                      <div
+                        className={`w-4 h-4 rounded-full ${reservation.services.laundry ? "bg-green-500" : "bg-gray-300"}`}
+                      ></div>
                       <span>Blanchisserie</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className={`w-4 h-4 rounded-full ${reservation.services.spa ? "bg-green-500" : "bg-gray-300"}`}></div>
+                      <div
+                        className={`w-4 h-4 rounded-full ${reservation.services.spa ? "bg-green-500" : "bg-gray-300"}`}
+                      ></div>
                       <span>Spa</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className={`w-4 h-4 rounded-full ${reservation.services.gym ? "bg-green-500" : "bg-gray-300"}`}></div>
+                      <div
+                        className={`w-4 h-4 rounded-full ${reservation.services.gym ? "bg-green-500" : "bg-gray-300"}`}
+                      ></div>
                       <span>Salle de sport</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className={`w-4 h-4 rounded-full ${reservation.services.businessCenter ? "bg-green-500" : "bg-gray-300"}`}></div>
+                      <div
+                        className={`w-4 h-4 rounded-full ${reservation.services.businessCenter ? "bg-green-500" : "bg-gray-300"}`}
+                      ></div>
                       <span>Centre d'affaires</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className={`w-4 h-4 rounded-full ${reservation.services.concierge ? "bg-green-500" : "bg-gray-300"}`}></div>
+                      <div
+                        className={`w-4 h-4 rounded-full ${reservation.services.concierge ? "bg-green-500" : "bg-gray-300"}`}
+                      ></div>
                       <span>Conciergerie</span>
                     </div>
                   </div>
@@ -1270,19 +1297,37 @@ div>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <span>Navette aéroport</span>
-                      <Badge className={reservation.services.transport.airportPickup ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}>
+                      <Badge
+                        className={
+                          reservation.services.transport.airportPickup
+                            ? "bg-green-100 text-green-800"
+                            : "bg-gray-100 text-gray-800"
+                        }
+                      >
                         {reservation.services.transport.airportPickup ? "Réservé" : "Non demandé"}
                       </Badge>
                     </div>
                     <div className="flex items-center justify-between">
                       <span>Location de voiture</span>
-                      <Badge className={reservation.services.transport.carRental ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}>
+                      <Badge
+                        className={
+                          reservation.services.transport.carRental
+                            ? "bg-green-100 text-green-800"
+                            : "bg-gray-100 text-gray-800"
+                        }
+                      >
                         {reservation.services.transport.carRental ? "Réservé" : "Non demandé"}
                       </Badge>
                     </div>
                     <div className="flex items-center justify-between">
                       <span>Service taxi</span>
-                      <Badge className={reservation.services.transport.taxi ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}>
+                      <Badge
+                        className={
+                          reservation.services.transport.taxi
+                            ? "bg-green-100 text-green-800"
+                            : "bg-gray-100 text-gray-800"
+                        }
+                      >
                         {reservation.services.transport.taxi ? "Disponible" : "Non demandé"}
                       </Badge>
                     </div>
@@ -1366,7 +1411,9 @@ div>
                       <p className="text-sm text-muted-foreground">Risque de fraude</p>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-orange-600">{reservation.aiAnalysis.noshowProbability}%</div>
+                      <div className="text-2xl font-bold text-orange-600">
+                        {reservation.aiAnalysis.noshowProbability}%
+                      </div>
                       <p className="text-sm text-muted-foreground">Probabilité no-show</p>
                     </div>
                     <div className="text-center">
@@ -1417,11 +1464,16 @@ div>
                       Suggestion IA automatique
                     </h4>
                     <p className="text-sm mb-3">
-                      Basé sur le profil VIP du client et son historique, nous recommandons un surclassement gratuit vers la Suite Présidentielle.
+                      Basé sur le profil VIP du client et son historique, nous recommandons un surclassement gratuit
+                      vers la Suite Présidentielle.
                     </p>
                     <div className="flex gap-2">
-                      <Button size="sm" className="flex-1">Appliquer</Button>
-                      <Button size="sm" variant="outline" className="flex-1">Ignorer</Button>
+                      <Button size="sm" className="flex-1">
+                        Appliquer
+                      </Button>
+                      <Button size="sm" variant="outline" className="flex-1">
+                        Ignorer
+                      </Button>
                     </div>
                   </div>
                 </CardContent>
@@ -1460,33 +1512,34 @@ div>
           </TabsContent>
         </Tabs>
       </div>
-  ;<footer className="bg-gray-900 text-white py-8 mt-12">
-    <div className="container mx-auto px-6">
-      <div className="flex flex-col md:flex-row items-center justify-between">
-        <div className="flex items-center gap-4 mb-4 md:mb-0">
-          <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
-            <Bed className="h-6 w-6 text-white" />
+      ;
+      <footer className="bg-gray-900 text-white py-8 mt-12">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between">
+            <div className="flex items-center gap-4 mb-4 md:mb-0">
+              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                <Bed className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-bold text-lg">Ezee Optimus CRM</h3>
+                <p className="text-sm text-gray-400">Powered by NovaCore AI</p>
+              </div>
+            </div>
+            <div className="text-center md:text-right">
+              <p className="text-sm text-gray-400 mb-1">Made by Samuel OBAM</p>
+              <p className="text-sm text-gray-400 mb-1">CEO of DL Solutions</p>
+              <p className="text-sm text-gray-400 mb-1">+237 694 341 586</p>
+              <p className="text-sm text-gray-400 mb-1">Rue École de Police, Yaoundé</p>
+              <p className="text-sm text-gray-400">sobam@daveandlucesolutions.com</p>
+            </div>
           </div>
-          <div>
-            <h3 className="font-bold text-lg">Ezee Optimus CRM</h3>
-            <p className="text-sm text-gray-400">Powered by NovaCore AI</p>
+          <div className="border-t border-gray-700 mt-6 pt-6 text-center">
+            <p className="text-sm text-gray-400">
+              © 2024 Ezee Optimus CRM. Tous droits réservés. Développé par DL Solutions SARL.
+            </p>
           </div>
         </div>
-        <div className="text-center md:text-right">
-          <p className="text-sm text-gray-400 mb-1">Made by Samuel OBAM</p>
-          <p className="text-sm text-gray-400 mb-1">CEO of DL Solutions</p>
-          <p className="text-sm text-gray-400 mb-1">+237 694 341 586</p>
-          <p className="text-sm text-gray-400 mb-1">Rue École de Police, Yaoundé</p>
-          <p className="text-sm text-gray-400">sobam@daveandlucesolutions.com</p>
-        </div>
-      </div>
-      <div className="border-t border-gray-700 mt-6 pt-6 text-center">
-        <p className="text-sm text-gray-400">
-          © 2024 Ezee Optimus CRM. Tous droits réservés. Développé par DL Solutions SARL.
-        </p>
-      </div>
+      </footer>
     </div>
-  </footer>
-  </div>
   )
 }

@@ -198,6 +198,14 @@ export default function FormationsPage() {
               </Button>
             </div>
           </div>
+          <div className="lg:hidden flex items-center space-x-2 mt-4">
+            <Button variant="outline" size="sm" className="border-teal-200 text-teal-700 flex-1" asChild>
+              <a href="/devis">Devis IA</a>
+            </Button>
+            <Button size="sm" className="bg-gradient-to-r from-teal-600 to-blue-600 flex-1" asChild>
+              <a href="/sign-in">NovaCore</a>
+            </Button>
+          </div>
         </div>
       </header>
 

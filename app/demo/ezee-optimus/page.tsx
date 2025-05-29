@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { ReservationCalendar } from "@/components/reservation-calendar"
 import {
   ArrowLeft,
   Calendar,
@@ -16,217 +16,409 @@ import {
   Bell,
   Settings,
   Search,
-  MoreVertical,
-  Star,
-  Utensils,
-  Bed,
-  Shield,
-  AlertTriangle,
-  CheckCircle,
-  Eye,
-  CreditCard,
+  Hotel,
+  MapPin,
   BarChart3,
   Package,
-  Truck,
-  UserCheck,
-  Clock,
   Bot,
-  Activity,
-  Lock,
   Zap,
-  Plus,
-  ArrowRight,
-  ArrowLeftIcon,
-  ChevronLeft,
-  ChevronRight,
+  Filter,
+  Download,
+  Star,
+  Bed,
+  Shield,
+  UserCheck,
+  Wifi,
+  Coffee,
+  Tv,
+  Bath,
+  AirVent,
+  RefreshCw,
 } from "lucide-react"
 
-interface AIAlert {
+interface UserRole {
   id: string
-  type: "warning" | "error" | "info"
-  title: string
-  description: string
-  timestamp: string
-  severity: "low" | "medium" | "high" | "critical"
-  action?: string
+  name: string
+  level: "admin" | "manager" | "receptionist" | "housekeeping" | "maintenance" | "finance"
+  permissions: string[]
 }
 
-interface Transaction {
+interface UserType {
   id: string
-  type: "payment" | "refund" | "split" | "modification"
-  amount: string
-  guest: string
-  room: string
-  timestamp: string
-  status: "pending" | "completed" | "flagged"
-  aiScore: number
+  name: string
+  email: string
+  role: UserRole
+  isOnline: boolean
 }
 
-export default function NovaHospitalityERP() {
+export default function EzeeOptimusDemo() {
   const [activeTab, setActiveTab] = useState("dashboard")
-  const [aiAlerts, setAiAlerts] = useState<AIAlert[]>([])
-  const [transactions, setTransactions] = useState<Transaction[]>([])
-  const [isAIMonitoring, setIsAIMonitoring] = useState(true)
+  const [currentUser, setCurrentUser] = useState<UserType | null>(null)
+  const [showRoleSelector, setShowRoleSelector] = useState(true)
+  const [aiAlerts, setAiAlerts] = useState<any[]>([])
+
+  // Nom de l'entreprise qui s'affiche dans le menu
+  const companyName = "Hôtel Le Meridien Yaoundé"
+
+  // Rôles spécialisés hôtellerie
+  const roles: UserRole[] = [
+    {
+      id: "admin",
+      name: "Directeur Général",
+      level: "admin",
+      permissions: ["all"],
+    },
+    {
+      id: "manager",
+      name: "Manager Hôtel",
+      level: "manager",
+      permissions: [
+        "dashboard",
+        "reservations",
+        "rooms",
+        "guests",
+        "housekeeping",
+        "finance",
+        "reports",
+        "staff",
+        "rates",
+        "inventory",
+      ],
+    },
+    {
+      id: "receptionist",
+      name: "Réceptionniste",
+      level: "receptionist",
+      permissions: ["dashboard", "reservations", "rooms", "guests", "checkin", "checkout"],
+    },
+    {
+      id: "housekeeping",
+      name: "Gouvernante",
+      level: "housekeeping",
+      permissions: ["dashboard", "rooms", "housekeeping", "maintenance"],
+    },
+    {
+      id: "maintenance",
+      name: "Maintenance",
+      level: "maintenance",
+      permissions: ["dashboard", "rooms", "maintenance", "inventory"],
+    },
+    {
+      id: "finance",
+      name: "Comptable",
+      level: "finance",
+      permissions: ["dashboard", "finance", "reports", "rates"],
+    },
+  ]
+
+  const demoUsers: UserType[] = [
+    {
+      id: "1",
+      name: "Samuel OBAM",
+      email: "sobam@meridien-yaounde.cm",
+      role: roles[0],
+      isOnline: true,
+    },
+    {
+      id: "2",
+      name: "Marie Kouam",
+      email: "marie.kouam@meridien-yaounde.cm",
+      role: roles[1],
+      isOnline: true,
+    },
+    {
+      id: "3",
+      name: "Jean Mbarga",
+      email: "jean.mbarga@meridien-yaounde.cm",
+      role: roles[2],
+      isOnline: true,
+    },
+    {
+      id: "4",
+      name: "Grace Biya",
+      email: "grace.biya@meridien-yaounde.cm",
+      role: roles[3],
+      isOnline: true,
+    },
+    {
+      id: "5",
+      name: "Paul Essomba",
+      email: "paul.essomba@meridien-yaounde.cm",
+      role: roles[4],
+      isOnline: false,
+    },
+    {
+      id: "6",
+      name: "Fatima Ngono",
+      email: "fatima.ngono@meridien-yaounde.cm",
+      role: roles[5],
+      isOnline: true,
+    },
+  ]
+
+  // Données de démonstration hôtel
+  const hotelStats = {
+    totalRooms: 45,
+    occupiedRooms: 32,
+    availableRooms: 11,
+    outOfOrderRooms: 2,
+    occupancyRate: 71.1,
+    adr: 75000, // Average Daily Rate
+    revpar: 53325, // Revenue Per Available Room
+    totalRevenue: 2400000,
+    checkInsToday: 8,
+    checkOutsToday: 6,
+    stayOvers: 24,
+    noShows: 1,
+    walkIns: 3,
+    vipGuests: 5,
+    groupReservations: 2,
+    pendingPayments: 450000,
+  }
+
+  const recentReservations = [
+    {
+      id: "RES001",
+      guest: "Marie Kouam",
+      room: "301",
+      checkIn: "2024-01-15",
+      checkOut: "2024-01-18",
+      status: "Confirmed",
+      amount: 225000,
+      source: "Direct",
+      vip: true,
+      aiRisk: "low",
+    },
+    {
+      id: "RES002",
+      guest: "Paul Essomba",
+      room: "205",
+      checkIn: "2024-01-16",
+      checkOut: "2024-01-19",
+      status: "Pending Payment",
+      amount: 195000,
+      source: "Booking.com",
+      vip: false,
+      aiRisk: "medium",
+    },
+    {
+      id: "RES003",
+      guest: "Entreprise ABC SARL",
+      room: "401-403",
+      checkIn: "2024-01-17",
+      checkOut: "2024-01-20",
+      status: "Group Booking",
+      amount: 585000,
+      source: "Corporate",
+      vip: true,
+      aiRisk: "low",
+    },
+  ]
+
+  const roomStatus = [
+    {
+      floor: 1,
+      rooms: [
+        { number: "101", status: "Occupied", guest: "M. Dupont", checkout: "2024-01-16", type: "Standard" },
+        { number: "102", status: "Vacant Clean", guest: "", checkout: "", type: "Standard" },
+        { number: "103", status: "Vacant Dirty", guest: "", checkout: "2024-01-15", type: "Standard" },
+        { number: "104", status: "Out of Order", guest: "", checkout: "", type: "Standard" },
+      ],
+    },
+    {
+      floor: 2,
+      rooms: [
+        { number: "201", status: "Occupied", guest: "Mme Martin", checkout: "2024-01-17", type: "Deluxe" },
+        { number: "202", status: "Occupied", guest: "M. Leblanc", checkout: "2024-01-18", type: "Deluxe" },
+        { number: "203", status: "Vacant Clean", guest: "", checkout: "", type: "Deluxe" },
+        { number: "204", status: "Maintenance", guest: "", checkout: "", type: "Deluxe" },
+      ],
+    },
+    {
+      floor: 3,
+      rooms: [
+        { number: "301", status: "Occupied", guest: "VIP - Marie Kouam", checkout: "2024-01-18", type: "Suite" },
+        { number: "302", status: "Vacant Clean", guest: "", checkout: "", type: "Suite" },
+        { number: "303", status: "Reserved", guest: "Arrivée 15h", checkout: "", type: "Suite" },
+      ],
+    },
+  ]
 
   useEffect(() => {
-    // Simulation d'alertes IA en temps réel
     const alertInterval = setInterval(() => {
-      const newAlert: AIAlert = {
-        id: `alert_${Date.now()}`,
+      const alerts = [
+        "Overbooking détecté - 3 réservations pour 2 chambres disponibles",
+        "Client VIP Marie Kouam - Check-in dans 30 minutes",
+        "Chambre 104 - Réparation terminée, inspection requise",
+        "Paiement en retard - Réservation RES002 (48h)",
+        "Tarif concurrent - Booking.com 15% moins cher ce weekend",
+        "No-show probable - Client historique 70% no-show",
+        "Maintenance urgente - Climatisation chambre 205",
+        "Groupe ABC SARL - Demande upgrade suite présidentielle",
+      ]
+      const newAlert = {
+        id: Date.now(),
+        message: alerts[Math.floor(Math.random() * alerts.length)],
         type: Math.random() > 0.7 ? "warning" : "info",
-        title: "Activité suspecte détectée",
-        description: "Transaction inhabituelle sur la chambre 205 - Montant élevé",
         timestamp: new Date().toLocaleTimeString(),
-        severity: Math.random() > 0.8 ? "high" : "medium",
-        action: "Vérifier la transaction",
       }
-      setAiAlerts((prev) => [newAlert, ...prev.slice(0, 9)])
-    }, 15000)
+      setAiAlerts((prev) => [newAlert, ...prev.slice(0, 4)])
+    }, 18000)
 
     return () => clearInterval(alertInterval)
   }, [])
 
-  const recentBookings = [
-    {
-      id: "BK001",
-      guest: "Marie Kouam",
-      room: "Suite Deluxe 205",
-      checkIn: "2024-01-15",
-      checkOut: "2024-01-18",
-      status: "Confirmé",
-      amount: "450,000 FCFA",
-      country: "Cameroun",
-      passport: "CM123456789",
-      phone: "+237 677 123 456",
-      email: "marie.kouam@email.cm",
-    },
-    {
-      id: "BK002",
-      guest: "Jean Mbarga",
-      room: "Chambre Standard 102",
-      checkIn: "2024-01-16",
-      checkOut: "2024-01-17",
-      status: "En attente",
-      amount: "120,000 FCFA",
-      country: "Cameroun",
-      passport: "CM987654321",
-      phone: "+237 699 987 654",
-      email: "jean.mbarga@email.cm",
-    },
-    {
-      id: "BK003",
-      guest: "Amina Diallo",
-      room: "Suite Junior 301",
-      checkIn: "2024-01-17",
-      checkOut: "2024-01-20",
-      status: "Confirmé",
-      amount: "680,000 FCFA",
-      country: "Sénégal",
-      passport: "SN456789123",
-      phone: "+221 77 456 789",
-      email: "amina.diallo@email.sn",
-    },
-  ]
+  const hasPermission = (permission: string): boolean => {
+    if (!currentUser) return false
+    if (currentUser.role.permissions.includes("all")) return true
+    return currentUser.role.permissions.includes(permission)
+  }
 
-  const rooms = [
-    {
-      number: "101",
-      type: "Standard",
-      status: "Occupée",
-      guest: "M. Dupont",
-      checkout: "14:00",
-      price: "85,000 FCFA",
-      amenities: ["WiFi", "AC", "TV"],
-      lastCleaned: "10:30",
-      aiScore: 95,
-    },
-    {
-      number: "102",
-      type: "Standard",
-      status: "Libre",
-      guest: "",
-      checkout: "",
-      price: "85,000 FCFA",
-      amenities: ["WiFi", "AC", "TV"],
-      lastCleaned: "11:45",
-      aiScore: 98,
-    },
-    {
-      number: "201",
-      type: "Deluxe",
-      status: "Maintenance",
-      guest: "",
-      checkout: "",
-      price: "150,000 FCFA",
-      amenities: ["WiFi", "AC", "TV", "Minibar", "Balcon"],
-      lastCleaned: "09:15",
-      aiScore: 75,
-    },
-    {
-      number: "205",
-      type: "Suite",
-      status: "Occupée",
-      guest: "Mme Kouam",
-      checkout: "12:00",
-      price: "250,000 FCFA",
-      amenities: ["WiFi", "AC", "TV", "Minibar", "Balcon", "Jacuzzi"],
-      lastCleaned: "08:30",
-      aiScore: 92,
-    },
-  ]
-
-  const inventory = [
-    { item: "Serviettes", stock: 245, minimum: 50, status: "ok" },
-    { item: "Draps", stock: 180, minimum: 40, status: "ok" },
-    { item: "Produits d'accueil", stock: 25, minimum: 30, status: "low" },
-    { item: "Minibar - Coca", stock: 120, minimum: 50, status: "ok" },
-    { item: "Papier toilette", stock: 15, minimum: 20, status: "critical" },
-  ]
-
-  const staff = [
-    {
-      id: "ST001",
-      name: "Alice Nkomo",
-      role: "Réceptionniste",
-      shift: "Matin (06:00-14:00)",
-      status: "En service",
-      performance: 94,
-    },
-    {
-      id: "ST002",
-      name: "Paul Essomba",
-      role: "Femme de chambre",
-      shift: "Jour (08:00-16:00)",
-      status: "En pause",
-      performance: 87,
-    },
-    {
-      id: "ST003",
-      name: "Grace Biya",
-      role: "Manager",
-      shift: "Jour (09:00-17:00)",
-      status: "En service",
-      performance: 96,
-    },
-  ]
+  const switchUser = (userId: string) => {
+    const user = demoUsers.find((u) => u.id === userId)
+    if (user) {
+      setCurrentUser(user)
+      setShowRoleSelector(false)
+      setActiveTab("dashboard")
+    }
+  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "Libre":
-        return "bg-green-100 text-green-800"
-      case "Occupée":
+      case "Occupied":
         return "bg-red-100 text-red-800"
+      case "Vacant Clean":
+        return "bg-green-100 text-green-800"
+      case "Vacant Dirty":
+        return "bg-yellow-100 text-yellow-800"
+      case "Out of Order":
+        return "bg-gray-100 text-gray-800"
       case "Maintenance":
+        return "bg-orange-100 text-orange-800"
+      case "Reserved":
+        return "bg-blue-100 text-blue-800"
+      case "Confirmed":
+        return "bg-green-100 text-green-800"
+      case "Pending Payment":
+        return "bg-yellow-100 text-yellow-800"
+      case "Group Booking":
+        return "bg-purple-100 text-purple-800"
+      default:
+        return "bg-gray-100 text-gray-800"
+    }
+  }
+
+  const getRoleColor = (level: string) => {
+    switch (level) {
+      case "admin":
+        return "bg-red-100 text-red-800"
+      case "manager":
+        return "bg-purple-100 text-purple-800"
+      case "receptionist":
+        return "bg-blue-100 text-blue-800"
+      case "housekeeping":
+        return "bg-green-100 text-green-800"
+      case "maintenance":
+        return "bg-orange-100 text-orange-800"
+      case "finance":
         return "bg-yellow-100 text-yellow-800"
       default:
         return "bg-gray-100 text-gray-800"
     }
   }
 
-  const getAIScoreColor = (score: number) => {
-    if (score >= 90) return "text-green-600"
-    if (score >= 75) return "text-yellow-600"
-    return "text-red-600"
+  const getUserPermissions = () => {
+    if (!currentUser)
+      return {
+        canCreate: false,
+        canEdit: false,
+        canDelete: false,
+        canViewFinancials: false,
+        canManageRates: false,
+        level: "receptionist" as const,
+      }
+
+    return {
+      canCreate: hasPermission("reservations") || hasPermission("all"),
+      canEdit: hasPermission("reservations") || hasPermission("all"),
+      canDelete: hasPermission("all"),
+      canViewFinancials: hasPermission("finance") || hasPermission("all"),
+      canManageRates: hasPermission("rates") || hasPermission("all"),
+      level: currentUser.role.level,
+    }
+  }
+
+  // Écran de sélection de rôle
+  if (showRoleSelector || !currentUser) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-6">
+        <Card className="w-full max-w-5xl">
+          <CardHeader className="text-center">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                <Hotel className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-2xl">eZee Optimus - NovaCore</CardTitle>
+                <CardDescription>{companyName}</CardDescription>
+              </div>
+            </div>
+            <h2 className="text-xl font-semibold mb-2">Sélectionnez votre profil utilisateur</h2>
+            <p className="text-muted-foreground">
+              Système de gestion hôtelière avec IA pour surveillance des transactions et optimisation des revenus
+            </p>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {demoUsers.map((user) => (
+                <Card
+                  key={user.id}
+                  className="cursor-pointer hover:shadow-lg transition-shadow border-2 hover:border-blue-200"
+                  onClick={() => switchUser(user.id)}
+                >
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center">
+                        {user.role.level === "receptionist" && <Users className="h-5 w-5 text-white" />}
+                        {user.role.level === "housekeeping" && <Bed className="h-5 w-5 text-white" />}
+                        {user.role.level === "maintenance" && <Settings className="h-5 w-5 text-white" />}
+                        {user.role.level === "finance" && <DollarSign className="h-5 w-5 text-white" />}
+                        {(user.role.level === "admin" || user.role.level === "manager") && (
+                          <Hotel className="h-5 w-5 text-white" />
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-medium">{user.name}</h3>
+                        <p className="text-xs text-muted-foreground">{user.email}</p>
+                      </div>
+                      <div className={`w-3 h-3 rounded-full ${user.isOnline ? "bg-green-500" : "bg-gray-300"}`}></div>
+                    </div>
+
+                    <Badge className={`${getRoleColor(user.role.level)} mb-3`}>{user.role.name}</Badge>
+
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-muted-foreground">Accès autorisé:</p>
+                      <div className="flex flex-wrap gap-1">
+                        {user.role.permissions.slice(0, 3).map((perm, idx) => (
+                          <Badge key={idx} variant="outline" className="text-xs">
+                            {perm === "all" ? "Accès total" : perm}
+                          </Badge>
+                        ))}
+                        {user.role.permissions.length > 3 && (
+                          <Badge variant="outline" className="text-xs">
+                            +{user.role.permissions.length - 3} autres
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
   }
 
   return (
@@ -243,12 +435,12 @@ export default function NovaHospitalityERP() {
                 </a>
               </Button>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
-                  <Utensils className="h-6 w-6 text-white" />
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                  <Hotel className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold">Nova Hospitality ERP</h1>
-                  <p className="text-sm text-muted-foreground">Hôtel Le Meridien - Yaoundé</p>
+                  <h1 className="text-xl font-bold">eZee Optimus - NovaCore</h1>
+                  <p className="text-sm text-muted-foreground">{companyName}</p>
                 </div>
               </div>
             </div>
@@ -265,9 +457,27 @@ export default function NovaHospitalityERP() {
                   <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
                 )}
               </div>
-              <Button size="icon" variant="outline">
-                <Settings className="h-4 w-4" />
-              </Button>
+
+              {/* Profil utilisateur */}
+              <div className="flex items-center gap-3 px-3 py-2 bg-gray-50 rounded-lg">
+                <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center">
+                  {currentUser.role.level === "receptionist" && <Users className="h-4 w-4 text-white" />}
+                  {currentUser.role.level === "housekeeping" && <Bed className="h-4 w-4 text-white" />}
+                  {currentUser.role.level === "maintenance" && <Settings className="h-4 w-4 text-white" />}
+                  {currentUser.role.level === "finance" && <DollarSign className="h-4 w-4 text-white" />}
+                  {(currentUser.role.level === "admin" || currentUser.role.level === "manager") && (
+                    <Hotel className="h-4 w-4 text-white" />
+                  )}
+                </div>
+                <div className="text-left">
+                  <p className="text-sm font-medium">{currentUser.name}</p>
+                  <Badge className={`${getRoleColor(currentUser.role.level)} text-xs`}>{currentUser.role.name}</Badge>
+                </div>
+                <Button size="sm" variant="outline" onClick={() => setShowRoleSelector(true)}>
+                  Changer
+                </Button>
+              </div>
+
               <div className="flex items-center gap-2 px-3 py-1 bg-green-100 rounded-full">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                 <span className="text-xs font-medium text-green-700">IA Active</span>
@@ -281,101 +491,128 @@ export default function NovaHospitalityERP() {
         {/* Sidebar */}
         <aside className="w-64 bg-white border-r h-screen sticky top-0 overflow-y-auto">
           <nav className="p-4 space-y-2">
-            <button
-              onClick={() => setActiveTab("dashboard")}
-              className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
-                activeTab === "dashboard" ? "bg-orange-100 text-orange-700" : "hover:bg-gray-100"
-              }`}
-            >
-              <TrendingUp className="h-4 w-4 inline mr-3" />
-              Tableau de bord
-            </button>
-            <button
-              onClick={() => setActiveTab("reservations")}
-              className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
-                activeTab === "reservations" ? "bg-orange-100 text-orange-700" : "hover:bg-gray-100"
-              }`}
-            >
-              <Calendar className="h-4 w-4 inline mr-3" />
-              Réservations
-            </button>
-            <button
-              onClick={() => setActiveTab("rooms")}
-              className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
-                activeTab === "rooms" ? "bg-orange-100 text-orange-700" : "hover:bg-gray-100"
-              }`}
-            >
-              <Bed className="h-4 w-4 inline mr-3" />
-              Chambres
-            </button>
-            <button
-              onClick={() => setActiveTab("guests")}
-              className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
-                activeTab === "guests" ? "bg-orange-100 text-orange-700" : "hover:bg-gray-100"
-              }`}
-            >
-              <Users className="h-4 w-4 inline mr-3" />
-              Clients
-            </button>
-            <button
-              onClick={() => setActiveTab("finance")}
-              className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
-                activeTab === "finance" ? "bg-orange-100 text-orange-700" : "hover:bg-gray-100"
-              }`}
-            >
-              <DollarSign className="h-4 w-4 inline mr-3" />
-              Finances
-            </button>
-            <button
-              onClick={() => setActiveTab("inventory")}
-              className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
-                activeTab === "inventory" ? "bg-orange-100 text-orange-700" : "hover:bg-gray-100"
-              }`}
-            >
-              <Package className="h-4 w-4 inline mr-3" />
-              Inventaire
-            </button>
-            <button
-              onClick={() => setActiveTab("staff")}
-              className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
-                activeTab === "staff" ? "bg-orange-100 text-orange-700" : "hover:bg-gray-100"
-              }`}
-            >
-              <UserCheck className="h-4 w-4 inline mr-3" />
-              Personnel
-            </button>
-            <button
-              onClick={() => setActiveTab("ai-monitoring")}
-              className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
-                activeTab === "ai-monitoring" ? "bg-orange-100 text-orange-700" : "hover:bg-gray-100"
-              }`}
-            >
-              <Bot className="h-4 w-4 inline mr-3" />
-              Surveillance IA
-            </button>
-            <button
-              onClick={() => setActiveTab("reports")}
-              className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
-                activeTab === "reports" ? "bg-orange-100 text-orange-700" : "hover:bg-gray-100"
-              }`}
-            >
-              <BarChart3 className="h-4 w-4 inline mr-3" />
-              Rapports
-            </button>
+            {hasPermission("dashboard") && (
+              <button
+                onClick={() => setActiveTab("dashboard")}
+                className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                  activeTab === "dashboard" ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
+                }`}
+              >
+                <TrendingUp className="h-4 w-4 inline mr-3" />
+                Tableau de bord
+              </button>
+            )}
+
+            {hasPermission("reservations") && (
+              <button
+                onClick={() => setActiveTab("reservations")}
+                className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                  activeTab === "reservations" ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
+                }`}
+              >
+                <Calendar className="h-4 w-4 inline mr-3" />
+                Calendrier Réservations
+              </button>
+            )}
+
+            {hasPermission("rooms") && (
+              <button
+                onClick={() => setActiveTab("rooms")}
+                className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                  activeTab === "rooms" ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
+                }`}
+              >
+                <Bed className="h-4 w-4 inline mr-3" />
+                État des Chambres
+              </button>
+            )}
+
+            {hasPermission("guests") && (
+              <button
+                onClick={() => setActiveTab("guests")}
+                className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                  activeTab === "guests" ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
+                }`}
+              >
+                <Users className="h-4 w-4 inline mr-3" />
+                Clients & Groupes
+              </button>
+            )}
+
+            {hasPermission("housekeeping") && (
+              <button
+                onClick={() => setActiveTab("housekeeping")}
+                className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                  activeTab === "housekeeping" ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
+                }`}
+              >
+                <UserCheck className="h-4 w-4 inline mr-3" />
+                Gouvernance
+              </button>
+            )}
+
+            {hasPermission("finance") && (
+              <button
+                onClick={() => setActiveTab("finance")}
+                className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                  activeTab === "finance" ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
+                }`}
+              >
+                <DollarSign className="h-4 w-4 inline mr-3" />
+                Finances & Tarifs
+              </button>
+            )}
+
+            {hasPermission("reports") && (
+              <button
+                onClick={() => setActiveTab("reports")}
+                className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                  activeTab === "reports" ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
+                }`}
+              >
+                <BarChart3 className="h-4 w-4 inline mr-3" />
+                Rapports & Analytics
+              </button>
+            )}
+
+            {hasPermission("inventory") && (
+              <button
+                onClick={() => setActiveTab("inventory")}
+                className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                  activeTab === "inventory" ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
+                }`}
+              >
+                <Package className="h-4 w-4 inline mr-3" />
+                Inventaire & Stock
+              </button>
+            )}
+
+            {hasPermission("all") && (
+              <button
+                onClick={() => setActiveTab("ai-monitoring")}
+                className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                  activeTab === "ai-monitoring" ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
+                }`}
+              >
+                <Bot className="h-4 w-4 inline mr-3" />
+                Surveillance IA
+                <Badge className="ml-2 text-xs bg-red-100 text-red-700">Admin</Badge>
+              </button>
+            )}
           </nav>
         </aside>
 
         {/* Main Content */}
         <main className="flex-1 p-6">
-          {/* AI Alerts Bar */}
+          {/* Alertes IA */}
           {aiAlerts.length > 0 && (
             <div className="mb-6">
-              <Alert className="border-orange-200 bg-orange-50">
+              <Alert className="border-blue-200 bg-blue-50">
                 <Bot className="h-4 w-4" />
                 <AlertDescription>
                   <div className="flex items-center justify-between">
                     <span>
-                      <strong>IA NovaCore:</strong> {aiAlerts[0].description}
+                      <strong>IA NovaCore:</strong> {aiAlerts[0].message}
                     </span>
                     <Button size="sm" variant="outline">
                       Voir toutes les alertes ({aiAlerts.length})
@@ -388,20 +625,32 @@ export default function NovaHospitalityERP() {
 
           {activeTab === "dashboard" && (
             <div className="space-y-6">
-              <div>
-                <h2 className="text-2xl font-bold mb-2">Tableau de bord</h2>
-                <p className="text-muted-foreground">Vue d'ensemble de votre établissement</p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold mb-2">Tableau de bord Hôtel</h2>
+                  <p className="text-muted-foreground">
+                    Vue d'ensemble en temps réel - {companyName} - Accès: {currentUser.role.name}
+                  </p>
+                </div>
+                {hasPermission("reports") && (
+                  <Button>
+                    <Download className="h-4 w-4 mr-2" />
+                    Rapport du jour
+                  </Button>
+                )}
               </div>
 
-              {/* Stats Cards */}
+              {/* Stats Cards principales */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <Card>
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-muted-foreground">Taux d'occupation</p>
-                        <p className="text-2xl font-bold">87%</p>
-                        <p className="text-xs text-green-600">+5% vs hier</p>
+                        <p className="text-2xl font-bold">{hotelStats.occupancyRate}%</p>
+                        <p className="text-xs text-green-600">
+                          {hotelStats.occupiedRooms}/{hotelStats.totalRooms} chambres
+                        </p>
                       </div>
                       <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
                         <Bed className="h-6 w-6 text-blue-600" />
@@ -415,8 +664,12 @@ export default function NovaHospitalityERP() {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-muted-foreground">Revenus du jour</p>
-                        <p className="text-2xl font-bold">1,450,000 FCFA</p>
-                        <p className="text-xs text-green-600">+12% vs hier</p>
+                        <p className="text-2xl font-bold">
+                          {hasPermission("finance") || hasPermission("all")
+                            ? `${(hotelStats.totalRevenue / 1000).toFixed(0)}K FCFA`
+                            : "***K FCFA"}
+                        </p>
+                        <p className="text-xs text-green-600">+18% vs hier</p>
                       </div>
                       <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
                         <DollarSign className="h-6 w-6 text-green-600" />
@@ -429,12 +682,18 @@ export default function NovaHospitalityERP() {
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-muted-foreground">Nouveaux clients</p>
-                        <p className="text-2xl font-bold">12</p>
-                        <p className="text-xs text-blue-600">+3 vs hier</p>
+                        <p className="text-sm text-muted-foreground">ADR (Tarif moyen)</p>
+                        <p className="text-2xl font-bold">
+                          {hasPermission("finance") || hasPermission("all")
+                            ? `${(hotelStats.adr / 1000).toFixed(0)}K FCFA`
+                            : "***K FCFA"}
+                        </p>
+                        <p className="text-xs text-blue-600">
+                          RevPAR: {hasPermission("finance") ? `${(hotelStats.revpar / 1000).toFixed(0)}K` : "***K"}
+                        </p>
                       </div>
                       <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                        <Users className="h-6 w-6 text-purple-600" />
+                        <BarChart3 className="h-6 w-6 text-purple-600" />
                       </div>
                     </div>
                   </CardContent>
@@ -456,38 +715,90 @@ export default function NovaHospitalityERP() {
                 </Card>
               </div>
 
-              {/* Recent Activities */}
+              {/* Stats secondaires */}
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <div className="text-2xl font-bold text-green-600">{hotelStats.checkInsToday}</div>
+                    <div className="text-xs text-muted-foreground">Arrivées</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <div className="text-2xl font-bold text-blue-600">{hotelStats.checkOutsToday}</div>
+                    <div className="text-xs text-muted-foreground">Départs</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <div className="text-2xl font-bold text-purple-600">{hotelStats.stayOvers}</div>
+                    <div className="text-xs text-muted-foreground">Stay-overs</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <div className="text-2xl font-bold text-orange-600">{hotelStats.walkIns}</div>
+                    <div className="text-xs text-muted-foreground">Walk-ins</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <div className="text-2xl font-bold text-yellow-600">{hotelStats.vipGuests}</div>
+                    <div className="text-xs text-muted-foreground">Clients VIP</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <div className="text-2xl font-bold text-red-600">{hotelStats.noShows}</div>
+                    <div className="text-xs text-muted-foreground">No-shows</div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Réservations récentes et état des chambres */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Réservations récentes</CardTitle>
-                    <CardDescription>Dernières réservations avec surveillance IA</CardDescription>
+                    <CardTitle className="flex items-center gap-2">
+                      <Calendar className="h-5 w-5 text-blue-600" />
+                      Réservations récentes
+                    </CardTitle>
+                    <CardDescription>Dernières réservations avec analyse IA</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {recentBookings.map((booking) => (
-                        <div key={booking.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      {recentReservations.map((reservation) => (
+                        <div key={reservation.id} className="flex items-center justify-between p-4 border rounded-lg">
                           <div className="flex items-center gap-4">
                             <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                              <Users className="h-5 w-5 text-gray-600" />
+                              {reservation.vip ? (
+                                <Star className="h-5 w-5 text-yellow-500" />
+                              ) : (
+                                <Users className="h-5 w-5 text-gray-600" />
+                              )}
                             </div>
                             <div>
-                              <p className="font-medium">{booking.guest}</p>
-                              <p className="text-sm text-muted-foreground">{booking.room}</p>
-                              <p className="text-xs text-muted-foreground">{booking.country}</p>
+                              <p className="font-medium">{reservation.guest}</p>
+                              <p className="text-sm text-muted-foreground">
+                                Chambre {reservation.room} - {reservation.source}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {reservation.checkIn} au {reservation.checkOut}
+                              </p>
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="font-medium">{booking.amount}</p>
-                            <Badge
-                              variant={booking.status === "Confirmé" ? "default" : "secondary"}
-                              className="text-xs"
-                            >
-                              {booking.status}
-                            </Badge>
+                            <p className="font-medium">
+                              {hasPermission("finance") || hasPermission("all")
+                                ? `${(reservation.amount / 1000).toFixed(0)}K FCFA`
+                                : "***K FCFA"}
+                            </p>
+                            <Badge className={getStatusColor(reservation.status)}>{reservation.status}</Badge>
                             <div className="flex items-center gap-1 mt-1">
-                              <Shield className="h-3 w-3 text-green-500" />
-                              <span className="text-xs text-green-600">Vérifié IA</span>
+                              <Bot className="h-3 w-3 text-green-500" />
+                              <span className="text-xs text-green-600">
+                                Risque: {reservation.aiRisk === "low" ? "Faible" : "Moyen"}
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -498,698 +809,168 @@ export default function NovaHospitalityERP() {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>Alertes IA en temps réel</CardTitle>
-                    <CardDescription>Surveillance automatique des activités</CardDescription>
+                    <CardTitle className="flex items-center gap-2">
+                      <Bed className="h-5 w-5 text-purple-600" />
+                      État des chambres par étage
+                    </CardTitle>
+                    <CardDescription>Statut en temps réel</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-3">
-                      {aiAlerts.slice(0, 5).map((alert) => (
-                        <div key={alert.id} className="flex items-start gap-3 p-3 border rounded-lg">
-                          <div className="mt-1">
-                            {alert.type === "warning" && <AlertTriangle className="h-4 w-4 text-yellow-500" />}
-                            {alert.type === "error" && <AlertTriangle className="h-4 w-4 text-red-500" />}
-                            {alert.type === "info" && <CheckCircle className="h-4 w-4 text-blue-500" />}
-                          </div>
-                          <div className="flex-1">
-                            <p className="font-medium text-sm">{alert.title}</p>
-                            <p className="text-xs text-muted-foreground">{alert.description}</p>
-                            <p className="text-xs text-muted-foreground">{alert.timestamp}</p>
-                          </div>
-                          <Badge variant="outline" className="text-xs">
-                            {alert.severity}
-                          </Badge>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          )}
-
-          {activeTab === "reservations" && (
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-2xl font-bold mb-2">Calendrier de Réservations</h2>
-                  <p className="text-muted-foreground">Gestion avancée des réservations avec vue en bande</p>
-                </div>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm">
-                    <Calendar className="h-4 w-4 mr-2" />
-                    Aujourd'hui
-                  </Button>
-                  <Button variant="outline" size="sm">
-                    Vue Semaine
-                  </Button>
-                  <Button variant="outline" size="sm">
-                    Vue Mois
-                  </Button>
-                  <Button size="sm">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Nouvelle Réservation
-                  </Button>
-                </div>
-              </div>
-
-              {/* Filtres et Statistiques */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <Card>
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Arrivées Aujourd'hui</p>
-                        <p className="text-2xl font-bold text-blue-600">12</p>
-                      </div>
-                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                        <ArrowRight className="h-5 w-5 text-blue-600" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Départs Aujourd'hui</p>
-                        <p className="text-2xl font-bold text-orange-600">8</p>
-                      </div>
-                      <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
-                        <ArrowLeftIcon className="h-5 w-5 text-orange-600" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Taux d'Occupation</p>
-                        <p className="text-2xl font-bold text-green-600">87%</p>
-                      </div>
-                      <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                        <TrendingUp className="h-5 w-5 text-green-600" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Revenus Prévus</p>
-                        <p className="text-2xl font-bold text-purple-600">2.4M FCFA</p>
-                      </div>
-                      <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                        <DollarSign className="h-5 w-5 text-purple-600" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Filtres Avancés */}
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex flex-wrap items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <label className="text-sm font-medium">Type de chambre:</label>
-                      <select className="px-3 py-1 border rounded-md text-sm">
-                        <option>Toutes</option>
-                        <option>Standard</option>
-                        <option>Deluxe</option>
-                        <option>Suite</option>
-                      </select>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <label className="text-sm font-medium">Statut:</label>
-                      <select className="px-3 py-1 border rounded-md text-sm">
-                        <option>Tous</option>
-                        <option>Confirmé</option>
-                        <option>En attente</option>
-                        <option>Annulé</option>
-                      </select>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <label className="text-sm font-medium">Source:</label>
-                      <select className="px-3 py-1 border rounded-md text-sm">
-                        <option>Toutes</option>
-                        <option>Direct</option>
-                        <option>Booking.com</option>
-                        <option>Expedia</option>
-                        <option>Agence</option>
-                      </select>
-                    </div>
-                    <Button variant="outline" size="sm">
-                      <Search className="h-4 w-4 mr-2" />
-                      Rechercher
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Légende des Couleurs */}
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex flex-wrap items-center gap-6">
-                    <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 bg-green-500 rounded"></div>
-                      <span className="text-sm">Confirmé</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 bg-yellow-500 rounded"></div>
-                      <span className="text-sm">En attente</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 bg-blue-500 rounded"></div>
-                      <span className="text-sm">Check-in</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 bg-orange-500 rounded"></div>
-                      <span className="text-sm">Check-out</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 bg-red-500 rounded"></div>
-                      <span className="text-sm">Maintenance</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 bg-purple-500 rounded"></div>
-                      <span className="text-sm">Groupe</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Calendrier Principal - Vue en Bande (Tape Chart) */}
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle>Vue en Bande - Janvier 2024</CardTitle>
-                    <div className="flex items-center gap-2">
-                      <Button variant="outline" size="sm">
-                        <ChevronLeft className="h-4 w-4" />
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <ChevronRight className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <div className="overflow-x-auto">
-                    {/* En-tête du calendrier */}
-                    <div className="flex border-b bg-gray-50">
-                      <div className="w-32 p-3 border-r font-medium text-sm">Chambres</div>
-                      {Array.from({ length: 14 }, (_, i) => {
-                        const date = new Date(2024, 0, 15 + i);
-                        const isToday = i === 0;
-                        return (
-                          <div
-                            key={i}
-                            className={`w-24 p-3 border-r text-center text-xs ${
-                              isToday ? 'bg-blue-100 text-blue-700 font-bold' : ''
-                            }`}
-                          >
-                            <div className="font-medium">
-                              {date.toLocaleDateString('fr-FR', { weekday: 'short' })}
-                            </div>
-                            <div className="text-lg font-bold">{date.getDate()}</div>
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    {/* Lignes des chambres */}
-                    <div className="divide-y">
-                      {[
-                        { room: '101', type: 'Standard', price: '85,000' },
-                        { room: '102', type: 'Standard', price: '85,000' },
-                        { room: '103', type: 'Standard', price: '85,000' },
-                        { room: '201', type: 'Deluxe', price: '150,000' },
-                        { room: '202', type: 'Deluxe', price: '150,000' },
-                        { room: '203', type: 'Deluxe', price: '150,000' },
-                        { room: '301', type: 'Suite', price: '250,000' },
-                        { room: '302', type: 'Suite', price: '250,000' },
-                      ].map((room, roomIndex) => (
-                        <div key={room.room} className="flex hover:bg-gray-50">
-                          <div className="w-32 p-3 border-r">
-                            <div className="font-medium text-sm">{room.room}</div>
-                            <div className="text-xs text-muted-foreground">{room.type}</div>
-                            <div className="text-xs text-green-600">{room.price} FCFA</div>
-                          </div>
-                          {Array.from({ length: 14 }, (_, dayIndex) => {
-                            // Simulation de réservations
-                            const hasReservation = Math.random() > 0.4;
-                            const reservationLength = Math.floor(Math.random() * 4) + 1;
-                            const reservationStart = dayIndex;
-                            const reservationEnd = Math.min(dayIndex + reservationLength, 13);
-                            
-                            const reservationTypes = [
-                              { color: 'bg-green-500', guest: 'M. Dupont', status: 'Confirmé' },
-                              { color: 'bg-yellow-500', guest: 'Mme Martin', status: 'En attente' },
-                              { color: 'bg-blue-500', guest: 'M. Bernard', status: 'Check-in' },
-                              { color: 'bg-purple-500', guest: 'Groupe ABC', status: 'Groupe' },
-                            ];
-                            
-                            const reservation = reservationTypes[Math.floor(Math.random() * reservationTypes.length)];
-                            
-                            return (
-                              <div
-                                key={dayIndex}
-                                className="w-24 h-16 border-r border-b relative group cursor-pointer"
-                              >
-                                {hasReservation && dayIndex % 3 === 0 && (
-                                  <div
-                                    className={`absolute inset-1 ${reservation.color} rounded text-white text-xs p-1 shadow-sm hover:shadow-md transition-shadow`}
-                                    style={{
-                                      width: `${(reservationEnd - reservationStart) * 96 - 8}px`,
-                                      zIndex: 10,
-                                    }}
-                                  >
-                                    <div className="font-medium truncate">{reservation.guest}</div>
-                                    <div className="text-xs opacity-90">{reservation.status}</div>
-                                  </div>
-                                )}
-                                
-                                {/* Tooltip au survol */}
-                                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-black bg-opacity-10 transition-opacity"></div>
+                    <div className="space-y-4">
+                      {roomStatus.map((floor) => (
+                        <div key={floor.floor}>
+                          <h4 className="font-medium mb-2">Étage {floor.floor}</h4>
+                          <div className="grid grid-cols-2 gap-2">
+                            {floor.rooms.map((room) => (
+                              <div key={room.number} className="p-2 border rounded text-xs">
+                                <div className="flex items-center justify-between mb-1">
+                                  <span className="font-medium">{room.number}</span>
+                                  <Badge className={`${getStatusColor(room.status)} text-xs`} variant="outline">
+                                    {room.status === "Occupied" && "Occupée"}
+                                    {room.status === "Vacant Clean" && "Libre"}
+                                    {room.status === "Vacant Dirty" && "À nettoyer"}
+                                    {room.status === "Out of Order" && "HS"}
+                                    {room.status === "Maintenance" && "Maintenance"}
+                                    {room.status === "Reserved" && "Réservée"}
+                                  </Badge>
+                                </div>
+                                <div className="text-muted-foreground">
+                                  {room.guest && <div>{room.guest}</div>}
+                                  {room.checkout && <div>Départ: {room.checkout}</div>}
+                                  <div>{room.type}</div>
+                                </div>
                               </div>
-                            );
-                          })}
+                            ))}
+                          </div>
                         </div>
                       ))}
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Actions Rapides */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Actions Rapides</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <Button className="w-full justify-start" variant="outline">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Nouvelle Réservation
-                    </Button>
-                    <Button className="w-full justify-start" variant="outline">
-                      <Users className="h-4 w-4 mr-2" />
-                      Réservation Groupe
-                    </Button>
-                    <Button className="w-full justify-start" variant="outline">
-                      <Calendar className="h-4 w-4 mr-2" />
-                      Blocage de Chambres
-                    </Button>
-                    <Button className="w-full justify-start" variant="outline">
-                      <DollarSign className="h-4 w-4 mr-2" />
-                      Ajustement Tarifs
-                    </Button>
                   </CardContent>
                 </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Arrivées Aujourd'hui</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {[
-                      { guest: 'Marie Kouam', room: '205', time: '14:00', status: 'En attente' },
-                      { guest: 'Jean Mbarga', room: '102', time: '15:30', status: 'Confirmé' },
-                      { guest: 'Amina Diallo', room: '301', time: '16:00', status: 'VIP' },
-                    ].map((arrival, idx) => (
-                      <div key={idx} className="flex items-center justify-between p-2 border rounded">
-                        <div>
-                          <p className="font-medium text-sm">{arrival.guest}</p>
-                          <p className="text-xs text-muted-foreground">Ch. {arrival.room} - {arrival.time}</p>
-                        </div>
-                        <Badge variant={arrival.status === 'VIP' ? 'default' : 'secondary'} className="text-xs">
-                          {arrival.status}
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Départs Aujourd'hui</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {[
-                      { guest: 'Paul Essomba', room: '101', time: '11:00', status: 'Facturé' },
-                      { guest: 'Grace Biya', room: '203', time: '12:00', status: 'En cours' },
-                      { guest: 'Alice Nkomo', room: '302', time: '10:30', status: 'Terminé' },
-                    ].map((departure, idx) => (
-                      <div key={idx} className="flex items-center justify-between p-2 border rounded">
-                        <div>
-                          <p className="font-medium text-sm">{departure.guest}</p>
-                          <p className="text-xs text-muted-foreground">Ch. {departure.room} - {departure.time}</p>
-                        </div>
-                        <Badge 
-                          variant={departure.status === 'Terminé' ? 'default' : 'secondary'} 
-                          className="text-xs"
-                        >
-                          {departure.status}
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              </div>
             </div>
           )}
 
-          {activeTab === "rooms" && (
+          {activeTab === "reservations" && hasPermission("reservations") && (
+            <div className="space-y-6">
+              <ReservationCalendar
+                userPermissions={getUserPermissions()}
+                userName={currentUser.name}
+                companyName={companyName}
+              />
+            </div>
+          )}
+
+          {activeTab === "rooms" && hasPermission("rooms") && (
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold mb-2">Gestion des chambres</h2>
-                  <p className="text-muted-foreground">État en temps réel avec surveillance IA</p>
+                  <h2 className="text-2xl font-bold mb-2">État des Chambres</h2>
+                  <p className="text-muted-foreground">Gestion en temps réel du statut des chambres - {companyName}</p>
                 </div>
                 <div className="flex gap-2">
                   <Button variant="outline">
-                    <Calendar className="h-4 w-4 mr-2" />
-                    Planning
+                    <Filter className="h-4 w-4 mr-2" />
+                    Filtres
                   </Button>
-                  <Button>
-                    <Eye className="h-4 w-4 mr-2" />
-                    Vue 3D
+                  <Button variant="outline">
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Actualiser
                   </Button>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {rooms.map((room) => (
-                  <Card key={room.number} className="hover:shadow-md transition-shadow">
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <h3 className="font-bold text-lg">Ch. {room.number}</h3>
-                        <Badge className={getStatusColor(room.status)}>{room.status}</Badge>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-2">{room.type}</p>
-                      <p className="font-medium text-green-600 mb-2">{room.price}/nuit</p>
-
-                      <div className="space-y-2 mb-3">
-                        <div className="flex items-center justify-between text-xs">
-                          <span>Score IA:</span>
-                          <span className={`font-medium ${getAIScoreColor(room.aiScore)}`}>{room.aiScore}%</span>
-                        </div>
-                        <div className="flex items-center justify-between text-xs">
-                          <span>Dernier nettoyage:</span>
-                          <span>{room.lastCleaned}</span>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-wrap gap-1 mb-3">
-                        {room.amenities.map((amenity, idx) => (
-                          <Badge key={idx} variant="secondary" className="text-xs">
-                            {amenity}
-                          </Badge>
-                        ))}
-                      </div>
-
-                      {room.guest && (
-                        <div className="space-y-1 mb-3">
-                          <p className="text-sm font-medium">{room.guest}</p>
-                          <p className="text-xs text-muted-foreground">Départ: {room.checkout}</p>
-                        </div>
-                      )}
-
-                      <div className="flex gap-2">
-                        <Button size="sm" variant="outline" className="flex-1">
-                          Détails
-                        </Button>
-                        <Button size="sm" variant="outline">
-                          <MoreVertical className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {activeTab === "ai-monitoring" && (
-            <div className="space-y-6">
-              <div>
-                <h2 className="text-2xl font-bold mb-2">Surveillance IA NovaCore</h2>
-                <p className="text-muted-foreground">Monitoring intelligent en temps réel</p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Vue d'ensemble des chambres */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Transactions surveillées</p>
-                        <p className="text-2xl font-bold">1,247</p>
-                        <p className="text-xs text-green-600">Aujourd'hui</p>
-                      </div>
-                      <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                        <Activity className="h-6 w-6 text-blue-600" />
-                      </div>
-                    </div>
+                  <CardContent className="p-4 text-center">
+                    <div className="text-3xl font-bold text-green-600">{hotelStats.availableRooms}</div>
+                    <div className="text-sm text-muted-foreground">Chambres disponibles</div>
                   </CardContent>
                 </Card>
-
                 <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Anomalies détectées</p>
-                        <p className="text-2xl font-bold">3</p>
-                        <p className="text-xs text-yellow-600">À vérifier</p>
-                      </div>
-                      <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
-                        <AlertTriangle className="h-6 w-6 text-yellow-600" />
-                      </div>
-                    </div>
+                  <CardContent className="p-4 text-center">
+                    <div className="text-3xl font-bold text-red-600">{hotelStats.occupiedRooms}</div>
+                    <div className="text-sm text-muted-foreground">Chambres occupées</div>
                   </CardContent>
                 </Card>
-
                 <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Niveau de sécurité</p>
-                        <p className="text-2xl font-bold">Élevé</p>
-                        <p className="text-xs text-green-600">94% de confiance</p>
-                      </div>
-                      <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                        <Lock className="h-6 w-6 text-green-600" />
-                      </div>
-                    </div>
+                  <CardContent className="p-4 text-center">
+                    <div className="text-3xl font-bold text-yellow-600">6</div>
+                    <div className="text-sm text-muted-foreground">À nettoyer</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <div className="text-3xl font-bold text-gray-600">{hotelStats.outOfOrderRooms}</div>
+                    <div className="text-sm text-muted-foreground">Hors service</div>
                   </CardContent>
                 </Card>
               </div>
 
-              <Tabs defaultValue="alerts" className="w-full">
-                <TabsList>
-                  <TabsTrigger value="alerts">Alertes</TabsTrigger>
-                  <TabsTrigger value="transactions">Transactions</TabsTrigger>
-                  <TabsTrigger value="patterns">Patterns</TabsTrigger>
-                  <TabsTrigger value="settings">Paramètres IA</TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="alerts" className="space-y-4">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Alertes IA en temps réel</CardTitle>
-                      <CardDescription>Surveillance automatique des activités suspectes</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        {aiAlerts.map((alert) => (
-                          <div key={alert.id} className="flex items-start gap-4 p-4 border rounded-lg">
-                            <div className="mt-1">
-                              {alert.type === "warning" && <AlertTriangle className="h-5 w-5 text-yellow-500" />}
-                              {alert.type === "error" && <AlertTriangle className="h-5 w-5 text-red-500" />}
-                              {alert.type === "info" && <CheckCircle className="h-5 w-5 text-blue-500" />}
-                            </div>
-                            <div className="flex-1">
-                              <div className="flex items-center justify-between mb-2">
-                                <h4 className="font-medium">{alert.title}</h4>
-                                <Badge variant="outline">{alert.severity}</Badge>
-                              </div>
-                              <p className="text-sm text-muted-foreground mb-2">{alert.description}</p>
-                              <p className="text-xs text-muted-foreground">{alert.timestamp}</p>
-                            </div>
-                            <div className="flex gap-2">
-                              <Button size="sm" variant="outline">
-                                Investiguer
-                              </Button>
-                              <Button size="sm">Résoudre</Button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-
-                <TabsContent value="transactions" className="space-y-4">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Transactions surveillées</CardTitle>
-                      <CardDescription>Toutes les transactions avec analyse IA</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        {[
-                          {
-                            id: "TXN001",
-                            type: "payment",
-                            amount: "450,000 FCFA",
-                            guest: "Marie Kouam",
-                            room: "205",
-                            timestamp: "14:30",
-                            status: "completed",
-                            aiScore: 95,
-                          },
-                          {
-                            id: "TXN002",
-                            type: "split",
-                            amount: "680,000 FCFA",
-                            guest: "Amina Diallo",
-                            room: "301",
-                            timestamp: "15:45",
-                            status: "flagged",
-                            aiScore: 65,
-                          },
-                        ].map((txn) => (
-                          <div key={txn.id} className="flex items-center justify-between p-4 border rounded-lg">
-                            <div className="flex items-center gap-4">
-                              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                <CreditCard className="h-5 w-5 text-blue-600" />
-                              </div>
-                              <div>
-                                <p className="font-medium">{txn.guest}</p>
-                                <p className="text-sm text-muted-foreground">
-                                  {txn.type} - Chambre {txn.room}
-                                </p>
-                                <p className="text-xs text-muted-foreground">{txn.timestamp}</p>
-                              </div>
-                            </div>
-                            <div className="text-right">
-                              <p className="font-medium">{txn.amount}</p>
-                              <Badge
-                                variant={txn.status === "completed" ? "default" : "destructive"}
-                                className="text-xs"
-                              >
-                                {txn.status}
-                              </Badge>
-                              <p className={`text-xs ${getAIScoreColor(txn.aiScore)}`}>IA: {txn.aiScore}%</p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-              </Tabs>
-            </div>
-          )}
-
-          {activeTab === "inventory" && (
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-2xl font-bold mb-2">Gestion d'inventaire</h2>
-                  <p className="text-muted-foreground">Suivi automatique des stocks avec IA</p>
-                </div>
-                <Button>
-                  <Package className="h-4 w-4 mr-2" />
-                  Nouvelle commande
-                </Button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Articles en stock</p>
-                        <p className="text-2xl font-bold">1,247</p>
-                      </div>
-                      <Package className="h-8 w-8 text-blue-600" />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Stock faible</p>
-                        <p className="text-2xl font-bold text-yellow-600">5</p>
-                      </div>
-                      <AlertTriangle className="h-8 w-8 text-yellow-600" />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Stock critique</p>
-                        <p className="text-2xl font-bold text-red-600">2</p>
-                      </div>
-                      <AlertTriangle className="h-8 w-8 text-red-600" />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Commandes en cours</p>
-                        <p className="text-2xl font-bold">8</p>
-                      </div>
-                      <Truck className="h-8 w-8 text-green-600" />
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
+              {/* Plan détaillé des chambres */}
               <Card>
                 <CardHeader>
-                  <CardTitle>État des stocks</CardTitle>
-                  <CardDescription>Surveillance automatique avec alertes IA</CardDescription>
+                  <CardTitle>Plan des chambres par étage</CardTitle>
+                  <CardDescription>Cliquez sur une chambre pour voir les détails</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    {inventory.map((item, idx) => (
-                      <div key={idx} className="flex items-center justify-between p-4 border rounded-lg">
-                        <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                            <Package className="h-5 w-5 text-gray-600" />
-                          </div>
-                          <div>
-                            <p className="font-medium">{item.item}</p>
-                            <p className="text-sm text-muted-foreground">Minimum: {item.minimum}</p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-medium">{item.stock} unités</p>
-                          <Badge
-                            variant={
-                              item.status === "ok" ? "default" : item.status === "low" ? "secondary" : "destructive"
-                            }
-                            className="text-xs"
-                          >
-                            {item.status === "ok" ? "OK" : item.status === "low" ? "Faible" : "Critique"}
-                          </Badge>
+                  <div className="space-y-8">
+                    {roomStatus.map((floor) => (
+                      <div key={floor.floor}>
+                        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                          <MapPin className="h-5 w-5" />
+                          Étage {floor.floor}
+                        </h3>
+                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                          {floor.rooms.map((room) => (
+                            <Card
+                              key={room.number}
+                              className={`cursor-pointer hover:shadow-lg transition-shadow ${
+                                room.status === "Occupied"
+                                  ? "border-red-200 bg-red-50"
+                                  : room.status === "Vacant Clean"
+                                    ? "border-green-200 bg-green-50"
+                                    : room.status === "Vacant Dirty"
+                                      ? "border-yellow-200 bg-yellow-50"
+                                      : room.status === "Out of Order"
+                                        ? "border-gray-200 bg-gray-50"
+                                        : room.status === "Maintenance"
+                                          ? "border-orange-200 bg-orange-50"
+                                          : "border-blue-200 bg-blue-50"
+                              }`}
+                            >
+                              <CardContent className="p-4">
+                                <div className="text-center">
+                                  <div className="text-xl font-bold mb-2">{room.number}</div>
+                                  <Badge className={`${getStatusColor(room.status)} mb-2`} variant="outline">
+                                    {room.status === "Occupied" && "Occupée"}
+                                    {room.status === "Vacant Clean" && "Libre"}
+                                    {room.status === "Vacant Dirty" && "À nettoyer"}
+                                    {room.status === "Out of Order" && "HS"}
+                                    {room.status === "Maintenance" && "Maintenance"}
+                                    {room.status === "Reserved" && "Réservée"}
+                                  </Badge>
+                                  <div className="text-xs text-muted-foreground mb-2">{room.type}</div>
+                                  {room.guest && (
+                                    <div className="text-xs font-medium text-gray-700 mb-1">{room.guest}</div>
+                                  )}
+                                  {room.checkout && (
+                                    <div className="text-xs text-muted-foreground">Départ: {room.checkout}</div>
+                                  )}
+
+                                  {/* Icônes d'équipements */}
+                                  <div className="flex justify-center gap-1 mt-2">
+                                    <Wifi className="h-3 w-3 text-gray-400" />
+                                    <Tv className="h-3 w-3 text-gray-400" />
+                                    <AirVent className="h-3 w-3 text-gray-400" />
+                                    <Bath className="h-3 w-3 text-gray-400" />
+                                    {room.type === "Suite" && <Coffee className="h-3 w-3 text-gray-400" />}
+                                  </div>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          ))}
                         </div>
                       </div>
                     ))}
@@ -1199,89 +980,21 @@ export default function NovaHospitalityERP() {
             </div>
           )}
 
-          {activeTab === "staff" && (
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-2xl font-bold mb-2">Gestion du personnel</h2>
-                  <p className="text-muted-foreground">Suivi des équipes avec analyse de performance IA</p>
-                </div>
-                <Button>
-                  <UserCheck className="h-4 w-4 mr-2" />
-                  Nouveau employé
-                </Button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Personnel en service</p>
-                        <p className="text-2xl font-bold">12</p>
-                      </div>
-                      <UserCheck className="h-8 w-8 text-green-600" />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Performance moyenne</p>
-                        <p className="text-2xl font-bold">92%</p>
-                      </div>
-                      <Star className="h-8 w-8 text-yellow-600" />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Heures travaillées</p>
-                        <p className="text-2xl font-bold">96h</p>
-                      </div>
-                      <Clock className="h-8 w-8 text-blue-600" />
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Équipe actuelle</CardTitle>
-                  <CardDescription>Personnel avec analyse de performance IA</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {staff.map((member) => (
-                      <div key={member.id} className="flex items-center justify-between p-4 border rounded-lg">
-                        <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                            <Users className="h-5 w-5 text-blue-600" />
-                          </div>
-                          <div>
-                            <p className="font-medium">{member.name}</p>
-                            <p className="text-sm text-muted-foreground">{member.role}</p>
-                            <p className="text-xs text-muted-foreground">{member.shift}</p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <Badge
-                            variant={member.status === "En service" ? "default" : "secondary"}
-                            className="text-xs mb-1"
-                          >
-                            {member.status}
-                          </Badge>
-                          <p className={`text-sm font-medium ${getAIScoreColor(member.performance)}`}>
-                            Performance: {member.performance}%
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+          {/* Message d'accès refusé */}
+          {!hasPermission(activeTab) && activeTab !== "dashboard" && (
+            <div className="flex items-center justify-center h-96">
+              <Card className="w-full max-w-md">
+                <CardContent className="p-8 text-center">
+                  <Hotel className="h-16 w-16 mx-auto mb-4 text-gray-400" />
+                  <h3 className="text-xl font-semibold mb-2">Accès restreint</h3>
+                  <p className="text-muted-foreground mb-4">
+                    Votre rôle ({currentUser.role.name}) ne vous permet pas d'accéder à cette section.
+                  </p>
+                  <Badge className={getRoleColor(currentUser.role.level)}>{currentUser.role.name}</Badge>
+                  <div className="mt-4">
+                    <Button variant="outline" onClick={() => setActiveTab("dashboard")}>
+                      Retour au tableau de bord
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -1290,16 +1003,16 @@ export default function NovaHospitalityERP() {
         </main>
       </div>
 
-      {/* Footer with NovaCore branding */}
+      {/* Footer */}
       <footer className="bg-gray-900 text-white py-8 mt-12">
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="flex items-center gap-4 mb-4 md:mb-0">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
                 <Zap className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="font-bold text-lg">NovaCore</h3>
+                <h3 className="font-bold text-lg">NovaCore Hospitality</h3>
                 <p className="text-sm text-gray-400">Powered by AI</p>
               </div>
             </div>
@@ -1313,7 +1026,7 @@ export default function NovaHospitalityERP() {
           </div>
           <div className="border-t border-gray-700 mt-6 pt-6 text-center">
             <p className="text-sm text-gray-400">
-              © 2024 NovaCore ERP. Tous droits réservés. Développé par DL Solutions SARL.
+              © 2024 NovaCore Hospitality CRM. Tous droits réservés. Développé par DL Solutions SARL.
             </p>
           </div>
         </div>

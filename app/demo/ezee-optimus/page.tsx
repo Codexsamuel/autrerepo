@@ -34,7 +34,9 @@ import {
   Bath,
   AirVent,
   RefreshCw,
+  Camera,
 } from "lucide-react"
+import Link from "next/link"
 
 interface UserRole {
   id: string
@@ -539,6 +541,18 @@ export default function EzeeOptimusDemo() {
               </button>
             )}
 
+            {hasPermission("guests") && (
+              <button
+                onClick={() => setActiveTab("photo-verification")}
+                className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                  activeTab === "photo-verification" ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
+                }`}
+              >
+                <Camera className="h-4 w-4 inline mr-3" />
+                Vérification Photo
+              </button>
+            )}
+
             {hasPermission("housekeeping") && (
               <button
                 onClick={() => setActiveTab("housekeeping")}
@@ -1029,6 +1043,26 @@ export default function EzeeOptimusDemo() {
                       </div>
                     ))}
                   </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          {activeTab === "photo-verification" && hasPermission("guests") && (
+            <div className="flex items-center justify-center h-96">
+              <Card className="w-full max-w-md">
+                <CardContent className="p-8 text-center">
+                  <Camera className="h-16 w-16 mx-auto mb-4 text-blue-600" />
+                  <h3 className="text-xl font-semibold mb-2">Système de Vérification Photo</h3>
+                  <p className="text-muted-foreground mb-4">
+                    Vérification d'identité obligatoire pour toutes les réservations via plateformes partenaires.
+                  </p>
+                  <Link href="/demo/ezee-optimus/photo-verification">
+                    <Button className="w-full">
+                      <Camera className="h-4 w-4 mr-2" />
+                      Accéder au système
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             </div>

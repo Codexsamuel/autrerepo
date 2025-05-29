@@ -120,10 +120,18 @@ export default function HomePage() {
       <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
-              <span className="text-sm font-bold text-primary-foreground">DL</span>
+            <div className="flex items-center gap-3">
+              <div className="h-12 w-12 flex items-center justify-center">
+                <Image
+                  src="/images/dl-logo.jpg"
+                  alt="DL Solutions Logo"
+                  width={48}
+                  height={48}
+                  className="object-contain"
+                />
+              </div>
+              <span className="font-semibold text-lg">DL Solutions</span>
             </div>
-            <span className="font-semibold">DL Solutions</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -167,6 +175,18 @@ export default function HomePage() {
         {isMenuOpen && (
           <div className="container py-4 md:hidden border-t">
             <nav className="flex flex-col space-y-4">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-12 w-12 flex items-center justify-center">
+                  <Image
+                    src="/images/dl-logo.jpg"
+                    alt="DL Solutions Logo"
+                    width={48}
+                    height={48}
+                    className="object-contain"
+                  />
+                </div>
+                <span className="font-semibold text-lg">DL Solutions</span>
+              </div>
               <Link href="/" className="text-sm font-medium">
                 Accueil
               </Link>
@@ -381,11 +401,17 @@ export default function HomePage() {
         <div className="container px-4 md:px-6">
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
-                  <span className="text-sm font-bold text-primary-foreground">DL</span>
+              <div className="flex items-center gap-3">
+                <div className="h-12 w-12 flex items-center justify-center">
+                  <Image
+                    src="/images/dl-logo.jpg"
+                    alt="DL Solutions Logo"
+                    width={48}
+                    height={48}
+                    className="object-contain"
+                  />
                 </div>
-                <span className="font-semibold">DL Solutions</span>
+                <span className="font-semibold text-lg">DL Solutions</span>
               </div>
               <p className="text-sm text-muted-foreground">
                 Innovation technologique et intelligence artificielle pour transformer votre entreprise.

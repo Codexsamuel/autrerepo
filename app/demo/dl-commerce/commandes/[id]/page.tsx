@@ -33,7 +33,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
     customer: "Marie Kouam",
     date: "15/01/2024",
     status: "Livré",
-    total: "45,000 FCFA",
+    total: "187,000 FCFA",
     items: [
       {
         id: "PROD-1234",
@@ -66,7 +66,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
       estimatedDelivery: "17/01/2024",
       actualDelivery: "16/01/2024",
     },
-    customer: {
+    customerInfo: {
       name: "Marie Kouam",
       email: "marie.kouam@email.com",
       phone: "+237 677 123 456",
@@ -250,14 +250,14 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <h3 className="font-medium">{order.customer.name}</h3>
+                    <h3 className="font-medium">{order.customerInfo.name}</h3>
                     <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
                       <Mail className="h-4 w-4" />
-                      <span>{order.customer.email}</span>
+                      <span>{order.customerInfo.email}</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
                       <Phone className="h-4 w-4" />
-                      <span>{order.customer.phone}</span>
+                      <span>{order.customerInfo.phone}</span>
                     </div>
                   </div>
                   <Separator />
@@ -327,7 +327,11 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                       <tr key={item.id} className="border-b">
                         <td className="p-4">
                           <div className="flex items-center gap-4">
-                            <img src={item.image || "/placeholder.svg"} alt={item.name} className="w-16 h-16 object-cover rounded" />
+                            <img
+                              src={item.image || "/placeholder.svg"}
+                              alt={item.name}
+                              className="w-16 h-16 object-cover rounded"
+                            />
                             <div>
                               <p className="font-medium">{item.name}</p>
                               <p className="text-sm text-gray-500">ID: {item.id}</p>
@@ -387,4 +391,35 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                       <Badge className="bg-green-100 text-green-800">{order.payment.status}</Badge>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-500">ID Transaction:</span\
+                      <span className="text-gray-500">ID Transaction:</span>
+                      <span className="font-medium">{order.payment.transactionId}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-500">Date de paiement:</span>
+                      <span>{order.payment.date}</span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-medium mb-2">Historique de la commande</h3>
+                  <div className="space-y-3">
+                    {order.timeline.map((event, index) => (
+                      <div key={index} className="flex items-start gap-3">
+                        <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0" />
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">{event.status}</p>
+                          <p className="text-xs text-gray-500">{event.description}</p>
+                          <p className="text-xs text-gray-400">{event.date}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  )
+}

@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "DL Solutions",
-  description: "Solutions digitales innovantes pour votre entreprise",
+  description: "Digital solutions for your business",
   url: "https://dl-solutions.fr",
   ogImage: "/images/dl-logo.jpg",
   links: {

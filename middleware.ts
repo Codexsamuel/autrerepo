@@ -1,3 +1,5 @@
+export { default } from "next-auth/middleware"
+
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
 
 const isProtectedRoute = createRouteMatcher(["/novacore(.*)", "/demo(.*)", "/admin(.*)"])

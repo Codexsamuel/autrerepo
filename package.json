@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/localizations": "latest",
     "@clerk/nextjs": "latest",
     "@clerk/themes": "latest",
+    "@emotion/is-prop-valid": "latest",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "1.2.2",
     "@radix-ui/react-alert-dialog": "1.1.4",
@@ -58,6 +58,7 @@
     "expo-asset": "latest",
     "expo-file-system": "latest",
     "expo-gl": "latest",
+    "framer-motion": "latest",
     "input-otp": "1.4.1",
     "lucide-react": "^0.454.0",
     "next": "15.2.4",

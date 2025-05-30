@@ -1,184 +1,220 @@
 "use client"
 
+import type React from "react"
+
 import { useState } from "react"
-import { FormValidation } from "@/components/form-validation"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Mail, MapPin, Phone } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Badge } from "@/components/ui/badge"
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from "lucide-react"
 
 export default function ContactPage() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    company: "",
+    subject: "",
+    message: "",
+  })
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
-  const contactFields = [
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitted(true)
+    setTimeout(() => setIsSubmitted(false), 3000)
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    })
+  }
+
+  const contactInfo = [
     {
-      id: "name",
-      label: "Nom complet",
-      type: "text" as const,
-      required: true,
-      minLength: 3,
-      placeholder: "Votre nom et prénom",
+      icon: Mail,
+      title: "Email",
+      value: "contact@dl-solutions.fr",
+      description: "Reponse sous 24h",
     },
     {
-      id: "email",
-      label: "Email",
-      type: "email" as const,
-      required: true,
-      placeholder: "votre@email.com",
+      icon: Phone,
+      title: "Telephone",
+      value: "+33 1 23 45 67 89",
+      description: "Lun-Ven 9h-18h",
     },
     {
-      id: "phone",
-      label: "Téléphone",
-      type: "tel" as const,
-      required: true,
-      placeholder: "+237 6XX XXX XXX",
+      icon: MapPin,
+      title: "Adresse",
+      value: "123 Avenue des Champs-Elysees",
+      description: "75008 Paris, France",
     },
     {
-      id: "subject",
-      label: "Sujet",
-      type: "select" as const,
-      required: true,
-      options: [
-        { value: "information", label: "Demande d'information" },
-        { value: "devis", label: "Demande de devis" },
-        { value: "support", label: "Support technique" },
-        { value: "partenariat", label: "Proposition de partenariat" },
-        { value: "autre", label: "Autre" },
-      ],
-    },
-    {
-      id: "message",
-      label: "Message",
-      type: "textarea" as const,
-      required: true,
-      minLength: 10,
-      placeholder: "Détaillez votre demande ici...",
+      icon: Clock,
+      title: "Horaires",
+      value: "Lundi - Vendredi",
+      description: "9h00 - 18h00",
     },
   ]
 
-  const handleSubmit = async (data: Record<string, string>) => {
-    setIsSubmitting(true)
-
-    // Simuler un délai d'envoi
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
-    console.log("Formulaire soumis:", data)
-    setIsSubmitting(false)
-
-    // Dans un cas réel, vous enverriez les données à votre API
-    // await fetch('/api/contact', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(data)
-    // })
+  if (isSubmitted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-teal-50 flex items-center justify-center">
+        <Card className="w-full max-w-md border-0 shadow-2xl">
+          <CardContent className="p-8 text-center">
+            <CheckCircle className="h-16 w-16 text-green-600 mx-auto mb-6" />
+            <h2 className="text-2xl font-bold text-green-700 mb-4">Message envoye !</h2>
+            <p className="text-gray-600 mb-6">
+              Merci pour votre message. Nous vous repondrons dans les plus brefs delais.
+            </p>
+            <Button onClick={() => setIsSubmitted(false)} className="w-full">
+              Envoyer un autre message
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    )
   }
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold tracking-tight mb-2">Contactez-nous</h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Notre équipe est à votre disposition pour répondre à toutes vos questions et vous accompagner dans vos
-            projets.
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
+      <div className="container mx-auto px-4 py-16">
+        <div className="text-center mb-16">
+          <Badge variant="outline" className="mb-4">
+            Contactez-nous
+          </Badge>
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Parlons de votre projet
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Notre equipe d'experts est la pour vous accompagner dans votre transformation digitale. Contactez-nous pour
+            une consultation gratuite.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          <Card>
-            <CardHeader className="pb-2">
-              <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-4">
-                <Phone className="h-6 w-6 text-blue-600" />
-              </div>
-              <CardTitle className="text-xl">Téléphone</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="text-base">
-                <a href="tel:+237694341586" className="hover:text-blue-600 transition-colors">
-                  +237 694 341 586
-                </a>
-              </CardDescription>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-2">
-              <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-4">
-                <Mail className="h-6 w-6 text-blue-600" />
-              </div>
-              <CardTitle className="text-xl">Email</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="text-base">
-                <a href="mailto:sobam@daveandlucesolutions.com" className="hover:text-blue-600 transition-colors">
-                  sobam@daveandlucesolutions.com
-                </a>
-              </CardDescription>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-2">
-              <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-4">
-                <MapPin className="h-6 w-6 text-blue-600" />
-              </div>
-              <CardTitle className="text-xl">Adresse</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="text-base">
-                2 rue École de Police
-                <br />
-                Yaoundé, Cameroun
-              </CardDescription>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          <div className="lg:col-span-2">
-            <div className="bg-blue-600 text-white p-6 rounded-lg h-full">
-              <h2 className="text-2xl font-bold mb-4">Horaires d'ouverture</h2>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center border-b border-blue-400 pb-2">
-                  <span>Lundi - Vendredi</span>
-                  <span className="font-medium">8h - 18h</span>
-                </div>
-                <div className="flex justify-between items-center border-b border-blue-400 pb-2">
-                  <span>Samedi</span>
-                  <span className="font-medium">9h - 15h</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>Dimanche</span>
-                  <span className="font-medium">Fermé</span>
-                </div>
-              </div>
-
-              <div className="mt-8">
-                <h3 className="text-xl font-bold mb-3">Besoin urgent?</h3>
-                <p className="mb-4">
-                  Pour toute demande urgente, n'hésitez pas à nous contacter directement par téléphone.
-                </p>
-                <div className="flex items-center">
-                  <Phone className="h-5 w-5 mr-2" />
-                  <span className="font-bold">+237 694 341 586</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="lg:col-span-3">
-            <Card>
+        <div className="grid lg:grid-cols-2 gap-12">
+          <div>
+            <Card className="border-0 shadow-xl">
               <CardHeader>
-                <CardTitle>Formulaire de contact</CardTitle>
+                <CardTitle className="text-2xl">Envoyez-nous un message</CardTitle>
                 <CardDescription>
-                  Remplissez ce formulaire et nous vous répondrons dans les plus brefs délais.
+                  Remplissez le formulaire ci-dessous et nous vous repondrons rapidement.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <FormValidation
-                  fields={contactFields}
-                  onSubmit={handleSubmit}
-                  submitLabel="Envoyer le message"
-                  successMessage="Votre message a été envoyé avec succès. Notre équipe vous contactera dans les plus brefs délais."
-                />
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Nom complet *</label>
+                      <Input
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        placeholder="Votre nom"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Email *</label>
+                      <Input
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="votre@email.com"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Telephone</label>
+                      <Input
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        placeholder="+33 1 23 45 67 89"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Entreprise</label>
+                      <Input
+                        name="company"
+                        value={formData.company}
+                        onChange={handleChange}
+                        placeholder="Nom de votre entreprise"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Sujet *</label>
+                    <Input
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      placeholder="Objet de votre demande"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Message *</label>
+                    <Textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      placeholder="Decrivez votre projet ou votre demande..."
+                      rows={6}
+                      required
+                    />
+                  </div>
+
+                  <Button type="submit" size="lg" className="w-full bg-gradient-to-r from-blue-600 to-purple-600">
+                    <Send className="h-4 w-4 mr-2" />
+                    Envoyer le message
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="space-y-6">
+            <Card className="border-0 shadow-xl">
+              <CardHeader>
+                <CardTitle className="text-2xl">Informations de contact</CardTitle>
+                <CardDescription>Plusieurs moyens de nous joindre selon vos preferences.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {contactInfo.map((info, index) => (
+                  <div key={index} className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                      <info.icon className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-lg">{info.title}</h3>
+                      <p className="text-gray-900">{info.value}</p>
+                      <p className="text-sm text-gray-600">{info.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 shadow-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+              <CardContent className="p-8">
+                <h3 className="text-2xl font-bold mb-4">Consultation gratuite</h3>
+                <p className="mb-6 opacity-90">
+                  Beneficiez d'une consultation gratuite de 30 minutes avec nos experts pour evaluer vos besoins.
+                </p>
+                <Button variant="secondary" size="lg" className="w-full">
+                  Prendre rendez-vous
+                </Button>
               </CardContent>
             </Card>
           </div>

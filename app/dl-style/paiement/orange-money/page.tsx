@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { ArrowLeft, Smartphone, Shield, CheckCircle, AlertCircle, MessageSquare } from "lucide-react"
 
 export default function OrangeMoneyPaymentPage() {
-  const [step, setStep] = useState(1) // 1: Phone, 2: Code, 3: Processing, 4: Success
+  const [step, setStep] = useState(1)
   const [phoneNumber, setPhoneNumber] = useState("")
   const [confirmationCode, setConfirmationCode] = useState("")
   const [error, setError] = useState("")
@@ -30,7 +30,6 @@ export default function OrangeMoneyPaymentPage() {
     setError("")
     setStep(3)
 
-    // Simulation du traitement
     setTimeout(() => {
       setStep(4)
     }, 3000)
@@ -80,7 +79,6 @@ export default function OrangeMoneyPaymentPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-white shadow-lg border-b">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
@@ -182,7 +180,7 @@ export default function OrangeMoneyPaymentPage() {
 
                   <div className="bg-yellow-50 p-4 rounded-lg">
                     <p className="text-sm text-yellow-800">
-                      ⏰ Le code expire dans 5 minutes. Si vous n'avez pas reçu, vérifiez votre numéro.
+                      ⏰ Le code expire dans 5 minutes. Si vous ne le recevez pas, vérifiez votre numéro.
                     </p>
                   </div>
 
@@ -200,7 +198,6 @@ export default function OrangeMoneyPaymentPage() {
                 </div>
               )}
 
-              {/* Sécurité */}
               <div className="mt-8 bg-gray-50 p-4 rounded-lg">
                 <div className="flex items-center space-x-2 text-gray-600 text-sm">
                   <Shield className="h-4 w-4" />

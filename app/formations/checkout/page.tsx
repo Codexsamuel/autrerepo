@@ -29,7 +29,7 @@ import {
 
 export default function FormationsCheckoutPage() {
   const searchParams = useSearchParams()
-  const [step, setStep] = useState(1) // 1: Info, 2: Payment, 3: OTP, 4: Success
+  const [step, setStep] = useState(1)
   const [selectedPayment, setSelectedPayment] = useState("card")
   const [otpCode, setOtpCode] = useState("")
   const [formData, setFormData] = useState({
@@ -106,7 +106,6 @@ export default function FormationsCheckoutPage() {
       setStep(2)
     } else if (step === 2) {
       setStep(3)
-      // Simulation envoi OTP
       setTimeout(() => {
         console.log("OTP envoyé")
       }, 1000)
@@ -116,7 +115,6 @@ export default function FormationsCheckoutPage() {
   const handleOTPVerification = () => {
     if (otpCode.length === 6) {
       setStep(4)
-      // Redirection vers le cours après 3 secondes
       setTimeout(() => {
         window.location.href = `/formations/${formation}/cours`
       }, 3000)
@@ -163,7 +161,6 @@ export default function FormationsCheckoutPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-teal-50">
-      {/* Header */}
       <header className="bg-white/90 backdrop-blur-xl shadow-lg border-b border-white/20">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
@@ -186,7 +183,6 @@ export default function FormationsCheckoutPage() {
         </div>
       </header>
 
-      {/* Progress Steps */}
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-center space-x-8">
@@ -218,10 +214,8 @@ export default function FormationsCheckoutPage() {
 
       <div className="container mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Main Content */}
           <div className="lg:col-span-2">
             <Tabs value={step.toString()} className="w-full">
-              {/* Step 1: Personal Information */}
               <TabsContent value="1">
                 <Card className="border-0 shadow-xl">
                   <CardHeader>
@@ -356,7 +350,6 @@ export default function FormationsCheckoutPage() {
                 </Card>
               </TabsContent>
 
-              {/* Step 2: Payment Method */}
               <TabsContent value="2">
                 <Card className="border-0 shadow-xl">
                   <CardHeader>
@@ -425,7 +418,6 @@ export default function FormationsCheckoutPage() {
                 </Card>
               </TabsContent>
 
-              {/* Step 3: OTP Verification */}
               <TabsContent value="3">
                 <Card className="border-0 shadow-xl">
                   <CardHeader>
@@ -483,7 +475,6 @@ export default function FormationsCheckoutPage() {
             </Tabs>
           </div>
 
-          {/* Order Summary */}
           <div>
             <Card className="border-0 shadow-xl sticky top-4">
               <CardHeader>

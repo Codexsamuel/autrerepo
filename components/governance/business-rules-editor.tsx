@@ -348,7 +348,7 @@ export default function BusinessRulesEditor() {
                     <div key={index} className="p-4 border rounded-md mb-4">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                         <div>
-                          <Label>Type d&apos;entité</Label>
+                          <Label>Type d'entité</Label>
                           <Select
                             value={condition.entity_type}
                             onValueChange={(value) => handleConditionChange(index, "entity_type", value)}
@@ -432,7 +432,7 @@ export default function BusinessRulesEditor() {
                     <div key={index} className="p-4 border rounded-md mb-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div>
-                          <Label>Type d&apos;action</Label>
+                          <Label>Type d'action</Label>
                           <Select
                             value={action.type}
                             onValueChange={(value) => handleActionChange(index, "type", value)}

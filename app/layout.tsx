@@ -1,22 +1,20 @@
 import type React from "react"
-import type { Metadata, Viewport } from "next"
+import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import { ClerkProvider } from "@clerk/nextjs"
-import { frFR } from "@clerk/localizations"
+import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
-import "./globals.css"
+import { AuthProvider } from "@/components/auth/auth-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: {
-    default: "NovaCore CRM - DL Solutions",
-    template: "%s | NovaCore CRM",
+    default: "DL Solutions - Votre Partenaire Digital",
+    template: "%s | DL Solutions",
   },
-  description:
-    "Solution CRM intelligente avec IA pour entreprises ivoiriennes. Gestion clients, facturation, analytics et Studio IA intégré.",
-  keywords: ["CRM", "Côte d'Ivoire", "Intelligence Artificielle", "Gestion Client", "Facturation", "Analytics"],
+  description: "Solutions digitales innovantes pour votre entreprise. CRM, formations, e-commerce et plus encore.",
+  keywords: ["CRM", "formations", "e-commerce", "solutions digitales", "NovaCore", "DL Style"],
   authors: [{ name: "DL Solutions" }],
   creator: "DL Solutions",
   publisher: "DL Solutions",
@@ -25,36 +23,32 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://dlsolutions.ci"),
+  metadataBase: new URL("https://dl-solutions.fr"),
   alternates: {
     canonical: "/",
-    languages: {
-      "fr-CI": "/fr",
-      "en-US": "/en",
-    },
   },
   openGraph: {
     type: "website",
-    locale: "fr_CI",
-    url: "https://dlsolutions.ci",
-    title: "NovaCore CRM - Solution intelligente pour entreprises",
-    description: "CRM avec IA pour la Côte d'Ivoire. Gestion clients, facturation automatisée, analytics avancés.",
+    locale: "fr_FR",
+    url: "https://dl-solutions.fr",
     siteName: "DL Solutions",
+    title: "DL Solutions - Votre Partenaire Digital",
+    description: "Solutions digitales innovantes pour votre entreprise",
     images: [
       {
-        url: "/og-image.png",
+        url: "/images/dl-logo.jpg",
         width: 1200,
         height: 630,
-        alt: "NovaCore CRM Dashboard",
+        alt: "DL Solutions Logo",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "NovaCore CRM - DL Solutions",
-    description: "Solution CRM intelligente avec IA pour entreprises ivoiriennes",
-    images: ["/og-image.png"],
-    creator: "@dlsolutions_ci",
+    title: "DL Solutions - Votre Partenaire Digital",
+    description: "Solutions digitales innovantes pour votre entreprise",
+    images: ["/images/dl-logo.jpg"],
+    creator: "@dlsolutions",
   },
   robots: {
     index: true,
@@ -70,19 +64,7 @@ export const metadata: Metadata = {
   verification: {
     google: "your-google-verification-code",
   },
-  category: "business",
     generator: 'v0.dev'
-}
-
-export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
-  ],
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 }
 
 export default function RootLayout({
@@ -91,42 +73,22 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider localization={frFR}>
-      <html lang="fr" suppressHydrationWarning>
-        <head>
-          <link rel="manifest" href="/manifest.json" />
-          <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
-          <meta name="apple-mobile-web-app-capable" content="yes" />
-          <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-          <meta name="apple-mobile-web-app-title" content="NovaCore" />
-          <meta name="mobile-web-app-capable" content="yes" />
-          <meta name="msapplication-TileColor" content="#6366f1" />
-          <meta name="msapplication-tap-highlight" content="no" />
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-                if ('serviceWorker' in navigator) {
-                  window.addEventListener('load', function() {
-                    navigator.serviceWorker.register('/sw.js')
-                      .then(function(registration) {
-                        console.log('SW registered: ', registration);
-                      })
-                      .catch(function(registrationError) {
-                        console.log('SW registration failed: ', registrationError);
-                      });
-                  });
-                }
-              `,
-            }}
-          />
-        </head>
-        <body className={inter.className}>
-          <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+    <html lang="fr" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#3b82f6" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+      </head>
+      <body className={inter.className}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+          <AuthProvider>
             {children}
             <Toaster />
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+          </AuthProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   )
 }

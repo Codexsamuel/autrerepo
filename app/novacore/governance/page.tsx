@@ -25,7 +25,7 @@ export default function GovernancePage() {
           <TabsTrigger value="departments">Départements</TabsTrigger>
           <TabsTrigger value="permissions">Permissions</TabsTrigger>
           <TabsTrigger value="rules">Règles Métier</TabsTrigger>
-          <TabsTrigger value="logs">Journaux d&apos;Activité</TabsTrigger>
+          <TabsTrigger value="logs">Journaux d'Activité</TabsTrigger>
         </TabsList>
 
         <TabsContent value="roles" className="space-y-6">
@@ -63,8 +63,8 @@ export default function GovernancePage() {
         <TabsContent value="logs" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Journaux d&apos;Activité</CardTitle>
-              <CardDescription>Consultez l&apos;historique des actions utilisateurs dans le système</CardDescription>
+              <CardTitle>Journaux d'Activité</CardTitle>
+              <CardDescription>Consultez l'historique des actions utilisateurs dans le système</CardDescription>
             </CardHeader>
             <CardContent>
               <ActivityLogs />

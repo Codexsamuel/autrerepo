@@ -182,7 +182,7 @@ export default function OrangeMoneyPaymentPage() {
 
                   <div className="bg-yellow-50 p-4 rounded-lg">
                     <p className="text-sm text-yellow-800">
-                      ⏰ Le code expire dans 5 minutes. Si vous ne l'avez pas reçu, vérifiez votre numéro.
+                      ⏰ Le code expire dans 5 minutes. Si vous n'avez pas reçu, vérifiez votre numéro.
                     </p>
                   </div>
 

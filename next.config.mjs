@@ -1,44 +1,15 @@
+import withSerwistInit from '@serwist/next'
+
+const withSerwist = withSerwistInit({
+  swSrc: 'app/sw.ts',
+  swDest: 'public/sw.js',
+  cacheOnFrontEndNav: true,
+  reloadOnOnline: true,
+  disable: process.env.NODE_ENV === 'development',
+})
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async redirects() {
-    return [
-      {
-        source: '/home',
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/accueil',
-        destination: '/',
-        permanent: true,
-      },
-    ]
-  },
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-          {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on',
-          },
-        ],
-      },
-    ]
-  },
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -46,14 +17,28 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ['www.daveandlucesolutions.com', 'daveandlucesolutions.com'],
-    formats: ['image/webp', 'image/avif'],
+    domains: [
+      'images.unsplash.com',
+      'res.cloudinary.com',
+      'img.clerk.com',
+      'lh3.googleusercontent.com'
+    ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
     unoptimized: true,
   },
+  experimental: {
+    serverActions: {
+      allowedOrigins: ['localhost:3000', '*.vercel.app'],
+    },
+  },
   env: {
-    SITE_URL: 'https://www.daveandlucesolutions.com',
-    SITE_NAME: 'Dave and Luce Solutions',
+    CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
 }
 
-export default nextConfig
+export default withSerwist(nextConfig)

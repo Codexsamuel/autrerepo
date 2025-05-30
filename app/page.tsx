@@ -450,6 +450,61 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Team Section */}
+<section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-100">
+  <div className="container px-4 sm:px-6 lg:px-8 max-w-screen-2xl">
+    <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12 md:mb-16">
+      <div className="space-y-2">
+        <Badge>Notre Équipe Dirigeante</Badge>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter">
+          Les talents derrière DL Solutions
+        </h2>
+        <p className="mx-auto max-w-[90%] sm:max-w-[700px] text-muted-foreground text-base sm:text-lg">
+          Une équipe passionnée et expérimentée qui porte votre transformation digitale avec excellence et innovation.
+        </p>
+      </div>
+    </div>
+
+    {/* Grille centrée - 2 colonnes en grand écran */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-4xl mx-auto">
+      {/* Samuel OBAM */}
+      <div className="flex flex-col items-center text-center space-y-3">
+        <Image
+          src="/images/team/samuel.png"
+          alt="Samuel OBAM"
+          width={150}
+          height={150}
+          className="rounded-full object-cover shadow-lg border-4 border-blue-600"
+        />
+        <h3 className="text-xl font-semibold">Samuel OBAM</h3>
+        <p className="text-blue-700">Directeur Général (CEO)</p>
+        <p className="text-sm text-muted-foreground px-4">
+          Visionnaire et expert en transformation digitale, Samuel dirige l'innovation et le développement stratégique de l'entreprise.
+        </p>
+      </div>
+
+      {/* Lucie */}
+      <div className="flex flex-col items-center text-center space-y-3">
+        <Image
+          src="/images/team/lucie.png"
+          alt="Lucie"
+          width={150}
+          height={150}
+          className="rounded-full object-cover shadow-lg border-4 border-blue-600"
+        />
+        <h3 className="text-xl font-semibold">Lucie</h3>
+        <p className="text-blue-700">Directrice Marketing</p>
+        <p className="text-sm text-muted-foreground px-4">
+          Spécialiste du marketing digital, Lucie conçoit des stratégies innovantes pour accroître la visibilité et la notoriété de DL Solutions.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
       {/* Testimonials Section */}
       <section className="py-12 sm:py-16 md:py-20 lg:py-24">
         <div className="container px-4 sm:px-6 lg:px-8 max-w-screen-2xl">

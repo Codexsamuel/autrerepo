@@ -30,7 +30,7 @@ import {
   GraduationCap,
 } from "lucide-react"
 
-export default function SignIn() {
+export default function CRMSelector() {
   const [showPopup, setShowPopup] = useState(false)
   const [formData, setFormData] = useState({
     companyName: "",
@@ -186,18 +186,20 @@ export default function SignIn() {
                       <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                         {crm.icon}
                       </div>
-                      <CardTitle>{crm.name}</CardTitle>
+                      <CardTitle className="text-sm">{crm.name}</CardTitle>
                     </div>
-                    <Badge variant="outline">{crm.price}</Badge>
+                    <Badge variant="outline" className="text-xs">
+                      {crm.price}
+                    </Badge>
                   </div>
-                  <CardDescription className="mt-2">{crm.description}</CardDescription>
+                  <CardDescription className="mt-2 text-xs">{crm.description}</CardDescription>
                 </CardHeader>
                 <CardContent className="pb-3">
                   <div className="space-y-2">
                     {crm.features.map((feature, i) => (
                       <div key={i} className="flex items-center gap-2">
-                        <Check className="h-4 w-4 text-green-500" />
-                        <span className="text-sm">{feature}</span>
+                        <Check className="h-3 w-3 text-green-500" />
+                        <span className="text-xs">{feature}</span>
                       </div>
                     ))}
                   </div>
@@ -208,75 +210,22 @@ export default function SignIn() {
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`h-4 w-4 ${i < Math.floor(crm.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`}
+                          className={`h-3 w-3 ${i < Math.floor(crm.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`}
                         />
                       ))}
                     </div>
-                    <span className="text-sm ml-2">{crm.rating}</span>
+                    <span className="text-xs ml-2">{crm.rating}</span>
                   </div>
-                  <Button asChild>
+                  <Button size="sm" asChild>
                     <a href={crm.url}>
                       Essayer
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      <ArrowRight className="ml-1 h-3 w-3" />
                     </a>
                   </Button>
                 </CardFooter>
               </Card>
             ))}
           </TabsContent>
-
-          <TabsContent value="business" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {crmSolutions
-              .filter((crm) => crm.sectors.includes("Tous secteurs") || crm.sectors.includes("Marketing"))
-              .map((crm, index) => (
-                <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
-                  {/* Contenu identique à celui ci-dessus */}
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                          {crm.icon}
-                        </div>
-                        <CardTitle>{crm.name}</CardTitle>
-                      </div>
-                      <Badge variant="outline">{crm.price}</Badge>
-                    </div>
-                    <CardDescription className="mt-2">{crm.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="pb-3">
-                    <div className="space-y-2">
-                      {crm.features.map((feature, i) => (
-                        <div key={i} className="flex items-center gap-2">
-                          <Check className="h-4 w-4 text-green-500" />
-                          <span className="text-sm">{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                  <CardFooter className="flex items-center justify-between pt-3 border-t">
-                    <div className="flex items-center">
-                      <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`h-4 w-4 ${i < Math.floor(crm.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-sm ml-2">{crm.rating}</span>
-                    </div>
-                    <Button asChild>
-                      <a href={crm.url}>
-                        Essayer
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </a>
-                    </Button>
-                  </CardFooter>
-                </Card>
-              ))}
-          </TabsContent>
-
-          {/* Autres TabsContent similaires pour hospitality, commerce, specialized */}
         </Tabs>
       </div>
 

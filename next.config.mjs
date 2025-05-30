@@ -1,13 +1,3 @@
-import withSerwistInit from '@serwist/next'
-
-const withSerwist = withSerwistInit({
-  swSrc: 'app/sw.ts',
-  swDest: 'public/sw.js',
-  cacheOnFrontEndNav: true,
-  reloadOnOnline: true,
-  disable: process.env.NODE_ENV === 'development',
-})
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -21,7 +11,8 @@ const nextConfig = {
       'images.unsplash.com',
       'res.cloudinary.com',
       'img.clerk.com',
-      'lh3.googleusercontent.com'
+      'lh3.googleusercontent.com',
+      'via.placeholder.com'
     ],
     remotePatterns: [
       {
@@ -41,4 +32,4 @@ const nextConfig = {
   },
 }
 
-export default withSerwist(nextConfig)
+export default nextConfig

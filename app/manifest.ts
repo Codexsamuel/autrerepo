@@ -4,14 +4,15 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "NovaCore CRM - DL Solutions",
     short_name: "NovaCore",
-    description: "CRM d'entreprise avec IA intégrée pour la transformation digitale",
+    description: "Solution CRM intelligente avec IA pour entreprises ivoiriennes",
     start_url: "/",
     display: "standalone",
-    background_color: "#1e1b4b",
-    theme_color: "#3b82f6",
+    background_color: "#ffffff",
+    theme_color: "#6366f1",
     orientation: "portrait",
-    categories: ["business", "productivity", "finance"],
+    scope: "/",
     lang: "fr",
+    categories: ["business", "productivity", "finance"],
     icons: [
       {
         src: "/icons/icon-72x72.png",
@@ -60,6 +61,29 @@ export default function manifest(): MetadataRoute.Manifest {
         sizes: "512x512",
         type: "image/png",
         purpose: "maskable any",
+      },
+    ],
+    shortcuts: [
+      {
+        name: "Dashboard",
+        short_name: "Dashboard",
+        description: "Accéder au tableau de bord",
+        url: "/novacore",
+        icons: [{ src: "/icons/icon-96x96.png", sizes: "96x96" }],
+      },
+      {
+        name: "Clients",
+        short_name: "Clients",
+        description: "Gérer les clients",
+        url: "/novacore/clients",
+        icons: [{ src: "/icons/icon-96x96.png", sizes: "96x96" }],
+      },
+      {
+        name: "Studio IA",
+        short_name: "Studio",
+        description: "Créer du contenu avec IA",
+        url: "/novacore/studio",
+        icons: [{ src: "/icons/icon-96x96.png", sizes: "96x96" }],
       },
     ],
     screenshots: [

@@ -55,7 +55,7 @@ export function useRoles() {
       setRoles((prev) => prev.map((role) => (role.id === id ? data : role)))
       return data
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur lors de la mise à jour du rôle")
+      setError(err instanceof Error ? err.message : "Erreur lors de la mise �� jour du rôle")
       throw err
     }
   }

@@ -100,7 +100,7 @@ export default function NovaCoreHub() {
                 </a>
               </Button>
               <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-indigo-200 flex items-center justify-center bg-white shadow-md">
-                <img src="/images/dl-logo.png" alt="DL Solutions Logo" className="h-10 w-10 object-contain" />
+                <img src="/images/dl-logo.jpg" alt="DL Solutions Logo" className="h-10 w-10 object-contain" />
               </div>
               <div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
@@ -119,6 +119,9 @@ export default function NovaCoreHub() {
               </a>
               <a href="/novacore/analytics" className="text-gray-800 hover:text-indigo-600 transition-colors">
                 Analytics
+              </a>
+              <a href="/trading" className="text-gray-800 hover:text-indigo-600 transition-colors">
+                Trading DAVY
               </a>
               <a href="/novacore/settings" className="text-gray-800 hover:text-indigo-600 transition-colors">
                 Paramètres
@@ -431,7 +434,7 @@ export default function NovaCoreHub() {
             <div>
               <div className="flex items-center space-x-3 mb-4">
                 <div className="h-8 w-8 rounded-full overflow-hidden border border-indigo-400 flex items-center justify-center bg-white">
-                  <img src="/images/dl-logo.png" alt="DL Solutions Logo" className="h-6 w-6 object-contain" />
+                  <img src="/images/dl-logo.jpg" alt="DL Solutions Logo" className="h-6 w-6 object-contain" />
                 </div>
                 <span className="text-lg font-bold">NovaCore</span>
               </div>
@@ -460,6 +463,11 @@ export default function NovaCoreHub() {
                 <li>
                   <a href="/dl-bookmaker" className="hover:text-white transition-colors">
                     DL Bookmaker
+                  </a>
+                </li>
+                <li>
+                  <a href="/trading" className="hover:text-white transition-colors">
+                    Trading DAVY
                   </a>
                 </li>
               </ul>

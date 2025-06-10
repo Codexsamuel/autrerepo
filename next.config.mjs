@@ -1,19 +1,24 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async redirects() {
-    return [
-      {
-        source: '/home',
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/accueil',
-        destination: '/',
-        permanent: true,
-      },
-    ]
+  // Activer le mode standalone pour Docker
+  output: 'standalone',
+  
+  // Optimisations pour la production
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
+  
+  // Configuration des images
+  images: {
+    domains: ['localhost'],
+    formats: ['image/webp', 'image/avif'],
+  },
+  
+  // Compression
+  compress: true,
+  
+  // Headers de sécurité
   async headers() {
     return [
       {
@@ -29,30 +34,22 @@ const nextConfig = {
           },
           {
             key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-          {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on',
+            value: 'origin-when-cross-origin',
           },
         ],
       },
     ]
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  images: {
-    domains: ['www.daveandlucesolutions.com', 'daveandlucesolutions.com'],
-    formats: ['image/webp', 'image/avif'],
-    unoptimized: true,
-  },
-  env: {
-    SITE_URL: 'https://www.daveandlucesolutions.com',
-    SITE_NAME: 'Dave and Luce Solutions',
+  
+  // Redirections
+  async redirects() {
+    return [
+      {
+        source: '/home',
+        destination: '/',
+        permanent: true,
+      },
+    ]
   },
 }
 

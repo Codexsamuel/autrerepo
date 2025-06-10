@@ -6,6 +6,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { SearchBar } from "@/components/search-bar"
 import {
   ArrowRight,
   ChevronRight,
@@ -25,7 +26,9 @@ import {
   Shield,
   Clock,
   Award,
+  Building2,
 } from "lucide-react"
+import { DavyVoiceAssistant } from "@/components/ai-assistant/davy-voice-assistant"
 
 export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -171,7 +174,7 @@ export default function HomePage() {
   ]
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen max-w-screen-2xl mx-auto">
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -227,9 +230,19 @@ export default function HomePage() {
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-4">
-            <Button variant="outline" size="sm" className="hidden md:flex" asChild>
-              <Link href="/novacore">NovaCore</Link>
-            </Button>
+            <Link href="/novacore">
+              <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 border-0">
+                <Shield className="h-4 w-4 mr-2" />
+                NovaCore
+              </Button>
+            </Link>
+            <Link href="/intranet">
+              <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-6 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 border-0 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <Building2 className="h-4 w-4 mr-2 relative z-10" />
+                <span className="relative z-10">Intranet</span>
+              </Button>
+            </Link>
             <Button size="sm" asChild>
               <Link href="/devis">Devis Gratuit</Link>
             </Button>
@@ -451,59 +464,56 @@ export default function HomePage() {
       </section>
 
       {/* Team Section */}
-<section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-100">
-  <div className="container px-4 sm:px-6 lg:px-8 max-w-screen-2xl">
-    <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12 md:mb-16">
-      <div className="space-y-2">
-        <Badge>Notre Équipe Dirigeante</Badge>
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter">
-          Les talents derrière DL Solutions
-        </h2>
-        <p className="mx-auto max-w-[90%] sm:max-w-[700px] text-muted-foreground text-base sm:text-lg">
-          Une équipe passionnée et expérimentée qui porte votre transformation digitale avec excellence et innovation.
-        </p>
-      </div>
-    </div>
+      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-100">
+        <div className="container px-4 sm:px-6 lg:px-8 max-w-screen-2xl">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12 md:mb-16">
+            <div className="space-y-2">
+              <Badge>Notre Équipe Dirigeante</Badge>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter">
+                Les talents derrière DL Solutions
+              </h2>
+              <p className="mx-auto max-w-[90%] sm:max-w-[700px] text-muted-foreground text-base sm:text-lg">
+                Une équipe passionnée et expérimentée qui porte votre transformation digitale avec excellence et innovation.
+              </p>
+            </div>
+          </div>
 
-    {/* Grille centrée - 2 colonnes en grand écran */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-4xl mx-auto">
-      {/* Samuel OBAM */}
-      <div className="flex flex-col items-center text-center space-y-3">
-        <Image
-          src="/images/team/samuel.png"
-          alt="Samuel OBAM"
-          width={150}
-          height={150}
-          className="rounded-full object-cover shadow-lg border-4 border-blue-600"
-        />
-        <h3 className="text-xl font-semibold">Samuel OBAM</h3>
-        <p className="text-blue-700">Directeur Général (CEO)</p>
-        <p className="text-sm text-muted-foreground px-4">
-          Visionnaire et expert en transformation digitale, Samuel dirige l'innovation et le développement stratégique de l'entreprise.
-        </p>
-      </div>
+          {/* Grille centrée - 2 colonnes en grand écran */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-4xl mx-auto">
+            {/* Samuel OBAM */}
+            <div className="flex flex-col items-center text-center space-y-3">
+              <Image
+                src="/images/team/Samuel.png"
+                alt="Samuel OBAM"
+                width={150}
+                height={150}
+                className="rounded-full object-cover shadow-lg border-4 border-blue-600"
+              />
+              <h3 className="text-xl font-semibold">Samuel OBAM</h3>
+              <p className="text-blue-700">Directeur Général (CEO)</p>
+              <p className="text-sm text-muted-foreground px-4">
+                Visionnaire et expert en transformation digitale, Samuel dirige l'innovation et le développement stratégique de l'entreprise.
+              </p>
+            </div>
 
-      {/* Lucie */}
-      <div className="flex flex-col items-center text-center space-y-3">
-        <Image
-          src="/images/team/lucie.png"
-          alt="Lucie"
-          width={150}
-          height={150}
-          className="rounded-full object-cover shadow-lg border-4 border-blue-600"
-        />
-        <h3 className="text-xl font-semibold">Lucie</h3>
-        <p className="text-blue-700">Directrice Marketing</p>
-        <p className="text-sm text-muted-foreground px-4">
-          Spécialiste du marketing digital, Lucie conçoit des stratégies innovantes pour accroître la visibilité et la notoriété de DL Solutions.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
+            {/* Lucie */}
+            <div className="flex flex-col items-center text-center space-y-3">
+              <Image
+                src="/images/team/Lucie.png"
+                alt="Lucie"
+                width={150}
+                height={150}
+                className="rounded-full object-cover shadow-lg border-4 border-blue-600"
+              />
+              <h3 className="text-xl font-semibold">Lucie</h3>
+              <p className="text-blue-700">Directrice Marketing</p>
+              <p className="text-sm text-muted-foreground px-4">
+                Spécialiste du marketing digital, Lucie conçoit des stratégies innovantes pour accroître la visibilité et la notoriété de DL Solutions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Testimonials Section */}
       <section className="py-12 sm:py-16 md:py-20 lg:py-24">
@@ -880,6 +890,9 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      {/* Assistant DAVY */}
+      <DavyVoiceAssistant />
     </div>
   )
 }

@@ -27,25 +27,44 @@ import {
   AlertCircle,
 } from "lucide-react"
 
+interface Formation {
+  title: string
+  duration: string
+  level: string
+  participants: string
+  icon: any
+  nextSession: string
+  location: string
+}
+
+interface RegistrationData {
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  company: string
+  position: string
+}
+
 export default function FormationsCheckoutPage() {
   const searchParams = useSearchParams()
   const [step, setStep] = useState(1) // 1: Info, 2: Payment, 3: OTP, 4: Success
   const [selectedPayment, setSelectedPayment] = useState("card")
   const [otpCode, setOtpCode] = useState("")
-  const [formData, setFormData] = useState({
+  const [registrationData, setRegistrationData] = useState<RegistrationData>({
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
     company: "",
-    position: "",
+    position: ""
   })
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<Partial<RegistrationData>>({})
 
   const formation = searchParams?.get("formation") || "televente-prospection"
   const price = searchParams?.get("price") || "160"
 
-  const formationDetails = {
+  const formationDetails: { [key: string]: Formation } = {
     "televente-prospection": {
       title: "Télévente & Prospection",
       duration: "3 jours",
@@ -66,7 +85,7 @@ export default function FormationsCheckoutPage() {
     },
   }
 
-  const currentFormation = formationDetails[formation] || formationDetails["televente-prospection"]
+  const currentFormation = formationDetails[typeof formation === "string" ? formation : formation[0]] || formationDetails["televente-prospection"]
 
   const paymentMethods = [
     {
@@ -84,19 +103,16 @@ export default function FormationsCheckoutPage() {
   ]
 
   const validateForm = () => {
-    const newErrors = {}
-    const requiredFields = ["firstName", "lastName", "email", "phone", "company"]
-
+    const newErrors: Partial<RegistrationData> = {}
+    const requiredFields: (keyof RegistrationData)[] = ["firstName", "lastName", "email", "phone", "company", "position"]
     requiredFields.forEach((field) => {
-      if (!formData[field].trim()) {
+      if (!registrationData[field].trim()) {
         newErrors[field] = "Ce champ est requis"
       }
     })
-
-    if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
+    if (registrationData.email && !/\S+@\S+\.\S+/.test(registrationData.email)) {
       newErrors.email = "Email invalide"
     }
-
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -123,8 +139,8 @@ export default function FormationsCheckoutPage() {
     }
   }
 
-  const handleInputChange = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
+  const handleInputChange = (field: keyof RegistrationData, value: string) => {
+    setRegistrationData((prev) => ({ ...prev, [field]: value }))
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: "" }))
     }
@@ -237,7 +253,7 @@ export default function FormationsCheckoutPage() {
                         </label>
                         <Input
                           placeholder="Votre prénom"
-                          value={formData.firstName}
+                          value={registrationData.firstName}
                           onChange={(e) => handleInputChange("firstName", e.target.value)}
                           className={errors.firstName ? "border-red-500" : ""}
                         />
@@ -255,7 +271,7 @@ export default function FormationsCheckoutPage() {
                         </label>
                         <Input
                           placeholder="Votre nom"
-                          value={formData.lastName}
+                          value={registrationData.lastName}
                           onChange={(e) => handleInputChange("lastName", e.target.value)}
                           className={errors.lastName ? "border-red-500" : ""}
                         />
@@ -276,7 +292,7 @@ export default function FormationsCheckoutPage() {
                       <Input
                         type="email"
                         placeholder="votre@email.com"
-                        value={formData.email}
+                        value={registrationData.email}
                         onChange={(e) => handleInputChange("email", e.target.value)}
                         className={errors.email ? "border-red-500" : ""}
                       />
@@ -296,7 +312,7 @@ export default function FormationsCheckoutPage() {
                       <Input
                         type="tel"
                         placeholder="+33 1 23 45 67 89"
-                        value={formData.phone}
+                        value={registrationData.phone}
                         onChange={(e) => handleInputChange("phone", e.target.value)}
                         className={errors.phone ? "border-red-500" : ""}
                       />
@@ -316,7 +332,7 @@ export default function FormationsCheckoutPage() {
                         </label>
                         <Input
                           placeholder="Nom de votre entreprise"
-                          value={formData.company}
+                          value={registrationData.company}
                           onChange={(e) => handleInputChange("company", e.target.value)}
                           className={errors.company ? "border-red-500" : ""}
                         />
@@ -331,7 +347,7 @@ export default function FormationsCheckoutPage() {
                         <label className="block text-sm font-medium text-gray-700 mb-2">Poste (optionnel)</label>
                         <Input
                           placeholder="Votre fonction"
-                          value={formData.position}
+                          value={registrationData.position}
                           onChange={(e) => handleInputChange("position", e.target.value)}
                         />
                       </div>
@@ -439,7 +455,7 @@ export default function FormationsCheckoutPage() {
                       </div>
                       <h3 className="text-xl font-semibold mb-2">Code de vérification envoyé</h3>
                       <p className="text-gray-600 mb-6">
-                        Un code à 6 chiffres a été envoyé à <strong>{formData.phone}</strong>
+                        Un code à 6 chiffres a été envoyé à <strong>{registrationData.phone}</strong>
                       </p>
                     </div>
 

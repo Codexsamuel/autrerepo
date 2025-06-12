@@ -330,23 +330,13 @@ export default function EzeeOptimusDemo() {
   }
 
   const getUserPermissions = () => {
-    if (!currentUser)
-      return {
-        canCreate: false,
-        canEdit: false,
-        canDelete: false,
-        canViewFinancials: false,
-        canManageRates: false,
-        level: "receptionist" as const,
-      }
-
     return {
-      canCreate: hasPermission("reservations") || hasPermission("all"),
-      canEdit: hasPermission("reservations") || hasPermission("all"),
-      canDelete: hasPermission("all"),
-      canViewFinancials: hasPermission("finance") || hasPermission("all"),
-      canManageRates: hasPermission("rates") || hasPermission("all"),
-      level: currentUser.role.level,
+      canCreate: true,
+      canEdit: true,
+      canDelete: true,
+      canViewFinancials: true,
+      canManageRates: true,
+      level: "admin" as const
     }
   }
 

@@ -157,7 +157,7 @@ class AITradingService {
       return this.parseAssetAnalysis(response, symbol, marketData);
     } catch (error) {
       console.error(`Erreur lors de l'analyse de ${symbol}:`, error);
-      return this.generateFallbackAssetAnalysis(symbol, marketData);
+      return this.generateFallbackAssetAnalysis(symbol, [marketData]);
     }
   }
 
@@ -431,16 +431,16 @@ Génère 5 insights personnalisés au format JSON.
 
   private parseAssetAnalysis(response: string, symbol: string, marketData: MarketDataPoint): TradingRecommendation {
     try {
-      const analysis = JSON.parse(response);
+      const data = JSON.parse(response);
       return {
-        ...analysis,
-        id: `asset_${symbol}_${Date.now()}`,
+        ...data,
+        id: `analysis_${symbol}`,
         symbol,
         timestamp: new Date()
       };
     } catch (error) {
-      console.error('Erreur parsing analyse actif:', error);
-      return this.generateFallbackAssetAnalysis(symbol, marketData);
+      console.error('Erreur lors du parsing de l\'analyse:', error);
+      return this.generateFallbackAssetAnalysis(symbol, [marketData]);
     }
   }
 
@@ -521,26 +521,26 @@ Génère 5 insights personnalisés au format JSON.
     };
   }
 
-  private generateFallbackAssetAnalysis(symbol: string, marketData: MarketDataPoint): TradingRecommendation {
+  private generateFallbackAssetAnalysis(symbol: string, marketData: MarketDataPoint[]): TradingRecommendation {
     const asset = marketData.find(a => a.symbol === symbol) || marketData[0];
     
     return {
       id: `fallback_${symbol}`,
-      symbol,
-      action: asset.changePercent > 0 ? 'buy' : 'hold',
-      confidence: 60,
-      reasoning: 'Analyse basée sur les données de marché disponibles',
-      riskLevel: 'medium',
+      symbol: asset.symbol,
+      action: asset.changePercent > 0 ? 'buy' : 'sell',
+      confidence: Math.abs(asset.changePercent) > 5 ? 75 : 50,
+      reasoning: `Analyse basée sur la variation de ${asset.changePercent.toFixed(2)}%`,
+      riskLevel: asset.volatility > 1.5 ? 'high' : 'medium',
       timeframe: 'medium',
-      strategy: 'Market Analysis',
-      marketConditions: 'Conditions de marché stables',
-      newsImpact: 'Impact neutre',
+      strategy: 'Trend Following',
+      marketConditions: 'Analyse en cours',
+      newsImpact: 'Impact non évalué',
       technicalAnalysis: 'Analyse technique en cours',
       fundamentalAnalysis: 'Analyse fondamentale en cours',
       timestamp: new Date(),
-      aiInsights: ['Analyse IA en cours de développement'],
-      riskRewardRatio: 1.2,
-      expectedReturn: Math.abs(asset.changePercent),
+      aiInsights: ['Analyse en cours de développement'],
+      riskRewardRatio: 1.5,
+      expectedReturn: asset.changePercent,
       volatility: asset.volatility
     };
   }

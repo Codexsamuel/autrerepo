@@ -23,9 +23,20 @@ import {
 import Link from "next/link"
 import Image from "next/image"
 
+interface Room {
+  id: number
+  name: string
+  price: number
+  originalPrice: number
+  size: string
+  capacity: number
+  amenities: string[]
+  image: string
+}
+
 export default function HotelDetailPage({ params }: { params: { id: string } }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [selectedRoom, setSelectedRoom] = useState(null)
+  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null)
   const [checkIn, setCheckIn] = useState("")
   const [checkOut, setCheckOut] = useState("")
   const [guests, setGuests] = useState(2)

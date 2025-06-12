@@ -7,9 +7,9 @@ import { Badge } from "@/components/ui/badge"
 import {
   ArrowLeft,
   Mountain,
-  Pickaxe,
-  Truck,
   HardHat,
+  Truck,
+  HardHat as HardHatIcon,
   Package,
   Users,
   DollarSign,
@@ -18,7 +18,37 @@ import {
   Zap,
   Bot,
   TrendingUp,
+  LineChart,
+  Search,
+  Settings,
+  BarChart3,
+  Brain,
+  Camera,
+  Video,
+  Target,
+  Download,
+  Upload,
+  Sparkles,
+  Rocket,
+  CheckCircle,
+  Clock,
+  Plus,
+  Activity,
+  Lightbulb,
+  Megaphone,
+  Palette,
+  Code,
+  Monitor,
+  Film,
+  ImageIcon,
+  Building2,
+  Globe,
+  Phone,
 } from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import React from "react"
+import { Feature, Stat } from '../../types/icons'
 
 export default function NovaMiningERP() {
   const [activeTab, setActiveTab] = useState("dashboard")
@@ -86,6 +116,60 @@ export default function NovaMiningERP() {
     },
   ]
 
+  const features: Feature[] = [
+    {
+      title: "Exploration Intelligente",
+      description: "Détection précise des gisements grâce à l'IA",
+      icon: Search,
+      color: "blue"
+    },
+    {
+      title: "Optimisation des Opérations",
+      description: "Maximisation de la production et réduction des coûts",
+      icon: Settings,
+      color: "green"
+    },
+    {
+      title: "Sécurité Avancée",
+      description: "Surveillance en temps réel et prévention des risques",
+      icon: Shield,
+      color: "purple"
+    },
+    {
+      title: "Analyse de Données",
+      description: "Décisions basées sur des données en temps réel",
+      icon: BarChart3,
+      color: "orange"
+    }
+  ];
+
+  const stats: Stat[] = [
+    {
+      title: "Production",
+      value: "2.5M T",
+      icon: HardHat,
+      color: "blue"
+    },
+    {
+      title: "Efficacité",
+      value: "92%",
+      icon: LineChart,
+      color: "green"
+    },
+    {
+      title: "Sécurité",
+      value: "99.9%",
+      icon: Shield,
+      color: "purple"
+    },
+    {
+      title: "ROI",
+      value: "+45%",
+      icon: TrendingUp,
+      color: "orange"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -151,7 +235,7 @@ export default function NovaMiningERP() {
                 activeTab === "production" ? "bg-gray-100 text-gray-700" : "hover:bg-gray-100"
               }`}
             >
-              <Pickaxe className="h-4 w-4 inline mr-3" />
+              <HardHatIcon className="h-4 w-4 inline mr-3" />
               Production
             </button>
             <button
@@ -169,7 +253,7 @@ export default function NovaMiningERP() {
                 activeTab === "safety" ? "bg-gray-100 text-gray-700" : "hover:bg-gray-100"
               }`}
             >
-              <HardHat className="h-4 w-4 inline mr-3" />
+              <HardHatIcon className="h-4 w-4 inline mr-3" />
               Sécurité
             </button>
             <button
@@ -240,65 +324,21 @@ export default function NovaMiningERP() {
 
               {/* Stats Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Sites actifs</p>
-                        <p className="text-2xl font-bold">2</p>
-                        <p className="text-xs text-green-600">100% opérationnels</p>
+                {stats.map((stat, index) => (
+                  <Card key={index}>
+                    <CardContent className="pt-6">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">{stat.title}</p>
+                          <h3 className="text-2xl font-bold">{stat.value}</h3>
+                        </div>
+                        <div className={`w-12 h-12 bg-${stat.color}-100 rounded-full flex items-center justify-center`}>
+                          {React.createElement(stat.icon, { className: `w-6 h-6 text-${stat.color}-600` })}
+                        </div>
                       </div>
-                      <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                        <Mountain className="h-6 w-6 text-gray-600" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Production journalière</p>
-                        <p className="text-2xl font-bold">2.5 kg</p>
-                        <p className="text-xs text-green-600">Or + 150 m³ Granit</p>
-                      </div>
-                      <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
-                        <Pickaxe className="h-6 w-6 text-yellow-600" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Revenus mensuels</p>
-                        <p className="text-2xl font-bold">850M FCFA</p>
-                        <p className="text-xs text-green-600">+15% vs mois dernier</p>
-                      </div>
-                      <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                        <DollarSign className="h-6 w-6 text-green-600" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Score sécurité</p>
-                        <p className="text-2xl font-bold">96%</p>
-                        <p className="text-xs text-green-600">Excellent</p>
-                      </div>
-                      <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                        <Shield className="h-6 w-6 text-red-600" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
 
               {/* Sites and Equipment Overview */}
@@ -373,7 +413,47 @@ export default function NovaMiningERP() {
             </div>
           )}
 
-          {/* Autres onglets similaires... */}
+          {/* Features Section */}
+          {activeTab === "dashboard" && (
+            <div className="mt-8">
+              <h2 className="text-2xl font-bold mb-6">Nos Services</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {features.map((feature, index) => (
+                  <Card key={index} className="hover:shadow-lg transition-shadow">
+                    <CardHeader>
+                      <div className={`w-12 h-12 bg-${feature.color}-100 rounded-full flex items-center justify-center mb-4`}>
+                        {React.createElement(feature.icon, { className: `w-6 h-6 text-${feature.color}-600` })}
+                      </div>
+                      <CardTitle>{feature.title}</CardTitle>
+                      <CardDescription>{feature.description}</CardDescription>
+                    </CardHeader>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Alert Section */}
+          {activeTab === "dashboard" && (
+            <Card className="mt-8 border-0 shadow-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                      {React.createElement(AlertTriangle, { className: "w-6 h-6 text-yellow-500" })}
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold">Sécurité et Conformité</h3>
+                      <p className="text-gray-300">Protocoles stricts et surveillance continue</p>
+                    </div>
+                  </div>
+                  <Button variant="outline" className="bg-white/10 hover:bg-white/20">
+                    En savoir plus
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </main>
       </div>
 
@@ -383,11 +463,11 @@ export default function NovaMiningERP() {
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="flex items-center gap-4 mb-4 md:mb-0">
               <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
-                <Zap className="h-6 w-6 text-white" />
+                {React.createElement(Zap, { className: "w-6 h-6 text-white" })}
               </div>
               <div>
                 <h3 className="font-bold text-lg">NovaCore</h3>
-                <p className="text-sm text-gray-400">Powered by AI</p>
+                <p className="text-sm text-gray-500">Plateforme d'IA</p>
               </div>
             </div>
             <div className="text-center md:text-right">

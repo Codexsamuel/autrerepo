@@ -6,20 +6,34 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { ArrowLeft, CreditCard, Lock, Shield, CheckCircle, AlertCircle } from "lucide-react"
 
+interface CardData {
+  number: string
+  expiry: string
+  cvv: string
+  name: string
+}
+
+interface CardErrors {
+  number?: string
+  expiry?: string
+  cvv?: string
+  name?: string
+}
+
 export default function CardPaymentPage() {
   const [step, setStep] = useState(1) // 1: Form, 2: Processing, 3: Success
-  const [cardData, setCardData] = useState({
+  const [cardData, setCardData] = useState<CardData>({
     number: "",
     expiry: "",
     cvv: "",
     name: "",
   })
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<CardErrors>({})
 
   const total = 149.97
 
-  const validateCard = () => {
-    const newErrors = {}
+  const validateForm = () => {
+    const newErrors: CardErrors = {}
 
     if (!cardData.number || cardData.number.length < 16) {
       newErrors.number = "Numéro de carte invalide"
@@ -28,9 +42,9 @@ export default function CardPaymentPage() {
       newErrors.expiry = "Format MM/AA requis"
     }
     if (!cardData.cvv || cardData.cvv.length < 3) {
-      newErrors.cvv = "CVV invalide"
+      newErrors.cvv = "Code de sécurité invalide"
     }
-    if (!cardData.name.trim()) {
+    if (!cardData.name) {
       newErrors.name = "Nom requis"
     }
 
@@ -39,7 +53,7 @@ export default function CardPaymentPage() {
   }
 
   const handlePayment = () => {
-    if (validateCard()) {
+    if (validateForm()) {
       setStep(2)
       // Simulation du traitement
       setTimeout(() => {
@@ -48,15 +62,32 @@ export default function CardPaymentPage() {
     }
   }
 
-  const formatCardNumber = (value) => {
+  const formatCardNumber = (value: string): string => {
     return value
       .replace(/\s/g, "")
       .replace(/(.{4})/g, "$1 ")
       .trim()
+      .slice(0, 19)
   }
 
-  const formatExpiry = (value) => {
+  const formatExpiry = (value: string): string => {
     return value.replace(/\D/g, "").replace(/(\d{2})(\d)/, "$1/$2")
+  }
+
+  const handleInputChange = (field: keyof CardData, value: string) => {
+    setCardData(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  const handleExpiryChange = (value: string) => {
+    // Formatage automatique MM/AA
+    const formatted = value
+      .replace(/\D/g, "")
+      .replace(/^(\d{2})/, "$1/")
+      .substr(0, 5)
+    handleInputChange("expiry", formatted)
   }
 
   if (step === 2) {
@@ -174,7 +205,7 @@ export default function CardPaymentPage() {
                     value={cardData.number}
                     onChange={(e) => {
                       const value = e.target.value.replace(/\s/g, "").slice(0, 16)
-                      setCardData((prev) => ({ ...prev, number: value }))
+                      handleInputChange("number", value)
                     }}
                     className={`w-full ${errors.number ? "border-red-500" : ""}`}
                   />
@@ -193,8 +224,7 @@ export default function CardPaymentPage() {
                       placeholder="MM/AA"
                       value={cardData.expiry}
                       onChange={(e) => {
-                        const value = formatExpiry(e.target.value).slice(0, 5)
-                        setCardData((prev) => ({ ...prev, expiry: value }))
+                        handleExpiryChange(e.target.value)
                       }}
                       className={`w-full ${errors.expiry ? "border-red-500" : ""}`}
                     />
@@ -212,7 +242,7 @@ export default function CardPaymentPage() {
                       value={cardData.cvv}
                       onChange={(e) => {
                         const value = e.target.value.replace(/\D/g, "").slice(0, 4)
-                        setCardData((prev) => ({ ...prev, cvv: value }))
+                        handleInputChange("cvv", value)
                       }}
                       className={`w-full ${errors.cvv ? "border-red-500" : ""}`}
                     />
@@ -230,7 +260,7 @@ export default function CardPaymentPage() {
                   <Input
                     placeholder="Jean Dupont"
                     value={cardData.name}
-                    onChange={(e) => setCardData((prev) => ({ ...prev, name: e.target.value.toUpperCase() }))}
+                    onChange={(e) => handleInputChange("name", e.target.value.toUpperCase())}
                     className={`w-full ${errors.name ? "border-red-500" : ""}`}
                   />
                   {errors.name && (

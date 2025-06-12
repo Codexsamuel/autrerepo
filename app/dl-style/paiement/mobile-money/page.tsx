@@ -8,7 +8,7 @@ import { ArrowLeft, Smartphone, Shield, CheckCircle, AlertCircle, Hash } from "l
 
 export default function MobileMoneyPaymentPage() {
   const [step, setStep] = useState(1) // 1: Details, 2: USSD, 3: Processing, 4: Success
-  const [operator, setOperator] = useState("mtn")
+  const [operator, setOperator] = useState<keyof typeof operators>("mtn")
   const [phoneNumber, setPhoneNumber] = useState("")
   const [ussdCode, setUssdCode] = useState("")
   const [error, setError] = useState("")
@@ -28,7 +28,7 @@ export default function MobileMoneyPaymentPage() {
     setError("")
 
     // Génération du code USSD
-    const code = `${operators[operator].code}${total.toFixed(0)}*${phoneNumber}#`
+    const code = `${operators[operator as keyof typeof operators].code}${total.toFixed(0)}*${phoneNumber}#`
     setUssdCode(code)
     setStep(2)
   }
@@ -51,7 +51,7 @@ export default function MobileMoneyPaymentPage() {
               <img src="/images/mobile-money.png" alt="Mobile Money" className="h-16 mx-auto mb-6" />
             </div>
             <h2 className="text-2xl font-bold mb-4">Traitement en cours...</h2>
-            <p className="text-gray-600 mb-6">Validation de votre paiement {operators[operator].name}</p>
+            <p className="text-gray-600 mb-6">Validation de votre paiement {operators[operator as keyof typeof operators].name}</p>
             <div className="flex items-center justify-center space-x-2 text-sm text-gray-500">
               <Shield className="h-4 w-4" />
               <span>Connexion sécurisée</span>
@@ -143,7 +143,7 @@ export default function MobileMoneyPaymentPage() {
                             name="operator"
                             value={key}
                             checked={operator === key}
-                            onChange={(e) => setOperator(e.target.value)}
+                            onChange={(e) => setOperator(e.target.value as keyof typeof operators)}
                             className="sr-only"
                           />
                           <div
@@ -175,7 +175,7 @@ export default function MobileMoneyPaymentPage() {
 
                   <div className="bg-yellow-50 p-4 rounded-lg">
                     <p className="text-sm text-yellow-800">
-                      💡 Assurez-vous que votre compte {operators[operator].name} dispose du solde suffisant (
+                      💡 Assurez-vous que votre compte {operators[operator as keyof typeof operators].name} dispose du solde suffisant (
                       {total.toFixed(2)}€)
                     </p>
                   </div>
@@ -242,7 +242,7 @@ export default function MobileMoneyPaymentPage() {
               <div className="mt-8 bg-gray-50 p-4 rounded-lg">
                 <div className="flex items-center space-x-2 text-gray-600 text-sm">
                   <Shield className="h-4 w-4" />
-                  <span>Paiement sécurisé par {operators[operator].name}</span>
+                  <span>Paiement sécurisé par {operators[operator as keyof typeof operators].name}</span>
                 </div>
               </div>
             </CardContent>

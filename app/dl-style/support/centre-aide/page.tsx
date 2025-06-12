@@ -173,7 +173,6 @@ export default function HelpCenterPage() {
               <Card
                 key={index}
                 className="border-0 shadow-lg hover:shadow-xl transition-all group cursor-pointer"
-                asChild
               >
                 <a href={action.link}>
                   <CardContent className="p-6 text-center">

@@ -1,52 +1,69 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import { format } from "date-fns"
-import { fr } from "date-fns/locale"
-import { Package, User, CreditCard, Truck, Clock, CheckCircle2, AlertCircle, MapPin, History } from "lucide-react"
+import { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
+import { 
+  Package, 
+  Truck, 
+  CheckCircle2, 
+  Clock, 
+  AlertCircle,
+  User,
+  CreditCard,
+  MapPin,
+  History
+} from 'lucide-react';
 
-// Types
 interface OrderItem {
-  id: string
-  name: string
-  quantity: number
-  price: number
-  image: string
+  id: string;
+  name: string;
+  quantity: number;
+  price: number;
+  image: string;
 }
 
 interface TimelineEvent {
-  date: Date
-  status: string
-  description: string
+  date: Date;
+  status: string;
+  description: string;
 }
 
 interface Order {
-  id: string
-  date: Date
-  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled'
+  id: string;
+  date: Date;
+  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
   customer: {
-    name: string
-    email: string
-    phone: string
-  }
-  items: OrderItem[]
+    name: string;
+    email: string;
+    phone: string;
+  };
+  items: OrderItem[];
   shipping: {
-    address: string
-    city: string
-    postalCode: string
-    country: string
-  }
+    address: string;
+    city: string;
+    postalCode: string;
+    country: string;
+  };
   payment: {
-    method: string
-    status: string
-    total: number
-  }
-  timeline: TimelineEvent[]
+    method: string;
+    status: string;
+    total: number;
+  };
+  timeline: TimelineEvent[];
 }
+
+const statusColors = {
+  pending: 'bg-yellow-100 text-yellow-800',
+  processing: 'bg-blue-100 text-blue-800',
+  shipped: 'bg-purple-100 text-purple-800',
+  delivered: 'bg-green-100 text-green-800',
+  cancelled: 'bg-red-100 text-red-800'
+};
 
 // Simulated order data
 const order: Order = {
@@ -97,22 +114,14 @@ const order: Order = {
       description: "Le paiement a été confirmé"
     }
   ]
-}
-
-const statusColors = {
-  pending: 'bg-yellow-100 text-yellow-800',
-  processing: 'bg-blue-100 text-blue-800',
-  shipped: 'bg-purple-100 text-purple-800',
-  delivered: 'bg-green-100 text-green-800',
-  cancelled: 'bg-red-100 text-red-800'
-} as const
+};
 
 export default function OrderDetailPage() {
-  const [orderStatus, setOrderStatus] = useState(order.status)
+  const [orderStatus, setOrderStatus] = useState(order.status);
 
   const handleStatusChange = (newStatus: Order['status']) => {
-    setOrderStatus(newStatus)
-  }
+    setOrderStatus(newStatus);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -306,5 +315,5 @@ export default function OrderDetailPage() {
         </div>
       </main>
     </div>
-  )
-}
+  );
+} 

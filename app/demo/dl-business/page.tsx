@@ -44,14 +44,23 @@ import {
   Monitor,
   Film,
   ImageIcon,
+  Building2,
+  Globe,
+  LineChart,
+  Phone,
+  Search,
+  Settings,
+  ShoppingCart,
 } from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { AiInsights, Campaign, AiActivity, FormData } from '../../types/config'
 
-export default function DLBusinessSuite() {
+export default function BusinessPage() {
   const [activeTab, setActiveTab] = useState("dashboard")
   const [showOnboarding, setShowOnboarding] = useState(true)
-  const [aiStatus, setAiStatus] = useState("analyzing")
+  const [aiStatus, setAiStatus] = useState<"idle" | "processing" | "ready">("idle")
   const [onboardingStep, setOnboardingStep] = useState(1)
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     companyName: "",
     website: "",
     strategy: "",
@@ -63,14 +72,10 @@ export default function DLBusinessSuite() {
     platforms: [],
   })
 
-  const [aiInsights, setAiInsights] = useState({
-    websiteAnalysis: null,
-    contentStrategy: null,
-    campaignSuggestions: [],
-    competitorAnalysis: null,
-  })
+  const [aiInsights, setAiInsights] = useState<AiInsights | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const [campaigns] = useState([
+  const [campaigns] = useState<Campaign[]>([
     {
       id: "CAM001",
       name: "Lancement Produit Q1",
@@ -86,7 +91,6 @@ export default function DLBusinessSuite() {
       createdBy: "IA NovaCore",
       content: {
         type: "video",
-        title: "Découvrez notre nouvelle gamme",
         description: "Innovation et qualité au service de vos besoins",
         thumbnail: "/placeholder.svg?height=200&width=300",
       },
@@ -113,13 +117,12 @@ export default function DLBusinessSuite() {
     },
   ])
 
-  const [aiActivities] = useState([
+  const [aiActivities] = useState<AiActivity[]>([
     {
       id: "AI001",
       type: "content_creation",
       action: "Création vidéo TikTok",
       status: "completed",
-      timestamp: "Il y a 15 min",
       details: "Vidéo de 30s créée avec CapCut API - Engagement prévu: 8.5%",
       platform: "TikTok",
       performance: { views: 12500, likes: 890, shares: 156 },
@@ -150,43 +153,117 @@ export default function DLBusinessSuite() {
     setShowOnboarding(false)
     setAiStatus("processing")
 
-    // Simulation de l'analyse IA
     setTimeout(() => {
-      setAiInsights({
+      const insights: AiInsights = {
         websiteAnalysis: {
           industry: "E-commerce",
           tone: "Professionnel et moderne",
           colors: ["#2563eb", "#1d4ed8", "#ffffff"],
           keywords: ["innovation", "qualité", "service client"],
-          competitors: ["Jumia", "Konga", "Afrimarket"],
+          competitors: ["Jumia", "Konga", "Afrimarket"]
         },
-        contentStrategy: {
-          bestTimes: ["18h-20h", "12h-14h", "20h-22h"],
-          contentTypes: ["Vidéos courtes", "Carrousels", "Stories"],
-          frequency: "2 posts/jour",
-          hashtags: ["#innovation", "#qualité", "#cameroun"],
+        recommendations: {
+          seo: [
+            "Améliorer la structure des URLs",
+            "Ajouter des descriptions de produits"
+          ],
+          content: [
+            "Créer un blog de mode",
+            "Ajouter des guides d'achat",
+            "Mettre en avant les avis clients"
+          ],
+          design: [
+            "Simplifier la navigation",
+            "Améliorer la page d'accueil",
+            "Optimiser pour mobile"
+          ],
+          marketing: [
+            "Lancer une campagne email",
+            "Créer des contenus pour les réseaux sociaux",
+            "Mettre en place un programme de fidélité"
+          ]
         },
-        campaignSuggestions: [
-          {
-            title: "Campagne de notoriété",
-            budget: 200000,
-            duration: "14 jours",
-            expectedRoi: 280,
-          },
-          {
-            title: "Promotion produits phares",
-            budget: 150000,
-            duration: "7 jours",
-            expectedRoi: 350,
-          },
-        ],
-      })
+        marketAnalysis: {
+          trends: [
+            "Mode durable en hausse",
+            "Commerce mobile dominant",
+            "Personnalisation importante"
+          ],
+          opportunities: [
+            "Marché des accessoires en croissance",
+            "Demande de produits éthiques",
+            "Potentiel international"
+          ],
+          threats: [
+            "Concurrence accrue",
+            "Coûts de livraison",
+            "Changements des algorithmes"
+          ]
+        }
+      }
+      setAiInsights(insights)
       setAiStatus("ready")
     }, 3000)
   }
 
   const handleInputChange = (field: string, value: string) => {
     setFormData({ ...formData, [field]: value })
+  }
+
+  const handleAnalyze = () => {
+    setIsLoading(true)
+    setTimeout(() => {
+      const insights: AiInsights = {
+        websiteAnalysis: {
+          industry: "E-commerce",
+          tone: "Professionnel et moderne",
+          colors: ["#2563eb", "#1d4ed8", "#ffffff"],
+          keywords: ["mode", "accessoires", "tendance", "qualité"],
+          competitors: ["competitor1.com", "competitor2.com"]
+        },
+        recommendations: {
+          seo: [
+            "Optimiser les balises meta",
+            "Améliorer la structure des URLs",
+            "Ajouter des descriptions de produits"
+          ],
+          content: [
+            "Créer un blog de mode",
+            "Ajouter des guides d'achat",
+            "Mettre en avant les avis clients"
+          ],
+          design: [
+            "Simplifier la navigation",
+            "Améliorer la page d'accueil",
+            "Optimiser pour mobile"
+          ],
+          marketing: [
+            "Lancer une campagne email",
+            "Créer des contenus pour les réseaux sociaux",
+            "Mettre en place un programme de fidélité"
+          ]
+        },
+        marketAnalysis: {
+          trends: [
+            "Mode durable en hausse",
+            "Commerce mobile dominant",
+            "Personnalisation importante"
+          ],
+          opportunities: [
+            "Marché des accessoires en croissance",
+            "Demande de produits éthiques",
+            "Potentiel international"
+          ],
+          threats: [
+            "Concurrence accrue",
+            "Coûts de livraison",
+            "Changements des algorithmes"
+          ]
+        }
+      }
+      setAiInsights(insights)
+      setIsLoading(false)
+    }, 2000)
   }
 
   return (
@@ -219,9 +296,9 @@ export default function DLBusinessSuite() {
                 <Bot className="h-3 w-3 mr-1" />
                 IA {aiStatus === "ready" ? "Active" : "En cours"}
               </Badge>
-              <Button className="bg-gradient-to-r from-blue-600 to-purple-600">
+              <Button className="bg-gradient-to-r from-blue-600 to-purple-600" onClick={handleAnalyze} disabled={isLoading}>
                 <Sparkles className="h-4 w-4 mr-2" />
-                Lancer IA
+                {isLoading ? "Analyse en cours..." : "Analyser mon site"}
               </Button>
             </div>
           </div>

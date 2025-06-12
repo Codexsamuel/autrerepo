@@ -28,7 +28,8 @@ import {
   Shield,
   Activity,
   Clock,
-  TrendingUp
+  TrendingUp,
+  Brain
 } from 'lucide-react';
 
 interface APIEndpoint {
@@ -78,6 +79,15 @@ interface APITest {
   error?: string;
 }
 
+// Type local pour l'état newEndpoint
+interface NewEndpointState extends Omit<APIEndpoint, 'id' | 'status'> {
+  status: 'inactive';
+  authentication: {
+    type: 'none' | 'api_key' | 'bearer' | 'oauth2' | 'basic';
+    credentials?: { [key: string]: string };
+  };
+}
+
 export default function APIIntegrations() {
   const [endpoints, setEndpoints] = useState<APIEndpoint[]>([]);
   const [integrations, setIntegrations] = useState<Integration[]>([]);
@@ -88,12 +98,13 @@ export default function APIIntegrations() {
   const [showApiKey, setShowApiKey] = useState<{ [key: string]: boolean }>({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const [newEndpoint, setNewEndpoint] = useState<Partial<APIEndpoint>>({
+  const [newEndpoint, setNewEndpoint] = useState<NewEndpointState>({
     name: '',
     url: '',
     method: 'GET',
     description: '',
-    status: 'inactive'
+    status: 'inactive',
+    authentication: { type: 'none' }
   });
 
   const [newIntegration, setNewIntegration] = useState<Partial<Integration>>({
@@ -252,10 +263,10 @@ export default function APIIntegrations() {
 
     const endpoint: APIEndpoint = {
       id: `endpoint_${Date.now()}`,
-      name: newEndpoint.name!,
-      url: newEndpoint.url!,
-      method: newEndpoint.method!,
-      description: newEndpoint.description || '',
+      name: newEndpoint.name,
+      url: newEndpoint.url,
+      method: newEndpoint.method,
+      description: newEndpoint.description,
       status: 'inactive',
       authentication: newEndpoint.authentication
     };
@@ -266,7 +277,8 @@ export default function APIIntegrations() {
       url: '',
       method: 'GET',
       description: '',
-      status: 'inactive'
+      status: 'inactive',
+      authentication: { type: 'none' }
     });
     setIsCreatingEndpoint(false);
   };
@@ -481,10 +493,13 @@ export default function APIIntegrations() {
                   Type d'authentification
                 </label>
                 <select
-                  value={newEndpoint.authentication?.type || 'none'}
+                  value={newEndpoint.authentication.type}
                   onChange={(e) => setNewEndpoint(prev => ({ 
                     ...prev, 
-                    authentication: { type: e.target.value as APIEndpoint['authentication']['type'] }
+                    authentication: {
+                      ...prev.authentication,
+                      type: e.target.value as 'none' | 'api_key' | 'bearer' | 'oauth2' | 'basic'
+                    }
                   }))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >

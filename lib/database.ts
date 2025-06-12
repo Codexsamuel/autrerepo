@@ -92,6 +92,26 @@ export interface NewsFeed {
   detected_at: string
 }
 
+export interface Document {
+  id: number
+  user_id: number
+  title: string
+  content: string
+  type: string
+  created_at: string
+  updated_at?: string
+}
+
+export interface Commission {
+  id: number
+  employee_id: number
+  client_id: number
+  title: string
+  content: string
+  date_signed: string
+  status: 'draft' | 'signed' | 'expired'
+}
+
 // Fonctions utilitaires pour la base de données
 
 export class DatabaseService {

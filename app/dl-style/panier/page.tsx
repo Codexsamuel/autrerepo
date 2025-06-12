@@ -21,6 +21,12 @@ import {
   Lock,
 } from "lucide-react"
 
+interface Promo {
+  code: string
+  discount: number
+  type: "percentage" | "amount"
+}
+
 export default function CartPage() {
   const [cartItems, setCartItems] = useState([
     {
@@ -62,7 +68,7 @@ export default function CartPage() {
   ])
 
   const [promoCode, setPromoCode] = useState("")
-  const [appliedPromo, setAppliedPromo] = useState(null)
+  const [appliedPromo, setAppliedPromo] = useState<Promo | null>(null)
 
   const updateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity === 0) {

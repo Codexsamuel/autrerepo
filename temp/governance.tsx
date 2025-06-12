@@ -1,8 +1,8 @@
-"use client"
+'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Shield, Activity, FileCheck, BarChart3 } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Shield, Activity, FileCheck, BarChart3 } from "lucide-react";
 
 const features = {
   access: {
@@ -45,7 +45,7 @@ const features = {
       "Rapports personnalisables"
     ]
   }
-}
+};
 
 export default function GovernancePage() {
   return (
@@ -86,5 +86,5 @@ export default function GovernancePage() {
         ))}
       </Tabs>
     </div>
-  )
-}
+  );
+} 

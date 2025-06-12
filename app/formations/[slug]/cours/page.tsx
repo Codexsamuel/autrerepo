@@ -27,17 +27,38 @@ import {
   Home,
 } from "lucide-react"
 
+// Définir le type du contenu de courseData
+interface Lesson {
+  title: string
+  duration: string
+  type: string
+  completed: boolean
+  description: string
+}
+interface Module {
+  title: string
+  lessons: Lesson[]
+}
+interface Course {
+  title: string
+  description: string
+  instructor: string
+  duration: string
+  totalLessons: number
+  modules: Module[]
+}
+
 export default function CoursPage() {
   const params = useParams()
   const [currentLesson, setCurrentLesson] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
   const [progress, setProgress] = useState(0)
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [completedLessons, setCompletedLessons] = useState(new Set([]))
+  const [completedLessons, setCompletedLessons] = useState<Set<number>>(new Set())
 
   const slug = params?.slug || "televente-prospection"
 
-  const courseData = {
+  const courseData: { [key: string]: Course } = {
     "televente-prospection": {
       title: "Télévente & Prospection",
       description: "Maîtrisez les techniques de vente par téléphone et développez votre portefeuille client",
@@ -148,11 +169,11 @@ export default function CoursPage() {
     },
   }
 
-  const course = courseData[slug] || courseData["televente-prospection"]
-  const allLessons = course.modules.flatMap((module) => module.lessons)
+  const course = courseData[typeof slug === "string" ? slug : slug[0]] || courseData["televente-prospection"]
+  const allLessons = course.modules.flatMap((module: Module) => module.lessons)
   const currentLessonData = allLessons[currentLesson]
 
-  const getTypeIcon = (type) => {
+  const getTypeIcon = (type: string) => {
     switch (type) {
       case "video":
         return Video
@@ -168,7 +189,7 @@ export default function CoursPage() {
     }
   }
 
-  const getTypeColor = (type) => {
+  const getTypeColor = (type: string) => {
     switch (type) {
       case "video":
         return "bg-blue-100 text-blue-700"
@@ -184,7 +205,7 @@ export default function CoursPage() {
     }
   }
 
-  const markAsCompleted = (lessonIndex) => {
+  const markAsCompleted = (lessonIndex: number) => {
     setCompletedLessons((prev) => new Set([...prev, lessonIndex]))
   }
 
@@ -246,13 +267,13 @@ export default function CoursPage() {
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          {course.modules.map((module, moduleIndex) => (
+          {course.modules.map((module: Module, moduleIndex: number) => (
             <div key={moduleIndex} className="border-b">
               <div className="p-4 bg-gray-50">
                 <h3 className="font-semibold text-sm">{module.title}</h3>
               </div>
               <div className="space-y-1">
-                {module.lessons.map((lesson, lessonIndex) => {
+                {module.lessons.map((lesson: Lesson, lessonIndex: number) => {
                   const globalIndex =
                     course.modules.slice(0, moduleIndex).reduce((acc, mod) => acc + mod.lessons.length, 0) + lessonIndex
                   const Icon = getTypeIcon(lesson.type)

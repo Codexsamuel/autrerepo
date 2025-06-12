@@ -37,4 +37,4 @@ next-env.d.ts
 # Large media files
 public/images/REALISATION MON SITE WEB.mkv
 public/images/video/*.mp4
-public/images/video/*.mkv
+public/images/video/*.mkv.env

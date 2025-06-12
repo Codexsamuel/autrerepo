@@ -25,7 +25,11 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env*.local
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # vercel
 .vercel
@@ -35,6 +39,15 @@ yarn-error.log*
 next-env.d.ts
 
 # Large media files
+public/images/*.mp4
+public/images/*.mkv
+public/images/video/
 public/images/REALISATION MON SITE WEB.mkv
-public/images/video/*.mp4
-public/images/video/*.mkv.env
+public/images/background_IT.mp4
+public/images/background_page_crm.mp4
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

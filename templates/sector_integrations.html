@@ -1,0 +1,269 @@
+{% extends "base.html" %}
+
+{% block title %}Intégrations Sectorielles{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mb-4">Intégrations Sectorielles</h1>
+    
+    <!-- Secteur Bancaire -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-university me-2"></i>
+                Secteur Bancaire
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h6 class="card-title">Gestion des Comptes</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i> Suivi des transactions</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Gestion des prêts</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Rapports financiers</li>
+                            </ul>
+                            <button class="btn btn-outline-primary btn-sm" onclick="configureFeature('banking', 'accounts')">
+                                Configurer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h6 class="card-title">Services Clients</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i> Gestion des demandes</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Support multicanaux</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Historique client</li>
+                            </ul>
+                            <button class="btn btn-outline-primary btn-sm" onclick="configureFeature('banking', 'services')">
+                                Configurer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h6 class="card-title">Conformité</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i> KYC/KYB</li>
+                                <li><i class="fas fa-check text-success me-2"></i> AML</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Rapports réglementaires</li>
+                            </ul>
+                            <button class="btn btn-outline-primary btn-sm" onclick="configureFeature('banking', 'compliance')">
+                                Configurer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Secteur Immobilier -->
+    <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-building me-2"></i>
+                Secteur Immobilier
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h6 class="card-title">Gestion de Portefeuille</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i> Suivi des biens</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Gestion locative</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Valorisation</li>
+                            </ul>
+                            <button class="btn btn-outline-success btn-sm" onclick="configureFeature('realestate', 'portfolio')">
+                                Configurer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h6 class="card-title">Transactions</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i> Suivi des ventes</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Gestion des contrats</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Commissionnement</li>
+                            </ul>
+                            <button class="btn btn-outline-success btn-sm" onclick="configureFeature('realestate', 'transactions')">
+                                Configurer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h6 class="card-title">Maintenance</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i> Planning des interventions</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Suivi des travaux</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Gestion des fournisseurs</li>
+                            </ul>
+                            <button class="btn btn-outline-success btn-sm" onclick="configureFeature('realestate', 'maintenance')">
+                                Configurer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Secteur Hospitalier -->
+    <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-hospital me-2"></i>
+                Secteur Hospitalier
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h6 class="card-title">Gestion des Patients</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i> Dossier médical</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Planning des rendez-vous</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Suivi des traitements</li>
+                            </ul>
+                            <button class="btn btn-outline-danger btn-sm" onclick="configureFeature('healthcare', 'patients')">
+                                Configurer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h6 class="card-title">Gestion des Ressources</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i> Planning du personnel</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Gestion des stocks</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Équipements médicaux</li>
+                            </ul>
+                            <button class="btn btn-outline-danger btn-sm" onclick="configureFeature('healthcare', 'resources')">
+                                Configurer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h6 class="card-title">Administration</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i> Facturation</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Assurance maladie</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Rapports administratifs</li>
+                            </ul>
+                            <button class="btn btn-outline-danger btn-sm" onclick="configureFeature('healthcare', 'admin')">
+                                Configurer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de configuration -->
+<div class="modal fade" id="configModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Configuration <span id="featureName"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="configForm">
+                    <div class="mb-3">
+                        <label class="form-label">Nom de l'établissement</label>
+                        <input type="text" class="form-control" name="institution_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Type d'intégration</label>
+                        <select class="form-select" name="integration_type" required>
+                            <option value="api">API</option>
+                            <option value="database">Base de données</option>
+                            <option value="file">Fichiers</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Configuration</label>
+                        <textarea class="form-control" name="configuration" rows="4"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary" onclick="saveConfiguration()">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let currentSector = '';
+    let currentFeature = '';
+    const modal = new bootstrap.Modal(document.getElementById('configModal'));
+    
+    function configureFeature(sector, feature) {
+        currentSector = sector;
+        currentFeature = feature;
+        document.getElementById('featureName').textContent = 
+            `${sector.charAt(0).toUpperCase() + sector.slice(1)} - ${feature.charAt(0).toUpperCase() + feature.slice(1)}`;
+        modal.show();
+    }
+    
+    function saveConfiguration() {
+        const form = document.getElementById('configForm');
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        // Envoyer les données au serveur
+        fetch('/api/sector/configure', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                sector: currentSector,
+                feature: currentFeature,
+                ...data
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                modal.hide();
+                alert('Configuration enregistrée avec succès !');
+            } else {
+                alert('Erreur lors de l\'enregistrement : ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('Erreur lors de l\'enregistrement : ' + error.message);
+        });
+    }
+</script>
+{% endblock %} 

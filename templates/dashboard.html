@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mb-4">Tableau de bord</h1>
+    
+    <!-- Statistiques -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h3 id="active-projects">0</h3>
+                <p>Projets en cours</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h3 id="active-clients">0</h3>
+                <p>Clients actifs</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h3 id="videos-in-progress">0</h3>
+                <p>Vidéos en édition</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h3 id="monthly-deliveries">0</h3>
+                <p>Livraisons du mois</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Graphiques -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Projets par statut</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="projectsChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Activité mensuelle</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Projets récents -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Projets récents</h5>
+                    <a href="{{ url_for('projects') }}" class="btn btn-primary btn-sm">Voir tous</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nom</th>
+                                    <th>Client</th>
+                                    <th>Statut</th>
+                                    <th>Date de création</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-projects">
+                                <!-- Les projets seront chargés dynamiquement -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Charger les données
+    function loadDashboardData() {
+        // Charger les projets
+        fetch('/api/projects')
+            .then(response => response.json())
+            .then(projects => {
+                // Mettre à jour les statistiques
+                document.getElementById('active-projects').textContent = 
+                    projects.filter(p => p.status === 'En cours').length;
+                
+                // Mettre à jour le tableau des projets récents
+                const recentProjects = projects.slice(-5).reverse();
+                const tbody = document.getElementById('recent-projects');
+                tbody.innerHTML = '';
+                
+                recentProjects.forEach(project => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${project.id}</td>
+                            <td>${project.name}</td>
+                            <td>${project.client}</td>
+                            <td><span class="badge bg-primary">${project.status}</span></td>
+                            <td>${new Date(project.created_at).toLocaleDateString()}</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">Voir</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                // Créer le graphique des projets par statut
+                const statusCounts = {};
+                projects.forEach(p => {
+                    statusCounts[p.status] = (statusCounts[p.status] || 0) + 1;
+                });
+                
+                new Chart(document.getElementById('projectsChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: Object.keys(statusCounts),
+                        datasets: [{
+                            data: Object.values(statusCounts),
+                            backgroundColor: [
+                                '#3498db',
+                                '#2ecc71',
+                                '#e74c3c',
+                                '#f1c40f'
+                            ]
+                        }]
+                    }
+                });
+            });
+        
+        // Charger les clients
+        fetch('/api/clients')
+            .then(response => response.json())
+            .then(clients => {
+                document.getElementById('active-clients').textContent = clients.length;
+            });
+    }
+    
+    // Charger les données au chargement de la page
+    document.addEventListener('DOMContentLoaded', loadDashboardData);
+    
+    // Créer le graphique d'activité mensuelle
+    const activityCtx = document.getElementById('activityChart').getContext('2d');
+    new Chart(activityCtx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'],
+            datasets: [{
+                label: 'Projets',
+                data: [12, 19, 15, 17, 22, 25],
+                borderColor: '#3498db',
+                tension: 0.4
+            }, {
+                label: 'Livraisons',
+                data: [8, 15, 12, 14, 18, 20],
+                borderColor: '#2ecc71',
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            }
+        }
+    });
+</script>
+{% endblock %} 

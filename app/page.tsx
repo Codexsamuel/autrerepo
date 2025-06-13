@@ -27,8 +27,18 @@ import {
   Clock,
   Award,
   Building2,
+  Linkedin,
+  Twitter,
+  Home,
+  Banknote,
+  LineChart,
 } from "lucide-react"
 import { DavyVoiceAssistant } from "@/components/ai-assistant/davy-voice-assistant"
+import { MediaCarousel } from "@/components/media-carousel"
+import { PresentationCarousel } from "@/components/presentation-carousel"
+import { TeamCarousel } from "@/components/team-carousel"
+import { SolutionsCarousel } from "@/components/solutions-carousel"
+import { ServicesCarousel } from "./components/services/services-carousel"
 
 export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -371,47 +381,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24">
-        <div className="container px-4 sm:px-6 lg:px-8 max-w-screen-2xl">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12 md:mb-16">
-            <div className="space-y-2">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter">Nos Solutions</h2>
-              <p className="mx-auto max-w-[90%] sm:max-w-[700px] text-muted-foreground text-base sm:text-lg">
-                Un écosystème complet de services pour propulser votre entreprise
-              </p>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-            {services.map((service, i) => (
-              <Card key={i} className="hover-lift border-2 transition-all duration-300 hover:shadow-lg">
-                <CardHeader className="pb-4">
-                  <div className={`w-12 h-12 rounded-lg ${service.color} border flex items-center justify-center mb-4`}>
-                    <service.icon className="h-6 w-6" />
-                  </div>
-                  <CardTitle className="text-lg sm:text-xl">{service.name}</CardTitle>
-                  <CardDescription className="text-sm sm:text-base">{service.description}</CardDescription>
-                  <div className="flex flex-wrap gap-1 mt-2">
-                    {service.features.map((feature, idx) => (
-                      <Badge key={idx} variant="secondary" className="text-xs">
-                        {feature}
-                      </Badge>
-                    ))}
-                  </div>
-                </CardHeader>
-                <CardFooter>
-                  <Link
-                    href={service.url}
-                    className="inline-flex items-center text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-                  >
-                    En savoir plus
-                    <ChevronRight className="ml-1 h-4 w-4" />
-                  </Link>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        </div>
+      {/* Section Services */}
+      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+        <ServicesCarousel />
       </section>
 
       {/* Features Section */}
@@ -463,53 +435,81 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-100">
-        <div className="container px-4 sm:px-6 lg:px-8 max-w-screen-2xl">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12 md:mb-16">
-            <div className="space-y-2">
-              <Badge>Notre Équipe Dirigeante</Badge>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter">
-                Les talents derrière DL Solutions
-              </h2>
-              <p className="mx-auto max-w-[90%] sm:max-w-[700px] text-muted-foreground text-base sm:text-lg">
-                Une équipe passionnée et expérimentée qui porte votre transformation digitale avec excellence et innovation.
-              </p>
-            </div>
+      {/* Section Équipe */}
+      <section className="py-20 bg-gradient-to-b from-white to-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+              Notre Équipe Dirigeante
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Des leaders visionnaires qui façonnent l'avenir de l'innovation
+            </p>
           </div>
 
-          {/* Grille centrée - 2 colonnes en grand écran */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-4xl mx-auto">
-            {/* Samuel OBAM */}
-            <div className="flex flex-col items-center text-center space-y-3">
-              <Image
-                src="/images/team/Samuel.png"
-                alt="Samuel OBAM"
-                width={150}
-                height={150}
-                className="rounded-full object-cover shadow-lg border-4 border-blue-600"
-              />
-              <h3 className="text-xl font-semibold">Samuel OBAM</h3>
-              <p className="text-blue-700">Directeur Général (CEO)</p>
-              <p className="text-sm text-muted-foreground px-4">
-                Visionnaire et expert en transformation digitale, Samuel dirige l'innovation et le développement stratégique de l'entreprise.
-              </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+            {/* Carte Davy */}
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+              <div className="relative h-[500px]">
+                <Image
+                  src="/images/team/Samuel.png"
+                  alt="Davy - CEO & Fondateur"
+                  fill
+                  className="object-cover object-top"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                  <h3 className="text-3xl font-bold mb-2">Davy</h3>
+                  <p className="text-xl text-gray-200">CEO & Fondateur</p>
+                </div>
+              </div>
+              <div className="p-8">
+                <p className="text-gray-600 mb-6 text-lg leading-relaxed">
+                  Visionnaire et entrepreneur passionné, Davy guide notre entreprise vers l'excellence et l'innovation.
+                </p>
+                <div className="flex gap-4">
+                  <a href="#" className="text-teal-600 hover:text-teal-700 transition-colors">
+                    <Linkedin className="h-6 w-6" />
+                  </a>
+                  <a href="#" className="text-teal-600 hover:text-teal-700 transition-colors">
+                    <Twitter className="h-6 w-6" />
+                  </a>
+                </div>
+              </div>
             </div>
 
-            {/* Lucie */}
-            <div className="flex flex-col items-center text-center space-y-3">
-              <Image
-                src="/images/team/Lucie.png"
-                alt="Lucie"
-                width={150}
-                height={150}
-                className="rounded-full object-cover shadow-lg border-4 border-blue-600"
-              />
-              <h3 className="text-xl font-semibold">Lucie</h3>
-              <p className="text-blue-700">Directrice Marketing</p>
-              <p className="text-sm text-muted-foreground px-4">
-                Spécialiste du marketing digital, Lucie conçoit des stratégies innovantes pour accroître la visibilité et la notoriété de DL Solutions.
-              </p>
+            {/* Carte Lucie */}
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+              <div className="relative h-[500px]">
+                <Image
+                  src="/images/team/Lucie.png"
+                  alt="Lucie - Directrice Marketing"
+                  fill
+                  className="object-cover object-top"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                  <h3 className="text-3xl font-bold mb-2">Lucie</h3>
+                  <p className="text-xl text-gray-200">Directrice Marketing</p>
+                </div>
+              </div>
+              <div className="p-8">
+                <p className="text-gray-600 mb-6 text-lg leading-relaxed">
+                  Experte en stratégie marketing, Lucie développe des solutions créatives pour nos clients.
+                </p>
+                <div className="flex gap-4">
+                  <a href="#" className="text-teal-600 hover:text-teal-700 transition-colors">
+                    <Linkedin className="h-6 w-6" />
+                  </a>
+                  <a href="#" className="text-teal-600 hover:text-teal-700 transition-colors">
+                    <Twitter className="h-6 w-6" />
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -597,295 +597,15 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white">
-        <div className="container mx-auto px-4 py-16">
-          {/* Section principale du footer */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-            {/* Colonne 1: À propos */}
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-blue-400 flex items-center justify-center bg-white">
-                  <Image
-                    src="/images/dl-logo.jpg"
-                    alt="DL Solutions Logo"
-                    width={40}
-                    height={40}
-                    className="object-contain"
-                  />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white">DL Solutions</h3>
-                  <p className="text-blue-300 text-sm">Transformation Digitale</p>
-                </div>
-              </div>
-              <p className="text-gray-300 leading-relaxed">
-                Leader en solutions CRM, Intelligence Artificielle et formations digitales au Cameroun. Nous
-                transformons votre entreprise avec nos technologies innovantes.
-              </p>
-              <div className="flex space-x-4">
-                <a
-                  href="https://www.linkedin.com/company/107208022"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors"
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </a>
-                <a
-                  href="https://twitter.com/dlsolutions"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-500 transition-colors"
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
-                  </svg>
-                </a>
-                <a
-                  href="https://www.facebook.com/dlsolutions"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 bg-blue-800 rounded-full flex items-center justify-center hover:bg-blue-900 transition-colors"
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M20 10C20 4.477 15.523 0 10 0S0 4.477 0 10c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V10h2.54V7.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V10h2.773l-.443 2.89h-2.33v6.988C16.343 19.128 20 14.991 20 10z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </a>
-              </div>
-            </div>
-
-            {/* Colonne 2: Services */}
-            <div className="space-y-4">
-              <h4 className="text-lg font-semibold text-white border-b border-blue-600 pb-2 mb-4">Nos Services</h4>
-              <ul className="space-y-3">
-                <li>
-                  <a href="/services" className="text-gray-300 hover:text-blue-400 transition-colors flex items-center">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>CRM NovaCore
-                  </a>
-                </li>
-                <li>
-                  <a href="/services" className="text-gray-300 hover:text-blue-400 transition-colors flex items-center">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>Intelligence Artificielle
-                  </a>
-                </li>
-                <li>
-                  <a href="/services" className="text-gray-300 hover:text-blue-400 transition-colors flex items-center">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>Création Visuelle
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/formations"
-                    className="text-gray-300 hover:text-blue-400 transition-colors flex items-center"
-                  >
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>Formations Pro
-                  </a>
-                </li>
-                <li>
-                  <a href="/services" className="text-gray-300 hover:text-blue-400 transition-colors flex items-center">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>Shooting Photo/Vidéo
-                  </a>
-                </li>
-                <li>
-                  <a href="/services" className="text-gray-300 hover:text-blue-400 transition-colors flex items-center">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>Automatisation
-                  </a>
-                </li>
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <h3 className="text-lg font-bold mb-4">Mentions légales</h3>
+              <ul className="space-y-2">
+                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Confidentialité</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">CGU</a></li>
               </ul>
-            </div>
-
-            {/* Colonne 3: Liens Rapides */}
-            <div className="space-y-4">
-              <h4 className="text-lg font-semibold text-white border-b border-blue-600 pb-2 mb-4">Liens Rapides</h4>
-              <ul className="space-y-3">
-                <li>
-                  <a href="/a-propos" className="text-gray-300 hover:text-blue-400 transition-colors flex items-center">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>À propos
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/portfolio"
-                    className="text-gray-300 hover:text-blue-400 transition-colors flex items-center"
-                  >
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>Portfolio
-                  </a>
-                </li>
-                <li>
-                  <a href="/devis" className="text-gray-300 hover:text-blue-400 transition-colors flex items-center">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>Devis IA
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/rendez-vous"
-                    className="text-gray-300 hover:text-blue-400 transition-colors flex items-center"
-                  >
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>Prendre RDV
-                  </a>
-                </li>
-                <li>
-                  <a href="/contact" className="text-gray-300 hover:text-blue-400 transition-colors flex items-center">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>Contact
-                  </a>
-                </li>
-                <li>
-                  <a href="/sign-in" className="text-gray-300 hover:text-blue-400 transition-colors flex items-center">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>Nos CRM
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Colonne 4: Contact */}
-            <div className="space-y-4">
-              <h4 className="text-lg font-semibold text-white border-b border-blue-600 pb-2 mb-4">Contact</h4>
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <MapPin className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-white font-medium">Adresse</p>
-                    <p className="text-gray-300 text-sm">
-                      2 rue École de Police
-                      <br />
-                      Yaoundé, Cameroun
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <Phone className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-white font-medium">Téléphone</p>
-                    <a href="tel:+237694341586" className="text-gray-300 hover:text-blue-400 transition-colors text-sm">
-                      +237 694 341 586
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <Mail className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-white font-medium">Email</p>
-                    <a
-                      href="mailto:sobam@daveandlucesolutions.com"
-                      className="text-gray-300 hover:text-blue-400 transition-colors text-sm"
-                    >
-                      sobam@daveandlucesolutions.com
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <Clock className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-white font-medium">Horaires</p>
-                    <p className="text-gray-300 text-sm">
-                      Lun-Ven: 8h-18h
-                      <br />
-                      Sam: 9h-15h
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Séparateur */}
-          <div className="border-t border-gray-700 pt-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Informations légales */}
-              <div>
-                <h5 className="text-white font-semibold mb-4">DL Solutions SARL</h5>
-                <div className="space-y-2 text-sm text-gray-300">
-                  <p>
-                    <span className="font-medium">CEO & Fondateur:</span> Samuel OBAM
-                  </p>
-                  <p>
-                    <span className="font-medium">RCCM:</span> RC/YAE/2020/B/1234
-                  </p>
-                  <p>
-                    <span className="font-medium">Secteur:</span> Technologies de l'Information
-                  </p>
-                  <p>
-                    <span className="font-medium">Fondée en:</span> 2020
-                  </p>
-                </div>
-              </div>
-
-              {/* Nos Plateformes */}
-              <div>
-                <h5 className="text-white font-semibold mb-4">Nos Plateformes</h5>
-                <div className="grid grid-cols-2 gap-3">
-                  <a
-                    href="/novacore"
-                    className="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors"
-                  >
-                    <div className="w-5 h-5 bg-blue-500 rounded"></div>
-                    <span className="text-sm">NovaCore</span>
-                  </a>
-                  <a
-                    href="/novaworld"
-                    className="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors"
-                  >
-                    <div className="w-5 h-5 bg-purple-500 rounded"></div>
-                    <span className="text-sm">NovaWorld</span>
-                  </a>
-                  <a
-                    href="/dl-style"
-                    className="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors"
-                  >
-                    <div className="w-5 h-5 bg-pink-500 rounded"></div>
-                    <span className="text-sm">DL Style</span>
-                  </a>
-                  <a
-                    href="/dl-travel"
-                    className="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors"
-                  >
-                    <div className="w-5 h-5 bg-cyan-500 rounded"></div>
-                    <span className="text-sm">DL Travel</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Copyright */}
-          <div className="border-t border-gray-700 pt-6 mt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-              <div className="text-center md:text-left">
-                <p className="text-gray-400 text-sm">&copy; 2024 DL Solutions SARL. Tous droits réservés.</p>
-                <p className="text-gray-500 text-xs mt-1">Powered by NovaCore AI | Made with ❤️ in Cameroon</p>
-              </div>
-              <div className="flex space-x-6 text-sm">
-                <a href="/mentions-legales" className="text-gray-400 hover:text-blue-400 transition-colors">
-                  Mentions légales
-                </a>
-                <a href="/politique-confidentialite" className="text-gray-400 hover:text-blue-400 transition-colors">
-                  Confidentialité
-                </a>
-                <a href="/conditions-utilisation" className="text-gray-400 hover:text-blue-400 transition-colors">
-                  CGU
-                </a>
-              </div>
             </div>
           </div>
         </div>
@@ -893,6 +613,99 @@ export default function HomePage() {
 
       {/* Assistant DAVY */}
       <DavyVoiceAssistant />
+
+      {/* Media Carousel */}
+      <section className="w-full py-12 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-8">Nos Solutions CRM</h2>
+          <MediaCarousel />
+        </div>
+      </section>
+
+      {/* Présentation Media */}
+      <section className="w-full py-16 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+        <PresentationCarousel />
+      </section>
+
+      {/* Solutions CRM */}
+      <section className="py-20 px-4 bg-gray-50">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+              Nos Solutions CRM
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Des solutions adaptées à chaque secteur d'activité
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {/* CRM Immobilier */}
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+              <div className="relative h-48 bg-gradient-to-br from-blue-500 to-blue-700">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Home className="w-16 h-16 text-white opacity-80" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-2">CRM Immobilier</h3>
+                <p className="text-gray-600">
+                  Gérez vos biens immobiliers efficacement
+                </p>
+              </div>
+            </div>
+
+            {/* CRM Banque */}
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+              <div className="relative h-48 bg-gradient-to-br from-green-500 to-green-700">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Banknote className="w-16 h-16 text-white opacity-80" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-2">CRM Banque</h3>
+                <p className="text-gray-600">
+                  Solutions bancaires innovantes
+                </p>
+              </div>
+            </div>
+
+            {/* CRM Trading */}
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+              <div className="relative h-48 bg-gradient-to-br from-purple-500 to-purple-700">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <LineChart className="w-16 h-16 text-white opacity-80" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-2">CRM Trading</h3>
+                <p className="text-gray-600">
+                  Plateforme de trading avancée
+                </p>
+              </div>
+            </div>
+
+            {/* CRM Agence */}
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+              <div className="relative h-48 bg-gradient-to-br from-orange-500 to-orange-700">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Building2 className="w-16 h-16 text-white opacity-80" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-2">CRM Agence</h3>
+                <p className="text-gray-600">
+                  Gestion complète de votre agence
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

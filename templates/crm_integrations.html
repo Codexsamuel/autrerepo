@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block title %}Intégrations CRM{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mb-4">Intégrations CRM</h1>
+    
+    <div class="row">
+        <!-- Salesforce -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-cloud fa-2x text-primary me-3"></i>
+                        <h5 class="card-title mb-0">Salesforce</h5>
+                    </div>
+                    <p class="card-text">Intégrez vos données Salesforce pour une gestion complète de vos relations clients.</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i> Synchronisation des contacts</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Suivi des opportunités</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Rapports personnalisés</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="connectCRM('salesforce')">
+                        <i class="fas fa-plug me-2"></i>Connecter
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- HubSpot -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-hubspot fa-2x text-primary me-3"></i>
+                        <h5 class="card-title mb-0">HubSpot</h5>
+                    </div>
+                    <p class="card-text">Automatisez vos processus marketing et vente avec HubSpot.</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i> Marketing automation</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Gestion des leads</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Analytics avancés</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="connectCRM('hubspot')">
+                        <i class="fas fa-plug me-2"></i>Connecter
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Zoho CRM -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-cube fa-2x text-primary me-3"></i>
+                        <h5 class="card-title mb-0">Zoho CRM</h5>
+                    </div>
+                    <p class="card-text">Solution CRM complète pour la gestion de vos relations clients.</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i> Pipeline de vente</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Email marketing</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Intégration sociale</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="connectCRM('zoho')">
+                        <i class="fas fa-plug me-2"></i>Connecter
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Microsoft Dynamics -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fab fa-microsoft fa-2x text-primary me-3"></i>
+                        <h5 class="card-title mb-0">Microsoft Dynamics</h5>
+                    </div>
+                    <p class="card-text">Solution CRM d'entreprise pour une gestion complète.</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i> ERP intégré</li>
+                        <li><i class="fas fa-check text-success me-2"></i> BI avancé</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Mobile first</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="connectCRM('dynamics')">
+                        <i class="fas fa-plug me-2"></i>Connecter
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pipedrive -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-chart-line fa-2x text-primary me-3"></i>
+                        <h5 class="card-title mb-0">Pipedrive</h5>
+                    </div>
+                    <p class="card-text">CRM orienté pipeline pour les équipes de vente.</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i> Pipeline visuel</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Suivi des activités</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Automatisation</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="connectCRM('pipedrive')">
+                        <i class="fas fa-plug me-2"></i>Connecter
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de connexion -->
+<div class="modal fade" id="connectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Connecter <span id="crmName"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="connectForm">
+                    <div class="mb-3">
+                        <label class="form-label">API Key</label>
+                        <input type="text" class="form-control" name="api_key" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">API Secret</label>
+                        <input type="password" class="form-control" name="api_secret" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">URL de l'instance</label>
+                        <input type="url" class="form-control" name="instance_url">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary" onclick="saveConnection()">Connecter</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let currentCRM = '';
+    const modal = new bootstrap.Modal(document.getElementById('connectModal'));
+    
+    function connectCRM(crm) {
+        currentCRM = crm;
+        document.getElementById('crmName').textContent = crm.charAt(0).toUpperCase() + crm.slice(1);
+        modal.show();
+    }
+    
+    function saveConnection() {
+        const form = document.getElementById('connectForm');
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        // Envoyer les données au serveur
+        fetch('/api/crm/connect', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                crm: currentCRM,
+                ...data
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                modal.hide();
+                // Afficher un message de succès
+                alert('Connexion réussie !');
+            } else {
+                alert('Erreur lors de la connexion : ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('Erreur lors de la connexion : ' + error.message);
+        });
+    }
+</script>
+{% endblock %} 

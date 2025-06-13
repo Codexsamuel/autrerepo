@@ -246,3 +246,212 @@ HOSTNAME=0.0.0.0
 - [ ] Paiements Stripe/CinetPay
 - [ ] API ElevenLabs pour voix
 - [ ] Intégration Telegram/Discord
+
+# Interface d'Édition Vidéo IA
+
+Cette interface permet d'accéder facilement aux différents logiciels d'édition vidéo (CapCut, Canva, Adobe Premiere Pro) pour effectuer des montages vidéo.
+
+## Prérequis
+
+- Python 3.x
+- macOS (pour les chemins d'installation par défaut)
+- Les logiciels suivants installés (optionnel) :
+  - CapCut
+  - Adobe Premiere Pro
+  - Navigateur web pour Canva
+
+## Installation
+
+1. Clonez ce dépôt
+2. Installez les dépendances :
+```bash
+pip install -r requirements.txt
+```
+
+## Utilisation
+
+1. Lancez l'interface :
+```bash
+python video_editor_interface.py
+```
+
+2. Sélectionnez l'éditeur vidéo souhaité en cliquant sur le bouton correspondant :
+   - CapCut : Ouvre l'application CapCut si elle est installée
+   - Canva : Ouvre Canva dans votre navigateur web
+   - Adobe Premiere Pro : Ouvre Adobe Premiere Pro si il est installé
+
+## Fonctionnalités
+
+- Interface graphique simple et intuitive
+- Accès rapide aux principaux éditeurs vidéo
+- Gestion des erreurs si les applications ne sont pas installées
+- Statut en temps réel des opérations
+
+## Note
+
+L'interface vérifie si les applications sont installées aux emplacements par défaut sur macOS. Si vous utilisez un autre système d'exploitation ou si les applications sont installées ailleurs, vous devrez modifier les chemins dans le code source.
+
+# CRM - Éditeur Vidéo
+
+Une interface complète qui combine la gestion de projets (CRM) avec des outils d'édition vidéo professionnels.
+
+## Fonctionnalités
+
+### Gestion des Projets (CRM)
+- Création et gestion de projets vidéo
+- Suivi des clients
+- Statut des projets (En attente, En cours, Terminé, Livré)
+- Sauvegarde automatique des données
+
+### Édition Vidéo
+- Intégration avec les logiciels professionnels :
+  - CapCut
+  - Canva
+  - Adobe Premiere Pro
+- Prévisualisation des vidéos
+- Importation de fichiers vidéo
+- Contrôles de lecture (play, pause, stop)
+
+## Prérequis
+
+- Python 3.x
+- macOS (pour les chemins d'installation par défaut)
+- Les logiciels suivants installés (optionnel) :
+  - CapCut
+  - Adobe Premiere Pro
+  - Navigateur web pour Canva
+
+## Installation
+
+1. Clonez ce dépôt
+2. Installez les dépendances :
+```bash
+pip install -r requirements.txt
+```
+
+## Utilisation
+
+1. Lancez l'application :
+```bash
+python crm_video_editor.py
+```
+
+2. Gestion des projets :
+   - Cliquez sur "Nouveau Projet" pour créer un projet
+   - Remplissez les détails du projet (nom, client, statut)
+   - Sauvegardez les modifications
+
+3. Édition vidéo :
+   - Sélectionnez un projet
+   - Importez une vidéo
+   - Utilisez les contrôles de prévisualisation
+   - Ouvrez l'éditeur vidéo de votre choix
+
+## Structure des Données
+
+Les projets sont sauvegardés dans un fichier `projects.json` avec les informations suivantes :
+- ID du projet
+- Nom du projet
+- Client
+- Statut
+- Date de création
+- Chemin du fichier vidéo
+
+## Note
+
+L'interface vérifie si les applications sont installées aux emplacements par défaut sur macOS. Si vous utilisez un autre système d'exploitation ou si les applications sont installées ailleurs, vous devrez modifier les chemins dans le code source.
+
+# NovaCore - Hub Central
+
+Une plateforme complète qui intègre la gestion de projets, l'édition vidéo et le suivi client dans une interface unifiée.
+
+## Fonctionnalités Principales
+
+### Hub Central
+- Tableau de bord personnalisé
+- Navigation intuitive
+- Statistiques en temps réel
+- Gestion centralisée
+
+### CRM Vidéo
+- Intégration avec les logiciels professionnels :
+  - CapCut
+  - Canva
+  - Adobe Premiere Pro
+- Gestion des projets vidéo
+- Prévisualisation des vidéos
+- Suivi des clients
+
+### Gestion des Projets
+- Vue d'ensemble des projets
+- Suivi des statuts
+- Gestion des délais
+- Association clients-projets
+
+### Gestion des Clients
+- Base de données clients
+- Historique des projets
+- Suivi des interactions
+- Statistiques clients
+
+### Rapports et Statistiques
+- Rapports mensuels
+- Statistiques clients
+- Performance des projets
+- Métriques d'édition
+
+## Prérequis
+
+- Python 3.x
+- macOS (pour les chemins d'installation par défaut)
+- Les logiciels suivants installés (optionnel) :
+  - CapCut
+  - Adobe Premiere Pro
+  - Navigateur web pour Canva
+
+## Installation
+
+1. Clonez ce dépôt
+2. Installez les dépendances :
+```bash
+pip install -r requirements.txt
+```
+
+## Utilisation
+
+1. Lancez l'application :
+```bash
+python novacore_integration.py
+```
+
+2. Navigation :
+   - Utilisez la barre latérale pour accéder aux différentes sections
+   - Le tableau de bord affiche les statistiques principales
+   - Accédez au CRM vidéo pour l'édition
+   - Gérez les projets et clients dans leurs sections respectives
+
+3. CRM Vidéo :
+   - Créez et gérez des projets vidéo
+   - Importez et prévisualisez des vidéos
+   - Utilisez les outils d'édition intégrés
+
+4. Gestion des Projets :
+   - Suivez l'état des projets
+   - Gérez les délais et livraisons
+   - Associez les projets aux clients
+
+5. Gestion des Clients :
+   - Maintenez la base de données clients
+   - Suivez les interactions
+   - Gérez les projets par client
+
+## Structure des Données
+
+Les données sont sauvegardées dans des fichiers JSON :
+- `projects.json` : Projets et leurs détails
+- `clients.json` : Informations clients
+- `settings.json` : Paramètres utilisateur
+
+## Note
+
+L'interface vérifie si les applications sont installées aux emplacements par défaut sur macOS. Si vous utilisez un autre système d'exploitation ou si les applications sont installées ailleurs, vous devrez modifier les chemins dans le code source.

@@ -32,7 +32,9 @@ import {
   Check,
   ArrowUpRight,
   ArrowRight,
-  Brain
+  Brain,
+  Mail,
+  Eye
 } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"

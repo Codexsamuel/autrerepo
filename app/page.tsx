@@ -39,10 +39,12 @@ import { PresentationCarousel } from "@/components/presentation-carousel"
 import { TeamCarousel } from "@/components/team-carousel"
 import { SolutionsCarousel } from "@/components/solutions-carousel"
 import { ServicesCarousel } from "./components/services/services-carousel"
+import ProductCard from '@/components/ProductCard'
 
 export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
 
   // Hydration fix
   useEffect(() => {
@@ -182,6 +184,40 @@ export default function HomePage() {
       percentage: "98%",
     },
   ]
+
+  // Données de test pour les produits
+  const sampleProducts = [
+    {
+      id: '1',
+      title: 'Montre connectée 2024 - Édition limitée',
+      priceCNY: 120,
+      priceFCFA: 36000,
+      imageUrl: '/images/smartwatch.jpg',
+      source: 'AliExpress',
+      deliveryTime: '15-20 jours',
+      rating: 4.8
+    },
+    {
+      id: '2',
+      title: 'Caméra de surveillance HD 4K',
+      priceCNY: 280,
+      priceFCFA: 85000,
+      imageUrl: '/images/camera.jpg',
+      source: '1688',
+      deliveryTime: '20-25 jours',
+      rating: 4.5
+    },
+    {
+      id: '3',
+      title: 'Vélo électrique pliant - Batterie longue durée',
+      priceCNY: 2100,
+      priceFCFA: 599000,
+      imageUrl: '/images/ebike.jpg',
+      source: 'Alibaba',
+      deliveryTime: '30-35 jours',
+      rating: 4.9
+    }
+  ];
 
   return (
     <div className="min-h-screen max-w-screen-2xl mx-auto">
@@ -703,6 +739,63 @@ export default function HomePage() {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Products */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-8">Produits en vedette</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {sampleProducts.map((product) => (
+              <ProductCard key={product.id} {...product} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Categories */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-8">Catégories populaires</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {['Mode', 'Électronique', 'Maison', 'Beauté'].map((category) => (
+              <div
+                key={category}
+                className="bg-gray-100 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-200 transition-colors"
+              >
+                <h3 className="text-xl font-semibold">{category}</h3>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-8 text-center">Pourquoi choisir DL Style ?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                title: 'Produits vérifiés',
+                description: 'Tous nos produits sont sélectionnés et vérifiés pour leur qualité'
+              },
+              {
+                title: 'Livraison rapide',
+                description: 'Livraison directe depuis la Chine vers l\'Afrique'
+              },
+              {
+                title: 'Prix compétitifs',
+                description: 'Les meilleurs prix du marché avec des marges raisonnables'
+              }
+            ].map((feature) => (
+              <div key={feature.title} className="bg-white p-6 rounded-xl shadow-lg">
+                <h3 className="text-xl font-semibold mb-4">{feature.title}</h3>
+                <p className="text-gray-600">{feature.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

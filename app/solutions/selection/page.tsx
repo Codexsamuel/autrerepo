@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Building2, Hospital, ArrowRight } from "lucide-react"
+import { Building2, Stethoscope, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 
@@ -57,7 +57,7 @@ export default function SelectionPage() {
             <CardHeader>
               <div className="flex items-center justify-center mb-4">
                 <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Hospital className="w-8 h-8 text-primary" />
+                  <Stethoscope className="w-8 h-8 text-primary" />
                 </div>
               </div>
               <CardTitle className="text-center">Gestion Hospitalière</CardTitle>

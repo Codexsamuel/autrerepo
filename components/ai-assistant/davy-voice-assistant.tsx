@@ -85,33 +85,28 @@ export function DavyVoiceAssistant() {
   // Initialisation de la reconnaissance vocale
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // @ts-ignore
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-      if (SpeechRecognition) {
-        const recognitionInstance = new SpeechRecognition()
-        recognitionInstance.continuous = false
-        recognitionInstance.interimResults = false
-        recognitionInstance.lang = 'fr-FR'
-        
-        recognitionInstance.onresult = (event: any) => {
-          const transcript = event.results[0][0].transcript
-          setInputText(transcript)
-          handleUserInput(transcript)
-        }
-        
-        recognitionInstance.onerror = (event: any) => {
-          console.error('Erreur de reconnaissance vocale:', event.error)
-          setIsListening(false)
-        }
-        
-        recognitionInstance.onend = () => {
-          setIsListening(false)
-        }
-        
-        setRecognition(recognitionInstance)
+      // @ts-expect-error - Web Speech API types are not complete
+      const recognitionInstance = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognitionInstance.continuous = false
+      recognitionInstance.interimResults = false
+      recognitionInstance.lang = 'fr-FR'
+      
+      recognitionInstance.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript
+        setInputText(transcript)
+        handleUserInput(transcript)
       }
       
-      setSynthesis(window.speechSynthesis)
+      recognitionInstance.onerror = (event: any) => {
+        console.error('Erreur de reconnaissance vocale:', event.error)
+        setIsListening(false)
+      }
+      
+      recognitionInstance.onend = () => {
+        setIsListening(false)
+      }
+      
+      setRecognition(recognitionInstance)
     }
   }, [])
 

@@ -47,3 +47,6 @@ public/images/video/
 # Logs
 logs
 *.log
+
+# Local Netlify folder
+.netlify

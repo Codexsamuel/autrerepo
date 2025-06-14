@@ -206,7 +206,11 @@ export default function CoursPage() {
   }
 
   const markAsCompleted = (lessonIndex: number) => {
-    setCompletedLessons((prev) => new Set([...prev, lessonIndex]))
+    setCompletedLessons((prev) => {
+      const newSet = new Set(prev);
+      newSet.add(lessonIndex);
+      return newSet;
+    });
   }
 
   const calculateProgress = () => {

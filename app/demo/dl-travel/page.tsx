@@ -32,9 +32,10 @@ import {
   Check,
   ArrowUpRight,
   ArrowRight,
-  Brain,
+  Sparkles,
   Mail,
-  Eye
+  Eye,
+  Brain
 } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -179,7 +180,7 @@ export default function DLTravelDemo() {
           </Card>
           <Card className="p-6 bg-white/80 backdrop-blur-md border border-gray-200">
             <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
-              <Brain className="h-6 w-6 text-indigo-600" />
+              <Sparkles className="h-6 w-6 text-indigo-600" />
             </div>
             <h3 className="text-xl font-semibold mb-2 text-gray-800">Intelligence Artificielle</h3>
             <p className="text-gray-600">

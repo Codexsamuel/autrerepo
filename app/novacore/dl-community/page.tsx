@@ -107,7 +107,7 @@ export default function DLCommunityPage() {
                     post.status === "published"
                       ? "success"
                       : post.status === "scheduled"
-                      ? "warning"
+                      ? "info"
                       : "secondary"
                   }
                 >

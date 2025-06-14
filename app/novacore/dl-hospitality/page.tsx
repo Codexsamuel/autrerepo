@@ -50,14 +50,14 @@ interface ServicesStatus {
 export default function DLHospitalityPage() {
   const [loading, setLoading] = useState(true);
   const [servicesStatus, setServicesStatus] = useState<ServicesStatus>({
-    reservations: { status: "online", lastCheck: new Date(), latency: 45 },
-    checkIn: { status: "online", lastCheck: new Date(), latency: 32 },
-    housekeeping: { status: "online", lastCheck: new Date(), latency: 28 },
-    roomService: { status: "online", lastCheck: new Date(), latency: 35 },
-    spa: { status: "online", lastCheck: new Date(), latency: 40 },
-    pool: { status: "online", lastCheck: new Date(), latency: 38 },
-    restaurant: { status: "online", lastCheck: new Date(), latency: 42 },
-    transport: { status: "online", lastCheck: new Date(), latency: 30 }
+    reservations: { name: "Réservations", status: "online", lastCheck: new Date(), latency: 45 },
+    checkIn: { name: "Check-in", status: "online", lastCheck: new Date(), latency: 32 },
+    housekeeping: { name: "Ménage", status: "online", lastCheck: new Date(), latency: 28 },
+    roomService: { name: "Service en chambre", status: "online", lastCheck: new Date(), latency: 35 },
+    spa: { name: "Spa", status: "online", lastCheck: new Date(), latency: 40 },
+    pool: { name: "Piscine", status: "online", lastCheck: new Date(), latency: 38 },
+    restaurant: { name: "Restaurant", status: "online", lastCheck: new Date(), latency: 42 },
+    transport: { name: "Transport", status: "online", lastCheck: new Date(), latency: 30 }
   });
 
   useEffect(() => {

@@ -9,7 +9,7 @@
     "lint": "next lint",
     "clean": "rm -rf .next node_modules/.cache",
     "clean:all": "rm -rf .next node_modules package-lock.json yarn.lock pnpm-lock.yaml",
-    "build:clean": "pnpm run clean && pnpm run build",
+    "build:clean": "npm run clean && npm run build",
     "build:prod": "NODE_ENV=production next build",
     "postinstall": "next telemetry disable",
     "db:setup": "bash scripts/setup-database.sh --auto",

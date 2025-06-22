@@ -99,10 +99,7 @@ export default function ImmobilierLayout({
         sidebarOpen ? "block" : "hidden"
       )}>
         <div className="fixed inset-0 bg-gray-900/80" onClick={() => setSidebarOpen(false)} />
-        <motion.div
-          initial={{ x: -300 }}
-          animate={{ x: 0 }}
-          exit={{ x: -300 }}
+        <div
           className="fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-800"
         >
           <div className="flex items-center justify-between h-16 px-4 border-b dark:border-gray-700">
@@ -136,7 +133,7 @@ export default function ImmobilierLayout({
               </Link>
             ))}
           </nav>
-        </motion.div>
+        </div>
       </div>
 
       {/* Desktop sidebar */}

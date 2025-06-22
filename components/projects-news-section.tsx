@@ -101,12 +101,8 @@ const ProjectsNewsSection = () => {
     <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <motion.div 
+        <div 
           className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
         >
           <Badge variant="secondary" className="mb-4">
             <TrendingUp className="w-4 h-4 mr-2" />
@@ -118,17 +114,13 @@ const ProjectsNewsSection = () => {
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Découvrez nos derniers développements en matière de drones de surveillance et de technologies de pointe
           </p>
-        </motion.div>
+        </div>
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
           {projects.map((project, index) => (
-            <motion.div
+            <div
               key={project.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.6 }}
-              viewport={{ once: true }}
             >
               <Card className="h-full border-2 border-gray-100 hover:border-blue-200 transition-all duration-300 hover:shadow-xl overflow-hidden group">
                 <div className="relative h-48 overflow-hidden">
@@ -191,17 +183,13 @@ const ProjectsNewsSection = () => {
                   </Button>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* News Section */}
-        <motion.div 
+        <div 
           className="text-center mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
         >
           <h3 className="text-3xl font-bold text-gray-900 mb-4">
             Actualités & Innovations
@@ -209,16 +197,12 @@ const ProjectsNewsSection = () => {
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Restez informés des dernières avancées technologiques de DL Solutions
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {news.map((article, index) => (
-            <motion.div
+            <div
               key={article.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.6 }}
-              viewport={{ once: true }}
             >
               <Card className="h-full border-2 border-gray-100 hover:border-blue-200 transition-all duration-300 hover:shadow-xl overflow-hidden group">
                 <div className="relative h-48 overflow-hidden">
@@ -259,23 +243,19 @@ const ProjectsNewsSection = () => {
                   </div>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* CTA */}
-        <motion.div 
+        <div 
           className="text-center mt-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
         >
           <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
             Voir tous nos projets
             <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

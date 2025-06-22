@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from '@/components/ui/motion';
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -274,26 +273,22 @@ export default function AdvancedAnalytics() {
             ))}
           </select>
           
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <button
             onClick={loadAnalytics}
             disabled={isLoading}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 disabled:opacity-50 transition-colors"
           >
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             Actualiser
-          </motion.button>
+          </button>
           
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <button
             onClick={exportData}
             className="bg-gray-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-gray-700 transition-colors"
           >
             <Download className="w-4 h-4" />
             Exporter
-          </motion.button>
+          </button>
         </div>
       </div>
 
@@ -304,9 +299,8 @@ export default function AdvancedAnalytics() {
           const progress = (metric.value / metric.target) * 100;
           
           return (
-            <motion.div
+            <div
               key={metric.id}
-              whileHover={{ y: -5 }}
               className="bg-white p-6 rounded-xl shadow-lg border"
             >
               <div className="flex items-center justify-between mb-4">
@@ -349,7 +343,7 @@ export default function AdvancedAnalytics() {
                   {progress >= 100 ? 'Objectif atteint !' : `${Math.round(progress)}% de l'objectif`}
                 </p>
               </div>
-            </motion.div>
+            </div>
           );
         })}
       </div>
@@ -357,8 +351,7 @@ export default function AdvancedAnalytics() {
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Line Chart */}
-        <motion.div
-          whileHover={{ y: -2 }}
+        <div
           className="bg-white p-6 rounded-xl shadow-lg border"
         >
           <div className="flex items-center justify-between mb-6">
@@ -387,11 +380,10 @@ export default function AdvancedAnalytics() {
               <span className="text-sm text-gray-600">Objectif</span>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Pie Chart */}
-        <motion.div
-          whileHover={{ y: -2 }}
+        <div
           className="bg-white p-6 rounded-xl shadow-lg border"
         >
           <div className="flex items-center justify-between mb-6">
@@ -428,12 +420,11 @@ export default function AdvancedAnalytics() {
               <span className="text-sm text-gray-600">Autres (10%)</span>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* AI Insights */}
-      <motion.div
-        whileHover={{ y: -2 }}
+      <div
         className="bg-white p-6 rounded-xl shadow-lg border"
       >
         <div className="flex items-center justify-between mb-6">
@@ -454,10 +445,8 @@ export default function AdvancedAnalytics() {
             const InsightIcon = getInsightIcon(insight.type);
             
             return (
-              <motion.div
+              <div
                 key={insight.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
                 className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
               >
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${getInsightColor(insight.type)}`}>
@@ -487,27 +476,24 @@ export default function AdvancedAnalytics() {
                     </div>
                     
                     {insight.action && (
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                      <button
                         className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1"
                       >
                         <Eye className="w-3 h-3" />
                         {insight.action}
-                      </motion.button>
+                      </button>
                     )}
                   </div>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
-      </motion.div>
+      </div>
 
       {/* Performance Indicators */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <motion.div
-          whileHover={{ y: -2 }}
+        <div
           className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-xl text-white"
         >
           <div className="flex items-center justify-between mb-4">
@@ -516,10 +502,9 @@ export default function AdvancedAnalytics() {
           </div>
           <h4 className="font-semibold mb-1">Uptime</h4>
           <p className="text-blue-100 text-sm">Performance système</p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          whileHover={{ y: -2 }}
+        <div
           className="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-xl text-white"
         >
           <div className="flex items-center justify-between mb-4">
@@ -528,10 +513,9 @@ export default function AdvancedAnalytics() {
           </div>
           <h4 className="font-semibold mb-1">Objectifs atteints</h4>
           <p className="text-green-100 text-sm">Ce mois-ci</p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          whileHover={{ y: -2 }}
+        <div
           className="bg-gradient-to-r from-purple-500 to-purple-600 p-6 rounded-xl text-white"
         >
           <div className="flex items-center justify-between mb-4">
@@ -540,7 +524,7 @@ export default function AdvancedAnalytics() {
           </div>
           <h4 className="font-semibold mb-1">IA Active</h4>
           <p className="text-purple-100 text-sm">Monitoring continu</p>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

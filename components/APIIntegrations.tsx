@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from '@/components/ui/motion';
 import { 
   Globe, 
   Key, 
@@ -412,221 +411,199 @@ export default function APIIntegrations() {
           <p className="text-gray-600">Gérez vos endpoints et intégrations externes</p>
         </div>
         <div className="flex items-center gap-3">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <button
             onClick={() => setIsCreatingEndpoint(true)}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition-colors"
           >
             <Plus className="w-4 h-4" />
             Nouvel endpoint
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          </button>
+          <button
             onClick={() => setIsCreatingIntegration(true)}
             className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-green-700 transition-colors"
           >
             <Plus className="w-4 h-4" />
             Nouvelle intégration
-          </motion.button>
+          </button>
         </div>
       </div>
 
       {/* Create Endpoint Modal */}
-      <AnimatePresence>
-        {isCreatingEndpoint && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="bg-white p-6 rounded-xl shadow-lg border"
-          >
-            <h3 className="text-lg font-semibold mb-4">Créer un nouvel endpoint</h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Nom de l'endpoint
-                </label>
-                <input
-                  type="text"
-                  value={newEndpoint.name}
-                  onChange={(e) => setNewEndpoint(prev => ({ ...prev, name: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Ex: Génération de contenu"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  URL
-                </label>
-                <input
-                  type="url"
-                  value={newEndpoint.url}
-                  onChange={(e) => setNewEndpoint(prev => ({ ...prev, url: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="https://api.example.com/endpoint"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Méthode HTTP
-                </label>
-                <select
-                  value={newEndpoint.method}
-                  onChange={(e) => setNewEndpoint(prev => ({ ...prev, method: e.target.value as APIEndpoint['method'] }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="GET">GET</option>
-                  <option value="POST">POST</option>
-                  <option value="PUT">PUT</option>
-                  <option value="DELETE">DELETE</option>
-                  <option value="PATCH">PATCH</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Type d'authentification
-                </label>
-                <select
-                  value={newEndpoint.authentication.type}
-                  onChange={(e) => setNewEndpoint(prev => ({ 
-                    ...prev, 
-                    authentication: {
-                      ...prev.authentication,
-                      type: e.target.value as 'none' | 'api_key' | 'bearer' | 'oauth2' | 'basic'
-                    }
-                  }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="none">Aucune</option>
-                  <option value="api_key">Clé API</option>
-                  <option value="bearer">Bearer Token</option>
-                  <option value="oauth2">OAuth 2.0</option>
-                  <option value="basic">Basic Auth</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="mt-4">
+      {isCreatingEndpoint && (
+        <div
+          className="bg-white p-6 rounded-xl shadow-lg border"
+        >
+          <h3 className="text-lg font-semibold mb-4">Créer un nouvel endpoint</h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Description
+                Nom de l'endpoint
               </label>
-              <textarea
-                value={newEndpoint.description}
-                onChange={(e) => setNewEndpoint(prev => ({ ...prev, description: e.target.value }))}
+              <input
+                type="text"
+                value={newEndpoint.name}
+                onChange={(e) => setNewEndpoint(prev => ({ ...prev, name: e.target.value }))}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                rows={3}
-                placeholder="Description de l'endpoint..."
+                placeholder="Ex: Génération de contenu"
               />
             </div>
 
-            <div className="flex gap-3 mt-6">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={createEndpoint}
-                disabled={!newEndpoint.name || !newEndpoint.url}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                Créer l'endpoint
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsCreatingEndpoint(false)}
-                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
-              >
-                Annuler
-              </motion.button>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                URL
+              </label>
+              <input
+                type="url"
+                value={newEndpoint.url}
+                onChange={(e) => setNewEndpoint(prev => ({ ...prev, url: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="https://api.example.com/endpoint"
+              />
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Méthode HTTP
+              </label>
+              <select
+                value={newEndpoint.method}
+                onChange={(e) => setNewEndpoint(prev => ({ ...prev, method: e.target.value as APIEndpoint['method'] }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="PUT">PUT</option>
+                <option value="DELETE">DELETE</option>
+                <option value="PATCH">PATCH</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Type d'authentification
+              </label>
+              <select
+                value={newEndpoint.authentication.type}
+                onChange={(e) => setNewEndpoint(prev => ({ 
+                  ...prev, 
+                  authentication: {
+                    ...prev.authentication,
+                    type: e.target.value as 'none' | 'api_key' | 'bearer' | 'oauth2' | 'basic'
+                  }
+                }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="none">Aucune</option>
+                <option value="api_key">Clé API</option>
+                <option value="bearer">Bearer Token</option>
+                <option value="oauth2">OAuth 2.0</option>
+                <option value="basic">Basic Auth</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Description
+            </label>
+            <textarea
+              value={newEndpoint.description}
+              onChange={(e) => setNewEndpoint(prev => ({ ...prev, description: e.target.value }))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              rows={3}
+              placeholder="Description de l'endpoint..."
+            />
+          </div>
+
+          <div className="flex gap-3 mt-6">
+            <button
+              onClick={createEndpoint}
+              disabled={!newEndpoint.name || !newEndpoint.url}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              Créer l'endpoint
+            </button>
+            <button
+              onClick={() => setIsCreatingEndpoint(false)}
+              className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+            >
+              Annuler
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Create Integration Modal */}
-      <AnimatePresence>
-        {isCreatingIntegration && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="bg-white p-6 rounded-xl shadow-lg border"
-          >
-            <h3 className="text-lg font-semibold mb-4">Créer une nouvelle intégration</h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Nom de l'intégration
-                </label>
-                <input
-                  type="text"
-                  value={newIntegration.name}
-                  onChange={(e) => setNewIntegration(prev => ({ ...prev, name: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Ex: OpenAI GPT-4"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Service
-                </label>
-                <select
-                  value={newIntegration.service}
-                  onChange={(e) => setNewIntegration(prev => ({ ...prev, service: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="">Sélectionner un service</option>
-                  {availableServices.map(service => (
-                    <option key={service.name} value={service.name}>
-                      {service.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div className="mt-4">
+      {isCreatingIntegration && (
+        <div
+          className="bg-white p-6 rounded-xl shadow-lg border"
+        >
+          <h3 className="text-lg font-semibold mb-4">Créer une nouvelle intégration</h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Description
+                Nom de l'intégration
               </label>
-              <textarea
-                value={newIntegration.description}
-                onChange={(e) => setNewIntegration(prev => ({ ...prev, description: e.target.value }))}
+              <input
+                type="text"
+                value={newIntegration.name}
+                onChange={(e) => setNewIntegration(prev => ({ ...prev, name: e.target.value }))}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                rows={3}
-                placeholder="Description de l'intégration..."
+                placeholder="Ex: OpenAI GPT-4"
               />
             </div>
 
-            <div className="flex gap-3 mt-6">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={createIntegration}
-                disabled={!newIntegration.name || !newIntegration.service}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Service
+              </label>
+              <select
+                value={newIntegration.service}
+                onChange={(e) => setNewIntegration(prev => ({ ...prev, service: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
-                Créer l'intégration
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsCreatingIntegration(false)}
-                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
-              >
-                Annuler
-              </motion.button>
+                <option value="">Sélectionner un service</option>
+                {availableServices.map(service => (
+                  <option key={service.name} value={service.name}>
+                    {service.name}
+                  </option>
+                ))}
+              </select>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Description
+            </label>
+            <textarea
+              value={newIntegration.description}
+              onChange={(e) => setNewIntegration(prev => ({ ...prev, description: e.target.value }))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              rows={3}
+              placeholder="Description de l'intégration..."
+            />
+          </div>
+
+          <div className="flex gap-3 mt-6">
+            <button
+              onClick={createIntegration}
+              disabled={!newIntegration.name || !newIntegration.service}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              Créer l'intégration
+            </button>
+            <button
+              onClick={() => setIsCreatingIntegration(false)}
+              className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+            >
+              Annuler
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Endpoints Section */}
       <div className="bg-white p-6 rounded-xl shadow-lg border">
@@ -643,9 +620,8 @@ export default function APIIntegrations() {
             const StatusIcon = getStatusIcon(endpoint.status);
             
             return (
-              <motion.div
+              <div
                 key={endpoint.id}
-                whileHover={{ y: -2 }}
                 className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
               >
                 <div className="flex items-center gap-4">
@@ -672,35 +648,29 @@ export default function APIIntegrations() {
                 </div>
                 
                 <div className="flex items-center gap-2">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                  <button
                     onClick={() => testEndpoint(endpoint)}
                     disabled={isLoading}
                     className="bg-blue-600 text-white px-3 py-2 rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50 transition-colors"
                   >
                     <TestTube className="w-4 h-4" />
-                  </motion.button>
+                  </button>
                   
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                  <button
                     onClick={() => setSelectedEndpoint(endpoint)}
                     className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                   >
                     <Settings className="w-4 h-4" />
-                  </motion.button>
+                  </button>
                   
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                  <button
                     onClick={() => deleteEndpoint(endpoint.id)}
                     className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
-                  </motion.button>
+                  </button>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
@@ -722,9 +692,8 @@ export default function APIIntegrations() {
             const ServiceIcon = integration.icon;
             
             return (
-              <motion.div
+              <div
                 key={integration.id}
-                whileHover={{ y: -5 }}
                 className="bg-gray-50 p-4 rounded-xl hover:bg-gray-100 transition-colors"
               >
                 <div className="flex items-start justify-between mb-3">
@@ -761,22 +730,18 @@ export default function APIIntegrations() {
                       <span className="font-mono text-xs">
                         {showApiKey[integration.id] ? integration.apiKey : '••••••••••••••••'}
                       </span>
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
+                      <button
                         onClick={() => setShowApiKey(prev => ({ ...prev, [integration.id]: !prev[integration.id] }))}
                         className="text-gray-400 hover:text-gray-600"
                       >
                         {showApiKey[integration.id] ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
-                      </motion.button>
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
+                      </button>
+                      <button
                         onClick={() => copyApiKey(integration.apiKey!)}
                         className="text-gray-400 hover:text-gray-600"
                       >
                         <Copy className="w-3 h-3" />
-                      </motion.button>
+                      </button>
                     </div>
                   </div>
                 )}
@@ -787,17 +752,15 @@ export default function APIIntegrations() {
                     {integration.lastSync ? integration.lastSync.toLocaleTimeString() : 'Jamais'}
                   </div>
                   <div className="flex items-center gap-2">
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                    <button
                       onClick={() => deleteIntegration(integration.id)}
                       className="text-red-500 hover:text-red-700"
                     >
                       <Trash2 className="w-3 h-3" />
-                    </motion.button>
+                    </button>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
@@ -820,10 +783,8 @@ export default function APIIntegrations() {
               const StatusIcon = getStatusIcon(test.status);
               
               return (
-                <motion.div
+                <div
                   key={test.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
                   className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
                 >
                   <div className="flex items-center gap-3">
@@ -847,7 +808,7 @@ export default function APIIntegrations() {
                       {test.statusCode || test.status}
                     </span>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>

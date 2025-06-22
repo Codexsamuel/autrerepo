@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from '@/components/ui/motion';
 import { 
   AlertCircle,
   AlertTriangle,
@@ -790,23 +789,9 @@ export default function TradingAdvisor() {
         {/* Particules animées */}
         <div className="absolute inset-0">
           {[...Array(30)].map((_, i) => (
-            <motion.div
+            <div
               key={i}
               className="absolute w-1 h-1 bg-white/30 rounded-full"
-              animate={{
-                x: [0, 200, 0],
-                y: [0, -100, 0],
-                opacity: [0, 1, 0]
-              }}
-              transition={{
-                duration: 4 + Math.random() * 3,
-                repeat: Infinity,
-                delay: Math.random() * 3
-              }}
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`
-              }}
             />
           ))}
         </div>
@@ -814,22 +799,15 @@ export default function TradingAdvisor() {
         <div className="relative z-10 p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <motion.div
-                animate={{ 
-                  scale: [1, 1.1, 1],
-                  rotate: [0, 10, -10, 0]
-                }}
-                transition={{ duration: 4, repeat: Infinity }}
+              <div
                 className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center"
               >
                 <Brain className="w-8 h-8" />
-              </motion.div>
+              </div>
               <div>
                 <h2 className="text-3xl font-bold">DAVY Trading Advisor</h2>
                 <p className="text-purple-100 mt-2 flex items-center gap-2">
-                  <motion.div
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
+                  <div
                     className="w-2 h-2 bg-green-400 rounded-full"
                   />
                   IA Active • Analyse en temps réel • Conseils personnalisés
@@ -839,36 +817,30 @@ export default function TradingAdvisor() {
 
             <div className="flex items-center gap-3">
               {/* Contrôles IA */}
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsAIActive(!isAIActive)}
+              <button
                 className={`p-3 rounded-lg transition-colors ${
                   isAIActive ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'
                 }`}
+                onClick={() => setIsAIActive(!isAIActive)}
               >
                 {isAIActive ? <Bot className="w-5 h-5" /> : <PowerOff className="w-5 h-5" />}
-              </motion.button>
+              </button>
 
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsListening(!isListening)}
+              <button
                 className={`p-3 rounded-lg transition-colors ${
                   isListening ? 'bg-red-500/20 text-red-300' : 'bg-blue-500/20 text-blue-300'
                 }`}
+                onClick={() => setIsListening(!isListening)}
               >
                 {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
-              </motion.button>
+              </button>
 
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsFullScreen(!isFullScreen)}
+              <button
                 className="p-3 bg-white/20 rounded-lg hover:bg-white/30 transition-colors"
+                onClick={() => setIsFullScreen(!isFullScreen)}
               >
                 {isFullScreen ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
-              </motion.button>
+              </button>
             </div>
           </div>
         </div>
@@ -881,33 +853,24 @@ export default function TradingAdvisor() {
           <div className="lg:col-span-2 space-y-8">
             {/* Widget IA vivante avec questionnaire */}
             {showQuestions && currentQuestionIndex < aiQuestionnaire.length && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+              <div
                 className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden"
               >
                 <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-6 text-white">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      <motion.div
-                        animate={{ 
-                          scale: [1, 1.1, 1],
-                          rotate: [0, 5, -5, 0]
-                        }}
-                        transition={{ duration: 3, repeat: Infinity }}
+                      <div
                         className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center"
                       >
                         <Bot className="w-6 h-6" />
-                      </motion.div>
+                      </div>
                       <div>
                         <h3 className="text-xl font-bold">DAVY IA Assistant</h3>
                         <p className="text-purple-100">Personnalisation de votre expérience...</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <motion.div
-                        animate={{ scale: [1, 1.2, 1] }}
-                        transition={{ duration: 1, repeat: Infinity }}
+                      <div
                         className="w-3 h-3 bg-green-400 rounded-full"
                       />
                       <span className="text-sm">En ligne</span>
@@ -926,15 +889,13 @@ export default function TradingAdvisor() {
                       {aiQuestionnaire[currentQuestionIndex].type === 'multiple_choice' && (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           {aiQuestionnaire[currentQuestionIndex].options?.map((option, index) => (
-                            <motion.button
+                            <button
                               key={index}
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}
-                              onClick={() => handleAnswerQuestion(aiQuestionnaire[currentQuestionIndex].id, option)}
                               className="p-4 bg-white border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-colors text-left"
+                              onClick={() => handleAnswerQuestion(aiQuestionnaire[currentQuestionIndex].id, option)}
                             >
                               {option}
-                            </motion.button>
+                            </button>
                           ))}
                         </div>
                       )}
@@ -956,27 +917,23 @@ export default function TradingAdvisor() {
                             <span>{aiQuestionnaire[currentQuestionIndex].min?.toLocaleString()} FCFA</span>
                             <span>{aiQuestionnaire[currentQuestionIndex].max?.toLocaleString()} FCFA</span>
                           </div>
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => handleAnswerQuestion(aiQuestionnaire[currentQuestionIndex].id, userAnswers[aiQuestionnaire[currentQuestionIndex].id])}
+                          <button
                             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-medium"
+                            onClick={() => handleAnswerQuestion(aiQuestionnaire[currentQuestionIndex].id, userAnswers[aiQuestionnaire[currentQuestionIndex].id])}
                           >
                             Continuer
-                          </motion.button>
+                          </button>
                         </div>
                       )}
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             )}
 
             {/* Recommandations IA */}
             {showRecommendations && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+              <div
                 className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden"
               >
                 <div className="bg-gradient-to-r from-green-600 to-blue-600 p-6 text-white">
@@ -989,12 +946,11 @@ export default function TradingAdvisor() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <motion.div
-                        animate={{ rotate: [0, 360] }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                      <div
+                        className="animate-spin"
                       >
                         <RefreshCw className="w-5 h-5" />
-                      </motion.div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1002,11 +958,8 @@ export default function TradingAdvisor() {
                 <div className="p-6">
                   <div className="space-y-4">
                     {recommendations.map((rec, index) => (
-                      <motion.div
+                      <div
                         key={rec.id}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
                         className="p-4 bg-gray-50 rounded-xl border-l-4 border-blue-500"
                       >
                         <div className="flex items-start justify-between">
@@ -1036,18 +989,16 @@ export default function TradingAdvisor() {
                             <div className="text-xs text-gray-500">Confiance</div>
                           </div>
                         </div>
-                      </motion.div>
+                      </div>
                     ))}
                   </div>
                 </div>
-              </motion.div>
+              </div>
             )}
 
             {/* Analyses de marché */}
             {showAnalysis && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+              <div
                 className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden"
               >
                 <div className="bg-gradient-to-r from-orange-600 to-red-600 p-6 text-white">
@@ -1065,11 +1016,8 @@ export default function TradingAdvisor() {
                 <div className="p-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {marketAnalysis.map((analysis, index) => (
-                      <motion.div
+                      <div
                         key={analysis.symbol}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
                         className="p-4 bg-gray-50 rounded-xl"
                       >
                         <div className="flex items-center justify-between mb-3">
@@ -1093,11 +1041,11 @@ export default function TradingAdvisor() {
                           </div>
                           <p className="text-blue-600 font-medium mt-2">{analysis.recommendation}</p>
                         </div>
-                      </motion.div>
+                      </div>
                     ))}
                   </div>
                 </div>
-              </motion.div>
+              </div>
             )}
           </div>
 
@@ -1110,45 +1058,37 @@ export default function TradingAdvisor() {
                   <Star className="w-4 h-4" />
                   Insights IA
                 </h3>
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
+                <button
                   className="p-2 bg-gray-100 rounded-lg"
                 >
                   <RefreshCw className="w-4 h-4" />
-                </motion.button>
+                </button>
               </div>
 
               <div className="space-y-4">
-                <AnimatePresence>
-                  {aiInsights.slice(0, 5).map((insight, index) => (
-                    <motion.div
-                      key={insight.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 20 }}
-                      transition={{ delay: index * 0.1 }}
-                      className={`p-4 rounded-xl border-l-4 ${getUrgencyColor(insight.urgency)}`}
-                    >
-                      <div className="flex items-start gap-3">
-                        {getInsightIcon(insight.type)}
-                        <div className="flex-1">
-                          <h5 className="font-semibold">{insight.title}</h5>
-                          <p className="text-sm text-gray-600 mt-1">{insight.description}</p>
-                          {insight.action && (
-                            <p className="text-sm text-blue-600 mt-2 font-medium">{insight.action}</p>
-                          )}
-                        </div>
+                {aiInsights.slice(0, 5).map((insight, index) => (
+                  <div
+                    key={insight.id}
+                    className={`p-4 rounded-xl border-l-4 ${getUrgencyColor(insight.urgency)}`}
+                  >
+                    <div className="flex items-start gap-3">
+                      {getInsightIcon(insight.type)}
+                      <div className="flex-1">
+                        <h5 className="font-semibold">{insight.title}</h5>
+                        <p className="text-sm text-gray-600 mt-1">{insight.description}</p>
+                        {insight.action && (
+                          <p className="text-sm text-blue-600 mt-2 font-medium">{insight.action}</p>
+                        )}
                       </div>
-                      <div className="flex items-center justify-between mt-3">
-                        <div className="text-sm font-medium">{insight.confidence}%</div>
-                        <div className="text-xs text-gray-500">
-                          {insight.timestamp.toLocaleTimeString()}
-                        </div>
+                    </div>
+                    <div className="flex items-center justify-between mt-3">
+                      <div className="text-sm font-medium">{insight.confidence}%</div>
+                      <div className="text-xs text-gray-500">
+                        {insight.timestamp.toLocaleTimeString()}
                       </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -1245,10 +1185,8 @@ export default function TradingAdvisor() {
                   { label: 'Exporter Rapport', icon: <Download className="w-4 h-4" />, color: 'bg-orange-100 text-orange-600' },
                   { label: 'Paramètres IA', icon: <Settings className="w-4 h-4" />, color: 'bg-blue-100 text-blue-600' }
                 ].map((action, index) => (
-                  <motion.button
+                  <button
                     key={action.label}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
                     className="w-full text-left p-3 rounded-lg border hover:bg-white/50 transition-colors"
                   >
                     <div className="flex items-center space-x-3">
@@ -1259,7 +1197,7 @@ export default function TradingAdvisor() {
                         <p className="font-medium text-sm">{action.label}</p>
                       </div>
                     </div>
-                  </motion.button>
+                  </button>
                 ))}
               </div>
             </div>

@@ -78,10 +78,7 @@ export function SolutionsCarousel() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+      <div
         className="text-center mb-12"
       >
         <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -90,7 +87,7 @@ export function SolutionsCarousel() {
         <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
           Des solutions innovantes adaptées à chaque secteur d'activité
         </p>
-      </motion.div>
+      </div>
 
       <Carousel
         plugins={[plugin.current]}
@@ -103,9 +100,7 @@ export function SolutionsCarousel() {
         <CarouselContent>
           {solutions.map((solution) => (
             <CarouselItem key={solution.id} className="md:basis-1/2 lg:basis-1/3">
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
+              <div
                 className="p-1"
               >
                 <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm h-full">
@@ -136,7 +131,7 @@ export function SolutionsCarousel() {
                     </div>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             </CarouselItem>
           ))}
         </CarouselContent>

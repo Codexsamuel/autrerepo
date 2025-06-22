@@ -262,10 +262,7 @@ export default function HomePage() {
       <section className="relative py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+            <div
               className="mb-6"
             >
               <img 
@@ -277,43 +274,31 @@ export default function HomePage() {
                 <Star className="w-4 h-4 mr-2" />
                 Innovation & Excellence
               </Badge>
-            </motion.div>
+            </div>
             
-            <motion.h1 
+            <h1 
               className="text-5xl md:text-7xl font-bold text-gray-900 mb-6"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
             >
               DL Solutions
-            </motion.h1>
+            </h1>
             
-            <motion.p 
+            <p 
               className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
             >
               Plateforme de transformation digitale et solutions innovantes
-            </motion.p>
+            </p>
           </div>
           
           {/* Carrousel Activités DL Solutions */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
+          <div
             className="mb-16"
           >
             <DLActivitiesCarousel />
-          </motion.div>
+          </div>
           
           {/* CTA Buttons */}
-          <motion.div 
+          <div 
             className="flex flex-col sm:flex-row gap-4 justify-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
           >
             <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
               Découvrir nos services
@@ -323,19 +308,15 @@ export default function HomePage() {
               <Play className="w-5 h-5 mr-2" />
               Voir la démo
             </Button>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Section Services Premium */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <motion.div 
+          <div 
             className="text-center mb-16"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Services Premium
@@ -343,7 +324,7 @@ export default function HomePage() {
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Des solutions sur mesure pour propulser votre entreprise vers l'excellence
             </p>
-          </motion.div>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -366,12 +347,9 @@ export default function HomePage() {
                 features: ["Automatisation", "Analytics avancés", "Personnalisation"]
               }
             ].map((service, index) => (
-              <motion.div
+              <div
                 key={service.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                viewport={{ once: true }}
+                className="text-center"
               >
                 <Card className="h-full border-2 border-gray-100 hover:border-blue-200 transition-all duration-300 hover:shadow-xl">
                   <CardHeader className="text-center">
@@ -392,7 +370,7 @@ export default function HomePage() {
                     </ul>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -405,11 +383,8 @@ export default function HomePage() {
       <section className="py-20 bg-gradient-to-r from-blue-50 to-purple-50">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+            <div
+              className="text-center"
             >
               <Badge variant="secondary" className="mb-4">
                 <Target className="w-4 h-4 mr-2" />
@@ -449,13 +424,9 @@ export default function HomePage() {
                   Voir la démo
                 </Button>
               </div>
-            </motion.div>
+            </div>
             
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+            <div
               className="relative"
             >
               <div className="relative">
@@ -466,7 +437,7 @@ export default function HomePage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl" />
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -481,12 +452,8 @@ export default function HomePage() {
               { number: "24/7", label: "Support disponible", icon: Shield },
               { number: "99%", label: "Taux de réussite", icon: Star }
             ].map((stat, index) => (
-              <motion.div
+              <div
                 key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                viewport={{ once: true }}
                 className="text-center"
               >
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -494,7 +461,7 @@ export default function HomePage() {
                 </div>
                 <div className="text-3xl font-bold text-gray-900 mb-2">{stat.number}</div>
                 <div className="text-gray-600">{stat.label}</div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -503,11 +470,8 @@ export default function HomePage() {
       {/* Section CTA Final */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
         <div className="container mx-auto px-4 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+          <div
+            className="text-center"
           >
             <h2 className="text-4xl font-bold text-white mb-6">
               Prêt à transformer votre entreprise ?
@@ -524,7 +488,7 @@ export default function HomePage() {
                 Contactez-nous
               </Button>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
     </div>

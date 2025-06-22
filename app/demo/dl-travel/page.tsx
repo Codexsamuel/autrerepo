@@ -86,11 +86,7 @@ export default function DLTravelDemo() {
       {/* Main Content */}
       <main className="container mx-auto px-6 py-12">
         {/* Hero Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
-        >
+        <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
             Voyagez Sereinement avec DL Travel
           </h1>
@@ -98,15 +94,10 @@ export default function DLTravelDemo() {
             Découvrez une nouvelle façon de voyager avec notre plateforme intelligente, 
             conçue pour simplifier vos déplacements professionnels et personnels.
           </p>
-        </motion.div>
+        </div>
 
         {/* Search Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="max-w-4xl mx-auto mb-16"
-        >
+        <div className="max-w-4xl mx-auto mb-16">
           <Card className="p-6 bg-white/80 backdrop-blur-md border border-gray-200">
             <Tabs defaultValue="flights" className="w-full">
               <TabsList className="grid grid-cols-4 mb-6">
@@ -160,15 +151,10 @@ export default function DLTravelDemo() {
               {/* Autres onglets similaires */}
             </Tabs>
           </Card>
-        </motion.div>
+        </div>
 
         {/* Features Grid */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           <Card className="p-6 bg-white/80 backdrop-blur-md border border-gray-200">
             <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
               <Globe className="h-6 w-6 text-blue-600" />
@@ -196,15 +182,10 @@ export default function DLTravelDemo() {
               Protection des données et transactions sécurisées avec cryptage de bout en bout.
             </p>
           </Card>
-        </motion.div>
+        </div>
 
         {/* Pricing Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <h2 className="text-3xl font-bold mb-8 text-gray-800">Tarifs Transparents</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <Card className="p-6 bg-white/80 backdrop-blur-md border border-gray-200">
@@ -284,22 +265,17 @@ export default function DLTravelDemo() {
               <Button variant="outline" className="w-full">Contactez-nous</Button>
             </Card>
           </div>
-        </motion.div>
+        </div>
 
         {/* CTA Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="text-center"
-        >
+        <div className="text-center">
           <Link href="/demo/dl-travel/signup">
             <Button size="lg" className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white">
               Commencer maintenant
               <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
           </Link>
-        </motion.div>
+        </div>
       </main>
 
       {/* Footer */}

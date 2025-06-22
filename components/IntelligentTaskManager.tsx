@@ -262,23 +262,18 @@ export default function IntelligentTaskManager() {
           <h2 className="text-2xl font-bold text-gray-900">Gestionnaire de Tâches IA</h2>
           <p className="text-gray-600">Optimisez vos workflows avec l'intelligence artificielle</p>
         </div>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+        <button
           onClick={() => setIsCreating(true)}
           className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition-colors"
         >
           <Plus className="w-4 h-4" />
           Nouvelle tâche
-        </motion.button>
+        </button>
       </div>
 
       {/* Analytics Dashboard */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <motion.div
-          whileHover={{ y: -5 }}
-          className="bg-white p-6 rounded-xl shadow-lg border"
-        >
+        <div className="bg-white p-6 rounded-xl shadow-lg border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Total des tâches</p>
@@ -288,12 +283,9 @@ export default function IntelligentTaskManager() {
               <Target className="w-6 h-6 text-blue-600" />
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          whileHover={{ y: -5 }}
-          className="bg-white p-6 rounded-xl shadow-lg border"
-        >
+        <div className="bg-white p-6 rounded-xl shadow-lg border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Terminées</p>
@@ -303,12 +295,9 @@ export default function IntelligentTaskManager() {
               <CheckCircle className="w-6 h-6 text-green-600" />
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          whileHover={{ y: -5 }}
-          className="bg-white p-6 rounded-xl shadow-lg border"
-        >
+        <div className="bg-white p-6 rounded-xl shadow-lg border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">En retard</p>
@@ -318,12 +307,9 @@ export default function IntelligentTaskManager() {
               <AlertTriangle className="w-6 h-6 text-red-600" />
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          whileHover={{ y: -5 }}
-          className="bg-white p-6 rounded-xl shadow-lg border"
-        >
+        <div className="bg-white p-6 rounded-xl shadow-lg border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Efficacité</p>
@@ -333,7 +319,7 @@ export default function IntelligentTaskManager() {
               <TrendingUp className="w-6 h-6 text-purple-600" />
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Filters and Search */}
@@ -365,12 +351,7 @@ export default function IntelligentTaskManager() {
       {/* Create Task Modal */}
       <AnimatePresence>
         {isCreating && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="bg-white p-6 rounded-xl shadow-lg border"
-          >
+          <div className="bg-white p-6 rounded-xl shadow-lg border">
             <h3 className="text-lg font-semibold mb-4">Créer une nouvelle tâche</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -475,25 +456,21 @@ export default function IntelligentTaskManager() {
             </div>
 
             <div className="flex gap-3 mt-6">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <button
                 onClick={createTask}
                 disabled={!newTask.title || !newTask.assignee}
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 Créer la tâche
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              </button>
+              <button
                 onClick={() => setIsCreating(false)}
                 className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
               >
                 Annuler
-              </motion.button>
+              </button>
             </div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
@@ -506,9 +483,8 @@ export default function IntelligentTaskManager() {
           const isOverdue = task.dueDate < new Date() && task.status !== 'completed';
 
           return (
-            <motion.div
+            <div
               key={task.id}
-              whileHover={{ y: -2 }}
               className={`bg-white p-6 rounded-xl shadow-lg border transition-all ${
                 isOverdue ? 'border-red-200 bg-red-50' : ''
               }`}
@@ -516,9 +492,7 @@ export default function IntelligentTaskManager() {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
+                    <button
                       onClick={() => updateTaskStatus(task.id, task.status === 'completed' ? 'todo' : 'completed')}
                       className="text-gray-400 hover:text-green-600 transition-colors"
                     >
@@ -527,7 +501,7 @@ export default function IntelligentTaskManager() {
                       ) : (
                         <Circle className="w-5 h-5" />
                       )}
-                    </motion.button>
+                    </button>
                     
                     <h3 className={`font-semibold ${task.status === 'completed' ? 'line-through text-gray-500' : 'text-gray-900'}`}>
                       {task.title}
@@ -588,35 +562,27 @@ export default function IntelligentTaskManager() {
                 </div>
 
                 <div className="flex items-center gap-2 ml-4">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                  <button
                     onClick={() => setSelectedTask(task)}
                     className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                   >
                     <Edit3 className="w-4 h-4" />
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                  </button>
+                  <button
                     onClick={() => deleteTask(task.id)}
                     className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
-                  </motion.button>
+                  </button>
                 </div>
               </div>
-            </motion.div>
+            </div>
           );
         })}
       </div>
 
       {filteredTasks.length === 0 && !isCreating && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center py-12"
-        >
+        <div className="text-center py-12">
           <div className="text-gray-400 mb-4">
             <Target className="w-16 h-16 mx-auto" />
           </div>
@@ -628,16 +594,14 @@ export default function IntelligentTaskManager() {
             }
           </p>
           {!searchTerm && filter === 'all' && (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <button
               onClick={() => setIsCreating(true)}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
             >
               Créer une tâche
-            </motion.button>
+            </button>
           )}
-        </motion.div>
+        </div>
       )}
     </div>
   );

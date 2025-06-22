@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from '@/components/ui/motion';
 import {
   AlertCircle,
   AlertTriangle,
@@ -764,22 +763,15 @@ Pouvez-vous me donner plus de détails sur ce que vous recherchez ? Je peux vous
       <div className="bg-gradient-to-r from-green-600 to-blue-600 text-white p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <motion.div
-              animate={{ 
-                scale: [1, 1.1, 1],
-                rotate: [0, 5, -5, 0]
-              }}
-              transition={{ duration: 3, repeat: Infinity }}
+            <div
               className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"
             >
               <Bot className="w-5 h-5" />
-            </motion.div>
+            </div>
             <div>
               <h3 className="text-lg font-bold">DAVY Trading Chat</h3>
               <p className="text-green-100 text-sm flex items-center gap-2">
-                <motion.div
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
+                <div
                   className="w-2 h-2 bg-green-400 rounded-full"
                 />
                 IA Active • Analyse en temps réel
@@ -788,161 +780,140 @@ Pouvez-vous me donner plus de détails sur ce que vous recherchez ? Je peux vous
           </div>
 
           <div className="flex items-center gap-2">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <button
               onClick={() => setIsListening(!isListening)}
               className={`p-2 rounded-lg transition-colors ${
                 isListening ? 'bg-red-500/20 text-red-300' : 'bg-blue-500/20 text-blue-300'
               }`}
             >
               {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-            </motion.button>
+            </button>
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <button
               onClick={() => setIsFullScreen(!isFullScreen)}
               className="p-2 bg-white/20 rounded-lg hover:bg-white/30 transition-colors"
             >
               {isFullScreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-            </motion.button>
+            </button>
           </div>
         </div>
       </div>
 
       {/* Zone des messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        <AnimatePresence>
-          {messages.map((message, index) => (
-            <motion.div
-              key={message.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
-            >
-              <div className={`max-w-[80%] ${message.type === 'user' ? 'order-2' : 'order-1'}`}>
-                <div className={`flex items-start gap-3 ${message.type === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                  {/* Avatar */}
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    message.type === 'user' 
-                      ? 'bg-blue-500 text-white' 
-                      : 'bg-gradient-to-r from-green-500 to-blue-500 text-white'
-                  }`}>
-                    {message.type === 'user' ? (
-                      <User className="w-4 h-4" />
-                    ) : (
-                      <Bot className="w-4 h-4" />
+        {messages.map((message, index) => (
+          <div
+            key={message.id}
+            className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+          >
+            <div className={`max-w-[80%] ${message.type === 'user' ? 'order-2' : 'order-1'}`}>
+              <div className={`flex items-start gap-3 ${message.type === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+                {/* Avatar */}
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                  message.type === 'user' 
+                    ? 'bg-blue-500 text-white' 
+                    : 'bg-gradient-to-r from-green-500 to-blue-500 text-white'
+                }`}>
+                  {message.type === 'user' ? (
+                    <User className="w-4 h-4" />
+                  ) : (
+                    <Bot className="w-4 h-4" />
+                  )}
+                </div>
+
+                {/* Message */}
+                <div className={`rounded-2xl px-4 py-3 ${
+                  message.type === 'user'
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-white border border-gray-200 shadow-sm'
+                }`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-sm font-medium">
+                      {message.sender}
+                    </span>
+                    <span className="text-xs opacity-70">
+                      {message.timestamp.toLocaleTimeString()}
+                    </span>
+                    {message.confidence && (
+                      <span className={`text-xs font-medium ${getConfidenceColor(message.confidence)}`}>
+                        {message.confidence}% confiance
+                      </span>
                     )}
                   </div>
 
-                  {/* Message */}
-                  <div className={`rounded-2xl px-4 py-3 ${
-                    message.type === 'user'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-white border border-gray-200 shadow-sm'
-                  }`}>
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-sm font-medium">
-                        {message.sender}
-                      </span>
-                      <span className="text-xs opacity-70">
-                        {message.timestamp.toLocaleTimeString()}
-                      </span>
-                      {message.confidence && (
-                        <span className={`text-xs font-medium ${getConfidenceColor(message.confidence)}`}>
-                          {message.confidence}% confiance
-                        </span>
-                      )}
-                    </div>
+                  <div className="whitespace-pre-wrap text-sm">
+                    {message.content}
+                  </div>
 
-                    <div className="whitespace-pre-wrap text-sm">
-                      {message.content}
-                    </div>
-
-                    {/* Données de trading si disponibles */}
-                    {message.data && (
-                      <div className="mt-3 p-3 bg-gray-50 rounded-lg">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <div className="font-medium">{message.data.symbol}</div>
-                            <div className="text-sm text-gray-600">
-                              ${message.data.price.toFixed(2)}
-                            </div>
+                  {/* Données de trading si disponibles */}
+                  {message.data && (
+                    <div className="mt-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="font-medium">{message.data.symbol}</div>
+                          <div className="text-sm text-gray-600">
+                            ${message.data.price.toFixed(2)}
                           </div>
-                          <div className="text-right">
-                            <div className="flex items-center gap-1">
-                              {getTrendIcon(message.data.trend)}
-                              <span className={`text-sm font-medium ${
-                                message.data.change > 0 ? 'text-green-600' : 'text-red-600'
-                              }`}>
-                                {message.data.change > 0 ? '+' : ''}{message.data.changePercent.toFixed(2)}%
-                              </span>
-                            </div>
-                            <div className="text-xs text-gray-500">
-                              Vol: {message.data.volume.toLocaleString()}
-                            </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="flex items-center gap-1">
+                            {getTrendIcon(message.data.trend)}
+                            <span className={`text-sm font-medium ${
+                              message.data.change > 0 ? 'text-green-600' : 'text-red-600'
+                            }`}>
+                              {message.data.change > 0 ? '+' : ''}{message.data.changePercent.toFixed(2)}%
+                            </span>
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            Vol: {message.data.volume.toLocaleString()}
                           </div>
                         </div>
                       </div>
-                    )}
+                    </div>
+                  )}
 
-                    {/* Suggestions */}
-                    {message.suggestions && showSuggestions && (
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {message.suggestions.map((suggestion, idx) => (
-                          <motion.button
-                            key={idx}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => handleSuggestionClick(suggestion)}
-                            className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs hover:bg-blue-200 transition-colors"
-                          >
-                            {suggestion}
-                          </motion.button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  {/* Suggestions */}
+                  {message.suggestions && showSuggestions && (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {message.suggestions.map((suggestion, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => handleSuggestionClick(suggestion)}
+                          className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs hover:bg-blue-200 transition-colors"
+                        >
+                          {suggestion}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
+            </div>
+          </div>
+        ))}
 
         {/* Indicateur de frappe */}
         {isTyping && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex justify-start"
-          >
+          <div className="flex justify-start">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-gradient-to-r from-green-500 to-blue-500 flex items-center justify-center">
                 <Bot className="w-4 h-4 text-white" />
               </div>
               <div className="bg-white border border-gray-200 rounded-2xl px-4 py-3">
                 <div className="flex items-center gap-1">
-                  <motion.div
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 0.6, repeat: Infinity }}
+                  <div
                     className="w-2 h-2 bg-gray-400 rounded-full"
                   />
-                  <motion.div
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }}
+                  <div
                     className="w-2 h-2 bg-gray-400 rounded-full"
                   />
-                  <motion.div
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }}
+                  <div
                     className="w-2 h-2 bg-gray-400 rounded-full"
                   />
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
 
         <div ref={messagesEndRef} />
@@ -963,30 +934,26 @@ Pouvez-vous me donner plus de détails sur ce que vous recherchez ? Je peux vous
             />
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <button
             onClick={handleSendMessage}
             disabled={!inputMessage.trim()}
             className="p-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
             <Send className="w-4 h-4" />
-          </motion.button>
+          </button>
         </div>
 
         {/* Suggestions rapides */}
         {showSuggestions && (
           <div className="mt-3 flex flex-wrap gap-2">
             {suggestionQuestions.slice(0, 4).map((suggestion, index) => (
-              <motion.button
+              <button
                 key={index}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
                 onClick={() => handleSuggestionClick(suggestion)}
                 className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs hover:bg-gray-200 transition-colors"
               >
                 {suggestion}
-              </motion.button>
+              </button>
             ))}
           </div>
         )}
@@ -994,52 +961,41 @@ Pouvez-vous me donner plus de détails sur ce que vous recherchez ? Je peux vous
 
       {/* Sidebar avec contrôles */}
       <div className="absolute right-4 top-20 space-y-2">
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+        <button
           onClick={() => setShowSuggestions(!showSuggestions)}
           className="p-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-lg hover:bg-white transition-colors"
         >
           <Lightbulb className="w-4 h-4" />
-        </motion.button>
+        </button>
 
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+        <button
           onClick={() => setAutoScroll(!autoScroll)}
           className="p-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-lg hover:bg-white transition-colors"
         >
           <ArrowRight className="w-4 h-4" />
-        </motion.button>
+        </button>
 
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+        <button
           onClick={() => setShowAdvanced(!showAdvanced)}
           className="p-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-lg hover:bg-white transition-colors"
         >
           <Settings className="w-4 h-4" />
-        </motion.button>
+        </button>
       </div>
 
       {/* Panneau avancé */}
       {showAdvanced && (
-        <motion.div
-          initial={{ opacity: 0, x: 300 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 300 }}
+        <div
           className="absolute right-0 top-0 h-full w-80 bg-white border-l border-gray-200 p-4 shadow-xl"
         >
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold">Paramètres IA</h3>
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+            <button
               onClick={() => setShowAdvanced(false)}
               className="p-1 hover:bg-gray-100 rounded"
             >
               <X className="w-4 h-4" />
-            </motion.button>
+            </button>
           </div>
 
           <div className="space-y-4">
@@ -1102,7 +1058,7 @@ Pouvez-vous me donner plus de détails sur ce que vous recherchez ? Je peux vous
               />
             </div>
           </div>
-        </motion.div>
+        </div>
       )}
     </div>
   );

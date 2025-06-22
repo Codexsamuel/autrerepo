@@ -314,13 +314,11 @@ export default function IntelligentNotifications() {
           <div className="relative">
             <Bell className="w-8 h-8 text-gray-600" />
             {unreadCount > 0 && (
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
+              <div
                 className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center"
               >
                 {unreadCount > 99 ? '99+' : unreadCount}
-              </motion.div>
+              </div>
             )}
           </div>
           <div>
@@ -330,117 +328,106 @@ export default function IntelligentNotifications() {
         </div>
         
         <div className="flex items-center gap-2">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <button
             onClick={() => setShowSettings(!showSettings)}
             className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
           >
             <Settings className="w-5 h-5" />
-          </motion.button>
+          </button>
           
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <button
             onClick={markAllAsRead}
             disabled={unreadCount === 0}
             className="bg-blue-600 text-white px-3 py-2 rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50 transition-colors"
           >
             Tout marquer comme lu
-          </motion.button>
+          </button>
         </div>
       </div>
 
       {/* Settings Panel */}
-      <AnimatePresence>
-        {showSettings && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="bg-white p-6 rounded-xl shadow-lg border overflow-hidden"
-          >
-            <h3 className="text-lg font-semibold mb-4">Paramètres des notifications</h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h4 className="font-medium mb-3">Général</h4>
-                <div className="space-y-3">
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={settings.enabled}
-                      onChange={(e) => setSettings(prev => ({ ...prev, enabled: e.target.checked }))}
-                      className="rounded"
-                    />
-                    <span className="text-sm">Activer les notifications</span>
-                  </label>
-                  
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={settings.sound}
-                      onChange={(e) => setSettings(prev => ({ ...prev, sound: e.target.checked }))}
-                      className="rounded"
-                    />
-                    <span className="text-sm">Son</span>
-                  </label>
-                  
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={settings.desktop}
-                      onChange={(e) => setSettings(prev => ({ ...prev, desktop: e.target.checked }))}
-                      className="rounded"
-                    />
-                    <span className="text-sm">Notifications bureau</span>
-                  </label>
-                </div>
+      {showSettings && (
+        <div className="bg-white p-6 rounded-xl shadow-lg border overflow-hidden">
+          <h3 className="text-lg font-semibold mb-4">Paramètres des notifications</h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="font-medium mb-3">Général</h4>
+              <div className="space-y-3">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={settings.enabled}
+                    onChange={(e) => setSettings(prev => ({ ...prev, enabled: e.target.checked }))}
+                    className="rounded"
+                  />
+                  <span className="text-sm">Activer les notifications</span>
+                </label>
+                
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={settings.sound}
+                    onChange={(e) => setSettings(prev => ({ ...prev, sound: e.target.checked }))}
+                    className="rounded"
+                  />
+                  <span className="text-sm">Son</span>
+                </label>
+                
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={settings.desktop}
+                    onChange={(e) => setSettings(prev => ({ ...prev, desktop: e.target.checked }))}
+                    className="rounded"
+                  />
+                  <span className="text-sm">Notifications bureau</span>
+                </label>
               </div>
-              
-              <div>
-                <h4 className="font-medium mb-3">Heures silencieuses</h4>
-                <div className="space-y-3">
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={settings.quietHours.enabled}
-                      onChange={(e) => setSettings(prev => ({ 
-                        ...prev, 
-                        quietHours: { ...prev.quietHours, enabled: e.target.checked }
-                      }))}
-                      className="rounded"
-                    />
-                    <span className="text-sm">Activer les heures silencieuses</span>
-                  </label>
-                  
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="time"
-                      value={settings.quietHours.start}
-                      onChange={(e) => setSettings(prev => ({ 
-                        ...prev, 
-                        quietHours: { ...prev.quietHours, start: e.target.value }
-                      }))}
-                      className="px-2 py-1 border border-gray-300 rounded text-sm"
-                    />
-                    <span className="text-sm">à</span>
-                    <input
-                      type="time"
-                      value={settings.quietHours.end}
-                      onChange={(e) => setSettings(prev => ({ 
-                        ...prev, 
-                        quietHours: { ...prev.quietHours, end: e.target.value }
-                      }))}
-                      className="px-2 py-1 border border-gray-300 rounded text-sm"
-                    />
-                  </div>
+            </div>
+            
+            <div>
+              <h4 className="font-medium mb-3">Heures silencieuses</h4>
+              <div className="space-y-3">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={settings.quietHours.enabled}
+                    onChange={(e) => setSettings(prev => ({ 
+                      ...prev, 
+                      quietHours: { ...prev.quietHours, enabled: e.target.checked }
+                    }))}
+                    className="rounded"
+                  />
+                  <span className="text-sm">Activer les heures silencieuses</span>
+                </label>
+                
+                <div className="flex items-center gap-2">
+                  <input
+                    type="time"
+                    value={settings.quietHours.start}
+                    onChange={(e) => setSettings(prev => ({ 
+                      ...prev, 
+                      quietHours: { ...prev.quietHours, start: e.target.value }
+                    }))}
+                    className="px-2 py-1 border border-gray-300 rounded text-sm"
+                  />
+                  <span className="text-sm">à</span>
+                  <input
+                    type="time"
+                    value={settings.quietHours.end}
+                    onChange={(e) => setSettings(prev => ({ 
+                      ...prev, 
+                      quietHours: { ...prev.quietHours, end: e.target.value }
+                    }))}
+                    className="px-2 py-1 border border-gray-300 rounded text-sm"
+                  />
                 </div>
               </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      )}
 
       {/* Filters */}
       <div className="flex items-center gap-4">
@@ -458,145 +445,126 @@ export default function IntelligentNotifications() {
           <option value="reminder">Rappels</option>
         </select>
         
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+        <button
           onClick={archiveNotifications}
           className="bg-gray-600 text-white px-3 py-2 rounded-lg text-sm hover:bg-gray-700 transition-colors"
         >
           <Archive className="w-4 h-4 inline mr-1" />
           Archiver les lues
-        </motion.button>
+        </button>
       </div>
 
       {/* Notifications List */}
       <div className="space-y-3">
-        <AnimatePresence>
-          {filteredNotifications.map((notification) => {
-            const TypeIcon = getTypeIcon(notification.type);
-            const CategoryIcon = getCategoryIcon(notification.category);
-            
-            return (
-              <motion.div
-                key={notification.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className={`bg-white p-4 rounded-xl shadow-lg border-l-4 ${getPriorityColor(notification.priority)} ${
-                  !notification.read ? 'ring-2 ring-blue-200' : ''
-                }`}
-              >
-                <div className="flex items-start gap-4">
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${getTypeColor(notification.type)}`}>
-                    <TypeIcon className="w-5 h-5" />
-                  </div>
-                  
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <h4 className={`font-medium ${!notification.read ? 'text-gray-900' : 'text-gray-600'}`}>
-                          {notification.title}
-                        </h4>
-                        {notification.starred && (
-                          <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                        )}
-                        <CategoryIcon className="w-4 h-4 text-gray-400" />
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs text-gray-500">
-                          {notification.timestamp.toLocaleTimeString()}
-                        </span>
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={() => toggleStar(notification.id)}
-                          className="text-gray-400 hover:text-yellow-500 transition-colors"
-                        >
-                          <Star className={`w-4 h-4 ${notification.starred ? 'text-yellow-500 fill-current' : ''}`} />
-                        </motion.button>
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={() => deleteNotification(notification.id)}
-                          className="text-gray-400 hover:text-red-500 transition-colors"
-                        >
-                          <X className="w-4 h-4" />
-                        </motion.button>
-                      </div>
+        {filteredNotifications.map((notification) => {
+          const TypeIcon = getTypeIcon(notification.type);
+          const CategoryIcon = getCategoryIcon(notification.category);
+          
+          return (
+            <div
+              key={notification.id}
+              className={`bg-white p-4 rounded-xl shadow-lg border-l-4 ${getPriorityColor(notification.priority)} ${
+                !notification.read ? 'ring-2 ring-blue-200' : ''
+              }`}
+            >
+              <div className="flex items-start gap-4">
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${getTypeColor(notification.type)}`}>
+                  <TypeIcon className="w-5 h-5" />
+                </div>
+                
+                <div className="flex-1">
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <h4 className={`font-medium ${!notification.read ? 'text-gray-900' : 'text-gray-600'}`}>
+                        {notification.title}
+                      </h4>
+                      {notification.starred && (
+                        <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                      )}
+                      <CategoryIcon className="w-4 h-4 text-gray-400" />
                     </div>
                     
-                    <p className="text-sm text-gray-600 mb-3">{notification.message}</p>
-                    
-                    {notification.aiInsight && (
-                      <div className="mb-3 p-3 bg-blue-50 rounded-lg">
-                        <div className="flex items-center gap-2 mb-1">
-                          <Brain className="w-4 h-4 text-blue-600" />
-                          <span className="text-sm font-medium text-blue-800">Insight IA</span>
-                        </div>
-                        <p className="text-sm text-blue-700">{notification.aiInsight}</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-500">
+                        {notification.timestamp.toLocaleTimeString()}
+                      </span>
+                      <button
+                        onClick={() => toggleStar(notification.id)}
+                        className="text-gray-400 hover:text-yellow-500 transition-colors"
+                      >
+                        <Star className={`w-4 h-4 ${notification.starred ? 'text-yellow-500 fill-current' : ''}`} />
+                      </button>
+                      <button
+                        onClick={() => deleteNotification(notification.id)}
+                        className="text-gray-400 hover:text-red-500 transition-colors"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <p className="text-sm text-gray-600 mb-3">{notification.message}</p>
+                  
+                  {notification.aiInsight && (
+                    <div className="mb-3 p-3 bg-blue-50 rounded-lg">
+                      <div className="flex items-center gap-2 mb-1">
+                        <Brain className="w-4 h-4 text-blue-600" />
+                        <span className="text-sm font-medium text-blue-800">Insight IA</span>
                       </div>
-                    )}
-                    
-                    {notification.sender && (
-                      <div className="flex items-center gap-1 text-xs text-gray-500 mb-3">
-                        <User className="w-3 h-3" />
-                        {notification.sender}
+                      <p className="text-sm text-blue-700">{notification.aiInsight}</p>
+                    </div>
+                  )}
+                  
+                  {notification.sender && (
+                    <div className="flex items-center gap-1 text-xs text-gray-500 mb-3">
+                      <User className="w-3 h-3" />
+                      {notification.sender}
+                    </div>
+                  )}
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {notification.timestamp.toLocaleDateString()}
                       </div>
-                    )}
-                    
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4 text-xs text-gray-500">
+                      {notification.expiresAt && (
                         <div className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
-                          {notification.timestamp.toLocaleDateString()}
+                          <Calendar className="w-3 h-3" />
+                          Expire le {notification.expiresAt.toLocaleDateString()}
                         </div>
-                        {notification.expiresAt && (
-                          <div className="flex items-center gap-1">
-                            <Calendar className="w-3 h-3" />
-                            Expire le {notification.expiresAt.toLocaleDateString()}
-                          </div>
-                        )}
-                      </div>
+                      )}
+                    </div>
+                    
+                    <div className="flex items-center gap-2">
+                      {!notification.read && (
+                        <button
+                          onClick={() => markAsRead(notification.id)}
+                          className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                        >
+                          Marquer comme lu
+                        </button>
+                      )}
                       
-                      <div className="flex items-center gap-2">
-                        {!notification.read && (
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => markAsRead(notification.id)}
-                            className="text-blue-600 hover:text-blue-700 text-sm font-medium"
-                          >
-                            Marquer comme lu
-                          </motion.button>
-                        )}
-                        
-                        {notification.actionable && notification.action && (
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => handleAction(notification)}
-                            className="bg-blue-600 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-700 transition-colors"
-                          >
-                            {notification.action.label}
-                          </motion.button>
-                        )}
-                      </div>
+                      {notification.actionable && notification.action && (
+                        <button
+                          onClick={() => handleAction(notification)}
+                          className="bg-blue-600 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-700 transition-colors"
+                        >
+                          {notification.action.label}
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {filteredNotifications.length === 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center py-12"
-        >
+        <div className="text-center py-12">
           <div className="text-gray-400 mb-4">
             <BellOff className="w-16 h-16 mx-auto" />
           </div>
@@ -607,7 +575,7 @@ export default function IntelligentNotifications() {
               : 'Aucune notification ne correspond à ce filtre.'
             }
           </p>
-        </motion.div>
+        </div>
       )}
     </div>
   );

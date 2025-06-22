@@ -10,7 +10,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-// Removed motion import
 
 interface DocumentTemplate {
   id: string
@@ -305,30 +304,25 @@ export function SmartDocumentGenerator() {
         <TabsContent value="templates" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {documentTemplates.map((template) => (
-              <motion.div
+              <div
                 key={template.id}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                className={`cursor-pointer transition-all duration-200 ${
+                  selectedTemplate?.id === template.id 
+                    ? 'ring-2 ring-blue-500 bg-blue-50' 
+                    : 'hover:shadow-lg'
+                }`}
+                onClick={() => {
+                  setSelectedTemplate(template)
+                  setActiveTab('generator')
+                }}
               >
-                <Card 
-                  className={`cursor-pointer transition-all duration-200 ${
-                    selectedTemplate?.id === template.id 
-                      ? 'ring-2 ring-blue-500 bg-blue-50' 
-                      : 'hover:shadow-lg'
-                  }`}
-                  onClick={() => {
-                    setSelectedTemplate(template)
-                    setActiveTab('generator')
-                  }}
-                >
-                  <CardContent className="p-6 text-center">
-                    <div className="text-4xl mb-4">{template.icon}</div>
-                    <h3 className="font-semibold text-lg mb-2">{template.name}</h3>
-                    <p className="text-sm text-gray-600 mb-4">{template.description}</p>
-                    <Badge variant="outline">{template.fields.length} champs</Badge>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                <CardContent className="p-6 text-center">
+                  <div className="text-4xl mb-4">{template.icon}</div>
+                  <h3 className="font-semibold text-lg mb-2">{template.name}</h3>
+                  <p className="text-sm text-gray-600 mb-4">{template.description}</p>
+                  <Badge variant="outline">{template.fields.length} champs</Badge>
+                </CardContent>
+              </div>
             ))}
           </div>
         </TabsContent>
@@ -450,10 +444,9 @@ export function SmartDocumentGenerator() {
           {generatedDocuments.length > 0 ? (
             <div className="space-y-4">
               {generatedDocuments.map((document) => (
-                <motion.div
+                <div
                   key={document.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  className="transition-all duration-200"
                 >
                   <Card>
                     <CardContent className="p-6">
@@ -512,7 +505,7 @@ export function SmartDocumentGenerator() {
                       </div>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </div>
               ))}
             </div>
           ) : (

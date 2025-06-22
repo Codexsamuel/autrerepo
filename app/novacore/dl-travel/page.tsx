@@ -86,16 +86,12 @@ export default function DLTravelPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Stats */}
           <div className="lg:col-span-2 space-y-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+            <div>
               <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
                 DL Travel
               </h1>
               <p className="text-gray-300 text-lg">Plateforme complète de gestion de voyages</p>
-            </motion.div>
+            </div>
 
             {/* Search Bar */}
             <div className="relative">
@@ -113,12 +109,7 @@ export default function DLTravelPage() {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {Object.entries(stats).map(([key, value]) => (
-                <motion.div
-                  key={key}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                >
+                <div>
                   <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700 hover:bg-gray-800/70 transition-all duration-300">
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between mb-4">
@@ -145,18 +136,14 @@ export default function DLTravelPage() {
                       </p>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
 
           {/* Right Column - Features */}
           <div className="space-y-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
+            <div>
               <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
                 <CardHeader>
                   <CardTitle className="text-xl font-bold text-white">Fonctionnalités Principales</CardTitle>
@@ -191,13 +178,9 @@ export default function DLTravelPage() {
                   </div>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
+            <div>
               <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
                 <CardHeader>
                   <CardTitle className="text-xl font-bold text-white">Sécurité et Surveillance</CardTitle>
@@ -232,15 +215,10 @@ export default function DLTravelPage() {
                   </div>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
 
             {/* CTA Button */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="text-center"
-            >
+            <div className="text-center">
               <Button
                 onClick={handleDemoClick}
                 size="lg"
@@ -249,7 +227,7 @@ export default function DLTravelPage() {
                 Démarrer la Démo
                 <ArrowUpRight className="ml-2 h-5 w-5" />
               </Button>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

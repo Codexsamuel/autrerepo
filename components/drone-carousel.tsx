@@ -119,15 +119,12 @@ const DroneCarousel = () => {
           
           {/* Content overlay */}
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+            <div
               className="text-white"
             >
               <h3 className="text-2xl font-bold mb-2">{currentItem.title}</h3>
               <p className="text-lg opacity-90">{currentItem.description}</p>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

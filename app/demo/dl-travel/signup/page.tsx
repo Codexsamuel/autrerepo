@@ -51,11 +51,7 @@ export default function SignUpPage() {
       <main className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Form */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
+          <div className="space-y-4">
             <Card className="border-none shadow-xl bg-white/80 backdrop-blur-sm">
               <CardHeader className="text-center">
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
@@ -240,15 +236,10 @@ export default function SignUpPage() {
                 </Tabs>
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
 
           {/* Right Column - Features */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="space-y-8"
-          >
+          <div className="space-y-8">
             <div className="space-y-4">
               <h2 className="text-3xl font-bold text-gray-900">
                 Pourquoi choisir DL Travel ?
@@ -305,7 +296,7 @@ export default function SignUpPage() {
                 En savoir plus
               </Button>
             </div>
-          </motion.div>
+          </div>
         </div>
       </main>
     </div>

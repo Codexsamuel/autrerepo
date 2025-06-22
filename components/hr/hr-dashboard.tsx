@@ -8,7 +8,6 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-// Removed motion import
 
 interface Employee {
   id: string
@@ -282,11 +281,7 @@ export function HRDashboard() {
 
       {/* Statistiques principales */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
+        <div>
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -308,13 +303,9 @@ export function HRDashboard() {
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
+        <div>
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -330,13 +321,9 @@ export function HRDashboard() {
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
+        <div>
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -355,13 +342,9 @@ export function HRDashboard() {
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
+        <div>
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -380,7 +363,7 @@ export function HRDashboard() {
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
       </div>
 
       {/* Contenu principal */}
@@ -480,10 +463,8 @@ export function HRDashboard() {
             <CardContent>
               <div className="space-y-4">
                 {employees.map((employee) => (
-                  <motion.div
+                  <div
                     key={employee.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
                     className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors"
                   >
                     <div className="flex items-center space-x-4">
@@ -513,7 +494,7 @@ export function HRDashboard() {
                          employee.status === 'on_leave' ? 'En congé' : 'Inactif'}
                       </Badge>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             </CardContent>
@@ -532,10 +513,8 @@ export function HRDashboard() {
             <CardContent>
               <div className="space-y-4">
                 {alerts.filter(alert => !alert.resolved).map((alert) => (
-                  <motion.div
+                  <div
                     key={alert.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
                     className={`p-4 border rounded-lg ${getSeverityColor(alert.severity)}`}
                   >
                     <div className="flex items-center justify-between">
@@ -561,7 +540,7 @@ export function HRDashboard() {
                         </Button>
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             </CardContent>
@@ -580,18 +559,15 @@ export function HRDashboard() {
             <CardContent>
               <div className="space-y-4">
                 {aiInsights.map((insight, index) => (
-                  <motion.div
+                  <div
                     key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
                     className="p-4 bg-blue-50 border border-blue-200 rounded-lg"
                   >
                     <div className="flex items-start space-x-3">
                       <Bot className="h-5 w-5 text-blue-600 mt-0.5" />
                       <p className="text-sm text-blue-900">{insight}</p>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
                 
                 {aiInsights.length === 0 && (

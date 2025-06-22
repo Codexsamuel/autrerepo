@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import React, { useState, useEffect } from "react"
 import {
   Carousel,
   CarouselContent,
@@ -11,9 +11,10 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image"
 import Autoplay from "embla-carousel-autoplay"
-import { motion } from "framer-motion"
 import { Play, Pause, Image as ImageIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
 
 const mediaItems = [
   {
@@ -75,12 +76,7 @@ export function PresentationCarousel() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="flex flex-col items-center justify-center mb-8"
-      >
+      <div className="flex flex-col items-center justify-center mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <h2 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
           Découvrez Notre Univers
         </h2>
@@ -105,7 +101,7 @@ export function PresentationCarousel() {
             </>
           )}
         </Button>
-      </motion.div>
+      </div>
 
       <Carousel
         plugins={[plugin.current]}
@@ -118,11 +114,7 @@ export function PresentationCarousel() {
         <CarouselContent>
           {mediaItems.map((item) => (
             <CarouselItem key={item.id} className="md:basis-1/2 lg:basis-1/3">
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-                className="p-1"
-              >
+              <div className="p-1 transition-transform duration-200 hover:scale-102">
                 <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
                   <CardContent className="p-0">
                     <div className="relative aspect-video group">
@@ -175,7 +167,7 @@ export function PresentationCarousel() {
                     </div>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             </CarouselItem>
           ))}
         </CarouselContent>

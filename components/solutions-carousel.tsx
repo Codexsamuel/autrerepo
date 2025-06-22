@@ -11,7 +11,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image"
 import Autoplay from "embla-carousel-autoplay"
-import { motion } from "framer-motion"
+// Removed motion import
 import { Building2, Banknote, LineChart, Home } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"

@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+// Removed motion import
 import { Card, CardContent } from "@/components/ui/card"
 import { Building2, Users, Calendar, FileText, BarChart3, Settings, MessageSquare, Shield } from "lucide-react"
 

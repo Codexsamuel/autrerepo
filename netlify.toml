@@ -1,38 +1,61 @@
 [build]
-  command = "pnpm install && pnpm run build"
+  command = "npm run build"
   publish = ".next"
-  node_version = "18.20.0"
+  functions = "netlify/functions"
 
 [build.environment]
-  NODE_VERSION = "18.20.0"
-  NPM_FLAGS = "--legacy-peer-deps"
   NEXT_TELEMETRY_DISABLED = "1"
-  NEXT_USE_NETLIFY_EDGE = "true"
-  NEXT_PRIVATE_TARGET = "server"
-  NEXT_SHARP_PATH = "/opt/buildhome/.npm-global/lib/node_modules/sharp"
-  NEXT_OPTIMIZE_CSS = "true"
-  NEXT_OPTIMIZE_CSS_INLINE_THRESHOLD = "8192"
-  NEXT_OPTIMIZE_CSS_PRELOAD_FONTS = "true"
-  YARN_FLAGS = "--network-timeout 100000"
+  NODE_VERSION = "18.20.0"
+  NODE_ENV = "production"
+
+[dev]
+  command = "npm run dev"
+  port = 3000
+  targetPort = 3000
+  publish = ".next"
+  autoLaunch = true
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+# Redirections pour Next.js App Router
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["@prisma/client"]
+
 [[headers]]
   for = "/*"
-  [headers.values]
+    [headers.values]
     X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:;"
-    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.clerk.com https://*.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: https://*.unsplash.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.netlify.com https://*.vercel.com https://*.supabase.com https://*.clerk.com https://*.stripe.com https://*.openai.com https://*.elevenlabs.io;"
+
+[context.production.environment]
+  NODE_ENV = "production"
+  NEXT_PUBLIC_APP_URL = "https://votre-domaine.netlify.app"
+  NEXT_PUBLIC_API_URL = "https://votre-backend-api.vercel.app"
+
+[context.branch-deploy.environment]
+  NODE_ENV = "staging"
+  NEXT_PUBLIC_APP_URL = "https://staging.votre-domaine.netlify.app"
+  NEXT_PUBLIC_API_URL = "https://votre-backend-api.vercel.app"
+
+[context.deploy-preview.environment]
+  NODE_ENV = "preview"
+  NEXT_PUBLIC_APP_URL = "https://preview.votre-domaine.netlify.app"
+  NEXT_PUBLIC_API_URL = "https://votre-backend-api.vercel.app"
 
 [build.processing]
   skip_processing = false

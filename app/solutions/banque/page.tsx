@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+// Removed motion import
 import { Card, CardContent } from "@/components/ui/card"
 import { Banknote, CreditCard, LineChart, Shield, Users, FileText, BarChart3, Settings } from "lucide-react"
 

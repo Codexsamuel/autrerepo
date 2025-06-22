@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useState, useCallback, useContext, type ReactNode } from "react";
 import { Notification } from "./notification";
 
 interface NotificationContextType {
@@ -9,7 +9,7 @@ interface NotificationContextType {
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
-export function NotificationProvider({ children }: { children: React.ReactNode }) {
+export function NotificationProvider({ children }: { children: ReactNode }) {
   const [notification, setNotification] = useState<{
     message: string;
     type: "success" | "error" | "info";
@@ -20,12 +20,12 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     show: false,
   });
 
-  const showNotification = (message: string, type: "success" | "error" | "info" = "info") => {
+  const showNotification = useCallback((message: string, type: "success" | "error" | "info" = "info") => {
     setNotification({ message, type, show: true });
     setTimeout(() => {
       setNotification((prev) => ({ ...prev, show: false }));
     }, 3000);
-  };
+  }, []);
 
   return (
     <NotificationContext.Provider value={{ showNotification }}>

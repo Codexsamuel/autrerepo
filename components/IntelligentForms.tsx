@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from '@/components/ui/motion';
 import { Plus, Trash2, Copy, Eye, Download, Share2, Lock, Unlock } from 'lucide-react';
 
 interface FormField {

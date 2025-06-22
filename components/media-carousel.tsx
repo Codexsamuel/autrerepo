@@ -9,50 +9,43 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Play, Pause, Loader2 } from "lucide-react"
 import Image from "next/image"
-import Autoplay from "embla-carousel-autoplay"
-import { Home, Banknote, LineChart, Building2 } from "lucide-react"
 
-const mediaItems = [
-  {
-    id: 1,
-    title: "CRM Immobilier",
-    description: "Gérez vos biens immobiliers efficacement",
-    icon: <Home className="w-16 h-16 text-white opacity-80" />,
-    gradient: "from-blue-500 to-blue-700"
-  },
-  {
-    id: 2,
-    title: "CRM Banque",
-    description: "Solutions bancaires innovantes",
-    icon: <Banknote className="w-16 h-16 text-white opacity-80" />,
-    gradient: "from-green-500 to-green-700"
-  },
-  {
-    id: 3,
-    title: "CRM Trading",
-    description: "Plateforme de trading avancée",
-    icon: <LineChart className="w-16 h-16 text-white opacity-80" />,
-    gradient: "from-purple-500 to-purple-700"
-  },
-  {
-    id: 4,
-    title: "CRM Agence",
-    description: "Gestion complète de votre agence",
-    icon: <Building2 className="w-16 h-16 text-white opacity-80" />,
-    gradient: "from-orange-500 to-orange-700"
-  },
-]
+interface MediaCarouselProps {
+  items: {
+    id: string
+    title: string
+    description: string
+    imageUrl: string
+    videoUrl?: string
+  }[]
+}
 
-export function MediaCarousel() {
-  const plugin = React.useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: false })
-  )
+export function MediaCarousel({ items }: MediaCarouselProps) {
+  const [isPlaying, setIsPlaying] = React.useState(false)
+  const [loading, setLoading] = React.useState<{ [key: string]: boolean }>({})
+  const videoRefs = React.useRef<{ [key: string]: HTMLVideoElement | null }>({})
+
+  const handleVideoLoad = (id: string) => {
+    setLoading(prev => ({ ...prev, [id]: false }))
+  }
+
+  const togglePlay = (id: string) => {
+    const video = videoRefs.current[id]
+    if (video) {
+      if (isPlaying) {
+        video.pause()
+      } else {
+        video.play()
+      }
+      setIsPlaying(!isPlaying)
+    }
+  }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-8">
       <Carousel
-        plugins={[plugin.current]}
         opts={{
           align: "start",
           loop: true,
@@ -60,34 +53,65 @@ export function MediaCarousel() {
         className="w-full"
       >
         <CarouselContent>
-          {mediaItems.map((item) => (
+        {items.map((item) => (
             <CarouselItem key={item.id} className="md:basis-1/2 lg:basis-1/3">
-              <div className="p-1">
-                <Card className="overflow-hidden hover:shadow-lg transition-all duration-300">
+            <Card className="overflow-hidden">
                   <CardContent className="p-0">
                     <div className="relative aspect-video">
-                      <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient}`}>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          {item.icon}
+                  {item.videoUrl ? (
+                    <div className="relative w-full h-full">
+                      <video
+                        ref={el => videoRefs.current[item.id] = el}
+                        src={item.videoUrl}
+                        className="w-full h-full object-cover"
+                        controls={false}
+                        loop
+                        muted
+                        playsInline
+                        onLoadedData={() => handleVideoLoad(item.id)}
+                      />
+                      {loading[item.id] && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                          <Loader2 className="h-8 w-8 animate-spin text-white" />
                         </div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                      </div>
+                      )}
+                      <Button
+                        variant="secondary"
+                        size="icon"
+                        className="absolute bottom-4 right-4 rounded-full"
+                        onClick={() => togglePlay(item.id)}
+                      >
+                        {isPlaying ? (
+                          <Pause className="h-4 w-4" />
+                        ) : (
+                          <Play className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                  ) : (
+                    <Image
+                      src={item.imageUrl}
+                      alt={item.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      priority={false}
+                    />
+                  )}
                     </div>
                     <div className="p-4">
-                      <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                      <p className="text-gray-600 dark:text-gray-300">
+                  <h3 className="font-semibold">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">
                         {item.description}
                       </p>
                     </div>
                   </CardContent>
                 </Card>
-              </div>
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="hidden md:flex" />
-        <CarouselNext className="hidden md:flex" />
+      <CarouselPrevious />
+      <CarouselNext />
       </Carousel>
-    </div>
   )
 } 

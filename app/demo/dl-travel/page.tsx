@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { motion } from "framer-motion"
+// Removed motion import
 import { 
   Plane, 
   Hotel, 

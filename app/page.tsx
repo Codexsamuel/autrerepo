@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { SearchBar } from "@/components/search-bar"
 import {
@@ -32,6 +32,11 @@ import {
   Home,
   Banknote,
   LineChart,
+  TrendingUp,
+  CheckCircle,
+  Play,
+  Target,
+  Camera,
 } from "lucide-react"
 import { DavyVoiceAssistant } from "@/components/ai-assistant/davy-voice-assistant"
 import { MediaCarousel } from "@/components/media-carousel"
@@ -40,6 +45,38 @@ import { TeamCarousel } from "@/components/team-carousel"
 import { SolutionsCarousel } from "@/components/solutions-carousel"
 import { ServicesCarousel } from "./components/services/services-carousel"
 import ProductCard from '@/components/ProductCard'
+import DroneCarousel from "@/components/drone-carousel"
+// Removed motion import
+import React from "react"
+import DLActivitiesCarousel from "@/components/dl-activities-carousel"
+import ProjectsNewsSection from "@/components/projects-news-section"
+
+const mediaItems = [
+  {
+    id: "1",
+    title: "CRM Immobilier",
+    description: "Gérez vos biens immobiliers efficacement",
+    imageUrl: "/images/real-estate.jpg",
+  },
+  {
+    id: "2",
+    title: "CRM Banque",
+    description: "Solutions bancaires innovantes",
+    imageUrl: "/images/banking.jpg",
+  },
+  {
+    id: "3",
+    title: "CRM Trading",
+    description: "Plateforme de trading avancée",
+    imageUrl: "/images/trading.jpg",
+  },
+  {
+    id: "4",
+    title: "CRM Agence",
+    description: "Gestion complète de votre agence",
+    imageUrl: "/images/agency.jpg",
+  },
+]
 
 export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -220,583 +257,274 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen max-w-screen-2xl mx-auto">
-      {/* Header */}
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <div className="h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center">
-              <Image
-                src="/images/dl-logo.jpg"
-                alt="DL Solutions SARL - Transformation Digitale & IA"
-                width={48}
-                height={48}
-                className="object-contain"
-                priority
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      {/* Hero Section avec Carrousel Activités DL Solutions */}
+      <section className="relative py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="mb-6"
+            >
+              <img 
+                src="/images/dl-logo.jpg" 
+                alt="DL Solutions Logo" 
+                className="h-20 mx-auto mb-4"
               />
-            </div>
-            <span className="font-semibold text-base sm:text-lg">DL Solutions</span>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
-            <Link href="/" className="text-sm font-medium text-primary hover:text-primary/80 transition-colors">
-              Accueil
-            </Link>
-            <Link
-              href="/services"
-              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+              <Badge variant="secondary" className="mb-4">
+                <Star className="w-4 h-4 mr-2" />
+                Innovation & Excellence
+              </Badge>
+            </motion.div>
+            
+            <motion.h1 
+              className="text-5xl md:text-7xl font-bold text-gray-900 mb-6"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
             >
-              Services
-            </Link>
-            <Link
-              href="/formations"
-              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+              DL Solutions
+            </motion.h1>
+            
+            <motion.p 
+              className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
             >
-              Formations
-            </Link>
-            <Link
-              href="/portfolio"
-              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-            >
-              Portfolio
-            </Link>
-            <Link
-              href="/a-propos"
-              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-            >
-              À Propos
-            </Link>
-            <Link
-              href="/contact"
-              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-            >
-              Contact
-            </Link>
-          </nav>
-
-          <div className="flex items-center gap-2 sm:gap-4">
-            <Link href="/novacore">
-              <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 border-0">
-                <Shield className="h-4 w-4 mr-2" />
-                NovaCore
-              </Button>
-            </Link>
-            <Link href="/intranet">
-              <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-6 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 border-0 relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <Building2 className="h-4 w-4 mr-2 relative z-10" />
-                <span className="relative z-10">Intranet</span>
-              </Button>
-            </Link>
-            <Button size="sm" asChild>
-              <Link href="/devis">Devis Gratuit</Link>
+              Plateforme de transformation digitale et solutions innovantes
+            </motion.p>
+          </div>
+          
+          {/* Carrousel Activités DL Solutions */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="mb-16"
+          >
+            <DLActivitiesCarousel />
+          </motion.div>
+          
+          {/* CTA Buttons */}
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
+          >
+            <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
+              Découvrir nos services
+              <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
-
-            {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="lg:hidden"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label="Menu de navigation"
-            >
-              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            <Button size="lg" variant="outline" className="border-2 border-gray-300 hover:bg-gray-50">
+              <Play className="w-5 h-5 mr-2" />
+              Voir la démo
             </Button>
-          </div>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="container py-4 lg:hidden border-t bg-background">
-            <nav className="flex flex-col space-y-4">
-              <div className="flex items-center gap-3 mb-4 pb-4 border-b">
-                <div className="h-10 w-10 flex items-center justify-center">
-                  <Image
-                    src="/images/dl-logo.jpg"
-                    alt="DL Solutions Logo"
-                    width={40}
-                    height={40}
-                    className="object-contain"
-                  />
-                </div>
-                <span className="font-semibold">DL Solutions</span>
-              </div>
-              <Link href="/" className="text-sm font-medium py-2" onClick={() => setIsMenuOpen(false)}>
-                Accueil
-              </Link>
-              <Link
-                href="/services"
-                className="text-sm font-medium text-muted-foreground py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Services
-              </Link>
-              <Link
-                href="/formations"
-                className="text-sm font-medium text-muted-foreground py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Formations
-              </Link>
-              <Link
-                href="/portfolio"
-                className="text-sm font-medium text-muted-foreground py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Portfolio
-              </Link>
-              <Link
-                href="/a-propos"
-                className="text-sm font-medium text-muted-foreground py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                À Propos
-              </Link>
-              <Link
-                href="/contact"
-                className="text-sm font-medium text-muted-foreground py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Contact
-              </Link>
-              <Link
-                href="/novacore"
-                className="text-sm font-medium text-muted-foreground py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                NovaCore
-              </Link>
-            </nav>
-          </div>
-        )}
-      </header>
-
-      {/* Hero Section */}
-      <section className="relative py-12 sm:py-16 md:py-20 lg:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-grid -z-10 opacity-[0.03]"></div>
-        <div className="container px-4 sm:px-6 lg:px-8 max-w-screen-2xl">
-          <div className="flex flex-col items-center text-center space-y-6 animate-fade-in">
-            <div className="space-y-4">
-              <Badge className="mb-4 text-xs sm:text-sm">Innovation & Excellence</Badge>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tighter">
-                DL Solutions
-              </h1>
-              <p className="mx-auto max-w-[90%] sm:max-w-[700px] text-muted-foreground text-base sm:text-lg md:text-xl leading-relaxed">
-                Révolutionnez votre entreprise avec l'intelligence artificielle et les technologies DevOps de nouvelle
-                génération
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
-              <Button size="lg" className="w-full sm:w-auto" asChild>
-                <Link href="/services">
-                  Découvrir nos services
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" className="w-full sm:w-auto" asChild>
-                <Link href="/contact">Nous contacter</Link>
-              </Button>
-            </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-12 sm:py-16 md:py-20 bg-muted/30">
-        <div className="container px-4 sm:px-6 lg:px-8 max-w-screen-2xl">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {stats.map((stat, i) => (
-              <div key={i} className="flex flex-col items-center justify-center space-y-2 text-center p-4">
-                <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary">{stat.value}</div>
-                <div className="text-sm sm:text-base font-medium text-foreground">{stat.label}</div>
-                <div className="text-xs sm:text-sm text-muted-foreground max-w-[150px]">{stat.description}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Section Services */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-        <ServicesCarousel />
-      </section>
-
-      {/* Features Section */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-muted/50">
-        <div className="container px-4 sm:px-6 lg:px-8 max-w-screen-2xl">
-          <div className="grid gap-8 lg:gap-12 xl:gap-16">
-            <div className="flex flex-col justify-center space-y-6">
-              <div className="space-y-4 text-center lg:text-left">
-                <Badge>Pourquoi nous choisir</Badge>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter">
-                  Des avantages concrets qui font la différence
-                </h2>
-                <p className="max-w-[90%] mx-auto lg:mx-0 lg:max-w-[600px] text-muted-foreground text-base sm:text-lg leading-relaxed">
-                  Nous combinons expertise technique et connaissance approfondie du marché pour vous offrir des
-                  solutions adaptées à vos besoins.
-                </p>
-              </div>
-
-              {/* Advantages Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-                {advantages.map((advantage, i) => (
-                  <div key={i} className="text-center p-4 rounded-lg bg-background border">
-                    <div className="text-3xl sm:text-4xl font-bold text-primary mb-2">{advantage.percentage}</div>
-                    <h3 className="font-semibold mb-1">{advantage.title}</h3>
-                    <p className="text-sm text-muted-foreground">{advantage.description}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Features List */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {features.map((feature, i) => (
-                  <div
-                    key={i}
-                    className="flex items-start gap-4 p-4 rounded-lg hover:bg-background/50 transition-colors"
-                  >
-                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${feature.color}`}>
-                      <feature.icon className="h-5 w-5" />
-                    </div>
-                    <div className="space-y-1">
-                      <h3 className="font-medium text-sm sm:text-base">{feature.title}</h3>
-                      <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Section Équipe */}
-      <section className="py-20 bg-gradient-to-b from-white to-gray-50">
+      {/* Section Services Premium */}
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-              Notre Équipe Dirigeante
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Services Premium
             </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Des leaders visionnaires qui façonnent l'avenir de l'innovation
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Des solutions sur mesure pour propulser votre entreprise vers l'excellence
             </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-            {/* Carte Davy */}
-            <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-              <div className="relative h-[500px]">
-                <Image
-                  src="/images/team/Samuel.png"
-                  alt="Davy - CEO & Fondateur"
-                  fill
-                  className="object-cover object-top"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-                  <h3 className="text-3xl font-bold mb-2">Davy</h3>
-                  <p className="text-xl text-gray-200">CEO & Fondateur</p>
-                </div>
-              </div>
-              <div className="p-8">
-                <p className="text-gray-600 mb-6 text-lg leading-relaxed">
-                  Visionnaire et entrepreneur passionné, Davy guide notre entreprise vers l'excellence et l'innovation.
-                </p>
-                <div className="flex gap-4">
-                  <a href="#" className="text-teal-600 hover:text-teal-700 transition-colors">
-                    <Linkedin className="h-6 w-6" />
-                  </a>
-                  <a href="#" className="text-teal-600 hover:text-teal-700 transition-colors">
-                    <Twitter className="h-6 w-6" />
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* Carte Lucie */}
-            <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-              <div className="relative h-[500px]">
-                <Image
-                  src="/images/team/Lucie.png"
-                  alt="Lucie - Directrice Marketing"
-                  fill
-                  className="object-cover object-top"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-                  <h3 className="text-3xl font-bold mb-2">Lucie</h3>
-                  <p className="text-xl text-gray-200">Directrice Marketing</p>
-                </div>
-              </div>
-              <div className="p-8">
-                <p className="text-gray-600 mb-6 text-lg leading-relaxed">
-                  Experte en stratégie marketing, Lucie développe des solutions créatives pour nos clients.
-                </p>
-                <div className="flex gap-4">
-                  <a href="#" className="text-teal-600 hover:text-teal-700 transition-colors">
-                    <Linkedin className="h-6 w-6" />
-                  </a>
-                  <a href="#" className="text-teal-600 hover:text-teal-700 transition-colors">
-                    <Twitter className="h-6 w-6" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24">
-        <div className="container px-4 sm:px-6 lg:px-8 max-w-screen-2xl">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12 md:mb-16">
-            <div className="space-y-2">
-              <Badge>Témoignages</Badge>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter">Ce que disent nos clients</h2>
-              <p className="mx-auto max-w-[90%] sm:max-w-[700px] text-muted-foreground text-base sm:text-lg">
-                Découvrez les expériences de ceux qui nous font confiance
-              </p>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {testimonials.map((testimonial, i) => (
-              <Card key={i} className="hover-lift transition-all duration-300 hover:shadow-lg">
-                <CardHeader>
-                  <div className="flex items-center gap-2 mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-primary text-primary" />
-                    ))}
-                  </div>
-                  <CardDescription className="text-sm sm:text-base leading-relaxed">
-                    "{testimonial.quote}"
-                  </CardDescription>
-                </CardHeader>
-                <CardFooter className="flex items-center gap-3">
-                  <Image
-                    src={testimonial.avatar || "/placeholder.svg"}
-                    alt={`Photo de ${testimonial.name}`}
-                    width={40}
-                    height={40}
-                    className="rounded-full"
-                  />
-                  <div>
-                    <p className="font-medium text-sm sm:text-base">{testimonial.name}</p>
-                    <p className="text-xs sm:text-sm text-muted-foreground">
-                      {testimonial.role} • {testimonial.company}
-                    </p>
-                  </div>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-primary text-primary-foreground">
-        <div className="container px-4 sm:px-6 lg:px-8 max-w-screen-2xl">
-          <div className="flex flex-col items-center justify-center space-y-6 text-center">
-            <div className="space-y-4">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter">
-                Prêt à transformer votre entreprise ?
-              </h2>
-              <p className="mx-auto max-w-[90%] sm:max-w-[700px] text-base sm:text-lg opacity-90">
-                Rejoignez les entreprises qui font confiance à DL Solutions pour leur transformation digitale.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
-              <Button size="lg" variant="secondary" className="w-full sm:w-auto" asChild>
-                <Link href="/devis">
-                  Demander un devis
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full sm:w-auto bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
-                asChild
-              >
-                <Link href="/rendez-vous">
-                  <Calendar className="mr-2 h-4 w-4" />
-                  Prendre rendez-vous
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-lg font-bold mb-4">Mentions légales</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Confidentialité</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">CGU</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </footer>
-
-      {/* Assistant DAVY */}
-      <DavyVoiceAssistant />
-
-      {/* Media Carousel */}
-      <section className="w-full py-12 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8">Nos Solutions CRM</h2>
-          <MediaCarousel />
-        </div>
-      </section>
-
-      {/* Présentation Media */}
-      <section className="w-full py-16 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-        <PresentationCarousel />
-      </section>
-
-      {/* Solutions CRM */}
-      <section className="py-20 px-4 bg-gray-50">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-              Nos Solutions CRM
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Des solutions adaptées à chaque secteur d'activité
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* CRM Immobilier */}
-            <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-              <div className="relative h-48 bg-gradient-to-br from-blue-500 to-blue-700">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Home className="w-16 h-16 text-white opacity-80" />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-2">CRM Immobilier</h3>
-                <p className="text-gray-600">
-                  Gérez vos biens immobiliers efficacement
-                </p>
-              </div>
-            </div>
-
-            {/* CRM Banque */}
-            <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-              <div className="relative h-48 bg-gradient-to-br from-green-500 to-green-700">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Banknote className="w-16 h-16 text-white opacity-80" />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-2">CRM Banque</h3>
-                <p className="text-gray-600">
-                  Solutions bancaires innovantes
-                </p>
-              </div>
-            </div>
-
-            {/* CRM Trading */}
-            <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-              <div className="relative h-48 bg-gradient-to-br from-purple-500 to-purple-700">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <LineChart className="w-16 h-16 text-white opacity-80" />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-2">CRM Trading</h3>
-                <p className="text-gray-600">
-                  Plateforme de trading avancée
-                </p>
-              </div>
-            </div>
-
-            {/* CRM Agence */}
-            <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-              <div className="relative h-48 bg-gradient-to-br from-orange-500 to-orange-700">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Building2 className="w-16 h-16 text-white opacity-80" />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-2">CRM Agence</h3>
-                <p className="text-gray-600">
-                  Gestion complète de votre agence
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Products */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8">Produits en vedette</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {sampleProducts.map((product) => (
-              <ProductCard key={product.id} {...product} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Categories */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8">Catégories populaires</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {['Mode', 'Électronique', 'Maison', 'Beauté'].map((category) => (
-              <div
-                key={category}
-                className="bg-gray-100 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-200 transition-colors"
-              >
-                <h3 className="text-xl font-semibold">{category}</h3>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8 text-center">Pourquoi choisir DL Style ?</h2>
+          </motion.div>
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                title: 'Produits vérifiés',
-                description: 'Tous nos produits sont sélectionnés et vérifiés pour leur qualité'
+                icon: Shield,
+                title: "Sécurité & Surveillance",
+                description: "Solutions de sécurité avancées avec IA",
+                features: ["Surveillance 24/7", "Détection d'intrusion", "Reconnaissance faciale"]
               },
               {
-                title: 'Livraison rapide',
-                description: 'Livraison directe depuis la Chine vers l\'Afrique'
+                icon: Zap,
+                title: "Trading Automatisé",
+                description: "Plateforme de trading avec IA intégrée",
+                features: ["Signaux en temps réel", "Gestion des risques", "Analyse prédictive"]
               },
               {
-                title: 'Prix compétitifs',
-                description: 'Les meilleurs prix du marché avec des marges raisonnables'
+                icon: Users,
+                title: "CRM Intelligent",
+                description: "Gestion client optimisée par l'IA",
+                features: ["Automatisation", "Analytics avancés", "Personnalisation"]
               }
-            ].map((feature) => (
-              <div key={feature.title} className="bg-white p-6 rounded-xl shadow-lg">
-                <h3 className="text-xl font-semibold mb-4">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
-              </div>
+            ].map((service, index) => (
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <Card className="h-full border-2 border-gray-100 hover:border-blue-200 transition-all duration-300 hover:shadow-xl">
+                  <CardHeader className="text-center">
+                    <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <service.icon className="w-8 h-8 text-white" />
+                    </div>
+                    <CardTitle className="text-2xl">{service.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-600 mb-4">{service.description}</p>
+                    <ul className="space-y-2">
+                      {service.features.map((feature) => (
+                        <li key={feature} className="flex items-center text-sm">
+                          <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Section Projets & Actualités */}
+      <ProjectsNewsSection />
+
+      {/* Section DL Drone */}
+      <section className="py-20 bg-gradient-to-r from-blue-50 to-purple-50">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <Badge variant="secondary" className="mb-4">
+                <Target className="w-4 h-4 mr-2" />
+                Nouveau produit
+              </Badge>
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                DL Surveillance Drone
+              </h2>
+              <p className="text-xl text-gray-600 mb-8">
+                Drone de surveillance militaire nouvelle génération avec IA intégrée pour la sécurité nationale
+              </p>
+              
+              <div className="grid grid-cols-2 gap-6 mb-8">
+                {[
+                  { icon: Clock, label: "Autonomie", value: "45 min" },
+                  { icon: MapPin, label: "Portée", value: "15 km" },
+                  { icon: Zap, label: "Vitesse", value: "120 km/h" },
+                  { icon: Camera, label: "Caméra", value: "4K HDR" }
+                ].map((spec) => (
+                  <div key={spec.label} className="flex items-center space-x-3">
+                    <spec.icon className="w-6 h-6 text-blue-600" />
+                    <div>
+                      <p className="text-sm text-gray-500">{spec.label}</p>
+                      <p className="font-semibold text-gray-900">{spec.value}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                  En savoir plus
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+                <Button size="lg" variant="outline">
+                  <Play className="w-5 h-5 mr-2" />
+                  Voir la démo
+                </Button>
+              </div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="relative">
+                <img 
+                  src="https://images.unsplash.com/photo-1579829366248-204fe8413f31?w=800&h=600&fit=crop"
+                  alt="DL Drone"
+                  className="w-full rounded-2xl shadow-2xl"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl" />
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section Statistiques */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {[
+              { number: "500+", label: "Clients satisfaits", icon: Users },
+              { number: "50+", label: "Projets réalisés", icon: TrendingUp },
+              { number: "24/7", label: "Support disponible", icon: Shield },
+              { number: "99%", label: "Taux de réussite", icon: Star }
+            ].map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+                viewport={{ once: true }}
+                className="text-center"
+              >
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <stat.icon className="w-8 h-8 text-white" />
+                </div>
+                <div className="text-3xl font-bold text-gray-900 mb-2">{stat.number}</div>
+                <div className="text-gray-600">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Section CTA Final */}
+      <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
+        <div className="container mx-auto px-4 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl font-bold text-white mb-6">
+              Prêt à transformer votre entreprise ?
+            </h2>
+            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+              Rejoignez les centaines d'entreprises qui font confiance à DL Solutions
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+                Commencer maintenant
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
+                Contactez-nous
+              </Button>
+            </div>
+          </motion.div>
         </div>
       </section>
     </div>

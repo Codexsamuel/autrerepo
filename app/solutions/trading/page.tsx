@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+// Removed motion import
 import { Card, CardContent } from "@/components/ui/card"
 import { LineChart, TrendingUp, AlertCircle, Wallet, BarChart3, Settings, Users, Shield } from "lucide-react"
 

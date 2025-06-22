@@ -11,7 +11,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image"
 import Autoplay from "embla-carousel-autoplay"
-import { motion } from "framer-motion"
+// Removed motion import
 import { Linkedin, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
 

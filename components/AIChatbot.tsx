@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from '@/components/ui/motion';
 import { Send, Bot, User, Sparkles, Mic, MicOff, Settings, Download, Share2 } from 'lucide-react';
 
 interface Message {

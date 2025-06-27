@@ -1,410 +1,181 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {
-  Building2,
-  Users,
-  FileText,
-  Calendar,
-  BarChart3,
-  Settings,
-  Wallet,
-  ShoppingCart,
-  Briefcase,
-  Mail,
-  Bell,
-  Search,
+import { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { 
+  Building2, 
+  Users, 
+  Euro, 
+  TrendingUp, 
   Plus,
-  ArrowUpRight,
-  ArrowDownRight,
-  DollarSign,
-  Euro,
-  TrendingUp,
-  TrendingDown,
-  UserPlus,
-  FileCheck,
-  Clock,
-  AlertCircle,
-} from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
+  Home,
+  MapPin,
+  Calendar,
+  DollarSign
+} from "lucide-react";
+import Link from "next/link";
+import { supabase } from "@/lib/supabase-client";
+
+interface DashboardStats {
+  totalProperties: number;
+  availableProperties: number;
+  rentedProperties: number;
+  soldProperties: number;
+  totalClients: number;
+  monthlyRevenue: number;
+  totalRevenue: number;
+  recentTransactions: any[];
+}
 
 export default function DashboardPage() {
-  const [activeTab, setActiveTab] = useState("overview")
+  const [stats, setStats] = useState<DashboardStats>({
+    totalProperties: 0,
+    availableProperties: 0,
+    rentedProperties: 0,
+    soldProperties: 0,
+    totalClients: 0,
+    monthlyRevenue: 0,
+    totalRevenue: 0,
+    recentTransactions: []
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadStats();
+  }, []);
+
+  const loadStats = async () => {
+    try {
+      const { data: properties } = await supabase.from('real_estate_properties').select('*');
+      const { data: clients } = await supabase.from('clients').select('*');
+      const { data: transactions } = await supabase.from('transactions').select('*');
+
+      if (properties && clients && transactions) {
+        setStats({
+          totalProperties: properties.length,
+          availableProperties: properties.filter(p => p.status === 'available').length,
+          rentedProperties: properties.filter(p => p.status === 'rented').length,
+          soldProperties: properties.filter(p => p.status === 'sold').length,
+          totalClients: clients.length,
+          monthlyRevenue: transactions
+            .filter(t => t.status === 'completed')
+            .reduce((sum, t) => sum + t.amount, 0),
+          totalRevenue: transactions
+            .filter(t => t.status === 'completed')
+            .reduce((sum, t) => sum + t.amount, 0),
+          recentTransactions: transactions
+        });
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return <div className="p-8 text-center">Chargement...</div>;
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* En-tête */}
-      <header className="bg-white dark:bg-gray-800 border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-4">
-              <div className="relative w-10 h-10">
-                <Image
-                  src="/logo.png"
-                  alt="Logo"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <h1 className="text-xl font-bold">ERP Immobilier</h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-                <Input
-                  type="search"
-                  placeholder="Rechercher..."
-                  className="pl-10 w-64"
-                />
-              </div>
-              <Button variant="ghost" size="icon">
-                <Bell className="w-5 h-5" />
-              </Button>
-              <Button variant="ghost" size="icon">
-                <Mail className="w-5 h-5" />
-              </Button>
-              <div className="flex items-center space-x-2">
-                <div className="relative w-8 h-8 rounded-full bg-primary/10">
-                  <Image
-                    src="/avatar.png"
-                    alt="Avatar"
-                    fill
-                    className="rounded-full object-cover"
-                  />
-                </div>
-                <span className="text-sm font-medium">Admin</span>
-              </div>
-            </div>
-          </div>
+    <div className="p-8">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold">Dashboard Immobilier</h1>
+        <div className="flex gap-4">
+          <Link href="/solutions/immobilier/biens/nouveau">
+            <Button><Plus className="mr-2" />Nouveau bien</Button>
+          </Link>
+          <Link href="/solutions/immobilier/clients/nouveau">
+            <Button variant="outline"><Users className="mr-2" />Nouveau client</Button>
+          </Link>
         </div>
-      </header>
+      </div>
 
-      {/* Contenu principal */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-12 gap-8">
-          {/* Sidebar */}
-          <div className="col-span-3">
-            <nav className="space-y-1">
-              <Link
-                href="/solutions/immobilier/tableau-de-bord"
-                className="flex items-center space-x-3 px-4 py-2 text-sm font-medium rounded-lg bg-primary text-white"
-              >
-                <BarChart3 className="w-5 h-5" />
-                <span>Tableau de bord</span>
-              </Link>
-              <Link
-                href="/solutions/immobilier/biens"
-                className="flex items-center space-x-3 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
-              >
-                <Building2 className="w-5 h-5" />
-                <span>Biens immobiliers</span>
-              </Link>
-              <Link
-                href="/solutions/immobilier/clients"
-                className="flex items-center space-x-3 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
-              >
-                <Users className="w-5 h-5" />
-                <span>Clients</span>
-              </Link>
-              <Link
-                href="/solutions/immobilier/documents"
-                className="flex items-center space-x-3 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
-              >
-                <FileText className="w-5 h-5" />
-                <span>Documents</span>
-              </Link>
-              <Link
-                href="/solutions/immobilier/calendrier"
-                className="flex items-center space-x-3 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
-              >
-                <Calendar className="w-5 h-5" />
-                <span>Calendrier</span>
-              </Link>
-              <Link
-                href="/solutions/immobilier/comptabilite"
-                className="flex items-center space-x-3 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
-              >
-                <Wallet className="w-5 h-5" />
-                <span>Comptabilité</span>
-              </Link>
-              <Link
-                href="/solutions/immobilier/fournisseurs"
-                className="flex items-center space-x-3 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
-              >
-                <ShoppingCart className="w-5 h-5" />
-                <span>Fournisseurs</span>
-              </Link>
-              <Link
-                href="/solutions/immobilier/projets"
-                className="flex items-center space-x-3 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
-              >
-                <Briefcase className="w-5 h-5" />
-                <span>Projets</span>
-              </Link>
-              <Link
-                href="/solutions/immobilier/parametres"
-                className="flex items-center space-x-3 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
-              >
-                <Settings className="w-5 h-5" />
-                <span>Paramètres</span>
-              </Link>
-            </nav>
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Building2 className="h-5 w-5" />
+              Total Biens
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{stats.totalProperties}</div>
+          </CardContent>
+        </Card>
 
-          {/* Contenu principal */}
-          <div className="col-span-9">
-            <Tabs defaultValue="overview" className="space-y-8">
-              <TabsList>
-                <TabsTrigger value="overview">Vue d'ensemble</TabsTrigger>
-                <TabsTrigger value="analytics">Analytique</TabsTrigger>
-                <TabsTrigger value="reports">Rapports</TabsTrigger>
-              </TabsList>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Building2 className="h-5 w-5 text-green-600" />
+              Disponibles
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-green-600">{stats.availableProperties}</div>
+          </CardContent>
+        </Card>
 
-              <TabsContent value="overview" className="space-y-8">
-                {/* KPIs */}
-                <div className="grid grid-cols-4 gap-6">
-                  <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium">
-                        Chiffre d'affaires
-                      </CardTitle>
-                      <DollarSign className="w-4 h-4 text-green-500" />
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">€45,231.89</div>
-                      <p className="text-xs text-green-500 flex items-center">
-                        <TrendingUp className="w-3 h-3 mr-1" />
-                        +20.1% par rapport au mois dernier
-                      </p>
-                    </CardContent>
-                  </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="h-5 w-5 text-blue-600" />
+              Clients
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-blue-600">{stats.totalClients}</div>
+          </CardContent>
+        </Card>
 
-                  <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium">
-                        Biens en gestion
-                      </CardTitle>
-                      <Building2 className="w-4 h-4 text-blue-500" />
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">156</div>
-                      <p className="text-xs text-blue-500 flex items-center">
-                        <TrendingUp className="w-3 h-3 mr-1" />
-                        +12 nouveaux ce mois-ci
-                      </p>
-                    </CardContent>
-                  </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Euro className="h-5 w-5 text-purple-600" />
+              Revenus
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-purple-600">
+              {stats.monthlyRevenue.toLocaleString('fr-FR')} €
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
-                  <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium">
-                        Clients actifs
-                      </CardTitle>
-                      <Users className="w-4 h-4 text-purple-500" />
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">2,350</div>
-                      <p className="text-xs text-purple-500 flex items-center">
-                        <TrendingUp className="w-3 h-3 mr-1" />
-                        +180 nouveaux ce mois-ci
-                      </p>
-                    </CardContent>
-                  </Card>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Link href="/solutions/immobilier/biens">
+          <Card className="hover:shadow-lg cursor-pointer">
+            <CardContent className="p-6">
+              <Building2 className="h-8 w-8 text-blue-600 mb-4" />
+              <h3 className="font-semibold">Gérer les biens</h3>
+              <p className="text-sm text-gray-600">Voir et modifier vos biens</p>
+            </CardContent>
+          </Card>
+        </Link>
 
-                  <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium">
-                        Taux d'occupation
-                      </CardTitle>
-                      <BarChart3 className="w-4 h-4 text-orange-500" />
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">94.2%</div>
-                      <p className="text-xs text-orange-500 flex items-center">
-                        <TrendingUp className="w-3 h-3 mr-1" />
-                        +2.1% par rapport au mois dernier
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
+        <Link href="/solutions/immobilier/clients">
+          <Card className="hover:shadow-lg cursor-pointer">
+            <CardContent className="p-6">
+              <Users className="h-8 w-8 text-green-600 mb-4" />
+              <h3 className="font-semibold">Gérer les clients</h3>
+              <p className="text-sm text-gray-600">Voir et modifier vos clients</p>
+            </CardContent>
+          </Card>
+        </Link>
 
-                {/* Activités récentes et tâches */}
-                <div className="grid grid-cols-2 gap-6">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Activités récentes</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div className="flex items-center space-x-4">
-                          <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
-                            <UserPlus className="w-4 h-4 text-green-600" />
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium">
-                              Nouveau client ajouté
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              Il y a 5 minutes
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                          <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                            <FileCheck className="w-4 h-4 text-blue-600" />
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium">
-                              Contrat signé
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              Il y a 2 heures
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                          <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
-                            <AlertCircle className="w-4 h-4 text-orange-600" />
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium">
-                              Maintenance requise
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              Il y a 3 heures
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Tâches en attente</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-4">
-                            <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
-                              <Clock className="w-4 h-4 text-red-600" />
-                            </div>
-                            <div>
-                              <p className="text-sm font-medium">
-                                Vérification mensuelle
-                              </p>
-                              <p className="text-xs text-gray-500">
-                                Échéance : Aujourd'hui
-                              </p>
-                            </div>
-                          </div>
-                          <Button variant="outline" size="sm">
-                            Compléter
-                          </Button>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-4">
-                            <div className="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
-                              <Clock className="w-4 h-4 text-yellow-600" />
-                            </div>
-                            <div>
-                              <p className="text-sm font-medium">
-                                Rapport trimestriel
-                              </p>
-                              <p className="text-xs text-gray-500">
-                                Échéance : Dans 3 jours
-                              </p>
-                            </div>
-                          </div>
-                          <Button variant="outline" size="sm">
-                            Compléter
-                          </Button>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-4">
-                            <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
-                              <Clock className="w-4 h-4 text-green-600" />
-                            </div>
-                            <div>
-                              <p className="text-sm font-medium">
-                                Renouvellement de bail
-                              </p>
-                              <p className="text-xs text-gray-500">
-                                Échéance : Dans 1 semaine
-                              </p>
-                            </div>
-                          </div>
-                          <Button variant="outline" size="sm">
-                            Compléter
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                {/* Graphiques et statistiques */}
-                <div className="grid grid-cols-2 gap-6">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Performance mensuelle</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="h-[300px] flex items-center justify-center">
-                        {/* Ici, nous ajouterons un graphique avec une bibliothèque comme Chart.js ou Recharts */}
-                        <p className="text-gray-500">Graphique de performance</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Répartition des biens</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="h-[300px] flex items-center justify-center">
-                        {/* Ici, nous ajouterons un graphique circulaire */}
-                        <p className="text-gray-500">Graphique de répartition</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="analytics">
-                {/* Contenu de l'onglet Analytique */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Analytique détaillée</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p>Contenu de l'analytique à venir...</p>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="reports">
-                {/* Contenu de l'onglet Rapports */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Rapports</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p>Contenu des rapports à venir...</p>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            </Tabs>
-          </div>
-        </div>
-      </main>
+        <Link href="/solutions/immobilier/transactions">
+          <Card className="hover:shadow-lg cursor-pointer">
+            <CardContent className="p-6">
+              <Euro className="h-8 w-8 text-purple-600 mb-4" />
+              <h3 className="font-semibold">Transactions</h3>
+              <p className="text-sm text-gray-600">Voir toutes les transactions</p>
+            </CardContent>
+          </Card>
+        </Link>
+      </div>
     </div>
-  )
-} 
+  );
+}

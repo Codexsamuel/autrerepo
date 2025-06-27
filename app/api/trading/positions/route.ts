@@ -1,21 +1,38 @@
-import { NextResponse } from 'next/server';
-import { getPositions } from '@/lib/services/metaApiService';
+import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 export async function GET() {
   try {
-    const positions = await getPositions();
-    return NextResponse.json(positions);
+    const { data: positions, error } = await supabase
+      .from('trading_positions')
+      .select('*')
+      .order('opened_at', { ascending: false });
+    if (error) throw error;
+    return NextResponse.json({ positions });
   } catch (error) {
-    console.error('Positions error:', error);
-    if (error instanceof Error && error.message.includes('MetaTrader configuration is missing')) {
-      return NextResponse.json(
-        { success: false, error: 'MetaTrader is not configured. Please set up your environment variables.' },
-        { status: 503 }
-      );
-    }
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch positions' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erreur lors de la récupération des positions' }, { status: 500 });
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { symbol, type, amount, entryPrice, currentPrice, pnl, status } = body;
+    const { data, error } = await supabase
+      .from('trading_positions')
+      .insert([
+        { symbol, type, amount, entry_price: entryPrice, current_price: currentPrice, pnl, status: status || 'open' }
+      ])
+      .select()
+      .single();
+    if (error) throw error;
+    return NextResponse.json({ position: data });
+  } catch (error) {
+    return NextResponse.json({ error: 'Erreur lors de la création de la position' }, { status: 500 });
   }
 } 

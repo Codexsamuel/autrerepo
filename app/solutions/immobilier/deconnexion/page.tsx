@@ -1,11 +1,13 @@
-"use client"
+"use client";
 
+import { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Building2, LogOut } from "lucide-react"
 import Link from "next/link"
-import { useEffect } from "react"
 import { useRouter } from "next/navigation"
+
+
 
 export default function LogoutPage() {
   const router = useRouter()

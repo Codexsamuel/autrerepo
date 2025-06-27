@@ -1,6 +1,7 @@
 import { startPeriodicScraping } from '../lib/scraper/aliexpress';
 import cron from 'node-cron';
 
+
 // Exécuter le scraping toutes les 6 heures
 cron.schedule('0 */6 * * *', async () => {
   console.log('Démarrage du scraping périodique...');

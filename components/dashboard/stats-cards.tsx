@@ -1,6 +1,9 @@
-"use client"
+"use client";
 
+import { ReactNode } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+
+
 
 interface StatCardProps {
   title: string
@@ -10,8 +13,7 @@ interface StatCardProps {
 }
 
 export function StatsCards() {
-  const stats = [
-    {
+  const stats = [{
       title: "Utilisateurs Actifs",
       value: "4.8k+",
       change: "+12%",
@@ -30,9 +32,7 @@ export function StatsCards() {
       title: "Satisfaction",
       value: "98%",
       change: "+2%",
-    },
-  ]
-
+    },]
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       {stats.map((stat) => (

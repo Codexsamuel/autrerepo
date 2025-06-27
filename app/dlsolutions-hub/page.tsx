@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Activity, Users, DollarSign, CheckCircle, AlertCircle } from 'lucide-react';
+import { Activity, Users, DollarSign, CheckCircle, AlertCircle } from "lucide-react";
 
 export default function DLSolutionsHub() {
   const [stats, setStats] = useState({

@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -8,6 +8,8 @@ import { Separator } from "@/components/ui/separator"
 import { format } from "date-fns"
 import { fr } from "date-fns/locale"
 import { Package, User, CreditCard, Truck, Clock, CheckCircle2, AlertCircle, MapPin, History } from "lucide-react"
+
+
 
 // Types
 interface OrderItem {
@@ -85,8 +87,7 @@ const order: Order = {
     status: "Payé",
     total: 1249.98
   },
-  timeline: [
-    {
+  timeline: [{
       date: new Date(),
       status: "Commande créée",
       description: "La commande a été créée"
@@ -95,8 +96,7 @@ const order: Order = {
       date: new Date(),
       status: "Paiement confirmé",
       description: "Le paiement a été confirmé"
-    }
-  ]
+    }]
 }
 
 const statusColors = {
@@ -120,9 +120,7 @@ export default function OrderDetailPage() {
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-semibold">Commande #{order.id}</h1>
-            <Badge className={statusColors[orderStatus]}>
-              {orderStatus.charAt(0).toUpperCase() + orderStatus.slice(1)}
-            </Badge>
+            <Badge className={statusColors[orderStatus]}>orderStatus.charAt(0).toUpperCase() + orderStatus.slice(1)</Badge>
           </div>
         </div>
       </header>

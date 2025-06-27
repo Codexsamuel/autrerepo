@@ -1,9 +1,18 @@
-import { DavyVoiceAssistant } from "@/components/ai-assistant/davy-voice-assistant"
+"use client"
+
+import { useState } from "react"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { TrendingUp, Activity, Target, Zap } from "lucide-react"
 import { SmartDocumentGenerator } from "@/components/documents/smart-document-generator"
 import { HRDashboard } from "@/components/hr/hr-dashboard"
 import { SearchBar } from "@/components/search-bar"
 import TradingAdvisor from "@/components/trading/TradingAdvisor"
 import DavyTradingChat from "@/components/trading/DavyTradingChat"
+
 
 export default function AdminPage() {
   return (
@@ -212,9 +221,6 @@ export default function AdminPage() {
           </div>
         </div>
       </div>
-
-      {/* Assistant DAVY flottant */}
-      <DavyVoiceAssistant />
     </div>
   )
 } 

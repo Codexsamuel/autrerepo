@@ -153,7 +153,6 @@ class NovaCoreIntegration:
         tree.heading('date', text='Date de Création')
         
         # Ajouter des données d'exemple
-        tree.insert('', 'end', values=('1', 'Vidéo Promotionnelle', 'Client A', 'En cours', '2024-03-11'))
         tree.insert('', 'end', values=('2', 'Montage Événement', 'Client B', 'Terminé', '2024-03-10'))
         
         tree.pack(fill=tk.BOTH, expand=True)

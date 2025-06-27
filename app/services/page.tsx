@@ -1,289 +1,187 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Brain, Users, Palette, Megaphone, Zap, CheckCircle, Star, Camera } from "lucide-react"
+import { ArrowRight, Brain, Users, Palette, Megaphone, Zap, CheckCircle, Star, Camera, ShoppingCart, Building2, TrendingUp, Shield, Globe, Smartphone, Video, Database, Target } from "lucide-react"
+import { Header } from '@/components/layout/header'
+import Link from 'next/link'
+
+const services = [
+  {
+    title: "Intelligence Artificielle",
+    description: "Solutions IA personnalisées pour automatiser et optimiser vos processus métier",
+    icon: Brain,
+    features: ["Chatbots IA", "Analyse prédictive", "Automatisation", "Machine Learning"],
+    status: "active",
+    color: "from-purple-500 to-pink-500"
+  },
+  {
+    title: "E-commerce & Vente",
+    description: "Plateformes e-commerce complètes avec gestion des paiements et analytics",
+    icon: ShoppingCart,
+    features: ["Boutiques en ligne", "Paiements sécurisés", "Gestion des stocks", "Marketing automation"],
+    status: "active",
+    color: "from-blue-500 to-cyan-500"
+  },
+  {
+    title: "CRM & Gestion Client",
+    description: "Systèmes de gestion de la relation client adaptés à votre secteur",
+    icon: Users,
+    features: ["Gestion des contacts", "Suivi des ventes", "Automatisation", "Analytics"],
+    status: "active",
+    color: "from-green-500 to-emerald-500"
+  },
+  {
+    title: "Solutions Sectorielles",
+    description: "CRM/ERP spécialisés pour l'immobilier, la banque, l'hôtellerie et plus",
+    icon: Building2,
+    features: ["Immobilier", "Banque", "Hôtellerie", "Assurance"],
+    status: "active",
+    color: "from-orange-500 to-red-500"
+  },
+  {
+    title: "Trading & Finance",
+    description: "Plateformes de trading automatisées avec IA et gestion des risques",
+    icon: TrendingUp,
+    features: ["Trading automatisé", "IA prédictive", "Gestion des risques", "Analytics avancés"],
+    status: "active",
+    color: "from-yellow-500 to-orange-500"
+  },
+  {
+    title: "Sécurité & Conformité",
+    description: "Solutions de cybersécurité et conformité réglementaire",
+    icon: Shield,
+    features: ["Audit de sécurité", "Conformité RGPD", "Chiffrement", "Monitoring"],
+    status: "active",
+    color: "from-red-500 to-pink-500"
+  },
+  {
+    title: "Développement Web",
+    description: "Sites web et applications sur mesure avec technologies modernes",
+    icon: Globe,
+    features: ["Sites responsives", "Applications web", "APIs", "Maintenance"],
+    status: "active",
+    color: "from-indigo-500 to-purple-500"
+  },
+  {
+    title: "Applications Mobiles",
+    description: "Applications iOS et Android natives et cross-platform",
+    icon: Smartphone,
+    features: ["iOS & Android", "React Native", "Flutter", "PWA"],
+    status: "active",
+    color: "from-teal-500 to-blue-500"
+  },
+  {
+    title: "Édition Vidéo IA",
+    description: "Outils d'édition vidéo assistés par intelligence artificielle",
+    icon: Video,
+    features: ["Édition automatique", "IA générative", "Templates", "Export multi-format"],
+    status: "active",
+    color: "from-pink-500 to-rose-500"
+  },
+  {
+    title: "Bases de Données",
+    description: "Conception et optimisation de bases de données performantes",
+    icon: Database,
+    features: ["Architecture DB", "Optimisation", "Migration", "Maintenance"],
+    status: "active",
+    color: "from-gray-500 to-slate-500"
+  },
+  {
+    title: "Intégrations API",
+    description: "Connexion et synchronisation entre vos différents outils",
+    icon: Zap,
+    features: ["APIs REST", "Webhooks", "Synchronisation", "Monitoring"],
+    status: "active",
+    color: "from-amber-500 to-yellow-500"
+  },
+  {
+    title: "Formation & Consulting",
+    description: "Formation de vos équipes et accompagnement stratégique",
+    icon: Target,
+    features: ["Formation sur mesure", "Consulting", "Accompagnement", "Support"],
+    status: "active",
+    color: "from-emerald-500 to-green-500"
+  }
+]
 
 export default function ServicesPage() {
-  const services = [
-    {
-      icon: Users,
-      title: "CRM NovaCore",
-      description: "Plateforme CRM intelligente adaptée à votre secteur d'activité",
-      features: [
-        "CRM Hôtellerie avec gestion des réservations",
-        "CRM Spa & Bien-être avec planning automatisé",
-        "CRM Restaurant avec gestion des commandes",
-        "CRM Community Manager avec analytics",
-      ],
-      price: "À partir de 49€/mois",
-      popular: true,
-    },
-    {
-      icon: Brain,
-      title: "Intelligence Artificielle",
-      description: "Solutions IA personnalisées pour automatiser vos processus",
-      features: [
-        "Chatbots intelligents multilingues",
-        "Analyse prédictive des ventes",
-        "Automatisation des tâches répétitives",
-        "Génération de contenu IA",
-      ],
-      price: "Sur devis",
-      popular: false,
-    },
-    {
-      icon: Palette,
-      title: "Création Visuelle",
-      description: "Designs modernes et impactants pour votre marque",
-      features: [
-        "Logo et identité visuelle complète",
-        "Design de sites web responsive",
-        "Supports marketing (flyers, cartes)",
-        "Templates réseaux sociaux",
-      ],
-      price: "À partir de 150€",
-      popular: false,
-    },
-    {
-      icon: Camera,
-      title: "Shooting Photo/Vidéo",
-      description: "Contenus visuels professionnels pour vos communications",
-      features: [
-        "Shooting produits et corporate",
-        "Vidéos promotionnelles",
-        "Contenu pour réseaux sociaux",
-        "Post-production et montage",
-      ],
-      price: "À partir de 300€",
-      popular: false,
-    },
-    {
-      icon: Megaphone,
-      title: "Campagnes IA",
-      description: "Campagnes marketing optimisées par intelligence artificielle",
-      features: [
-        "Ciblage intelligent des audiences",
-        "Optimisation automatique des budgets",
-        "A/B testing automatisé",
-        "Reporting en temps réel",
-      ],
-      price: "À partir de 200€/mois",
-      popular: false,
-    },
-    {
-      icon: Zap,
-      title: "Automatisation",
-      description: "Automatisez vos processus métier pour gagner en efficacité",
-      features: [
-        "Workflows automatisés",
-        "Intégrations API personnalisées",
-        "Synchronisation des données",
-        "Notifications intelligentes",
-      ],
-      price: "Sur devis",
-      popular: false,
-    },
-  ]
-
-  const processSteps = [
-    {
-      step: "01",
-      title: "Analyse de vos besoins",
-      description: "Nous étudions votre activité et identifions les opportunités d'amélioration.",
-    },
-    {
-      step: "02",
-      title: "Proposition personnalisée",
-      description: "Nous concevons une solution sur-mesure adaptée à vos objectifs.",
-    },
-    {
-      step: "03",
-      title: "Développement & Intégration",
-      description: "Notre équipe développe et intègre la solution dans votre environnement.",
-    },
-    {
-      step: "04",
-      title: "Formation & Support",
-      description: "Nous formons vos équipes et assurons un support continu.",
-    },
-  ]
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-teal-50">
-      {/* Header */}
-      <header className="bg-white/90 backdrop-blur-xl shadow-lg border-b border-white/20">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-20">
-            <div className="flex items-center space-x-3">
-              <div className="h-16 w-16 rounded-full overflow-hidden border-2 border-teal-200 flex items-center justify-center bg-white shadow-md">
-                <img src="/images/dl-logo.jpg" alt="DL Solutions Logo" className="h-14 w-14 object-contain" />
-              </div>
-            </div>
-            <nav className="hidden lg:flex items-center space-x-8">
-              <a href="/" className="text-gray-800 hover:text-teal-600 transition-colors">
-                Accueil
-              </a>
-              <a href="/a-propos" className="text-gray-800 hover:text-teal-600 transition-colors">
-                À propos
-              </a>
-              <a href="/services" className="text-teal-600 font-medium">
-                Services
-              </a>
-              <a href="/formations" className="text-gray-800 hover:text-teal-600 transition-colors">
-                Formations
-              </a>
-              <a href="/portfolio" className="text-gray-800 hover:text-teal-600 transition-colors">
-                Portfolio
-              </a>
-              <a href="/contact" className="text-gray-800 hover:text-teal-600 transition-colors">
-                Contact
-              </a>
-            </nav>
-            <div className="hidden lg:flex items-center space-x-4">
-              <Button variant="outline" className="border-teal-200 text-teal-700" asChild>
-                <a href="/devis">Devis IA</a>
-              </Button>
-              <Button className="bg-gradient-to-r from-teal-600 to-blue-600" asChild>
-                <a href="/sign-in">NovaCore</a>
-              </Button>
-            </div>
-          </div>
+    <div className="min-h-screen bg-gray-50">
+      <Header title="Services" />
+      
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Hero Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Nos Services Intelligents
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Découvrez notre gamme complète de services technologiques pour transformer 
+            votre entreprise et accélérer votre croissance digitale.
+          </p>
         </div>
-      </header>
 
-      {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <Badge className="mb-4 bg-teal-100 text-teal-700">Nos Services</Badge>
-            <h1 className="text-4xl lg:text-6xl font-bold mb-6">
-              Solutions complètes pour votre{" "}
-              <span className="bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-                transformation digitale
-              </span>
-            </h1>
-            <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              De l'intelligence artificielle aux créations visuelles, nous proposons une gamme complète de services pour
-              propulser votre entreprise vers le succès.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Grid */}
-      <section className="py-16 px-4 bg-white">
-        <div className="container mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <Card
-                key={index}
-                className={`relative border-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 ${
-                  service.popular ? "ring-2 ring-teal-500" : ""
-                }`}
-              >
-                {service.popular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <Badge className="bg-gradient-to-r from-teal-600 to-blue-600 text-white">
-                      <Star className="h-3 w-3 mr-1" />
-                      Populaire
-                    </Badge>
+        {/* Services Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {services.map((service, index) => (
+            <Card key={index} className="group hover:shadow-lg transition-all duration-300">
+              <CardHeader>
+                <div className="flex items-center justify-between mb-4">
+                  <div className={`p-3 rounded-lg bg-gradient-to-r ${service.color}`}>
+                    <service.icon className="h-6 w-6 text-white" />
                   </div>
-                )}
-                <CardContent className="p-8">
-                  <div className="mb-6">
-                    <div className="w-16 h-16 bg-gradient-to-r from-teal-600 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                      <service.icon className="h-8 w-8 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-3 text-gray-800">{service.title}</h3>
-                    <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
-                  </div>
-
-                  <ul className="space-y-3 mb-8">
-                    {service.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start text-sm text-gray-600">
-                        <CheckCircle className="h-4 w-4 text-teal-500 mr-3 flex-shrink-0 mt-0.5" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="border-t pt-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-2xl font-bold text-teal-600">{service.price}</span>
-                    </div>
-                    <Button className="w-full bg-gradient-to-r from-teal-600 to-blue-600" asChild>
-                      <a href="/devis">
-                        Demander un devis
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </a>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Process Section */}
-      <section className="py-20 px-4 bg-gray-50">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <Badge className="mb-4 bg-teal-100 text-teal-700">Notre Processus</Badge>
-            <h2 className="text-3xl lg:text-5xl font-bold mb-6">
-              Comment nous{" "}
-              <span className="bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-                travaillons
-              </span>
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Une méthodologie éprouvée pour garantir le succès de votre projet.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {processSteps.map((step, index) => (
-              <div key={index} className="text-center group">
-                <div className="relative mb-6">
-                  <div className="w-20 h-20 bg-gradient-to-r from-teal-600 to-blue-600 rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
-                    <span className="text-2xl font-bold text-white">{step.step}</span>
-                  </div>
-                  {index < processSteps.length - 1 && (
-                    <div className="hidden lg:block absolute top-10 left-full w-full h-0.5 bg-gradient-to-r from-teal-200 to-blue-200"></div>
-                  )}
+                  <Badge variant={service.status === 'active' ? 'default' : 'secondary'}>
+                    {service.status === 'active' ? 'Actif' : 'Bêta'}
+                  </Badge>
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-800">{step.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{step.description}</p>
-              </div>
-            ))}
-          </div>
+                <CardTitle className="text-xl mb-2">{service.title}</CardTitle>
+                <p className="text-gray-600 text-sm">{service.description}</p>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex flex-wrap gap-2">
+                    {service.features.map((feature, featureIndex) => (
+                      <Badge key={featureIndex} variant="outline" className="text-xs">
+                        {feature}
+                      </Badge>
+                    ))}
+                  </div>
+                  <Button className="w-full mt-4" asChild>
+                    <Link href="/contact">
+                      En savoir plus
+                    </Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
-      </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-teal-600 to-blue-600">
-        <div className="container mx-auto text-center">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6">Prêt à démarrer votre projet ?</h2>
-            <p className="text-xl text-blue-100 mb-10">
-              Obtenez un devis personnalisé et découvrez comment nos services peuvent transformer votre entreprise.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button size="lg" className="bg-white text-teal-600 hover:bg-gray-100" asChild>
-                <a href="/devis">
-                  Obtenir un devis gratuit
-                  <ArrowRight className="ml-2 h-6 w-6" />
-                </a>
-              </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10" asChild>
-                <a href="/rendez-vous">Planifier un RDV</a>
-              </Button>
-            </div>
+        {/* CTA Section */}
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-center text-white">
+          <h2 className="text-3xl font-bold mb-4">
+            Prêt à transformer votre entreprise ?
+          </h2>
+          <p className="text-xl mb-6 opacity-90">
+            Contactez-nous pour discuter de vos besoins et découvrir comment nos solutions 
+            peuvent vous aider à atteindre vos objectifs.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" variant="secondary" asChild>
+              <Link href="/contact">
+                Demander un devis
+              </Link>
+            </Button>
+            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600" asChild>
+              <Link href="/formations">
+                Nos formations
+              </Link>
+            </Button>
           </div>
         </div>
-      </section>
+      </main>
     </div>
   )
 }

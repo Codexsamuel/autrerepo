@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-// Removed motion import
 import { Card, CardContent } from "@/components/ui/card"
 import { Building2, Users, Calendar, FileText, BarChart3, Settings, MessageSquare, Shield } from "lucide-react"
 
-const features = [
-  {
+
+
+const features = [{
     title: "Gestion des Équipes",
     description: "Organisez et gérez efficacement vos équipes",
     icon: <Users className="w-8 h-8 text-blue-600" />,
@@ -13,63 +13,52 @@ const features = [
       "Planning des équipes",
       "Suivi des performances",
       "Gestion des tâches",
-      "Communication interne"
-    ]
+      "Communication interne"]
   },
   {
     title: "Gestion des Projets",
     description: "Suivez et gérez vos projets de A à Z",
     icon: <Building2 className="w-8 h-8 text-green-600" />,
-    details: [
-      "Suivi des deadlines",
+    details: ["Suivi des deadlines",
       "Gestion des ressources",
       "Collaboration en temps réel",
-      "Rapports d'avancement"
-    ]
+      "Rapports d'avancement"]
   },
   {
     title: "Planning & Calendrier",
     description: "Organisez efficacement votre temps et vos rendez-vous",
     icon: <Calendar className="w-8 h-8 text-purple-600" />,
-    details: [
-      "Agenda partagé",
+    details: ["Agenda partagé",
       "Gestion des rendez-vous",
       "Rappels automatiques",
-      "Synchronisation multi-supports"
-    ]
+      "Synchronisation multi-supports"]
   },
   {
     title: "Gestion Documentaire",
     description: "Centralisez et gérez tous vos documents",
     icon: <FileText className="w-8 h-8 text-orange-600" />,
-    details: [
-      "Stockage sécurisé",
+    details: ["Stockage sécurisé",
       "Partage de documents",
       "Versioning",
-      "Archivage automatique"
-    ]
+      "Archivage automatique"]
   },
   {
     title: "Tableaux de Bord",
     description: "Visualisez vos performances et KPIs",
     icon: <BarChart3 className="w-8 h-8 text-red-600" />,
-    details: [
-      "KPIs personnalisables",
+    details: ["KPIs personnalisables",
       "Rapports automatisés",
       "Analyses de performance",
-      "Prévisions"
-    ]
+      "Prévisions"]
   },
   {
     title: "Communication",
     description: "Maintenez une communication fluide avec vos clients",
     icon: <MessageSquare className="w-8 h-8 text-indigo-600" />,
-    details: [
-      "Notifications automatiques",
+    details: ["Notifications automatiques",
       "Templates de messages",
       "Suivi des échanges",
-      "Intégration email/SMS"
-    ]
+      "Intégration email/SMS"]
   }
 ]
 

@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
@@ -38,13 +37,11 @@ export function ServiceStatusList({ services }: ServiceStatusListProps) {
                     ? "warning"
                     : "secondary"
                 }
-              >
-                {service.status === "active"
+              >service.status === "active"
                   ? "Actif"
                   : service.status === "maintenance"
                   ? "Maintenance"
-                  : "Beta"}
-              </Badge>
+                  : "Beta"</Badge>
             </div>
           ))}
         </div>

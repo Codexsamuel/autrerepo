@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build"
+  command = "pnpm build"
   publish = ".next"
   functions = "netlify/functions"
 
@@ -21,7 +21,7 @@
 # Redirections pour Next.js App Router
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  to = "/api/:splat"
   status = 200
 
 [[redirects]]

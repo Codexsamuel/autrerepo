@@ -1,11 +1,13 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Plane, Clock, MapPin, Luggage, Utensils, Wifi, ArrowLeft, CreditCard, Shield, Check } from "lucide-react"
 import Link from "next/link"
+
+
 
 export default function FlightDetailPage({ params }: { params: { id: string } }) {
   const [selectedClass, setSelectedClass] = useState("economy")
@@ -53,7 +55,6 @@ export default function FlightDetailPage({ params }: { params: { id: string } })
   }
 
   const selectedClassData = flight.classes[selectedClass as keyof typeof flight.classes]
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50">
       {/* Header */}

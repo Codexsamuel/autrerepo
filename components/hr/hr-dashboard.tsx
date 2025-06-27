@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import { Users, TrendingUp, AlertTriangle, Calendar, Clock, Award, UserCheck, UserX, DollarSign, FileText, Bot } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
+
 
 interface Employee {
   id: string
@@ -47,8 +49,7 @@ interface DashboardStats {
   leaveRequests: number
 }
 
-const mockEmployees: Employee[] = [
-  {
+const mockEmployees: Employee[] = [{
     id: '1',
     name: 'Samuel OBAM',
     email: 'samuel@dlsolutions.com',
@@ -113,11 +114,8 @@ const mockEmployees: Employee[] = [
     performance: 85,
     lastActivity: new Date(),
     leaveBalance: 20
-  }
-]
-
-const mockAlerts: HRAlert[] = [
-  {
+  }]
+const mockAlerts: HRAlert[] = [{
     id: '1',
     type: 'contract_expiry',
     title: 'Contrat expirant bientôt',
@@ -156,9 +154,7 @@ const mockAlerts: HRAlert[] = [
     employeeId: '5',
     createdAt: new Date(),
     resolved: false
-  }
-]
-
+  }]
 export function HRDashboard() {
   const [employees, setEmployees] = useState<Employee[]>(mockEmployees)
   const [alerts, setAlerts] = useState<HRAlert[]>(mockAlerts)
@@ -400,10 +396,8 @@ export function HRDashboard() {
                         <p className="font-medium">{employee.name}</p>
                         <p className="text-sm text-gray-600">{employee.position}</p>
                       </div>
-                      <Badge className={getStatusColor(employee.status)}>
-                        {employee.status === 'active' ? 'Actif' : 
-                         employee.status === 'on_leave' ? 'En congé' : 'Inactif'}
-                      </Badge>
+                      <Badge className={getStatusColor(employee.status)}>employee.status === 'active' ? 'Actif' : 
+                         employee.status === 'on_leave' ? 'En congé' : 'Inactif'</Badge>
                     </div>
                   ))}
                 </div>
@@ -489,10 +483,8 @@ export function HRDashboard() {
                         <p className="text-sm font-medium">{employee.leaveBalance}</p>
                         <p className="text-xs text-gray-600">Congés</p>
                       </div>
-                      <Badge className={getStatusColor(employee.status)}>
-                        {employee.status === 'active' ? 'Actif' : 
-                         employee.status === 'on_leave' ? 'En congé' : 'Inactif'}
-                      </Badge>
+                      <Badge className={getStatusColor(employee.status)}>employee.status === 'active' ? 'Actif' : 
+                         employee.status === 'on_leave' ? 'En congé' : 'Inactif'</Badge>
                     </div>
                   </div>
                 ))}
@@ -526,11 +518,9 @@ export function HRDashboard() {
                         </p>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Badge variant="outline">
-                          {alert.severity === 'critical' ? 'Critique' :
+                        <Badge variant="outline">alert.severity === 'critical' ? 'Critique' :
                            alert.severity === 'high' ? 'Élevée' :
-                           alert.severity === 'medium' ? 'Moyenne' : 'Faible'}
-                        </Badge>
+                           alert.severity === 'medium' ? 'Moyenne' : 'Faible'</Badge>
                         <Button
                           size="sm"
                           variant="outline"

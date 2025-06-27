@@ -1,10 +1,12 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { ArrowLeft, CreditCard, Lock, Shield, CheckCircle, AlertCircle } from "lucide-react"
+
+
 
 interface CardData {
   number: string

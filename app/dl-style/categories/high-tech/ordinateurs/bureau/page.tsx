@@ -1,10 +1,10 @@
 import Link from "next/link"
 import { ChevronRight, Star, ShoppingCart, Heart, Filter } from "lucide-react"
 
+
 export default function OrdinateursBureauPage() {
   // Données des produits (ordinateurs de bureau)
-  const products = [
-    {
+  const products = [{
       id: 101,
       name: "Desktop Pro X5",
       brand: "TechMaster",
@@ -106,9 +106,7 @@ export default function OrdinateursBureauPage() {
         graphics: "AMD Radeon Graphics",
       },
       inStock: true,
-    },
-  ]
-
+    },]
   // Filtres disponibles
   const filters = [
     {

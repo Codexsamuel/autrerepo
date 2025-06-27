@@ -1,8 +1,10 @@
-"use client"
+"use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+
+
 
 interface ServiceCardProps {
   title: string
@@ -51,9 +53,7 @@ export function ServiceCards() {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="text-xl">{service.title}</CardTitle>
-              <Badge variant={service.status === "active" ? "success" : "warning"}>
-                {service.status === "active" ? "Actif" : "Bêta"}
-              </Badge>
+              <Badge variant={service.status === "active" ? "success" : "warning"}>service.status === "active" ? "Actif" : "Bêta"</Badge>
             </div>
             <p className="text-sm text-muted-foreground">{service.description}</p>
             <p className="text-sm font-medium">{service.users}</p>

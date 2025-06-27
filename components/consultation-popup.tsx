@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useState } from "react"
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { X, Calendar, Clock, User, MessageSquare } from "lucide-react"
+
+
 
 interface ConsultationPopupProps {
   isOpen: boolean
@@ -24,20 +24,16 @@ export function ConsultationPopup({ isOpen, onClose }: ConsultationPopupProps) {
     time: "",
   })
 
-  const services = [
-    "Consultation IA",
+  const services = ["Consultation IA",
     "Développement Web",
     "NovaWorld",
     "DL Style",
     "DL Travel",
     "DL Bookmaker",
     "Formation",
-    "Autre",
-  ]
-
+    "Autre",]
   const timeSlots = ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00", "17:00"]
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     console.log("Consultation réservée:", formData)
     // Ici on ajouterait la logique de réservation

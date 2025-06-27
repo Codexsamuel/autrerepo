@@ -1,9 +1,10 @@
-"use client"
+"use client";
 
-import React, { useState, useEffect } from "react";
-// Removed motion import;
+import { useState, useEffect } from "react";
 import { Play, Pause, ChevronLeft, ChevronRight, Building2, Users, Shield, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+
 
 const DLActivitiesCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -129,10 +130,7 @@ const DLActivitiesCarousel = () => {
           
           {/* Content overlay */}
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+            <div
               className="text-white"
             >
               <div className="flex items-center gap-3 mb-3">
@@ -145,7 +143,7 @@ const DLActivitiesCarousel = () => {
               </div>
               <h3 className="text-3xl font-bold mb-3">{currentItem.title}</h3>
               <p className="text-xl opacity-90 max-w-2xl">{currentItem.description}</p>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
@@ -207,12 +205,8 @@ const DLActivitiesCarousel = () => {
 
       {/* Progress bar */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 z-20">
-        <motion.div
+        <div
           className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
-          initial={{ width: "0%" }}
-          animate={{ width: "100%" }}
-          transition={{ duration: 6, ease: "linear" }}
-          key={currentIndex}
         />
       </div>
     </div>

@@ -1,1065 +1,325 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  AlertCircle,
-  AlertTriangle,
-  ArrowDown,
-  ArrowLeft,
-  ArrowRight,
-  ArrowUp,
-  BarChart,
-  BarChart2,
-  BarChart3,
-  BarChart4,
-  BarChartHorizontal,
-  Bell,
-  BellOff,
-  BellRing,
-  BookOpen,
-  Bot,
-  Brain,
-  Briefcase,
-  Building2,
-  Calendar,
-  CalendarClock,
-  CalendarDays,
-  CalendarRange,
-  CalendarSearch,
-  Camera,
-  CameraOff,
-  Car,
-  CarFront,
-  CarTaxiFront,
-  Check,
-  CheckCircle,
-  CheckCircle2,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  ChevronUp,
-  Circle,
-  CircleDot,
-  CircleEllipsis,
-  CircleUser,
-  CircleUserRound,
-  Clock,
-  Cloud,
-  CloudCog,
-  CloudDrizzle,
-  CloudFog,
-  CloudHail,
-  CloudLightning,
-  CloudMoon,
-  CloudOff,
-  CloudRain,
-  CloudRainWind,
-  CloudSnow,
-  CloudSun,
-  Cloudy,
-  Code,
-  Code2,
-  Cog,
-  Command,
-  Compass,
-  Computer,
-  Copy,
-  CreditCard,
-  Crop,
-  Database,
-  Delete,
-  Download,
-  DownloadCloud,
-  Droplets,
-  Edit,
-  Edit2,
-  Edit3,
-  ExternalLink,
-  Eye,
-  EyeOff,
-  File,
-  FileAudio,
-  FileBadge,
-  FileBarChart,
-  FileBarChart2,
-  FileCheck,
-  FileCode,
-  FileSpreadsheet,
-  FileText,
-  FileType,
-  FileVideo,
-  FileWarning,
-  FileX,
-  FileX2,
-  Filter,
-  FilterX,
-  Flag,
-  Folder,
-  FolderArchive,
-  FolderCheck,
-  FolderClock,
-  FolderClosed,
-  FolderCog,
-  FolderDown,
-  FolderEdit,
-  FolderGit,
-  FolderGit2,
-  FolderHeart,
-  FolderInput,
-  FolderKey,
-  FolderLock,
-  FolderMinus,
-  FolderOpen,
-  FolderOutput,
-  FolderPlus,
-  FolderSearch,
-  FolderSymlink,
-  FolderTree,
-  FolderUp,
-  FolderX,
-  Folders,
-  Forward,
-  Gauge,
-  GaugeCircle,
-  Globe,
-  Globe2,
-  GraduationCap,
-  Grid,
-  HardDrive,
-  Headphones,
-  Heart,
-  HeartHandshake,
-  HelpCircle,
-  History,
-  Home,
-  Image,
-  ImageDown,
-  ImageMinus,
-  ImageOff,
-  ImagePlus,
-  Inbox,
-  Info,
-  Key,
-  Keyboard,
-  Laptop,
-  Layout,
-  LayoutDashboard,
-  LayoutGrid,
-  LayoutList,
-  LayoutPanelLeft,
-  LayoutPanelTop,
-  LayoutTemplate,
-  Lightbulb,
-  Link,
-  Link2,
-  Link2Off,
-  List,
-  ListChecks,
-  ListFilter,
-  ListMinus,
-  ListMusic,
-  ListOrdered,
-  ListPlus,
-  ListRestart,
-  ListStart,
-  ListTodo,
-  ListTree,
-  ListVideo,
-  ListX,
-  Loader,
-  Loader2,
-  Lock,
-  LockKeyhole,
-  LogIn,
-  LogOut,
-  LucideProps,
-  Mail,
-  Map,
-  MapPin,
-  Maximize,
-  Maximize2,
-  Menu,
-  MessageCircle,
-  MessageSquare,
-  MessagesSquare,
-  Mic,
-  MicOff,
-  Minimize,
-  Minimize2,
-  Minus,
-  MinusCircle,
-  Monitor,
-  MonitorDown,
-  MonitorOff,
-  MonitorPlay,
-  MonitorSmartphone,
-  MonitorSpeaker,
-  MonitorStop,
-  MonitorUp,
-  Moon,
-  MoreHorizontal,
-  MoreVertical,
-  MousePointer,
-  MousePointer2,
-  Move,
-  MoveDown,
-  MoveHorizontal,
-  MoveLeft,
-  MoveRight,
-  MoveUp,
-  MoveVertical,
-  Music,
-  Music2,
-  Music3,
-  Music4,
-  Navigation,
-  Navigation2,
-  Network,
-  Newspaper,
-  Package,
-  Package2,
-  PackageCheck,
-  PackageMinus,
-  PackageOpen,
-  PackagePlus,
-  PackageSearch,
-  PackageX,
-  Paintbrush,
-  Palette,
-  PanelBottom,
-  PanelBottomClose,
-  PanelBottomDashed,
-  PanelBottomOpen,
-  PanelLeft,
-  PanelLeftClose,
-  PanelLeftDashed,
-  PanelLeftOpen,
-  PanelRight,
-  PanelRightClose,
-  PanelRightDashed,
-  PanelRightOpen,
-  PanelTop,
-  PanelTopClose,
-  PanelTopDashed,
-  PanelTopOpen,
-  Paperclip,
-  Pause,
-  PauseCircle,
-  PenTool,
-  Percent,
-  Phone,
-  PhoneCall,
-  PhoneForwarded,
-  PhoneIncoming,
-  PhoneMissed,
-  PhoneOff,
-  PhoneOutgoing,
-  PieChart,
-  Pin,
-  PinOff,
-  Play,
-  PlayCircle,
-  Plus,
-  PlusCircle,
-  Podcast,
-  Power,
-  PowerOff,
-  Presentation,
-  Printer,
-  QrCode,
-  Radio,
-  RefreshCcw,
-  RefreshCw,
-  Repeat,
-  Repeat1,
-  Reply,
-  ReplyAll,
-  Rewind,
-  Rocket,
-  RotateCcw,
-  RotateCw,
-  Rss,
-  Save,
-  Scale,
-  Scan,
-  ScanFace,
-  ScanLine,
-  Scissors,
-  Search,
-  Send,
-  Server,
-  ServerCog,
-  ServerCrash,
-  ServerOff,
-  Settings,
-  Settings2,
-  Share,
-  Share2,
-  Shield,
-  ShieldAlert,
-  ShieldCheck,
-  ShieldClose,
-  ShieldOff,
-  ShoppingBag,
-  ShoppingCart,
-  Shuffle,
-  Sidebar,
-  SidebarClose,
-  SidebarOpen,
-  SkipBack,
-  SkipForward,
-  Sliders,
-  SlidersHorizontal,
-  Smartphone,
-  SmartphoneCharging,
-  SmartphoneNfc,
-  Smile,
-  Snowflake,
-  Speaker,
-  Square,
-  SquareStack,
-  Star,
-  StarHalf,
-  StarOff,
-  Stethoscope,
-  StopCircle,
-  Store,
-  StretchHorizontal,
-  StretchVertical,
-  Sun,
-  SunDim,
-  SunMedium,
-  SunMoon,
-  SunSnow,
-  Sunrise,
-  Sunset,
-  SwitchCamera,
-  Table,
-  Table2,
-  TableProperties,
-  Tablet,
-  Tag,
-  Tags,
-  Target,
-  Terminal,
-  Thermometer,
-  ThermometerSun,
-  Timer,
-  TimerOff,
-  TimerReset,
-  ToggleLeft,
-  ToggleRight,
-  Trash,
-  Trash2,
-  TrendingDown,
-  TrendingUp,
-  Trophy,
-  Truck,
-  Tv,
-  Tv2,
-  Type,
-  Umbrella,
-  Underline,
-  Undo,
-  Undo2,
-  Unlink,
-  Unlink2,
-  Upload,
-  UploadCloud,
-  User,
-  UserCheck,
-  UserCog,
-  UserMinus,
-  UserPlus,
-  UserRound,
-  UserX,
-  Users,
-  Users2,
-  UsersRound,
-  Video,
-  VideoOff,
-  View,
-  Volume,
-  Volume1,
-  Volume2,
-  VolumeX,
-  Wallet,
-  Wand2,
-  Watch,
-  Webcam,
-  Wifi,
-  WifiOff,
-  Wind,
-  Workflow,
-  WrapText,
-  Wrench,
-  X,
-  XCircle,
-  Youtube,
-  Zap,
-  ZoomIn,
-  ZoomOut,
-} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Loader2, Send, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+
+// Types simplifiés pour éviter les conflits d'imports
+interface AIPrediction {
+  direction: 'up' | 'down' | 'neutral';
+  confidence: number;
+  reasoning: string;
+}
+
+interface MarketAnalysis {
+  sentiment: 'bullish' | 'bearish' | 'neutral';
+  confidence: number;
+  recommendation: string;
+  riskLevel: string;
+}
+
+interface TradingSignal {
+  action: 'buy' | 'sell' | 'hold';
+  strength: number;
+  reasoning: string;
+}
 
 interface ChatMessage {
   id: string;
-  type: 'user' | 'ai' | 'system';
+  type: 'user' | 'ai';
   content: string;
   timestamp: Date;
-  sender: string;
-  avatar?: string;
-  isTyping?: boolean;
-  suggestions?: string[];
-  data?: any;
-  confidence?: number;
-  action?: string;
+  data?: AIPrediction | MarketAnalysis | TradingSignal;
 }
 
-interface TradingData {
-  symbol: string;
-  price: number;
-  change: number;
-  changePercent: number;
-  volume: number;
-  trend: 'bullish' | 'bearish' | 'neutral';
-  recommendation: string;
-  confidence: number;
+// Service DAVY simplifié pour éviter les imports problématiques
+class DavyTradingAdvisor {
+  async getPrediction(symbol: string): Promise<AIPrediction | null> {
+    // Simulation d'une prédiction
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return {
+      direction: Math.random() > 0.5 ? 'up' : 'down',
+      confidence: 0.7 + Math.random() * 0.2,
+      reasoning: `Analyse technique et fondamentale pour ${symbol} indique une tendance ${Math.random() > 0.5 ? 'positive' : 'négative'}.`
+    };
+  }
+
+  async getMarketAnalysis(symbol: string): Promise<MarketAnalysis | null> {
+    // Simulation d'une analyse
+    await new Promise(resolve => setTimeout(resolve, 800));
+    return {
+      sentiment: Math.random() > 0.5 ? 'bullish' : 'bearish',
+      confidence: 0.6 + Math.random() * 0.3,
+      recommendation: Math.random() > 0.5 ? 'Acheter' : 'Vendre',
+      riskLevel: Math.random() > 0.5 ? 'Modéré' : 'Élevé'
+    };
+  }
+
+  async getTradingSignal(symbol: string): Promise<TradingSignal | null> {
+    // Simulation d'un signal
+    await new Promise(resolve => setTimeout(resolve, 600));
+    return {
+      action: Math.random() > 0.5 ? 'buy' : 'sell',
+      strength: 0.5 + Math.random() * 0.4,
+      reasoning: `Signal ${Math.random() > 0.5 ? 'd\'achat' : 'de vente'} pour ${symbol} basé sur l'analyse technique.`
+    };
+  }
 }
 
 export default function DavyTradingChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [inputMessage, setInputMessage] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const [isListening, setIsListening] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [aiPersonality, setAiPersonality] = useState<'professional' | 'friendly' | 'expert'>('expert');
-  const [showSuggestions, setShowSuggestions] = useState(true);
-  const [autoScroll, setAutoScroll] = useState(true);
-  const [theme, setTheme] = useState<'light' | 'dark' | 'auto'>('dark');
-  const [chatMode, setChatMode] = useState<'trading' | 'analysis' | 'education'>('trading');
-  const [isFullScreen, setIsFullScreen] = useState(false);
-  const [showAdvanced, setShowAdvanced] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  // Données de trading simulées
-  const tradingData: TradingData[] = [
-    {
-      symbol: 'AAPL',
-      price: 185.92,
-      change: 2.45,
-      changePercent: 1.33,
-      volume: 45678900,
-      trend: 'bullish',
-      recommendation: 'Acheter avec stop-loss à 175$',
-      confidence: 85
-    },
-    {
-      symbol: 'BTC',
-      price: 43250.75,
-      change: -1250.25,
-      changePercent: -2.81,
-      volume: 28456789000,
-      trend: 'bearish',
-      recommendation: 'Maintenir les positions existantes',
-      confidence: 72
-    },
-    {
-      symbol: 'ETH',
-      price: 2650.45,
-      change: 45.67,
-      changePercent: 1.75,
-      volume: 15678900000,
-      trend: 'bullish',
-      recommendation: 'Acheter avec stop-loss à 2550$',
-      confidence: 78
-    }
-  ];
-
-  // Suggestions de questions
-  const suggestionQuestions = [
-    "Quelle est l'analyse technique d'AAPL ?",
-    "Dois-je acheter du Bitcoin maintenant ?",
-    "Quels sont les meilleurs actifs pour un débutant ?",
-    "Comment gérer le risque dans mon portefeuille ?",
-    "Quelle stratégie recommandes-tu pour 2024 ?",
-    "Peux-tu analyser mon portefeuille actuel ?",
-    "Quels sont les signaux de marché aujourd'hui ?",
-    "Comment optimiser mes positions ?"
-  ];
-
-  // Messages initiaux
-  const initialMessages: ChatMessage[] = [
-    {
-      id: '1',
-      type: 'ai',
-      content: `Bonjour ! Je suis DAVY, votre assistant IA spécialisé en trading. 🤖✨
-
-Je peux vous aider avec :
-• 📊 Analyses techniques et fondamentales
-• 💡 Recommandations personnalisées
-• 📈 Suivi de portefeuille
-• 🎯 Stratégies de trading
-• 📚 Éducation financière
-
-Comment puis-je vous aider aujourd'hui ?`,
-      timestamp: new Date(),
-      sender: 'DAVY',
-      suggestions: suggestionQuestions.slice(0, 4)
-    }
-  ];
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [advisor] = useState(() => new DavyTradingAdvisor());
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setMessages(initialMessages);
+    // Message de bienvenue
+    setMessages([
+      {
+        id: 'welcome',
+        type: 'ai',
+        content: 'Bonjour ! Je suis DAVY, votre conseiller en trading IA. Posez-moi des questions sur les marchés, demandez des analyses ou des prédictions.',
+        timestamp: new Date()
+      }
+    ]);
   }, []);
 
   useEffect(() => {
-    if (autoScroll) {
-      scrollToBottom();
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const simulateTyping = async (duration: number = 2000) => {
-    setIsTyping(true);
-    await new Promise(resolve => setTimeout(resolve, duration));
-    setIsTyping(false);
-  };
-
-  const generateAIResponse = async (userMessage: string) => {
-    await simulateTyping();
-
-    let response: ChatMessage;
-    const lowerMessage = userMessage.toLowerCase();
-
-    if (lowerMessage.includes('aapl') || lowerMessage.includes('apple')) {
-      const appleData = tradingData.find(d => d.symbol === 'AAPL');
-      response = {
-        id: Date.now().toString(),
-        type: 'ai',
-        content: `📊 **Analyse d'Apple (AAPL)**
-
-💰 **Prix actuel**: $${appleData?.price.toFixed(2)}
-📈 **Variation**: +${appleData?.change.toFixed(2)} (${appleData?.changePercent.toFixed(2)}%)
-📊 **Volume**: ${appleData?.volume.toLocaleString()}
-🎯 **Tendance**: ${appleData?.trend === 'bullish' ? 'Haussière' : 'Baissière'}
-
-💡 **Recommandation**: ${appleData?.recommendation}
-🎯 **Confiance**: ${appleData?.confidence}%
-
-**Analyse technique**:
-• Support technique solide à $180
-• RSI en zone de survente (65)
-• MACD croisement haussier imminent
-• Volume en hausse de 15%
-
-**Fondamentaux**:
-• Bénéfices solides Q4 2023
-• Lancement de nouveaux produits IA
-• Trésorerie importante ($150B+)
-
-**Action suggérée**: ${appleData?.trend === 'bullish' ? 'Acheter sur pullback vers $180' : 'Attendre confirmation'}`
-        ,
-        timestamp: new Date(),
-        sender: 'DAVY',
-        data: appleData,
-        confidence: appleData?.confidence,
-        suggestions: ['Voir plus d\'analyses', 'Comparer avec d\'autres tech', 'Analyser le portefeuille']
-      };
-    } else if (lowerMessage.includes('bitcoin') || lowerMessage.includes('btc')) {
-      const btcData = tradingData.find(d => d.symbol === 'BTC');
-      response = {
-        id: Date.now().toString(),
-        content: `₿ **Analyse Bitcoin (BTC)**
-
-💰 **Prix actuel**: $${btcData?.price.toLocaleString()}
-📉 **Variation**: ${btcData?.change.toFixed(2)} (${btcData?.changePercent.toFixed(2)}%)
-📊 **Volume**: $${(btcData?.volume || 0) / 1000000000}B
-🎯 **Tendance**: ${btcData?.trend === 'bullish' ? 'Haussière' : 'Baissière'}
-
-⚠️ **Attention**: Bitcoin en zone de consolidation
-📊 **Support**: $42,000
-📈 **Résistance**: $45,000
-
-**Analyse technique**:
-• Consolidation après correction
-• RSI neutre (50)
-• Volume en baisse
-• Volatilité élevée
-
-**Facteurs macro**:
-• Halving prévu en avril 2024
-• Adoption institutionnelle en hausse
-• Réglementation en cours
-
-**Recommandation**: ${btcData?.recommendation}
-
-**Action suggérée**: Maintenir les positions existantes, pas de nouveau trade pour l'instant.`,
-        timestamp: new Date(),
-        sender: 'DAVY',
-        type: 'ai',
-        data: btcData,
-        confidence: btcData?.confidence,
-        suggestions: ['Analyser ETH', 'Voir les altcoins', 'Stratégie crypto']
-      };
-    } else if (lowerMessage.includes('portefeuille') || lowerMessage.includes('portfolio')) {
-      response = {
-        id: Date.now().toString(),
-        type: 'ai',
-        content: `📊 **Analyse de votre portefeuille**
-
-💰 **Valeur totale**: 2,450,000 FCFA
-📈 **Rendement total**: +12.5%
-📊 **Nombre d'actifs**: 15
-
-**Allocation actuelle**:
-• 🏢 Actions: 45% (1,102,500 FCFA)
-• ₿ Crypto: 35% (857,500 FCFA)
-• 💱 Forex: 15% (367,500 FCFA)
-• 💰 Cash: 5% (122,500 FCFA)
-
-**Top performers**:
-1. AAPL: +18.3%
-2. ETH: +15.7%
-3. TSLA: +12.1%
-
-**Recommandations d'optimisation**:
-• Augmenter l'allocation tech (opportunité IA)
-• Réduire l'exposition crypto (volatilité)
-• Diversifier vers l'Europe (stabilité)
-
-**Actions suggérées**:
-1. Acheter plus d'AAPL sur pullback
-2. Vendre partiellement TSLA (surévaluation)
-3. Ajouter des actions européennes
-
-Voulez-vous que je vous aide à optimiser votre allocation ?`,
-        timestamp: new Date(),
-        sender: 'DAVY',
-        suggestions: ['Optimiser l\'allocation', 'Analyser les risques', 'Nouvelles opportunités']
-      };
-    } else if (lowerMessage.includes('débutant') || lowerMessage.includes('commencer')) {
-      response = {
-        id: Date.now().toString(),
-        type: 'ai',
-        content: `🎯 **Guide pour débutants en trading**
-
-Bienvenue dans le monde du trading ! Voici mes recommandations pour bien commencer :
-
-**📚 Éducation (1-2 mois)**:
-• Comprendre les bases (actions, crypto, forex)
-• Apprendre l'analyse technique
-• Gestion du risque et psychologie
-
-**💰 Premier portefeuille (100,000 FCFA)**:
-• 60% Actions blue-chips (AAPL, MSFT, GOOGL)
-• 20% ETF diversifié (S&P 500)
-• 15% Crypto (BTC, ETH)
-• 5% Cash (opportunités)
-
-**🎯 Stratégie recommandée**:
-• Investissement long terme (5+ ans)
-• DCA (Dollar Cost Averaging)
-• Diversification géographique
-• Stop-loss obligatoire
-
-**⚠️ Erreurs à éviter**:
-• Trading sur émotion
-• Over-leveraging
-• Manque de diversification
-• Ignorer la gestion du risque
-
-**📊 Outils essentiels**:
-• Plateforme de trading fiable
-• Sources d'information fiables
-• Journal de trading
-• Plan de trading écrit
-
-Voulez-vous que je vous aide à créer votre premier portefeuille ?`,
-        timestamp: new Date(),
-        sender: 'DAVY',
-        suggestions: ['Créer un portefeuille', 'Apprendre l\'analyse', 'Gestion du risque']
-      };
-    } else {
-      response = {
-        id: Date.now().toString(),
-        type: 'ai',
-        content: `🤖 **DAVY IA Assistant**
-
-Je comprends votre question. Laissez-moi vous aider avec une analyse personnalisée.
-
-**💡 Suggestions**:
-• Analyse technique d'un actif spécifique
-• Recommandations de portefeuille
-• Stratégies de trading
-• Gestion du risque
-• Éducation financière
-
-**📊 Données en temps réel**:
-• Marché haussier global
-• Volatilité modérée
-• Opportunités dans la tech
-• Prudence sur les crypto
-
-Pouvez-vous me donner plus de détails sur ce que vous recherchez ? Je peux vous fournir des analyses spécifiques et des recommandations personnalisées.`,
-        timestamp: new Date(),
-        sender: 'DAVY',
-        suggestions: suggestionQuestions.slice(0, 4)
-      };
-    }
-
-    setMessages(prev => [...prev, response]);
-  };
-
   const handleSendMessage = async () => {
-    if (!inputMessage.trim()) return;
+    if (!input.trim() || isLoading) return;
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
       type: 'user',
-      content: inputMessage,
-      timestamp: new Date(),
-      sender: 'Vous'
+      content: input,
+      timestamp: new Date()
     };
 
     setMessages(prev => [...prev, userMessage]);
-    setInputMessage('');
-    await generateAIResponse(inputMessage);
-  };
+    setInput('');
+    setIsLoading(true);
 
-  const handleSuggestionClick = (suggestion: string) => {
-    setInputMessage(suggestion);
-  };
+    try {
+      // Analyse du message pour déterminer l'action
+      const lowerInput = input.toLowerCase();
+      let aiResponse: ChatMessage;
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
+      if (lowerInput.includes('prédiction') || lowerInput.includes('prediction')) {
+        const symbol = extractSymbol(input);
+        if (symbol) {
+          const prediction = await advisor.getPrediction(symbol);
+          aiResponse = {
+            id: (Date.now() + 1).toString(),
+            type: 'ai',
+            content: prediction 
+              ? `Prédiction pour ${symbol}: ${prediction.direction === 'up' ? '📈 Hausse' : '📉 Baisse'} (Confiance: ${Math.round(prediction.confidence * 100)}%)\n\n${prediction.reasoning}`
+              : `Désolé, je n'ai pas pu générer une prédiction pour ${symbol}.`,
+            timestamp: new Date(),
+            data: prediction || undefined
+          };
+        } else {
+          aiResponse = {
+            id: (Date.now() + 1).toString(),
+            type: 'ai',
+            content: 'Veuillez spécifier un symbole pour la prédiction (ex: "Prédiction pour AAPL")',
+            timestamp: new Date()
+          };
+        }
+      } else if (lowerInput.includes('analyse') || lowerInput.includes('sentiment')) {
+        const symbol = extractSymbol(input);
+        if (symbol) {
+          const analysis = await advisor.getMarketAnalysis(symbol);
+          aiResponse = {
+            id: (Date.now() + 1).toString(),
+            type: 'ai',
+            content: analysis 
+              ? `Analyse du marché pour ${symbol}:\n\nSentiment: ${analysis.sentiment}\nConfiance: ${Math.round(analysis.confidence * 100)}%\nRecommandation: ${analysis.recommendation}\nNiveau de risque: ${analysis.riskLevel}`
+              : `Désolé, je n'ai pas pu analyser le sentiment pour ${symbol}.`,
+            timestamp: new Date(),
+            data: analysis || undefined
+          };
+        } else {
+          aiResponse = {
+            id: (Date.now() + 1).toString(),
+            type: 'ai',
+            content: 'Veuillez spécifier un symbole pour l\'analyse (ex: "Analyse AAPL")',
+            timestamp: new Date()
+          };
+        }
+      } else if (lowerInput.includes('signal') || lowerInput.includes('trade')) {
+        const symbol = extractSymbol(input);
+        if (symbol) {
+          const signal = await advisor.getTradingSignal(symbol);
+          aiResponse = {
+            id: (Date.now() + 1).toString(),
+            type: 'ai',
+            content: signal 
+              ? `Signal de trading pour ${symbol}:\n\nAction: ${signal.action.toUpperCase()}\nForce: ${Math.round(signal.strength * 100)}%\nRaisonnement: ${signal.reasoning}`
+              : `Désolé, je n'ai pas pu générer un signal pour ${symbol}.`,
+            timestamp: new Date(),
+            data: signal || undefined
+          };
+        } else {
+          aiResponse = {
+            id: (Date.now() + 1).toString(),
+            type: 'ai',
+            content: 'Veuillez spécifier un symbole pour le signal (ex: "Signal AAPL")',
+            timestamp: new Date()
+          };
+        }
+      } else {
+        // Réponse générique
+        aiResponse = {
+          id: (Date.now() + 1).toString(),
+          type: 'ai',
+          content: 'Je peux vous aider avec:\n• Prédictions de prix (ex: "Prédiction pour AAPL")\n• Analyses de sentiment (ex: "Analyse TSLA")\n• Signaux de trading (ex: "Signal BTC")\n\nQue souhaitez-vous savoir ?',
+          timestamp: new Date()
+        };
+      }
+
+      setMessages(prev => [...prev, aiResponse]);
+    } catch (error) {
+      console.error('Erreur DAVY:', error);
+      const errorMessage: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        type: 'ai',
+        content: 'Désolé, une erreur s\'est produite. Veuillez réessayer.',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const getTrendIcon = (trend: string) => {
-    switch (trend) {
-      case 'bullish':
-        return <TrendingUp className="w-4 h-4 text-green-500" />;
-      case 'bearish':
-        return <TrendingDown className="w-4 h-4 text-red-500" />;
-      default:
-        return <Minus className="w-4 h-4 text-gray-500" />;
+  const extractSymbol = (text: string): string | null => {
+    // Extraction simple de symboles boursiers (3-5 caractères en majuscules)
+    const symbolMatch = text.match(/\b[A-Z]{3,5}\b/);
+    return symbolMatch ? symbolMatch[0] : null;
+  };
+
+  const getDirectionIcon = (direction?: string) => {
+    switch (direction) {
+      case 'up': return <TrendingUp className="w-4 h-4 text-green-500" />;
+      case 'down': return <TrendingDown className="w-4 h-4 text-red-500" />;
+      default: return <Minus className="w-4 h-4 text-gray-500" />;
     }
   };
 
-  const getConfidenceColor = (confidence: number) => {
-    if (confidence >= 80) return 'text-green-600';
-    if (confidence >= 60) return 'text-yellow-600';
-    return 'text-red-600';
+  const getSentimentBadge = (sentiment?: string) => {
+    switch (sentiment) {
+      case 'bullish': return <Badge className="bg-green-100 text-green-800">Bullish</Badge>;
+      case 'bearish': return <Badge className="bg-red-100 text-red-800">Bearish</Badge>;
+      case 'neutral': return <Badge className="bg-gray-100 text-gray-800">Neutral</Badge>;
+      default: return null;
+    }
   };
 
   return (
-    <div className="flex flex-col h-full bg-gradient-to-br from-gray-50 to-blue-50">
-      {/* Header du chat */}
-      <div className="bg-gradient-to-r from-green-600 to-blue-600 text-white p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div
-              className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"
-            >
-              <Bot className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="text-lg font-bold">DAVY Trading Chat</h3>
-              <p className="text-green-100 text-sm flex items-center gap-2">
-                <div
-                  className="w-2 h-2 bg-green-400 rounded-full"
-                />
-                IA Active • Analyse en temps réel
-              </p>
-            </div>
+    <Card className="w-full max-w-4xl mx-auto h-[600px] flex flex-col">
+      <CardHeader className="border-b">
+        <CardTitle className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+            D
           </div>
+          DAVY Trading Advisor
+        </CardTitle>
+      </CardHeader>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setIsListening(!isListening)}
-              className={`p-2 rounded-lg transition-colors ${
-                isListening ? 'bg-red-500/20 text-red-300' : 'bg-blue-500/20 text-blue-300'
-              }`}
-            >
-              {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-            </button>
-
-            <button
-              onClick={() => setIsFullScreen(!isFullScreen)}
-              className="p-2 bg-white/20 rounded-lg hover:bg-white/30 transition-colors"
-            >
-              {isFullScreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Zone des messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message, index) => (
-          <div
-            key={message.id}
-            className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
-          >
-            <div className={`max-w-[80%] ${message.type === 'user' ? 'order-2' : 'order-1'}`}>
-              <div className={`flex items-start gap-3 ${message.type === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                {/* Avatar */}
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                  message.type === 'user' 
-                    ? 'bg-blue-500 text-white' 
-                    : 'bg-gradient-to-r from-green-500 to-blue-500 text-white'
-                }`}>
-                  {message.type === 'user' ? (
-                    <User className="w-4 h-4" />
-                  ) : (
-                    <Bot className="w-4 h-4" />
-                  )}
-                </div>
-
-                {/* Message */}
-                <div className={`rounded-2xl px-4 py-3 ${
-                  message.type === 'user'
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-white border border-gray-200 shadow-sm'
-                }`}>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-sm font-medium">
-                      {message.sender}
-                    </span>
-                    <span className="text-xs opacity-70">
-                      {message.timestamp.toLocaleTimeString()}
-                    </span>
-                    {message.confidence && (
-                      <span className={`text-xs font-medium ${getConfidenceColor(message.confidence)}`}>
-                        {message.confidence}% confiance
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="whitespace-pre-wrap text-sm">
-                    {message.content}
-                  </div>
-
-                  {/* Données de trading si disponibles */}
-                  {message.data && (
-                    <div className="mt-3 p-3 bg-gray-50 rounded-lg">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="font-medium">{message.data.symbol}</div>
-                          <div className="text-sm text-gray-600">
-                            ${message.data.price.toFixed(2)}
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="flex items-center gap-1">
-                            {getTrendIcon(message.data.trend)}
-                            <span className={`text-sm font-medium ${
-                              message.data.change > 0 ? 'text-green-600' : 'text-red-600'
-                            }`}>
-                              {message.data.change > 0 ? '+' : ''}{message.data.changePercent.toFixed(2)}%
-                            </span>
-                          </div>
-                          <div className="text-xs text-gray-500">
-                            Vol: {message.data.volume.toLocaleString()}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Suggestions */}
-                  {message.suggestions && showSuggestions && (
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {message.suggestions.map((suggestion, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => handleSuggestionClick(suggestion)}
-                          className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs hover:bg-blue-200 transition-colors"
-                        >
-                          {suggestion}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-
-        {/* Indicateur de frappe */}
-        {isTyping && (
-          <div className="flex justify-start">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-green-500 to-blue-500 flex items-center justify-center">
-                <Bot className="w-4 h-4 text-white" />
-              </div>
-              <div className="bg-white border border-gray-200 rounded-2xl px-4 py-3">
-                <div className="flex items-center gap-1">
-                  <div
-                    className="w-2 h-2 bg-gray-400 rounded-full"
-                  />
-                  <div
-                    className="w-2 h-2 bg-gray-400 rounded-full"
-                  />
-                  <div
-                    className="w-2 h-2 bg-gray-400 rounded-full"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Zone de saisie */}
-      <div className="border-t border-gray-200 p-4 bg-white">
-        <div className="flex items-end gap-3">
-          <div className="flex-1 relative">
-            <textarea
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Posez votre question à DAVY..."
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-              rows={1}
-              style={{ minHeight: '44px', maxHeight: '120px' }}
-            />
-          </div>
-
-          <button
-            onClick={handleSendMessage}
-            disabled={!inputMessage.trim()}
-            className="p-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-          >
-            <Send className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* Suggestions rapides */}
-        {showSuggestions && (
-          <div className="mt-3 flex flex-wrap gap-2">
-            {suggestionQuestions.slice(0, 4).map((suggestion, index) => (
-              <button
-                key={index}
-                onClick={() => handleSuggestionClick(suggestion)}
-                className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs hover:bg-gray-200 transition-colors"
-              >
-                {suggestion}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Sidebar avec contrôles */}
-      <div className="absolute right-4 top-20 space-y-2">
-        <button
-          onClick={() => setShowSuggestions(!showSuggestions)}
-          className="p-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-lg hover:bg-white transition-colors"
-        >
-          <Lightbulb className="w-4 h-4" />
-        </button>
-
-        <button
-          onClick={() => setAutoScroll(!autoScroll)}
-          className="p-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-lg hover:bg-white transition-colors"
-        >
-          <ArrowRight className="w-4 h-4" />
-        </button>
-
-        <button
-          onClick={() => setShowAdvanced(!showAdvanced)}
-          className="p-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-lg hover:bg-white transition-colors"
-        >
-          <Settings className="w-4 h-4" />
-        </button>
-      </div>
-
-      {/* Panneau avancé */}
-      {showAdvanced && (
-        <div
-          className="absolute right-0 top-0 h-full w-80 bg-white border-l border-gray-200 p-4 shadow-xl"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold">Paramètres IA</h3>
-            <button
-              onClick={() => setShowAdvanced(false)}
-              className="p-1 hover:bg-gray-100 rounded"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-
+      <CardContent className="flex-1 flex flex-col p-0">
+        <ScrollArea className="flex-1 p-4" ref={scrollRef}>
           <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">Personnalité IA</label>
-              <select
-                value={aiPersonality}
-                onChange={(e) => setAiPersonality(e.target.value as any)}
-                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
               >
-                <option value="professional">Professionnel</option>
-                <option value="friendly">Amical</option>
-                <option value="expert">Expert</option>
-              </select>
-            </div>
+                <div
+                  className={`max-w-[80%] rounded-lg p-3 ${
+                    message.type === 'user'
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-gray-100 text-gray-900'
+                  }`}
+                >
+                  <div className="whitespace-pre-wrap">{message.content}</div>
+                  
+                  {message.data && (
+                    <div className="mt-2 pt-2 border-t border-gray-200">
+                      {message.data && 'direction' in message.data && (
+                        <div className="flex items-center gap-2 text-sm">
+                          {getDirectionIcon(message.data.direction)}
+                          <span>Confiance: {Math.round(message.data.confidence * 100)}%</span>
+                        </div>
+                      )}
+                      
+                      {message.data && 'sentiment' in message.data && (
+                        <div className="flex items-center gap-2 text-sm">
+                          {getSentimentBadge(message.data.sentiment)}
+                          <span>Confiance: {Math.round(message.data.confidence * 100)}%</span>
+                        </div>
+                      )}
+                      
+                      {message.data && 'action' in message.data && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <Badge className={
+                            message.data.action === 'buy' ? 'bg-green-100 text-green-800' :
+                            message.data.action === 'sell' ? 'bg-red-100 text-red-800' :
+                            'bg-gray-100 text-gray-800'
+                          }>
+                            {message.data.action.toUpperCase()}
+                          </Badge>
+                          <span>Force: {Math.round(message.data.strength * 100)}%</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+            
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="bg-gray-100 rounded-lg p-3">
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>DAVY réfléchit...</span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </ScrollArea>
 
-            <div>
-              <label className="block text-sm font-medium mb-2">Mode de chat</label>
-              <select
-                value={chatMode}
-                onChange={(e) => setChatMode(e.target.value as any)}
-                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="trading">Trading</option>
-                <option value="analysis">Analyse</option>
-                <option value="education">Éducation</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-2">Thème</label>
-              <select
-                value={theme}
-                onChange={(e) => setTheme(e.target.value as any)}
-                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="light">Clair</option>
-                <option value="dark">Sombre</option>
-                <option value="auto">Auto</option>
-              </select>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <label className="text-sm font-medium">Suggestions</label>
-              <input
-                type="checkbox"
-                checked={showSuggestions}
-                onChange={(e) => setShowSuggestions(e.target.checked)}
-                className="w-4 h-4 text-blue-600 rounded"
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <label className="text-sm font-medium">Auto-scroll</label>
-              <input
-                type="checkbox"
-                checked={autoScroll}
-                onChange={(e) => setAutoScroll(e.target.checked)}
-                className="w-4 h-4 text-blue-600 rounded"
-              />
-            </div>
+        <div className="border-t p-4">
+          <div className="flex gap-2">
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+              placeholder="Posez une question à DAVY..."
+              disabled={isLoading}
+              className="flex-1"
+            />
+            <Button
+              onClick={handleSendMessage}
+              disabled={isLoading || !input.trim()}
+              size="icon"
+            >
+              <Send className="w-4 h-4" />
+            </Button>
           </div>
         </div>
-      )}
-    </div>
+      </CardContent>
+    </Card>
   );
 } 

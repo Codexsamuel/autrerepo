@@ -1,11 +1,8 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useEffect, useRef, useState } from "react"
-
+import { useState, useEffect, useRef, ReactNode } from "react";
 interface ScrollAnimationProps {
-  children: React.ReactNode
+  children: ReactNode
   animation?: "fadeInUp" | "fadeInLeft" | "fadeInRight" | "scaleIn" | "rotateIn" | "slideInUp"
   delay?: number
   className?: string

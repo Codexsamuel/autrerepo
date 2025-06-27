@@ -1,9 +1,10 @@
-"use client"
+"use client";
 
-import React, { useState, useEffect } from "react";
-// Removed motion import;
+import { useState, useEffect } from "react";
 import { Play, Pause, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+
 
 const DroneCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);

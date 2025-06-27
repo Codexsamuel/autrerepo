@@ -1,9 +1,11 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ArrowLeft, Shield, CheckCircle, ExternalLink } from "lucide-react"
+
+
 
 export default function PayPalPaymentPage() {
   const [step, setStep] = useState(1) // 1: Redirect, 2: Processing, 3: Success

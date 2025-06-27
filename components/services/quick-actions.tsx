@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -28,9 +27,7 @@ export function QuickActions({ actions }: QuickActionsProps) {
               variant={action.variant || "default"}
               onClick={action.onClick}
               className="w-full"
-            >
-              {action.label}
-            </Button>
+            >action.label</Button>
           ))}
         </div>
       </CardContent>

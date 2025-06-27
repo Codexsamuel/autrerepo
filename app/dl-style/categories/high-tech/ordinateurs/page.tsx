@@ -1,10 +1,10 @@
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 
+
 export default function OrdinateursPage() {
   // Données des catégories d'ordinateurs
-  const categories = [
-    {
+  const categories = [{
       id: "portables",
       name: "Ordinateurs Portables",
       description: "Découvrez notre gamme d'ordinateurs portables pour tous les besoins",
@@ -24,9 +24,7 @@ export default function OrdinateursPage() {
       description: "Des machines surpuissantes pour les joueurs exigeants",
       image: "/placeholder.svg?height=200&width=300",
       count: 56,
-    },
-  ]
-
+    },]
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">

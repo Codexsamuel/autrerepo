@@ -1,7 +1,9 @@
-"use client"
+"use client";
+
 import { AdvancedHotelCRM } from "@/components/advanced-hotel-crm"
 import { ArrowLeft, Hotel, Zap } from "lucide-react"
 import Link from "next/link"
+
 
 export default function AdvancedCRMPage() {
   return (

@@ -1,205 +1,172 @@
 #!/bin/bash
 
+# Script de déploiement multi-plateforme pour DAVY Trading Platform
+# Usage: ./scripts/deploy.sh [vercel|netlify|docker|all]
+
+set -e
+
+echo "🚀 DAVY Trading Platform - Déploiement Multi-Plateforme"
+echo "=================================================="
+
 # Couleurs pour les messages
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-NC='\033[0m'
+NC='\033[0m' # No Color
 
 # Fonction pour afficher les messages
-log() {
-    echo -e "${BLUE}[$(date +'%Y-%m-%d %H:%M:%S')] $1${NC}"
+log_info() {
+    echo -e "${BLUE}ℹ️  $1${NC}"
 }
 
-success() {
-    echo -e "${GREEN}[$(date +'%Y-%m-%d %H:%M:%S')] ✅ $1${NC}"
+log_success() {
+    echo -e "${GREEN}✅ $1${NC}"
 }
 
-error() {
-    echo -e "${RED}[$(date +'%Y-%m-%d %H:%M:%S')] ❌ $1${NC}"
-    exit 1
+log_warning() {
+    echo -e "${YELLOW}⚠️  $1${NC}"
 }
 
-warning() {
-    echo -e "${YELLOW}[$(date +'%Y-%m-%d %H:%M:%S')] ⚠️ $1${NC}"
+log_error() {
+    echo -e "${RED}❌ $1${NC}"
 }
 
-# Vérification des dépendances
-check_dependencies() {
-    log "Vérification des dépendances..."
+# Vérifier les prérequis
+check_prerequisites() {
+    log_info "Vérification des prérequis..."
     
     # Vérifier Node.js
     if ! command -v node &> /dev/null; then
-        error "Node.js n'est pas installé"
+        log_error "Node.js n'est pas installé"
+        exit 1
     fi
-    NODE_VERSION=$(node -v)
-    log "Node.js version: $NODE_VERSION"
     
-    # Vérifier pnpm
-    if ! command -v pnpm &> /dev/null; then
-        warning "pnpm n'est pas installé"
-        log "Installation de pnpm..."
-        npm install -g pnpm || error "Échec de l'installation de pnpm"
+    # Vérifier npm
+    if ! command -v npm &> /dev/null; then
+        log_error "npm n'est pas installé"
+        exit 1
     fi
-    PNPM_VERSION=$(pnpm --version)
-    log "pnpm version: $PNPM_VERSION"
     
-    # Vérifier Netlify CLI
-    if ! command -v netlify &> /dev/null; then
-        warning "Netlify CLI n'est pas installé"
-        log "Installation de Netlify CLI..."
-        pnpm add -g netlify-cli || error "Échec de l'installation de Netlify CLI"
+    # Vérifier Git
+    if ! command -v git &> /dev/null; then
+        log_error "Git n'est pas installé"
+        exit 1
     fi
-    NETLIFY_VERSION=$(netlify --version)
-    log "Netlify CLI version: $NETLIFY_VERSION"
     
-    # Vérifier Vercel CLI
+    log_success "Prérequis vérifiés"
+}
+
+# Build du projet
+build_project() {
+    log_info "Build du projet..."
+    
+    # Installer les dépendances
+    npm install
+    
+    # Build pour la production
+    npm run build
+    
+    log_success "Build terminé"
+}
+
+# Déploiement Vercel (Backend)
+deploy_vercel() {
+    log_info "Déploiement sur Vercel (Backend)..."
+    
     if ! command -v vercel &> /dev/null; then
-        warning "Vercel CLI n'est pas installé"
-        log "Installation de Vercel CLI..."
-        pnpm add -g vercel || error "Échec de l'installation de Vercel CLI"
+        log_warning "Vercel CLI non installé, installation..."
+        npm install -g vercel
     fi
-    VERCEL_VERSION=$(vercel --version)
-    log "Vercel CLI version: $VERCEL_VERSION"
     
-    success "Toutes les dépendances sont installées"
+    # Déployer sur Vercel
+    vercel --prod --yes
+    
+    log_success "Déploiement Vercel terminé"
 }
 
-# Installation des dépendances du projet
-install_dependencies() {
-    log "Installation des dépendances du projet..."
-    pnpm install || error "Échec de l'installation des dépendances"
-    success "Dépendances installées avec succès"
+# Déploiement Netlify (Frontend)
+deploy_netlify() {
+    log_info "Déploiement sur Netlify (Frontend)..."
+    
+    if ! command -v netlify &> /dev/null; then
+        log_warning "Netlify CLI non installé, installation..."
+        npm install -g netlify-cli
+    fi
+    
+    # Build statique
+    npm run build:static
+    
+    # Déployer sur Netlify
+    netlify deploy --prod --dir=out
+    
+    log_success "Déploiement Netlify terminé"
 }
 
-# Exécution des tests
-run_tests() {
-    log "Exécution des tests..."
+# Déploiement Docker
+deploy_docker() {
+    log_info "Déploiement Docker..."
     
-    # Tests unitaires
-    log "Lancement des tests unitaires..."
-    pnpm test || error "Les tests unitaires ont échoué"
+    if ! command -v docker &> /dev/null; then
+        log_error "Docker n'est pas installé"
+        exit 1
+    fi
     
-    # Tests de couverture
-    log "Vérification de la couverture des tests..."
-    pnpm test:coverage || warning "La couverture des tests n'est pas optimale"
+    if ! command -v docker-compose &> /dev/null; then
+        log_error "Docker Compose n'est pas installé"
+        exit 1
+    fi
     
-    # Tests E2E
-    log "Lancement des tests E2E..."
-    # Démarrer le serveur de développement en arrière-plan
-    pnpm dev &
-    DEV_PID=$!
+    # Construire et démarrer les conteneurs
+    docker-compose up -d --build
     
-    # Attendre que le serveur soit prêt
-    log "Attente du démarrage du serveur..."
-    sleep 10
-    
-    # Exécuter les tests E2E
-    pnpm cypress:run || error "Les tests E2E ont échoué"
-    
-    # Arrêter le serveur de développement
-    kill $DEV_PID
-    
-    success "Tous les tests sont passés"
+    log_success "Déploiement Docker terminé"
+    log_info "Frontend: http://localhost:3000"
+    log_info "Backend: http://localhost:3001"
+    log_info "Base de données: localhost:5432"
+    log_info "Redis: localhost:6379"
 }
 
-# Déploiement du frontend sur Netlify
-deploy_frontend() {
-    log "Déploiement du frontend sur Netlify..."
+# Déploiement complet
+deploy_all() {
+    log_info "Déploiement complet sur toutes les plateformes..."
     
-    # Vérifier les variables d'environnement
-    if [ -z "$NETLIFY_AUTH_TOKEN" ]; then
-        error "NETLIFY_AUTH_TOKEN n'est pas défini"
-    fi
+    build_project
+    deploy_vercel
+    deploy_netlify
+    deploy_docker
     
-    if [ -z "$NETLIFY_SITE_ID" ]; then
-        error "NETLIFY_SITE_ID n'est pas défini"
-    fi
-    
-    # Build du frontend
-    log "Build du frontend..."
-    pnpm build || error "Échec du build du frontend"
-    
-    # Déploiement
-    log "Déploiement sur Netlify..."
-    netlify deploy --prod --dir=.next --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID || error "Échec du déploiement sur Netlify"
-    
-    success "Frontend déployé avec succès sur Netlify"
-}
-
-# Déploiement du backend sur Vercel
-deploy_backend() {
-    log "Déploiement du backend sur Vercel..."
-    
-    # Vérifier les variables d'environnement
-    if [ -z "$VERCEL_TOKEN" ]; then
-        error "VERCEL_TOKEN n'est pas défini"
-    fi
-    
-    if [ -z "$VERCEL_ORG_ID" ]; then
-        error "VERCEL_ORG_ID n'est pas défini"
-    fi
-    
-    if [ -z "$VERCEL_PROJECT_ID" ]; then
-        error "VERCEL_PROJECT_ID n'est pas défini"
-    fi
-    
-    # Vérifier si .env.production existe
-    if [ ! -f .env.production ]; then
-        warning "Fichier .env.production non trouvé"
-        log "Création du fichier .env.production..."
-        
-        # Créer le fichier .env.production avec les variables essentielles
-        cat > .env.production << EOL
-NODE_ENV=production
-PORT=3000
-DATABASE_URL=${DATABASE_URL}
-JWT_SECRET=${JWT_SECRET}
-JWT_EXPIRES_IN=7d
-STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
-STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
-NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
-EOL
-        
-        if [ ! -f .env.production ]; then
-            error "Impossible de créer le fichier .env.production"
-        fi
-    fi
-    
-    # Build du backend
-    log "Build du backend..."
-    cd backend && pnpm build || error "Échec du build du backend"
-    
-    # Déploiement
-    log "Déploiement sur Vercel..."
-    vercel --prod --token=$VERCEL_TOKEN --scope=$VERCEL_ORG_ID --confirm || error "Échec du déploiement sur Vercel"
-    
-    success "Backend déployé avec succès sur Vercel"
+    log_success "Déploiement complet terminé !"
 }
 
 # Fonction principale
 main() {
-    log "Démarrage du processus de déploiement..."
+    local target=${1:-all}
     
-    # Vérification des dépendances
-    check_dependencies
+    check_prerequisites
     
-    # Installation des dépendances
-    install_dependencies
-    
-    # Exécution des tests
-    run_tests
-    
-    # Déploiement du frontend
-    deploy_frontend
-    
-    # Déploiement du backend
-    deploy_backend
-    
-    success "Déploiement terminé avec succès!"
+    case $target in
+        "vercel")
+            build_project
+            deploy_vercel
+            ;;
+        "netlify")
+            build_project
+            deploy_netlify
+            ;;
+        "docker")
+            build_project
+            deploy_docker
+            ;;
+        "all")
+            deploy_all
+            ;;
+        *)
+            log_error "Usage: $0 [vercel|netlify|docker|all]"
+            exit 1
+            ;;
+    esac
 }
 
-# Exécution du script
-main 
+# Exécuter le script
+main "$@" 

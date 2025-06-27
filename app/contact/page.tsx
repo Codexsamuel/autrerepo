@@ -1,9 +1,11 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { FormValidation } from "@/components/form-validation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Mail, MapPin, Phone } from "lucide-react"
+
+
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)

@@ -1,10 +1,12 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Heart, Star, Zap, FlameIcon as Fire, Users, Eye } from "lucide-react"
+
+
 
 export default function VentesFlashPage() {
   const [timeLeft, setTimeLeft] = useState({
@@ -31,8 +33,7 @@ export default function VentesFlashPage() {
     return () => clearInterval(timer)
   }, [])
 
-  const flashDeals = [
-    {
+  const flashDeals = [{
       id: 1,
       name: "iPhone 15 Pro Max 256GB",
       originalPrice: 1479,
@@ -121,9 +122,7 @@ export default function VentesFlashPage() {
       badge: "Popular",
       viewers: 1892,
       category: "Gaming",
-    },
-  ]
-
+    },]
   const getBadgeColor = (badge: string) => {
     switch (badge) {
       case "Mega Deal":
@@ -249,9 +248,7 @@ export default function VentesFlashPage() {
                       />
 
                       {/* Badges */}
-                      <Badge className={`absolute top-3 left-3 ${getBadgeColor(deal.badge)} text-white`}>
-                        {deal.badge}
-                      </Badge>
+                      <Badge className={`absolute top-3 left-3 ${getBadgeColor(deal.badge)} text-white`}>deal.badge</Badge>
                       <Badge className="absolute top-3 right-3 bg-red-500 text-white text-xl px-4 py-2">
                         -{deal.discount}%
                       </Badge>

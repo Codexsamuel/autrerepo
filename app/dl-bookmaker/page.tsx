@@ -1,24 +1,22 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Trophy, TrendingUp, Brain, DollarSign, Calendar, Play, ArrowLeft } from "lucide-react"
 
+
+
 export default function DLBookmakerPage() {
   const [selectedSport, setSelectedSport] = useState("football")
   const [selectedTab, setSelectedTab] = useState<"live" | "upcoming" | "predictions">("live")
 
-  const sports = [
-    { id: "football", name: "Football", icon: "⚽" },
+  const sports = [{ id: "football", name: "Football", icon: "⚽" },
     { id: "basketball", name: "Basketball", icon: "🏀" },
     { id: "tennis", name: "Tennis", icon: "🎾" },
-    { id: "rugby", name: "Rugby", icon: "🏉" },
-  ]
-
-  const liveMatches = [
-    {
+    { id: "rugby", name: "Rugby", icon: "🏉" },]
+  const liveMatches = [{
       id: 1,
       league: "Ligue 1",
       homeTeam: "PSG",
@@ -41,9 +39,7 @@ export default function DLBookmakerPage() {
       status: "live",
       odds: { home: 2.1, draw: 3.4, away: 3.2 },
       aiPrediction: { winner: "Arsenal", confidence: 64, trend: "stable" },
-    },
-  ]
-
+    },]
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-green-50">
       {/* Header */}

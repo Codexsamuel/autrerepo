@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -8,6 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Plane, Hotel, MapPin, Calendar, Download, Eye, Star, ArrowRight, Plus, Filter } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+
+
 
 export default function MesVoyagesPage() {
   const [filter, setFilter] = useState("all")
@@ -133,7 +135,7 @@ export default function MesVoyagesPage() {
         <div className="flex">
           <div className="relative w-48 h-32">
             <Image src={voyage.image || "/placeholder.svg"} alt={voyage.destination} fill className="object-cover" />
-            <Badge className={`absolute top-2 left-2 ${getStatusColor(voyage.status)}`}>{voyage.status}</Badge>
+            <Badge className={`absolute top-2 left-2 ${getStatusColor(voyage.status)}`}>voyage.status</Badge>
           </div>
 
           <CardContent className="flex-1 p-4">

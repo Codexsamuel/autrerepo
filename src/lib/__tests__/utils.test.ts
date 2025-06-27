@@ -1,5 +1,6 @@
 import { cn } from '../utils';
 
+
 describe('cn utility function', () => {
   it('should merge class names correctly', () => {
     expect(cn('base', 'additional')).toBe('base additional');

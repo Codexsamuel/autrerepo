@@ -1,10 +1,12 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Check } from "lucide-react"
+
+
 
 interface PricingTier {
   name: string
@@ -136,9 +138,7 @@ export default function PricingPage() {
               <Button
                 className="w-full"
                 variant={tier.popular ? "default" : "outline"}
-              >
-                {tier.buttonText}
-              </Button>
+              >tier.buttonText</Button>
             </CardFooter>
           </Card>
         ))}

@@ -1,0 +1,24 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://dlsolutions.com/sitemap.xml
+
+# Optimisation pour Dave and Luce
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+
+# Permettre l'indexation des pages principales
+Allow: /
+Allow: /services
+Allow: /formations
+Allow: /contact
+Allow: /portfolio
+Allow: /solutions
+Allow: /novacore
+Allow: /intranet
+
+# Crawl-delay pour éviter la surcharge
+Crawl-delay: 1 

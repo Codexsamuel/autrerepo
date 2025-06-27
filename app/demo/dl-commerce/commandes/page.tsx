@@ -1,11 +1,13 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Link from "next/link"
+import { XCircle, Printer, FileText } from "lucide-react"
 import {
   ArrowLeft,
   Package,
@@ -19,18 +21,13 @@ import {
   CheckCircle,
   Clock,
   AlertTriangle,
-  XCircle,
-  Printer,
-  FileText,
 } from "lucide-react"
-import Link from "next/link"
 
 export default function OrdersPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
 
-  const orders = [
-    {
+  const orders = [{
       id: "ORD-5723",
       customer: "Marie Kouam",
       date: "15/01/2024",
@@ -89,9 +86,8 @@ export default function OrdersPage() {
       paymentStatus: "Payé",
       address: "32 Avenue Kennedy, Douala",
       phone: "+237 699 123 456",
-    },
+    }
   ]
-
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Livré":
@@ -144,11 +140,8 @@ export default function OrdersPage() {
     return matchesSearch && order.status === statusFilter
   })
 
-  const breadcrumbs = [
-    { name: "Accueil", href: "/demo/dl-commerce" },
-    { name: "Commandes", href: "/demo/dl-commerce/commandes" },
-  ]
-
+  const breadcrumbs = [{ name: "Accueil", href: "/demo/dl-commerce" },
+    { name: "Commandes", href: "/demo/dl-commerce/commandes" }]
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -284,7 +277,7 @@ export default function OrdersPage() {
                         <td className="p-4">
                           <div>
                             <p className="text-sm">{order.payment}</p>
-                            <Badge className={getPaymentStatusColor(order.paymentStatus)}>{order.paymentStatus}</Badge>
+                            <Badge className={getPaymentStatusColor(order.paymentStatus)}>order.paymentStatus</Badge>
                           </div>
                         </td>
                         <td className="p-4 font-medium">{order.total}</td>

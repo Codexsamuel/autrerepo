@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { ChevronRight, Star, ShoppingCart, Heart, Filter } from "lucide-react"
 
+
 export default function OrdinateursGamingPage() {
   // Données des produits (ordinateurs gaming)
   const products = [

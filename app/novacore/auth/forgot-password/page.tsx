@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useState } from "react"
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Mail, ArrowRight, Shield, ArrowLeft, CheckCircle } from "lucide-react"
 
+
+
 export default function ForgotPassword() {
   const [email, setEmail] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [isEmailSent, setIsEmailSent] = useState(false)
 
-  const handleResetPassword = async (e: React.FormEvent) => {
+  const handleResetPassword = async (e: FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
 
@@ -108,8 +108,7 @@ export default function ForgotPassword() {
                   type="submit"
                   disabled={isLoading}
                   className="w-full h-12 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
-                >
-                  {isLoading ? (
+                >isLoading ? (
                     <div className="flex items-center">
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
                       Envoi en cours...
@@ -119,8 +118,7 @@ export default function ForgotPassword() {
                       Envoyer le lien de réinitialisation
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </div>
-                  )}
-                </Button>
+                  )</Button>
               </form>
 
               <div className="mt-6 pt-6 border-t border-gray-200 text-center">

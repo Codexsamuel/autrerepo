@@ -1,13 +1,14 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Users, Target, Eye, Heart, Award, Lightbulb, Shield, Star } from "lucide-react"
 
+
+
 export default function AboutPage() {
-  const values = [
-    {
+  const values = [{
       icon: Lightbulb,
       title: "Innovation",
       description:
@@ -27,16 +28,11 @@ export default function AboutPage() {
       icon: Users,
       title: "Collaboration",
       description: "Nous travaillons en étroite collaboration avec nos clients pour garantir leur succès.",
-    },
-  ]
-
-  const stats = [
-    { number: "500+", label: "Projets réalisés" },
+    },]
+  const stats = [{ number: "500+", label: "Projets réalisés" },
     { number: "98%", label: "Clients satisfaits" },
     { number: "5 ans", label: "D'expérience" },
-    { number: "24/7", label: "Support client" },
-  ]
-
+    { number: "24/7", label: "Support client" },]
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-teal-50">
       {/* Header */}

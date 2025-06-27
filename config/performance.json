@@ -1,0 +1,20 @@
+{
+  "optimization": {
+    "minimize": true,
+    "splitChunks": {
+      "chunks": "all",
+      "cacheGroups": {
+        "vendor": {
+          "test": {},
+          "name": "vendors",
+          "chunks": "all"
+        }
+      }
+    }
+  },
+  "performance": {
+    "hints": "warning",
+    "maxEntrypointSize": 512000,
+    "maxAssetSize": 512000
+  }
+}

@@ -1,10 +1,12 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { ArrowLeft, Smartphone, Shield, CheckCircle, AlertCircle, MessageSquare } from "lucide-react"
+
+
 
 export default function OrangeMoneyPaymentPage() {
   const [step, setStep] = useState(1) // 1: Phone, 2: Code, 3: Processing, 4: Success

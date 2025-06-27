@@ -1,9 +1,11 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+
+
 
 const services = [
   {
@@ -78,9 +80,7 @@ export function ServicesCarousel() {
               <Button
                 className="w-full bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white"
                 size="lg"
-              >
-                {services[current].cta}
-              </Button>
+              >services[current].cta</Button>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Ce pack inclut :</h4>

@@ -281,4 +281,154 @@ SELECT
   MAX(ai."timestamp") as last_interaction
 FROM ai_interactions ai
 JOIN users u ON ai.user_id = u.id
-GROUP BY ai.user_id, u.full_name; 
+GROUP BY ai.user_id, u.full_name;
+
+-- SQL schema for DL Solutions - CRM/ERP multi-sector
+-- Compatible with Supabase/PostgreSQL
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE IF NOT EXISTS companies (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name VARCHAR(255) NOT NULL,
+  sector VARCHAR(100) NOT NULL,
+  logo_url TEXT,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  phone VARCHAR(50),
+  address TEXT,
+  website VARCHAR(255),
+  siret VARCHAR(50),
+  tva_number VARCHAR(50),
+  rcs VARCHAR(100),
+  capital NUMERIC(15,2),
+  legal_form VARCHAR(100),
+  settings JSONB,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS users (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
+  clerk_user_id VARCHAR(255) NOT NULL UNIQUE,
+  email VARCHAR(255) NOT NULL,
+  first_name VARCHAR(100) NOT NULL,
+  last_name VARCHAR(100) NOT NULL,
+  role VARCHAR(50) NOT NULL,
+  department VARCHAR(100),
+  permissions TEXT[],
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS clients (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
+  first_name VARCHAR(100) NOT NULL,
+  last_name VARCHAR(100) NOT NULL,
+  email VARCHAR(255),
+  phone VARCHAR(50),
+  address TEXT,
+  company_name VARCHAR(255),
+  position VARCHAR(100),
+  source VARCHAR(100),
+  status VARCHAR(50) DEFAULT 'lead',
+  notes TEXT,
+  tags TEXT[],
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS transactions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
+  client_id UUID REFERENCES clients(id) ON DELETE SET NULL,
+  type VARCHAR(50) NOT NULL,
+  amount NUMERIC(15,2) NOT NULL,
+  currency VARCHAR(10) DEFAULT 'EUR',
+  status VARCHAR(50) DEFAULT 'pending',
+  description TEXT,
+  reference VARCHAR(100),
+  payment_method VARCHAR(100),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS hotel_rooms (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
+  number VARCHAR(20) NOT NULL,
+  type VARCHAR(100) NOT NULL,
+  capacity INTEGER NOT NULL,
+  price_per_night NUMERIC(10,2) NOT NULL,
+  status VARCHAR(50) DEFAULT 'available',
+  amenities TEXT[],
+  floor INTEGER,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS hotel_reservations (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
+  room_id UUID REFERENCES hotel_rooms(id) ON DELETE CASCADE,
+  client_id UUID REFERENCES clients(id) ON DELETE SET NULL,
+  check_in TIMESTAMPTZ NOT NULL,
+  check_out TIMESTAMPTZ NOT NULL,
+  guests INTEGER NOT NULL,
+  total_amount NUMERIC(10,2) NOT NULL,
+  status VARCHAR(50) DEFAULT 'confirmed',
+  special_requests TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS real_estate_properties (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
+  title VARCHAR(255) NOT NULL,
+  type VARCHAR(50) NOT NULL,
+  address TEXT NOT NULL,
+  city VARCHAR(100) NOT NULL,
+  postal_code VARCHAR(20) NOT NULL,
+  country VARCHAR(100) DEFAULT 'France',
+  surface_area NUMERIC(10,2),
+  rooms INTEGER,
+  bedrooms INTEGER,
+  bathrooms INTEGER,
+  price NUMERIC(15,2) NOT NULL,
+  rent_price NUMERIC(10,2),
+  status VARCHAR(50) DEFAULT 'available',
+  features TEXT[],
+  images TEXT[],
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS bank_accounts (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
+  client_id UUID REFERENCES clients(id) ON DELETE CASCADE,
+  account_number VARCHAR(50) NOT NULL,
+  account_type VARCHAR(50) NOT NULL,
+  balance NUMERIC(15,2) DEFAULT 0,
+  currency VARCHAR(10) DEFAULT 'EUR',
+  status VARCHAR(50) DEFAULT 'active',
+  interest_rate NUMERIC(5,4),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS insurance_policies (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
+  client_id UUID REFERENCES clients(id) ON DELETE CASCADE,
+  policy_number VARCHAR(100) NOT NULL,
+  type VARCHAR(50) NOT NULL,
+  premium NUMERIC(10,2) NOT NULL,
+  coverage_amount NUMERIC(15,2) NOT NULL,
+  start_date DATE NOT NULL,
+  end_date DATE NOT NULL,
+  status VARCHAR(50) DEFAULT 'active',
+  terms JSONB,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+); 

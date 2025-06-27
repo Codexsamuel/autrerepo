@@ -533,15 +533,12 @@
   }
 }
 
-/* Reduced motion for dog */
-@media (prefers-reduced-motion: reduce) {
   .dog-bounce,
   .dog-blink,
   .dog-tail-wag,
   .dog-leg-walk {
     animation: none;
   }
-}
 
 /* Custom animations */
 @keyframes spin-slow {
@@ -795,8 +792,6 @@
   }
 }
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
   .animate-spin-slow,
   .animate-spin-reverse,
   .animate-float,
@@ -818,7 +813,6 @@
     opacity: 1;
     transform: none;
   }
-}
 
 /* Animations professionnelles */
 @keyframes fadeIn {

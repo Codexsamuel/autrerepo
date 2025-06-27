@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useState } from "react"
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Eye, EyeOff, Plane, MapPin, Star, Facebook, Mail, Phone } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+
+
 
 export default function ConnexionPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -23,13 +23,13 @@ export default function ConnexionPage() {
     confirmPassword: "",
   })
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = (e: FormEvent) => {
     e.preventDefault()
     // Logique de connexion
     console.log("Login:", loginData)
   }
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = (e: FormEvent) => {
     e.preventDefault()
     // Logique d'inscription
     console.log("Signup:", signupData)

@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Building2, Mail, Lock, Eye, EyeOff } from "lucide-react"
 import Link from "next/link"
+
+
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)

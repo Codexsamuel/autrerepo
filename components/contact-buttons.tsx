@@ -1,14 +1,15 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Phone, Mail, MessageCircle, MapPin, Clock } from "lucide-react"
+
+
 
 export function ContactButtons() {
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const contactMethods = [
-    {
+  const contactMethods = [{
       icon: Phone,
       label: "Téléphone",
       value: "+237 694 341 586",
@@ -35,9 +36,7 @@ export function ContactButtons() {
       value: "2 rue École de Police, Yaoundé",
       action: () => window.open("https://maps.google.com/?q=2+rue+École+de+Police,Yaoundé,Cameroun"),
       color: "from-red-500 to-pink-600",
-    },
-  ]
-
+    },]
   return (
     <div className="fixed left-4 top-1/2 transform -translate-y-1/2 z-40">
       <div className="flex flex-col gap-2">

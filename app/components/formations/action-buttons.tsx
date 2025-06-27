@@ -1,9 +1,11 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Download, ArrowRight } from "lucide-react"
+
+
 
 interface ActionButtonsProps {
   slug: string

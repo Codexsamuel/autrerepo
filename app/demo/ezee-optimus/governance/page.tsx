@@ -1,49 +1,43 @@
-"use client"
+"use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Shield, Activity, FileCheck, BarChart3 } from "lucide-react"
 
+
+
 const features = {
   access: {
     title: "Gestion des accès",
     icon: Shield,
-    items: [
-      "Interface de gestion des rôles et permissions",
+    items: ["Interface de gestion des rôles et permissions",
       "Contrôle granulaire des accès par fonctionnalité",
       "Authentification à deux facteurs",
-      "Gestion des sessions et des connexions"
-    ]
+      "Gestion des sessions et des connexions"]
   },
   activity: {
     title: "Journalisation des activités",
     icon: Activity,
-    items: [
-      "Traçabilité complète des actions utilisateurs",
+    items: ["Traçabilité complète des actions utilisateurs",
       "Horodatage et identification des modifications",
       "Export des logs au format PDF/CSV",
-      "Alertes sur actions sensibles"
-    ]
+      "Alertes sur actions sensibles"]
   },
   compliance: {
     title: "Conformité réglementaire",
     icon: FileCheck,
-    items: [
-      "Conformité RGPD et normes hôtelières",
+    items: ["Conformité RGPD et normes hôtelières",
       "Gestion des consentements clients",
       "Protection des données personnelles",
-      "Audit et rapports de conformité"
-    ]
+      "Audit et rapports de conformité"]
   },
   dashboard: {
     title: "Tableaux de bord",
     icon: BarChart3,
-    items: [
-      "KPIs de sécurité et conformité",
+    items: ["KPIs de sécurité et conformité",
       "Statistiques d'utilisation",
       "Alertes et notifications",
-      "Rapports personnalisables"
-    ]
+      "Rapports personnalisables"]
   }
 }
 

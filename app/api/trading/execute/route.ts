@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { placeTrade } from '@/lib/services/metaApiService';
 
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();

@@ -1,25 +1,25 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import {
-  ArrowLeft,
-  Sprout,
-  Tractor,
-  CloudRain,
-  Thermometer,
-  Package,
-  Users,
-  DollarSign,
-  MapPin,
-  Sun,
-  Droplets,
-  Wind,
-  Zap,
-  Bot,
-  TrendingUp,
+import { 
+  Zap, 
+  Bot, 
+  TrendingUp, 
+  ArrowLeft, 
+  Sprout, 
+  MapPin, 
+  CloudRain, 
+  Tractor, 
+  Package, 
+  DollarSign, 
+  Users, 
+  Thermometer, 
+  Droplets, 
+  Wind, 
+  Sun 
 } from "lucide-react"
 
 export default function NovaAgricultureERP() {
@@ -48,8 +48,7 @@ export default function NovaAgricultureERP() {
     },
   ]
 
-  const crops = [
-    {
+  const crops = [{
       name: "Cacao",
       planted: "15 hectares",
       stage: "Floraison",
@@ -66,9 +65,7 @@ export default function NovaAgricultureERP() {
       health: "Bon",
       yield: "1.8 tonnes/ha",
       price: "3,200 FCFA/kg",
-    },
-  ]
-
+    },]
   const weather = {
     temperature: "28°C",
     humidity: "75%",
@@ -325,9 +322,7 @@ export default function NovaAgricultureERP() {
                             </div>
                           </div>
                           <div className="text-right">
-                            <Badge variant="default" className="text-xs mb-1">
-                              {farm.status}
-                            </Badge>
+                            <Badge variant="default" className="text-xs mb-1">farm.status</Badge>
                             <p className="text-sm font-medium text-green-600">Rendement: {farm.yield}</p>
                           </div>
                         </div>
@@ -357,9 +352,7 @@ export default function NovaAgricultureERP() {
                           </div>
                           <div className="text-right">
                             <p className="text-sm font-medium">{crop.price}</p>
-                            <Badge variant="outline" className="text-xs">
-                              {crop.health}
-                            </Badge>
+                            <Badge variant="outline" className="text-xs">crop.health</Badge>
                           </div>
                         </div>
                       ))}

@@ -17,8 +17,6 @@ export interface MarketDataPoint {
   type: 'stock' | 'crypto' | 'forex' | 'commodity' | 'index';
   exchange?: string;
   currency?: string;
-  trend: 'up' | 'down' | 'stable';
-  volatility: number;
 }
 
 export interface TechnicalIndicators {
@@ -110,7 +108,7 @@ class MarketDataService {
         date: new Date(timestamp * 1000),
         price: prices[index] || 0,
         volume: volumes[index] || 0
-      })).filter((point: { date: Date; price: number; volume: number }) => point.price > 0);
+      })).filter(point => point.price > 0);
     } catch (error) {
       console.error(`Erreur lors de la récupération des données historiques pour ${symbol}:`, error);
       return [];
@@ -219,9 +217,7 @@ class MarketDataService {
         timestamp: new Date(meta.regularMarketTime * 1000),
         type: this.determineAssetType(symbol, meta.quoteType),
         exchange: meta.exchangeName,
-        currency: meta.currency,
-        trend: this.determineTrend(meta.regularMarketPrice, meta.previousClose),
-        volatility: this.calculateVolatility(quote.high, quote.low, quote.close)
+        currency: meta.currency
       };
     } catch (error) {
       console.error('Erreur Yahoo Finance:', error);
@@ -257,9 +253,7 @@ class MarketDataService {
         open: parseFloat(quote['02. open']),
         previousClose: parseFloat(quote['08. previous close']),
         timestamp: new Date(),
-        type: this.determineAssetType(symbol, 'EQUITY'),
-        trend: this.determineTrend(parseFloat(quote['05. price']), parseFloat(quote['08. previous close'])),
-        volatility: this.calculateVolatility(parseFloat(quote['03. high']), parseFloat(quote['04. low']), parseFloat(quote['05. price']))
+        type: this.determineAssetType(symbol, 'EQUITY')
       };
     } catch (error) {
       console.error('Erreur Alpha Vantage:', error);
@@ -276,19 +270,14 @@ class MarketDataService {
 
     for (let i = 1; i <= period; i++) {
       const change = prices[i] - prices[i - 1];
-      if (change >= 0) {
-        gains += change;
-      } else {
-        losses -= change;
-      }
+      if (change > 0) gains += change;
+      else losses -= change;
     }
 
     const avgGain = gains / period;
     const avgLoss = losses / period;
-
-    if (avgLoss === 0) return 100;
-
     const rs = avgGain / avgLoss;
+    
     return 100 - (100 / (1 + rs));
   }
 
@@ -391,18 +380,6 @@ class MarketDataService {
     if (['GOLD', 'SILVER', 'OIL', 'GAS'].includes(symbol)) return 'commodity';
     if (['SPY', 'QQQ', 'IWM', 'DIA'].includes(symbol)) return 'index';
     return 'stock';
-  }
-
-  private determineTrend(currentPrice: number, previousClose: number): 'up' | 'down' | 'stable' {
-    if (currentPrice > previousClose) return 'up';
-    if (currentPrice < previousClose) return 'down';
-    return 'stable';
-  }
-
-  private calculateVolatility(high: number, low: number, close: number): number {
-    const range = high - low;
-    const averageRange = (high - low) / 2;
-    return range / averageRange;
   }
 }
 

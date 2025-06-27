@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -8,43 +8,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {
-  Users,
-  UserCheck,
-  DollarSign,
-  BarChart3,
-  Package,
-  Bot,
-  Mic,
-  MicOff,
-  MessageCircle,
-  MapPin,
-  Plane,
-  Bus,
-  Car,
-  Utensils,
-  Shirt,
-  SpadeIcon as Spa,
-  Dumbbell,
-  MessageSquare,
-  Navigation,
-  Star,
-  TrendingUp,
-  CheckCircle,
-  Filter,
-  Send,
-  Volume2,
-  VolumeX,
-  Globe,
-  FileText,
-  PieChart,
-  BarChart,
-  LineChart,
-  Target,
-  Briefcase,
-  Crown,
-} from "lucide-react"
 import Image from "next/image"
+import { Users, UserCheck, DollarSign, BarChart3, Package, Bot, Mic, MicOff, MessageCircle, MapPin, Plane, Bus, Car, Utensils, Shirt, Dumbbell, MessageSquare, Navigation, Star, TrendingUp, Calendar, Clock, Phone, Mail, Camera, Video, Settings, Bell, Search, Filter, Plus, Edit, Trash2, Eye, Download, Share, Heart, ThumbsUp, ThumbsDown, AlertTriangle, CheckCircle, X, ChevronDown, ChevronRight, ArrowRight, ArrowLeft, Home, Building, Bed, Wifi, Coffee, ConciergeBell, Mountain, Globe, Map, Compass, CreditCard, Receipt, Wallet, TrendingDown, Activity, PieChart, BarChart, LineChart, Target, Briefcase, Crown, Send, FileText, Volume2, VolumeX } from "lucide-react"
 
 interface VoiceCommand {
   command: string
@@ -427,8 +392,7 @@ export function AdvancedHotelCRM() {
     forecastAccuracy: 94.2,
   }
 
-  const inventoryItems: InventoryItem[] = [
-    {
+  const inventoryItems: InventoryItem[] = [{
       id: "INV-001",
       name: "Draps en coton égyptien",
       category: "linens",
@@ -459,11 +423,8 @@ export function AdvancedHotelCRM() {
       status: "low_stock",
       autoReorder: true,
       usageRate: 2.1,
-    },
-  ]
-
-  const aiAlerts: AIAlert[] = [
-    {
+    },]
+  const aiAlerts: AIAlert[] = [{
       id: "AI-001",
       type: "revenue",
       severity: "medium",
@@ -486,12 +447,9 @@ export function AdvancedHotelCRM() {
       timestamp: "2024-01-22T14:50:00",
       status: "new",
       confidence: 95,
-    },
-  ]
-
+    },]
   // Commandes vocales
-  const voiceCommands: VoiceCommand[] = [
-    {
+  const voiceCommands: VoiceCommand[] = [{
       command: "nouvelle réservation",
       response: "Parfait ! Commençons une nouvelle réservation. Quel est le nom du client ?",
     },
@@ -502,9 +460,7 @@ export function AdvancedHotelCRM() {
     {
       command: "client vip",
       response: "Recherche des clients VIP en cours...",
-    },
-  ]
-
+    },]
   // Initialiser la reconnaissance vocale
   useEffect(() => {
     if (typeof window !== "undefined" && "webkitSpeechRecognition" in window) {
@@ -696,7 +652,7 @@ export function AdvancedHotelCRM() {
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
                             <h4 className="font-semibold">{client.fullName}</h4>
-                            <Badge className="bg-purple-100 text-purple-800">{client.loyaltyLevel}</Badge>
+                            <Badge className="bg-purple-100 text-purple-800">client.loyaltyLevel</Badge>
                             {client.vipStatus && (
                               <Badge className="bg-gold-100 text-gold-800">
                                 <Star className="w-3 h-3 mr-1" />
@@ -740,7 +696,7 @@ export function AdvancedHotelCRM() {
                             <span className="font-medium text-blue-800">
                               Vol {client.flightInfo.airline} {client.flightInfo.flightNumber}
                             </span>
-                            <Badge className="bg-blue-100 text-blue-800">{client.flightInfo.status}</Badge>
+                            <Badge className="bg-blue-100 text-blue-800">client.flightInfo.status</Badge>
                           </div>
                           <div className="grid grid-cols-2 gap-2 text-sm">
                             <div>
@@ -785,7 +741,7 @@ export function AdvancedHotelCRM() {
                           <div className="flex items-center gap-2 mb-2">
                             <Globe className="h-4 w-4 text-orange-600" />
                             <span className="font-medium text-orange-800">Package DL Travel</span>
-                            <Badge variant="outline">{client.transportInfo.dlTravelBooking.packageType}</Badge>
+                            <Badge variant="outline">client.transportInfo.dlTravelBooking.packageType</Badge>
                           </div>
                           <div className="text-sm">
                             <div>
@@ -817,7 +773,7 @@ export function AdvancedHotelCRM() {
                             {group.leadContact.name} - {group.leadContact.position}
                           </p>
                         </div>
-                        <Badge className="bg-purple-100 text-purple-800">{group.groupType}</Badge>
+                        <Badge className="bg-purple-100 text-purple-800">group.groupType</Badge>
                       </div>
                       <div className="grid grid-cols-3 gap-4 text-sm">
                         <div>
@@ -860,10 +816,6 @@ export function AdvancedHotelCRM() {
                   <Button variant="outline" className="w-full justify-start">
                     <Shirt className="h-4 w-4 mr-2" />
                     Blanchisserie
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start">
-                    <Spa className="h-4 w-4 mr-2" />
-                    Spa & Wellness
                   </Button>
                   <Button variant="outline" className="w-full justify-start">
                     <Dumbbell className="h-4 w-4 mr-2" />
@@ -940,9 +892,7 @@ export function AdvancedHotelCRM() {
                                 ? "bg-orange-100 text-orange-800"
                                 : "bg-blue-100 text-blue-800"
                           }
-                        >
-                          {task.priority}
-                        </Badge>
+                        >task.priority</Badge>
                       </div>
                       <div className="space-y-2">
                         {task.checklistItems.map((item, index) => (
@@ -1377,9 +1327,7 @@ export function AdvancedHotelCRM() {
                                 ? "bg-orange-100 text-orange-800"
                                 : "bg-blue-100 text-blue-800"
                           }
-                        >
-                          {alert.severity}
-                        </Badge>
+                        >alert.severity</Badge>
                       </div>
                       <div className="text-sm text-green-700 bg-green-50 p-2 rounded">
                         <strong>Recommandation:</strong> {alert.recommendation}

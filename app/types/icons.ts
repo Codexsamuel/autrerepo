@@ -1,5 +1,6 @@
-import { LucideIcon } from 'lucide-react'
-import { ReactNode } from 'react'
+import { ReactNode } from "react";
+import { LucideIcon } from "lucide-react"
+
 
 export interface IconProps {
   className?: string

@@ -1,52 +1,27 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Progress } from "@/components/ui/progress"
+import { TrendingUp, Eye, Edit, Download, RefreshCw, Clock, Search, Filter, Trash2, Plus, Upload, BarChart3, ImageIcon, FileText, Globe, ShoppingCart, Package, Users, LayoutDashboard } from "lucide-react"
 import { Input } from "@/components/ui/input"
-import { Tabs, TabsContent } from "@/components/ui/tabs"
-import {
-  LayoutDashboard,
-  Package,
-  Users,
-  ShoppingCart,
-  BarChart3,
-  ImageIcon,
-  FileText,
-  Globe,
-  TrendingUp,
-  Eye,
-  Edit,
-  Trash2,
-  Plus,
-  Upload,
-  Search,
-  Filter,
-  Download,
-  RefreshCw,
-  Clock,
-} from "lucide-react"
 
 export default function AdminDashboard() {
   const [selectedTab, setSelectedTab] = useState("overview")
   const [searchTerm, setSearchTerm] = useState("")
 
   // Mock data
-  const stats = [
-    { label: "Revenus Total", value: "€127,450", change: "+12%", icon: TrendingUp, color: "text-green-600" },
+  const stats = [{ label: "Revenus Total", value: "€127,450", change: "+12%", icon: TrendingUp, color: "text-green-600" },
     { label: "Commandes", value: "1,247", change: "+8%", icon: ShoppingCart, color: "text-blue-600" },
     { label: "Produits", value: "2,847", change: "+15%", icon: Package, color: "text-purple-600" },
-    { label: "Utilisateurs", value: "4,892", change: "+23%", icon: Users, color: "text-orange-600" },
-  ]
-
-  const recentOrders = [
-    { id: "DL-001", customer: "Marie Dubois", amount: "€89.99", status: "completed", date: "Il y a 2h" },
+    { label: "Utilisateurs", value: "4,892", change: "+23%", icon: Users, color: "text-orange-600" }]
+  const recentOrders = [{ id: "DL-001", customer: "Marie Dubois", amount: "€89.99", status: "completed", date: "Il y a 2h" },
     { id: "DL-002", customer: "Jean Martin", amount: "€149.99", status: "processing", date: "Il y a 4h" },
     { id: "DL-003", customer: "Sophie Laurent", amount: "€24.99", status: "shipped", date: "Il y a 6h" },
-    { id: "DL-004", customer: "Thomas Durand", amount: "€199.99", status: "pending", date: "Il y a 8h" },
-  ]
-
+    { id: "DL-004", customer: "Thomas Durand", amount: "€199.99", status: "pending", date: "Il y a 8h" }]
   const products = [
     {
       id: 1,
@@ -77,22 +52,15 @@ export default function AdminDashboard() {
       sales: 67,
       image: "/placeholder.svg?height=60&width=60",
       status: "low_stock",
-    },
+    }
   ]
-
-  const categories = [
-    { id: 1, name: "High-Tech", products: 892, icon: "📱" },
+  const categories = [{ id: 1, name: "High-Tech", products: 892, icon: "📱" },
     { id: 2, name: "Mode & Vêtements", products: 654, icon: "👕" },
     { id: 3, name: "Maison & Jardin", products: 423, icon: "🏠" },
-    { id: 4, name: "Sport & Loisirs", products: 387, icon: "⚽" },
-  ]
-
-  const mediaFiles = [
-    { id: 1, name: "hero-banner.jpg", type: "image", size: "2.4 MB", url: "/placeholder.svg", usage: "Homepage" },
+    { id: 4, name: "Sport & Loisirs", products: 387, icon: "⚽" }]
+  const mediaFiles = [{ id: 1, name: "hero-banner.jpg", type: "image", size: "2.4 MB", url: "/placeholder.svg", usage: "Homepage" },
     { id: 2, name: "product-video.mp4", type: "video", size: "15.7 MB", url: "/placeholder.svg", usage: "Product" },
-    { id: 3, name: "logo-dl.png", type: "image", size: "156 KB", url: "/placeholder.svg", usage: "Brand" },
-  ]
-
+    { id: 3, name: "logo-dl.png", type: "image", size: "156 KB", url: "/placeholder.svg", usage: "Brand" }]
   const getStatusColor = (status: string) => {
     switch (status) {
       case "completed":
@@ -181,7 +149,7 @@ export default function AdminDashboard() {
                       <div className="w-12 h-12 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center">
                         <stat.icon className="h-6 w-6 text-white" />
                       </div>
-                      <Badge className="bg-green-100 text-green-700 text-xs">{stat.change}</Badge>
+                      <Badge className="bg-green-100 text-green-700 text-xs">stat.change</Badge>
                     </div>
                     <div className="text-2xl font-bold text-gray-800 mb-1">{stat.value}</div>
                     <div className="text-sm text-gray-600">{stat.label}</div>
@@ -209,7 +177,7 @@ export default function AdminDashboard() {
                         </div>
                         <div className="text-right">
                           <div className="font-bold">{order.amount}</div>
-                          <Badge className={getStatusColor(order.status)}>{order.status}</Badge>
+                          <Badge className={getStatusColor(order.status)}>order.status</Badge>
                         </div>
                       </div>
                     ))}
@@ -328,7 +296,7 @@ export default function AdminDashboard() {
                               </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <Badge variant="secondary">{product.category}</Badge>
+                              <Badge variant="secondary">product.category</Badge>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                               {product.price}
@@ -350,9 +318,7 @@ export default function AdminDashboard() {
                                     ? "bg-green-100 text-green-700"
                                     : "bg-orange-100 text-orange-700"
                                 }
-                              >
-                                {product.status === "active" ? "Actif" : "Stock faible"}
-                              </Badge>
+                              >product.status === "active" ? "Actif" : "Stock faible"</Badge>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center space-x-2">

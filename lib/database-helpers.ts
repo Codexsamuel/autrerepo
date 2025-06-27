@@ -1,6 +1,7 @@
 import { supabase } from './database'
 import type { User, Employee, Client, AIInteraction, Document, Commission } from './database'
 
+
 // User management functions
 export const userHelpers = {
   // Get user by ID

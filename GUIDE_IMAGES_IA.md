@@ -38,7 +38,6 @@ Aerial surveillance view from drone camera, city monitoring, security operations
 ### 4. Drone en Vol Dynamique
 **Prompt DALL-E/GPT:**
 ```
-Military surveillance drone in flight, dynamic action shot, professional photography, advanced technology visible, rotor blades in motion, sleek aerodynamic design, dramatic sky background, corporate presentation style
 ```
 
 **Usage:** Présentation produit

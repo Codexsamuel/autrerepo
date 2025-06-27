@@ -1,10 +1,10 @@
 import Link from "next/link"
 import { ChevronRight, Star, ShoppingCart, Heart, Filter } from "lucide-react"
 
+
 export default function OrdinateursPortablesPage() {
   // Données des produits (ordinateurs portables)
-  const products = [
-    {
+  const products = [{
       id: 1,
       name: "Laptop Pro X1",
       brand: "TechMaster",
@@ -105,9 +105,7 @@ export default function OrdinateursPortablesPage() {
         screen: '14" Full HD',
       },
       inStock: true,
-    },
-  ]
-
+    },]
   // Filtres disponibles
   const filters = [
     {

@@ -1,10 +1,12 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { ArrowLeft, Smartphone, Shield, CheckCircle, AlertCircle, Hash } from "lucide-react"
+
+
 
 export default function MobileMoneyPaymentPage() {
   const [step, setStep] = useState(1) // 1: Details, 2: USSD, 3: Processing, 4: Success

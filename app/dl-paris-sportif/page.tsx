@@ -1,24 +1,22 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { TrendingUp, TrendingDown, Trophy, Target, Brain, DollarSign, Calendar, Play } from "lucide-react"
 
+
+
 export default function DLParisSportifPage() {
   const [selectedSport, setSelectedSport] = useState("football")
   const [selectedTab, setSelectedTab] = useState<"live" | "upcoming" | "predictions">("live")
 
-  const sports = [
-    { id: "football", name: "Football", icon: "⚽" },
+  const sports = [{ id: "football", name: "Football", icon: "⚽" },
     { id: "basketball", name: "Basketball", icon: "🏀" },
     { id: "tennis", name: "Tennis", icon: "🎾" },
-    { id: "rugby", name: "Rugby", icon: "🏉" },
-  ]
-
-  const liveMatches = [
-    {
+    { id: "rugby", name: "Rugby", icon: "🏉" },]
+  const liveMatches = [{
       id: 1,
       league: "Ligue 1",
       homeTeam: "PSG",
@@ -53,11 +51,8 @@ export default function DLParisSportifPage() {
       status: "halftime",
       odds: { home: 2.8, draw: 3.1, away: 2.4 },
       aiPrediction: { winner: "Barcelona", confidence: 72, trend: "up" },
-    },
-  ]
-
-  const upcomingMatches = [
-    {
+    },]
+  const upcomingMatches = [{
       id: 4,
       league: "Champions League",
       homeTeam: "Bayern Munich",
@@ -76,11 +71,8 @@ export default function DLParisSportifPage() {
       time: "20:45",
       odds: { home: 2.7, draw: 3.0, away: 2.6 },
       aiPrediction: { winner: "Inter Milan", confidence: 59, expectedGoals: "1-2" },
-    },
-  ]
-
-  const aiInsights = [
-    {
+    },]
+  const aiInsights = [{
       title: "Tendance de la semaine",
       description: "Les équipes à domicile ont 73% de victoires cette semaine",
       confidence: 89,
@@ -97,16 +89,11 @@ export default function DLParisSportifPage() {
       description: "Arsenal n'a perdu aucun match à domicile cette saison",
       confidence: 100,
       type: "stat",
-    },
-  ]
-
-  const topPredictors = [
-    { name: "IA NovaCore", accuracy: 87.3, profit: "+234€", badge: "🤖" },
+    },]
+  const topPredictors = [{ name: "IA NovaCore", accuracy: 87.3, profit: "+234€", badge: "🤖" },
     { name: "Samuel OBAM", accuracy: 82.1, profit: "+189€", badge: "👑" },
     { name: "Expert_Foot", accuracy: 79.8, profit: "+156€", badge: "⭐" },
-    { name: "AI_Predictor", accuracy: 76.5, profit: "+98€", badge: "🎯" },
-  ]
-
+    { name: "AI_Predictor", accuracy: 76.5, profit: "+98€", badge: "🎯" },]
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-green-50">
       {/* Header */}
@@ -230,9 +217,7 @@ export default function DLParisSportifPage() {
                       <div className="text-xs text-gray-600 mt-1">{insight.description}</div>
                       <div className="flex items-center mt-2">
                         <div className="text-xs text-green-600 font-medium">{insight.confidence}% confiance</div>
-                        <Badge variant="secondary" className="ml-2 text-xs">
-                          {insight.type}
-                        </Badge>
+                        <Badge variant="secondary" className="ml-2 text-xs">insight.type</Badge>
                       </div>
                     </div>
                   ))}
@@ -391,7 +376,7 @@ export default function DLParisSportifPage() {
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center space-x-4">
-                          <Badge variant="secondary">{match.league}</Badge>
+                          <Badge variant="secondary">match.league</Badge>
                           <span className="text-sm text-gray-600">
                             {match.date} à {match.time}
                           </span>

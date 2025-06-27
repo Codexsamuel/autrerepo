@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useEffect, useState } from "react"
+import { useState, useEffect, ReactNode } from "react";
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+
+
 
 // Floating Particles Component
 export function FloatingParticles() {
@@ -51,8 +51,8 @@ export function GlowingCursor() {
 }
 
 // Magic Button Component
-interface MagicButtonProps extends React.ComponentProps<typeof Button> {
-  children: React.ReactNode
+interface MagicButtonProps extends ComponentProps<typeof Button> {
+  children: ReactNode
 }
 
 export function MagicButton({ children, className = "", ...props }: MagicButtonProps) {
@@ -68,15 +68,15 @@ export function MagicButton({ children, className = "", ...props }: MagicButtonP
 }
 
 // Holographic Card Component
-interface HolographicCardProps extends React.ComponentProps<typeof Card> {
-  children: React.ReactNode
+interface HolographicCardProps extends ComponentProps<typeof Card> {
+  children: ReactNode
 }
 
 export function HolographicCard({ children, className = "", ...props }: HolographicCardProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isHovered, setIsHovered] = useState(false)
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
     setMousePosition({
       x: e.clientX - rect.left,

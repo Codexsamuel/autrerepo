@@ -1,311 +1,283 @@
-"use client"
-
-import { useState } from "react"
-// Removed motion import
+"use client";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { 
   Plane, 
   Hotel, 
-  Car, 
-  Building2,
-  Globe,
-  Shield,
-  Users,
-  CreditCard,
-  Settings,
-  Bell,
-  Search,
-  Filter,
-  ArrowLeft,
-  ChevronRight,
-  Star,
-  Clock,
-  Calendar,
-  MapPin,
+  MapPin, 
+  Users, 
+  TrendingUp, 
   DollarSign,
-  Lock,
-  Smartphone,
-  Wifi,
-  ShieldCheck,
-  Globe2,
-  Briefcase,
-  Zap,
-  Check,
-  ArrowUpRight,
-  ArrowRight,
-  Sparkles,
-  Mail,
-  Eye,
-  Brain
-} from "lucide-react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+  Calendar,
+  Star,
+  Plus,
+  Search,
+  Filter
+} from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
-export default function DLTravelDemo() {
-  const [activeTab, setActiveTab] = useState("flights")
+interface TravelStats {
+  totalBookings: number;
+  activeTrips: number;
+  totalRevenue: number;
+  averageRating: number;
+  pendingReservations: number;
+  completedTrips: number;
+}
+
+interface RecentBooking {
+  id: string;
+  clientName: string;
+  destination: string;
+  departureDate: string;
+  returnDate: string;
+  totalPrice: number;
+  status: string;
+}
+
+export default function DLTravelDashboard() {
+  const [stats, setStats] = useState<TravelStats>({
+    totalBookings: 0,
+    activeTrips: 0,
+    totalRevenue: 0,
+    averageRating: 0,
+    pendingReservations: 0,
+    completedTrips: 0
+  });
+  const [recentBookings, setRecentBookings] = useState<RecentBooking[]>([]);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const supabase = createClient();
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  async function fetchDashboardData() {
+    setLoading(true);
+    // Simuler des données pour la démo
+    setStats({
+      totalBookings: 1247,
+      activeTrips: 89,
+      totalRevenue: 456789,
+      averageRating: 4.7,
+      pendingReservations: 23,
+      completedTrips: 1158
+    });
+
+    setRecentBookings([
+      {
+        id: "1",
+        clientName: "Marie Dubois",
+        destination: "Bali, Indonésie",
+        departureDate: "2024-02-15",
+        returnDate: "2024-02-22",
+        totalPrice: 1899,
+        status: "confirmed"
+      },
+      {
+        id: "2",
+        clientName: "Jean Martin",
+        destination: "Tokyo, Japon",
+        departureDate: "2024-02-20",
+        returnDate: "2024-02-28",
+        totalPrice: 2450,
+        status: "pending"
+      },
+      {
+        id: "3",
+        clientName: "Sophie Bernard",
+        destination: "New York, USA",
+        departureDate: "2024-03-01",
+        returnDate: "2024-03-08",
+        totalPrice: 3200,
+        status: "confirmed"
+      }
+    ]);
+    setLoading(false);
+  }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "confirmed": return "bg-green-100 text-green-800";
+      case "pending": return "bg-yellow-100 text-yellow-800";
+      case "cancelled": return "bg-red-100 text-red-800";
+      default: return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-50">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-gray-200">
-        <div className="container mx-auto px-6 py-4">
+    <div className="container mx-auto p-6">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">DL Travel - Gestion des Voyages</h1>
+        <p className="text-gray-600">Plateforme complète de gestion de voyages et réservations</p>
+      </div>
+
+      {/* Statistiques principales */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Réservations Totales</CardTitle>
+            <Plane className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalBookings.toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground">
+              +12% par rapport au mois dernier
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Voyages Actifs</CardTitle>
+            <Hotel className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.activeTrips}</div>
+            <p className="text-xs text-muted-foreground">
+              Voyages en cours
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Revenus Totaux</CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalRevenue.toLocaleString()} €</div>
+            <p className="text-xs text-muted-foreground">
+              +8% par rapport au mois dernier
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Note Moyenne</CardTitle>
+            <Star className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.averageRating}/5</div>
+            <p className="text-xs text-muted-foreground">
+              Basée sur {stats.completedTrips} voyages
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Réservations en Attente</CardTitle>
+            <Calendar className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.pendingReservations}</div>
+            <p className="text-xs text-muted-foreground">
+              Nécessitent une confirmation
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Voyages Terminés</CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.completedTrips}</div>
+            <p className="text-xs text-muted-foreground">
+              Cette année
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Actions rapides */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <Button 
+          onClick={() => router.push("/demo/dl-travel/reservations")}
+          className="h-20 flex flex-col items-center justify-center"
+        >
+          <Plane className="h-6 w-6 mb-2" />
+          <span>Gérer les Réservations</span>
+        </Button>
+        <Button 
+          onClick={() => router.push("/demo/dl-travel/hotels")}
+          variant="outline"
+          className="h-20 flex flex-col items-center justify-center"
+        >
+          <Hotel className="h-6 w-6 mb-2" />
+          <span>Gérer les Hôtels</span>
+        </Button>
+        <Button 
+          onClick={() => router.push("/demo/dl-travel/vols")}
+          variant="outline"
+          className="h-20 flex flex-col items-center justify-center"
+        >
+          <Plane className="h-6 w-6 mb-2" />
+          <span>Gérer les Vols</span>
+        </Button>
+        <Button 
+          onClick={() => router.push("/demo/dl-travel/clients")}
+          variant="outline"
+          className="h-20 flex flex-col items-center justify-center"
+        >
+          <Users className="h-6 w-6 mb-2" />
+          <span>Gérer les Clients</span>
+        </Button>
+      </div>
+
+      {/* Réservations récentes */}
+      <Card>
+        <CardHeader>
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center">
-                <Plane className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                  DL Travel
-                </h1>
-                <p className="text-sm text-gray-500">Votre partenaire de voyage intelligent</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="sm" className="text-gray-600">
-                <Globe className="h-4 w-4 mr-2" />
-                FR
-              </Button>
-              <Button variant="ghost" size="sm" className="text-gray-600">
-                <Shield className="h-4 w-4 mr-2" />
-                Sécurité
-              </Button>
-              <Link href="/novacore">
-                <Button variant="outline" size="sm" className="text-gray-600">
-                  Retour au Hub
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="container mx-auto px-6 py-12">
-        {/* Hero Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-            Voyagez Sereinement avec DL Travel
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Découvrez une nouvelle façon de voyager avec notre plateforme intelligente, 
-            conçue pour simplifier vos déplacements professionnels et personnels.
-          </p>
-        </div>
-
-        {/* Search Section */}
-        <div className="max-w-4xl mx-auto mb-16">
-          <Card className="p-6 bg-white/80 backdrop-blur-md border border-gray-200">
-            <Tabs defaultValue="flights" className="w-full">
-              <TabsList className="grid grid-cols-4 mb-6">
-                <TabsTrigger value="flights" className="flex items-center gap-2">
-                  <Plane className="h-4 w-4" />
-                  Vols
-                </TabsTrigger>
-                <TabsTrigger value="hotels" className="flex items-center gap-2">
-                  <Hotel className="h-4 w-4" />
-                  Hôtels
-                </TabsTrigger>
-                <TabsTrigger value="transfers" className="flex items-center gap-2">
-                  <Car className="h-4 w-4" />
-                  Transfers
-                </TabsTrigger>
-                <TabsTrigger value="business" className="flex items-center gap-2">
-                  <Building2 className="h-4 w-4" />
-                  Business
-                </TabsTrigger>
-              </TabsList>
-              <TabsContent value="flights" className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm text-gray-600 mb-1 block">Départ</label>
-                    <Input placeholder="Ville de départ" className="bg-white" />
-                  </div>
-                  <div>
-                    <label className="text-sm text-gray-600 mb-1 block">Arrivée</label>
-                    <Input placeholder="Destination" className="bg-white" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <label className="text-sm text-gray-600 mb-1 block">Date de départ</label>
-                    <Input type="date" className="bg-white" />
-                  </div>
-                  <div>
-                    <label className="text-sm text-gray-600 mb-1 block">Date de retour</label>
-                    <Input type="date" className="bg-white" />
-                  </div>
-                  <div>
-                    <label className="text-sm text-gray-600 mb-1 block">Passagers</label>
-                    <Input type="number" placeholder="1" className="bg-white" />
-                  </div>
-                </div>
-                <Button className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white">
-                  <Search className="h-4 w-4 mr-2" />
-                  Rechercher des vols
-                </Button>
-              </TabsContent>
-              {/* Autres onglets similaires */}
-            </Tabs>
-          </Card>
-        </div>
-
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          <Card className="p-6 bg-white/80 backdrop-blur-md border border-gray-200">
-            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
-              <Globe className="h-6 w-6 text-blue-600" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2 text-gray-800">Pan-Africain</h3>
-            <p className="text-gray-600">
-              Accès à plus de 100 destinations en Afrique avec des partenariats locaux privilégiés.
-            </p>
-          </Card>
-          <Card className="p-6 bg-white/80 backdrop-blur-md border border-gray-200">
-            <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
-              <Sparkles className="h-6 w-6 text-indigo-600" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2 text-gray-800">Intelligence Artificielle</h3>
-            <p className="text-gray-600">
-              Recommandations personnalisées et optimisation des prix en temps réel.
-            </p>
-          </Card>
-          <Card className="p-6 bg-white/80 backdrop-blur-md border border-gray-200">
-            <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
-              <Shield className="h-6 w-6 text-green-600" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2 text-gray-800">Sécurité Avancée</h3>
-            <p className="text-gray-600">
-              Protection des données et transactions sécurisées avec cryptage de bout en bout.
-            </p>
-          </Card>
-        </div>
-
-        {/* Pricing Section */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold mb-8 text-gray-800">Tarifs Transparents</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <Card className="p-6 bg-white/80 backdrop-blur-md border border-gray-200">
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">Basic</h3>
-              <p className="text-3xl font-bold mb-4 text-blue-600">Gratuit</p>
-              <ul className="text-left space-y-2 mb-6">
-                <li className="flex items-center text-gray-600">
-                  <Zap className="h-4 w-4 mr-2 text-green-500" />
-                  Recherche de vols
-                </li>
-                <li className="flex items-center text-gray-600">
-                  <Zap className="h-4 w-4 mr-2 text-green-500" />
-                  Réservations basiques
-                </li>
-              </ul>
-              <Button variant="outline" className="w-full">Commencer</Button>
-            </Card>
-            <Card className="p-6 bg-white/80 backdrop-blur-md border border-gray-200">
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">Pro</h3>
-              <p className="text-3xl font-bold mb-4 text-blue-600">10,000 FCFA<span className="text-sm text-gray-500">/mois</span></p>
-              <ul className="text-left space-y-2 mb-6">
-                <li className="flex items-center text-gray-600">
-                  <Zap className="h-4 w-4 mr-2 text-green-500" />
-                  Toutes les fonctionnalités Basic
-                </li>
-                <li className="flex items-center text-gray-600">
-                  <Zap className="h-4 w-4 mr-2 text-green-500" />
-                  Réservations hôtels
-                </li>
-                <li className="flex items-center text-gray-600">
-                  <Zap className="h-4 w-4 mr-2 text-green-500" />
-                  Support prioritaire
-                </li>
-              </ul>
-              <Button className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white">
-                Essayer Pro
-              </Button>
-            </Card>
-            <Card className="p-6 bg-white/80 backdrop-blur-md border border-gray-200">
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">Elite</h3>
-              <p className="text-3xl font-bold mb-4 text-blue-600">25,000 FCFA<span className="text-sm text-gray-500">/mois</span></p>
-              <ul className="text-left space-y-2 mb-6">
-                <li className="flex items-center text-gray-600">
-                  <Zap className="h-4 w-4 mr-2 text-green-500" />
-                  Toutes les fonctionnalités Pro
-                </li>
-                <li className="flex items-center text-gray-600">
-                  <Zap className="h-4 w-4 mr-2 text-green-500" />
-                  Transfers VIP
-                </li>
-                <li className="flex items-center text-gray-600">
-                  <Zap className="h-4 w-4 mr-2 text-green-500" />
-                  Conciergerie 24/7
-                </li>
-              </ul>
-              <Button className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white">
-                Passer Elite
-              </Button>
-            </Card>
-            <Card className="p-6 bg-white/80 backdrop-blur-md border border-gray-200">
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">VIP Charter</h3>
-              <p className="text-3xl font-bold mb-4 text-blue-600">Sur mesure</p>
-              <ul className="text-left space-y-2 mb-6">
-                <li className="flex items-center text-gray-600">
-                  <Zap className="h-4 w-4 mr-2 text-green-500" />
-                  Vols privés
-                </li>
-                <li className="flex items-center text-gray-600">
-                  <Zap className="h-4 w-4 mr-2 text-green-500" />
-                  Service dédié
-                </li>
-                <li className="flex items-center text-gray-600">
-                  <Zap className="h-4 w-4 mr-2 text-green-500" />
-                  Tarifs négociés
-                </li>
-              </ul>
-              <Button variant="outline" className="w-full">Contactez-nous</Button>
-            </Card>
-          </div>
-        </div>
-
-        {/* CTA Section */}
-        <div className="text-center">
-          <Link href="/demo/dl-travel/signup">
-            <Button size="lg" className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white">
-              Commencer maintenant
-              <ArrowRight className="h-4 w-4 ml-2" />
+            <CardTitle>Réservations Récentes</CardTitle>
+            <Button onClick={() => router.push("/demo/dl-travel/reservations")}>
+              Voir toutes
             </Button>
-          </Link>
-        </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-white/80 backdrop-blur-md border-t border-gray-200 mt-12">
-        <div className="container mx-auto px-6 py-8">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="flex items-center gap-4 mb-4 md:mb-0">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center">
-                <Plane className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg text-gray-800">DL Travel</h3>
-                <p className="text-sm text-gray-500">Powered by AI</p>
-              </div>
-            </div>
-            <div className="text-center md:text-right">
-              <p className="text-sm text-gray-500 mb-1">Made by Samuel OBAM</p>
-              <p className="text-sm text-gray-500 mb-1">CEO of DL Solutions</p>
-              <p className="text-sm text-gray-500 mb-1">+237 694 341 586</p>
-              <p className="text-sm text-gray-500 mb-1">Rue École de Police, Yaoundé</p>
-              <p className="text-sm text-gray-500">sobam@daveandlucesolutions.com</p>
-            </div>
           </div>
-          <div className="border-t border-gray-200 mt-6 pt-6 text-center">
-            <p className="text-sm text-gray-500">
-              © 2024 DL Travel. Tous droits réservés. Développé par DL Solutions SARL.
-            </p>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {recentBookings.map((booking) => (
+              <div key={booking.id} className="flex items-center justify-between p-4 border rounded-lg">
+                <div className="flex items-center space-x-4">
+                  <div className="p-2 bg-blue-100 rounded-full">
+                    <Plane className="h-4 w-4 text-blue-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium">{booking.clientName}</h4>
+                    <p className="text-sm text-gray-600">{booking.destination}</p>
+                    <p className="text-xs text-gray-500">
+                      {new Date(booking.departureDate).toLocaleDateString()} - {new Date(booking.returnDate).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="font-medium">{booking.totalPrice} €</p>
+                  <Badge className={getStatusColor(booking.status)}>
+                    {booking.status === "confirmed" ? "Confirmé" : 
+                     booking.status === "pending" ? "En attente" : "Annulé"}
+                  </Badge>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-      </footer>
+        </CardContent>
+      </Card>
     </div>
-  )
+  );
 }

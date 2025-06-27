@@ -1,359 +1,263 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import {
-  ArrowRight,
+import { Header } from '@/components/layout/header';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { 
+  Brain, 
+  Users, 
+  ShoppingCart, 
+  Camera, 
+  MessageSquare, 
+  Target,
+  Star,
   Clock,
-  Users,
-  Award,
-  BookOpen,
-  Brain,
-  Headphones,
-  MessageSquare,
-  BarChart3,
-  Palette,
-  Smartphone,
-} from "lucide-react"
+  Users as UsersIcon,
+  CheckCircle
+} from 'lucide-react';
+import Link from 'next/link';
+
+const formations = [
+  {
+    title: "Intelligence Artificielle pour Entreprises",
+    description: "Maîtrisez l'IA pour transformer votre entreprise et automatiser vos processus",
+    duration: "5 jours",
+    level: "Intermédiaire",
+    price: "€1,200",
+    rating: 4.8,
+    students: 156,
+    features: [
+      "Chatbots IA",
+      "Machine Learning",
+      "Automatisation",
+      "Analyse prédictive",
+      "Intégration API"
+    ],
+    icon: Brain,
+    color: "from-purple-500 to-pink-500",
+    status: "active"
+  },
+  {
+    title: "Marketing Digital & Réseaux Sociaux",
+    description: "Développez votre présence en ligne et maîtrisez les stratégies digitales",
+    duration: "4 jours",
+    level: "Débutant",
+    price: "€950",
+    rating: 4.7,
+    students: 203,
+    features: [
+      "Stratégies digitales",
+      "Gestion réseaux sociaux",
+      "Publicité en ligne",
+      "Analytics",
+      "Content marketing"
+    ],
+    icon: Target,
+    color: "from-blue-500 to-cyan-500",
+    status: "active"
+  },
+  {
+    title: "E-commerce & Vente en Ligne",
+    description: "Créez et gérez votre boutique en ligne de A à Z",
+    duration: "6 jours",
+    level: "Tous niveaux",
+    price: "€1,400",
+    rating: 4.9,
+    students: 89,
+    features: [
+      "Création boutique",
+      "Gestion des paiements",
+      "Logistique",
+      "Marketing e-commerce",
+      "Analytics ventes"
+    ],
+    icon: ShoppingCart,
+    color: "from-green-500 to-emerald-500",
+    status: "active"
+  },
+  {
+    title: "CRM & Gestion Client",
+    description: "Optimisez votre relation client avec les meilleures pratiques CRM",
+    duration: "3 jours",
+    level: "Intermédiaire",
+    price: "€750",
+    rating: 4.6,
+    students: 134,
+    features: [
+      "Stratégies CRM",
+      "Automatisation",
+      "Analytics client",
+      "Intégrations",
+      "Best practices"
+    ],
+    icon: Users,
+    color: "from-orange-500 to-red-500",
+    status: "active"
+  },
+  {
+    title: "Création Visuelle & Design",
+    description: "Créez des visuels professionnels pour vos supports marketing",
+    duration: "4 jours",
+    level: "Débutant",
+    price: "€850",
+    rating: 4.5,
+    students: 167,
+    features: [
+      "Design graphique",
+      "Outils créatifs",
+      "Branding",
+      "Supports marketing",
+      "Templates"
+    ],
+    icon: Camera,
+    color: "from-yellow-500 to-orange-500",
+    status: "active"
+  },
+  {
+    title: "Télévente & Prospection",
+    description: "Développez vos compétences commerciales et techniques de vente",
+    duration: "3 jours",
+    level: "Tous niveaux",
+    price: "€650",
+    rating: 4.7,
+    students: 98,
+    features: [
+      "Techniques de vente",
+      "Prospection",
+      "Gestion objections",
+      "Closing",
+      "Suivi client"
+    ],
+    icon: MessageSquare,
+    color: "from-red-500 to-pink-500",
+    status: "active"
+  }
+];
 
 export default function FormationsPage() {
-  const formations = [
-    {
-      icon: Headphones,
-      title: "Télévente & Prospection",
-      description: "Maîtrisez les techniques de vente par téléphone et développez votre portefeuille client",
-      duration: "3 jours",
-      level: "Débutant à Intermédiaire",
-      participants: "8-12 personnes",
-      price: "160$",
-      modules: [
-        "Techniques de prospection téléphonique",
-        "Gestion des objections",
-        "Closing et négociation",
-        "Suivi client et fidélisation",
-      ],
-      slug: "televente-prospection",
-    },
-    {
-      icon: MessageSquare,
-      title: "Service Après-Vente Excellence",
-      description: "Transformez votre SAV en avantage concurrentiel et fidélisez vos clients",
-      duration: "2 jours",
-      level: "Tous niveaux",
-      participants: "6-10 personnes",
-      price: "160$",
-      modules: [
-        "Gestion des réclamations",
-        "Communication empathique",
-        "Résolution de conflits",
-        "Outils digitaux SAV",
-      ],
-      slug: "sav-excellence",
-    },
-    {
-      icon: Brain,
-      title: "Intelligence Artificielle pour Entreprises",
-      description: "Découvrez comment intégrer l'IA dans vos processus métier",
-      duration: "5 jours",
-      level: "Intermédiaire",
-      participants: "6-8 personnes",
-      price: "160$",
-      modules: [
-        "Fondamentaux de l'IA",
-        "Chatbots et automatisation",
-        "Analyse de données IA",
-        "Implémentation pratique",
-      ],
-      slug: "ia-entreprises",
-    },
-    {
-      icon: BarChart3,
-      title: "Marketing Digital & Analytics",
-      description: "Maîtrisez les outils du marketing digital et l'analyse de performance",
-      duration: "4 jours",
-      level: "Débutant à Avancé",
-      participants: "8-12 personnes",
-      price: "160$",
-      modules: ["Stratégie marketing digital", "Google Analytics & SEO", "Publicité en ligne", "Mesure de ROI"],
-      slug: "marketing-digital",
-    },
-    {
-      icon: Palette,
-      title: "Création de Contenu Visuel",
-      description: "Créez des visuels impactants pour vos communications",
-      duration: "3 jours",
-      level: "Débutant",
-      participants: "6-10 personnes",
-      price: "160$",
-      modules: [
-        "Principes du design",
-        "Outils de création (Canva, Figma)",
-        "Identité visuelle",
-        "Contenu pour réseaux sociaux",
-      ],
-      slug: "creation-visuelle",
-    },
-    {
-      icon: Users,
-      title: "CRM & Gestion Client",
-      description: "Optimisez votre relation client avec les bons outils et méthodes",
-      duration: "2 jours",
-      level: "Tous niveaux",
-      participants: "8-15 personnes",
-      price: "160$",
-      modules: ["Stratégie CRM", "Segmentation client", "Automatisation marketing", "Fidélisation client"],
-      slug: "crm-gestion-client",
-    },
-    {
-      icon: Smartphone,
-      title: "Réseaux Sociaux pour Entreprises",
-      description: "Maîtrisez les réseaux sociaux pour développer votre présence en ligne",
-      duration: "2 jours",
-      level: "Débutant",
-      participants: "8-12 personnes",
-      price: "100$",
-      modules: ["Stratégie réseaux sociaux", "Création de contenu", "Publicité sociale"],
-      slug: "reseaux-sociaux",
-    },
-    {
-      icon: BookOpen,
-      title: "E-commerce & Vente en Ligne",
-      description: "Lancez et optimisez votre boutique en ligne avec succès",
-      duration: "4 jours",
-      level: "Intermédiaire",
-      participants: "6-10 personnes",
-      price: "200$",
-      modules: [
-        "Création boutique en ligne",
-        "Optimisation conversions",
-        "Logistique e-commerce",
-        "Marketing e-commerce",
-        "Analytics e-commerce",
-      ],
-      slug: "ecommerce-vente",
-    },
-  ]
-
-  const advantages = [
-    {
-      icon: Award,
-      title: "Certification Reconnue",
-      description: "Obtenez une certification valorisante pour votre carrière",
-    },
-    {
-      icon: Users,
-      title: "Formateurs Experts",
-      description: "Apprenez avec des professionnels expérimentés du secteur",
-    },
-    {
-      icon: BookOpen,
-      title: "Support Pédagogique",
-      description: "Accès aux ressources et supports de formation à vie",
-    },
-    {
-      icon: Smartphone,
-      title: "Formation Hybride",
-      description: "Présentiel et distanciel selon vos préférences",
-    },
-  ]
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-teal-50">
-      {/* Header */}
-      <header className="bg-white/90 backdrop-blur-xl shadow-lg border-b border-white/20">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-20">
-            <div className="flex items-center space-x-3">
-              <div className="h-16 w-16 rounded-full overflow-hidden border-2 border-teal-200 flex items-center justify-center bg-white shadow-md">
-                <img src="/images/dl-logo.jpg" alt="DL Solutions Logo" className="h-14 w-14 object-contain" />
-              </div>
-            </div>
-            <nav className="hidden lg:flex items-center space-x-8">
-              <a href="/" className="text-gray-800 hover:text-teal-600 transition-colors">
-                Accueil
-              </a>
-              <a href="/a-propos" className="text-gray-800 hover:text-teal-600 transition-colors">
-                À propos
-              </a>
-              <a href="/services" className="text-gray-800 hover:text-teal-600 transition-colors">
-                Services
-              </a>
-              <a href="/formations" className="text-teal-600 font-medium">
-                Formations
-              </a>
-              <a href="/portfolio" className="text-gray-800 hover:text-teal-600 transition-colors">
-                Portfolio
-              </a>
-              <a href="/contact" className="text-gray-800 hover:text-teal-600 transition-colors">
-                Contact
-              </a>
-            </nav>
-            <div className="hidden lg:flex items-center space-x-4">
-              <Button variant="outline" className="border-teal-200 text-teal-700" asChild>
-                <a href="/devis">Devis IA</a>
-              </Button>
-              <Button className="bg-gradient-to-r from-teal-600 to-blue-600" asChild>
-                <a href="/sign-in">NovaCore</a>
-              </Button>
-            </div>
+    <div className="min-h-screen bg-gray-50">
+      <Header title="Formations" />
+      
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Hero Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Nos Formations Professionnelles
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Développez vos compétences avec nos formations spécialisées en technologies 
+            et stratégies digitales. Formations pratiques et certifiantes.
+          </p>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+          <div className="bg-white rounded-lg shadow-sm p-6 border text-center">
+            <div className="text-3xl font-bold text-blue-600 mb-2">847</div>
+            <div className="text-gray-600">Étudiants formés</div>
           </div>
-          <div className="lg:hidden flex items-center space-x-2 mt-4">
-            <Button variant="outline" size="sm" className="border-teal-200 text-teal-700 flex-1" asChild>
-              <a href="/devis">Devis IA</a>
-            </Button>
-            <Button size="sm" className="bg-gradient-to-r from-teal-600 to-blue-600 flex-1" asChild>
-              <a href="/sign-in">NovaCore</a>
-            </Button>
+          <div className="bg-white rounded-lg shadow-sm p-6 border text-center">
+            <div className="text-3xl font-bold text-green-600 mb-2">6</div>
+            <div className="text-gray-600">Formations disponibles</div>
+          </div>
+          <div className="bg-white rounded-lg shadow-sm p-6 border text-center">
+            <div className="text-3xl font-bold text-purple-600 mb-2">4.7</div>
+            <div className="text-gray-600">Note moyenne</div>
+          </div>
+          <div className="bg-white rounded-lg shadow-sm p-6 border text-center">
+            <div className="text-3xl font-bold text-orange-600 mb-2">95%</div>
+            <div className="text-gray-600">Taux de satisfaction</div>
           </div>
         </div>
-      </header>
 
-      {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <Badge className="mb-4 bg-teal-100 text-teal-700">Formations Professionnelles</Badge>
-            <h1 className="text-4xl lg:text-6xl font-bold mb-6">
-              Développez vos{" "}
-              <span className="bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-                compétences
-              </span>
-            </h1>
-            <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Formations spécialisées pour maîtriser les outils digitaux, l'IA et les techniques commerciales modernes.
-              Boostez votre carrière avec nos programmes certifiants.
-            </p>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            <div className="text-center">
-              <div className="text-3xl lg:text-4xl font-bold text-teal-600 mb-2">500+</div>
-              <div className="text-gray-600">Apprenants formés</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl lg:text-4xl font-bold text-teal-600 mb-2">95%</div>
-              <div className="text-gray-600">Taux de satisfaction</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl lg:text-4xl font-bold text-teal-600 mb-2">14</div>
-              <div className="text-gray-600">Formations disponibles</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl lg:text-4xl font-bold text-teal-600 mb-2">24/7</div>
-              <div className="text-gray-600">Support pédagogique</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Formations Grid */}
-      <section className="py-16 px-4 bg-white">
-        <div className="container mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {formations.map((formation, index) => (
-              <Card
-                key={index}
-                className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
-              >
-                <CardContent className="p-8">
-                  <div className="mb-6">
-                    <div className="w-16 h-16 bg-gradient-to-r from-teal-600 to-blue-600 rounded-2xl flex items-center justify-center mb-6">
-                      <formation.icon className="h-8 w-8 text-white" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-3 text-gray-800">{formation.title}</h3>
-                    <p className="text-gray-600 mb-6 leading-relaxed">{formation.description}</p>
+        {/* Formations Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {formations.map((formation, index) => (
+            <Card key={index} className="group hover:shadow-lg transition-all duration-300">
+              <CardHeader>
+                <div className="flex items-center justify-between mb-4">
+                  <div className={`p-3 rounded-lg bg-gradient-to-r ${formation.color}`}>
+                    <formation.icon className="h-6 w-6 text-white" />
                   </div>
-
-                  <div className="space-y-3 mb-6">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Clock className="h-4 w-4 mr-2 text-teal-500" />
-                      Durée: {formation.duration}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Users className="h-4 w-4 mr-2 text-teal-500" />
-                      {formation.participants}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <BookOpen className="h-4 w-4 mr-2 text-teal-500" />
-                      Niveau: {formation.level}
-                    </div>
-                  </div>
-
-                  <div className="border-t pt-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-2xl font-bold text-teal-600">{formation.price}</span>
-                      <Badge variant="secondary">{formation.modules.length} modules</Badge>
-                    </div>
-                    <div className="space-y-2">
-                      <Button className="w-full bg-gradient-to-r from-teal-600 to-blue-600" asChild>
-                        <a href={`/formations/${formation.slug}`}>
-                          Voir le programme
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </a>
-                      </Button>
-                      <Button variant="outline" className="w-full border-teal-200 text-teal-700" asChild>
-                        <a href={`/formations/${formation.slug}/inscription`}>S'inscrire maintenant</a>
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Advantages Section */}
-      <section className="py-20 px-4 bg-gray-50">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <Badge className="mb-4 bg-teal-100 text-teal-700">Nos Avantages</Badge>
-            <h2 className="text-3xl lg:text-5xl font-bold mb-6">
-              Pourquoi choisir{" "}
-              <span className="bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-                DL Solutions
-              </span>
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {advantages.map((advantage, index) => (
-              <div key={index} className="text-center group">
-                <div className="w-16 h-16 bg-gradient-to-r from-teal-600 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                  <advantage.icon className="h-8 w-8 text-white" />
+                  <Badge variant={formation.status === 'active' ? 'default' : 'secondary'}>
+                    {formation.status === 'active' ? 'Disponible' : 'Bientôt'}
+                  </Badge>
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-800">{advantage.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{advantage.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+                <CardTitle className="text-xl mb-2">{formation.title}</CardTitle>
+                <p className="text-gray-600 text-sm mb-4">{formation.description}</p>
+                
+                {/* Rating and Students */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <Star className="h-4 w-4 text-yellow-500 mr-1" />
+                    <span className="text-sm font-medium">{formation.rating}</span>
+                  </div>
+                  <div className="flex items-center text-sm text-gray-500">
+                    <UsersIcon className="h-4 w-4 mr-1" />
+                    {formation.students} étudiants
+                  </div>
+                </div>
 
-      {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-teal-600 to-blue-600">
-        <div className="container mx-auto text-center">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6">Prêt à vous former ?</h2>
-            <p className="text-xl text-blue-100 mb-10">
-              Rejoignez nos formations et développez les compétences de demain dès aujourd'hui.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button size="lg" className="bg-white text-teal-600 hover:bg-gray-100" asChild>
-                <a href="/contact">
-                  Nous contacter
-                  <ArrowRight className="ml-2 h-6 w-6" />
-                </a>
-              </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10" asChild>
-                <a href="/devis">Demander un devis formation</a>
-              </Button>
-            </div>
+                {/* Duration and Level */}
+                <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                  <div className="flex items-center">
+                    <Clock className="h-4 w-4 mr-1" />
+                    {formation.duration}
+                  </div>
+                  <Badge variant="outline" className="text-xs">
+                    {formation.level}
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex flex-wrap gap-2">
+                    {formation.features.map((feature, featureIndex) => (
+                      <div key={featureIndex} className="flex items-center text-xs text-gray-600">
+                        <CheckCircle className="h-3 w-3 text-green-500 mr-1" />
+                        {feature}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between pt-4">
+                    <div className="text-2xl font-bold text-gray-900">{formation.price}</div>
+                    <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700" asChild>
+                      <Link href={`/formations/${formation.title.toLowerCase().replace(/\s+/g, '-')}`}>
+                        S'inscrire
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* CTA Section */}
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-center text-white">
+          <h2 className="text-3xl font-bold mb-4">
+            Prêt à développer vos compétences ?
+          </h2>
+          <p className="text-xl mb-6 opacity-90">
+            Contactez-nous pour plus d'informations sur nos formations ou pour organiser 
+            une session personnalisée pour votre équipe.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" variant="secondary" asChild>
+              <Link href="/contact">
+                Demander un devis
+              </Link>
+            </Button>
+            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600" asChild>
+              <Link href="/contact">
+                Formation sur mesure
+              </Link>
+            </Button>
           </div>
         </div>
-      </section>
+      </main>
     </div>
-  )
+  );
 }

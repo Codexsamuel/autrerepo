@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -8,19 +8,18 @@ import { Star, MapPin, Calendar, Plane, Hotel, Utensils, Camera, Heart, Filter, 
 import Image from "next/image"
 import Link from "next/link"
 
+
+
 export default function PackagesPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [priceRange, setPriceRange] = useState("all")
 
-  const categories = [
-    { id: "all", name: "Tous les packages", count: 24 },
+  const categories = [{ id: "all", name: "Tous les packages", count: 24 },
     { id: "romantic", name: "Romantique", count: 8 },
     { id: "family", name: "Famille", count: 6 },
     { id: "adventure", name: "Aventure", count: 5 },
-    { id: "luxury", name: "Luxe", count: 5 },
-  ]
-
+    { id: "luxury", name: "Luxe", count: 5 },]
   const packages = [
     {
       id: 1,
@@ -207,7 +206,7 @@ export default function PackagesPage() {
                     >
                       <div className="flex justify-between items-center">
                         <span>{category.name}</span>
-                        <Badge variant="secondary">{category.count}</Badge>
+                        <Badge variant="secondary">category.count</Badge>
                       </div>
                     </button>
                   ))}

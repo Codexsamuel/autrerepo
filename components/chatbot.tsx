@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useState, useRef, useEffect } from "react"
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { MessageCircle, X, Send, Bot, User } from "lucide-react"
+
+
 
 interface Message {
   id: string
@@ -93,7 +93,7 @@ export function Chatbot() {
     )
   }
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = (e: KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault()
       handleSendMessage()
@@ -101,7 +101,6 @@ export function Chatbot() {
   }
 
   const quickActions = ["Nos services", "Tarifs", "Réserver consultation", "Contact"]
-
   return (
     <>
       {/* Chat Toggle Button */}

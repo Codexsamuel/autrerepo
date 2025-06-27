@@ -1,10 +1,12 @@
-"use client"
+"use client";
 
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Building2, ExternalLink } from "lucide-react"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+
+
 
 export default function RedirectPage() {
   const [countdown, setCountdown] = useState(5)

@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -8,25 +8,25 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-  Camera,
-  User,
-  CheckCircle,
-  AlertTriangle,
-  X,
-  Eye,
-  Shield,
-  UserCheck,
-  Key,
-  Scan,
-  RefreshCw,
-  Clock,
-  MapPin,
-  Star,
-  Zap,
-  Bot,
-} from "lucide-react"
 import Image from "next/image"
+import { 
+  Camera, 
+  User, 
+  CheckCircle, 
+  AlertTriangle, 
+  Eye, 
+  Shield, 
+  UserCheck, 
+  Key, 
+  Scan, 
+  RefreshCw, 
+  Clock, 
+  MapPin, 
+  Star, 
+  Zap, 
+  Bot, 
+  XCircle 
+} from "lucide-react"
 
 interface GuestProfile {
   id: string
@@ -271,7 +271,7 @@ export function PhotoVerificationSystem({ userLevel, userName, hotelName }: Phot
       Agoda: "bg-orange-100 text-orange-800",
       Direct: "bg-green-100 text-green-800",
     }
-    return <Badge className={colors[source as keyof typeof colors] || "bg-gray-100 text-gray-800"}>{source}</Badge>
+    return <Badge className={colors[source as keyof typeof colors] || "bg-gray-100 text-gray-800"}>source</Badge>
   }
 
   return (
@@ -394,9 +394,7 @@ export function PhotoVerificationSystem({ userLevel, userName, hotelName }: Phot
                   <span className="text-muted-foreground text-sm">Source:</span>
                   <div className="mt-1">{getSourceBadge(guest.bookingSource)}</div>
                 </div>
-                <Badge variant="outline" className="text-xs">
-                  {guest.loyaltyLevel}
-                </Badge>
+                <Badge variant="outline" className="text-xs">guest.loyaltyLevel</Badge>
               </div>
 
               {guest.lastSeen && (
@@ -524,9 +522,7 @@ export function PhotoVerificationSystem({ userLevel, userName, hotelName }: Phot
                   </div>
                   <div>
                     <Label className="text-sm font-medium text-muted-foreground">Niveau de fidélité</Label>
-                    <Badge variant="outline" className="mt-1">
-                      {selectedGuest.loyaltyLevel}
-                    </Badge>
+                    <Badge variant="outline" className="mt-1">selectedGuest.loyaltyLevel</Badge>
                   </div>
                 </div>
 
@@ -535,9 +531,7 @@ export function PhotoVerificationSystem({ userLevel, userName, hotelName }: Phot
                     <Label className="text-sm font-medium text-muted-foreground">Demandes spéciales</Label>
                     <div className="mt-1 space-y-1">
                       {selectedGuest.specialRequests.map((request, index) => (
-                        <Badge key={index} variant="outline" className="mr-2">
-                          {request}
-                        </Badge>
+                        <Badge key={index} variant="outline" className="mr-2">request</Badge>
                       ))}
                     </div>
                   </div>
@@ -721,7 +715,7 @@ export function PhotoVerificationSystem({ userLevel, userName, hotelName }: Phot
               {verificationResult === "failed" && (
                 <div className="space-y-3">
                   <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto">
-                    <X className="h-8 w-8 text-red-600" />
+                    <XCircle className="h-8 w-8 text-red-600" />
                   </div>
                   <h3 className="text-lg font-bold text-red-600">Vérification échouée ⚠️</h3>
                   <p className="text-muted-foreground">

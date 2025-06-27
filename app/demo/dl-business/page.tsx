@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -8,18 +9,17 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Progress } from "@/components/ui/progress"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
-import {
-  ArrowLeft,
-  Bot,
-  Brain,
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { AiInsights, Campaign as CampaignType, AiActivity, FormData } from '../../types/config'
+import type { TextareaProps } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { 
+  ArrowLeft, 
+  Bot, 
+  Brain, 
+  Search, 
+  Settings, 
+  ShoppingCart,
   Camera,
   Video,
   TrendingUp,
@@ -47,13 +47,8 @@ import {
   Building2,
   Globe,
   LineChart,
-  Phone,
-  Search,
-  Settings,
-  ShoppingCart,
+  Phone
 } from "lucide-react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { AiInsights, Campaign, AiActivity, FormData } from '../../types/config'
 
 export default function BusinessPage() {
   const [activeTab, setActiveTab] = useState("dashboard")
@@ -75,7 +70,7 @@ export default function BusinessPage() {
   const [aiInsights, setAiInsights] = useState<AiInsights | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  const [campaigns] = useState<Campaign[]>([
+  const [campaigns] = useState<CampaignType[]>([
     {
       id: "CAM001",
       name: "Lancement Produit Q1",
@@ -97,7 +92,7 @@ export default function BusinessPage() {
     },
     {
       id: "CAM002",
-      name: "Promotion Saint-Valentin",
+      name: "Offres spéciales Saint-Valentin",
       platform: "Instagram",
       status: "completed",
       reach: 32100,
@@ -177,28 +172,23 @@ export default function BusinessPage() {
             "Améliorer la page d'accueil",
             "Optimiser pour mobile"
           ],
-          marketing: [
-            "Lancer une campagne email",
+          marketing: ["Lancer une campagne email",
             "Créer des contenus pour les réseaux sociaux",
-            "Mettre en place un programme de fidélité"
-          ]
+            "Mettre en place un programme de fidélité"]
         },
         marketAnalysis: {
           trends: [
             "Mode durable en hausse",
             "Commerce mobile dominant",
-            "Personnalisation importante"
           ],
           opportunities: [
             "Marché des accessoires en croissance",
             "Demande de produits éthiques",
             "Potentiel international"
           ],
-          threats: [
-            "Concurrence accrue",
+          threats: ["Concurrence accrue",
             "Coûts de livraison",
-            "Changements des algorithmes"
-          ]
+            "Changements des algorithmes"]
         }
       }
       setAiInsights(insights)
@@ -237,28 +227,23 @@ export default function BusinessPage() {
             "Améliorer la page d'accueil",
             "Optimiser pour mobile"
           ],
-          marketing: [
-            "Lancer une campagne email",
+          marketing: ["Lancer une campagne email",
             "Créer des contenus pour les réseaux sociaux",
-            "Mettre en place un programme de fidélité"
-          ]
+            "Mettre en place un programme de fidélité"]
         },
         marketAnalysis: {
           trends: [
             "Mode durable en hausse",
             "Commerce mobile dominant",
-            "Personnalisation importante"
           ],
           opportunities: [
             "Marché des accessoires en croissance",
             "Demande de produits éthiques",
             "Potentiel international"
           ],
-          threats: [
-            "Concurrence accrue",
+          threats: ["Concurrence accrue",
             "Coûts de livraison",
-            "Changements des algorithmes"
-          ]
+            "Changements des algorithmes"]
         }
       }
       setAiInsights(insights)
@@ -676,9 +661,7 @@ export default function BusinessPage() {
                           <div className="flex-1">
                             <div className="flex items-center justify-between mb-1">
                               <h4 className="font-medium">{activity.action}</h4>
-                              <Badge variant={activity.status === "completed" ? "default" : "secondary"}>
-                                {activity.status === "completed" ? "Terminé" : "En cours"}
-                              </Badge>
+                              <Badge variant={activity.status === "completed" ? "default" : "secondary"}>activity.status === "completed" ? "Terminé" : "En cours"</Badge>
                             </div>
                             <p className="text-sm text-gray-600 mb-2">{activity.details}</p>
                             <div className="flex items-center justify-between text-xs text-gray-500">
@@ -799,7 +782,6 @@ export default function BusinessPage() {
                               <Video className="h-5 w-5 text-purple-600" />
                             </div>
                             <div>
-                              <h4 className="font-medium">Vidéo TikTok - Promotion Produit</h4>
                               <p className="text-sm text-gray-600">CapCut API + Votre galerie</p>
                             </div>
                           </div>
@@ -948,7 +930,7 @@ export default function BusinessPage() {
                       <div className="p-4 h-96 overflow-y-auto">
                         <div className="space-y-1">
                           <div>
-                            <span className="text-blue-400">// IA Assistant - Création d'outils automatique</span>
+                            <span className="text-blue-400">{/* // IA Assistant - Création d'outils automatique */}</span>
                           </div>
                           <div>
                             <span className="text-purple-400">const</span>{" "}
@@ -963,7 +945,7 @@ export default function BusinessPage() {
                             <span className="text-purple-400">async function</span>() {"{"}
                           </div>
                           <div className="ml-8">
-                            <span className="text-gray-400">// L'IA analyse le prompt</span>
+                            <span className="text-gray-400">{/* // L'IA analyse le prompt */}</span>
                           </div>
                           <div className="ml-8">
                             <span className="text-purple-400">const</span>{" "}
@@ -972,7 +954,7 @@ export default function BusinessPage() {
                             <span className="text-yellow-400">analyzePrompt</span>();
                           </div>
                           <div className="ml-8">
-                            <span className="text-gray-400">// Génération automatique du code</span>
+                            <span className="text-gray-400">{/* // Génération automatique du code */}</span>
                           </div>
                           <div className="ml-8">
                             <span className="text-purple-400">const</span> <span className="text-yellow-400">code</span>{" "}
@@ -981,7 +963,7 @@ export default function BusinessPage() {
                             <span className="text-yellow-400">analysis</span>);
                           </div>
                           <div className="ml-8">
-                            <span className="text-gray-400">// Création de l'interface</span>
+                            <span className="text-gray-400">{/* // Création de l'interface */}</span>
                           </div>
                           <div className="ml-8">
                             <span className="text-purple-400">const</span> <span className="text-yellow-400">ui</span> ={" "}
@@ -995,7 +977,7 @@ export default function BusinessPage() {
                           <div className="ml-4">{"}"}</div>
                           <div>{"}"}</div>
                           <div className="mt-4">
-                            <span className="text-gray-400">// Prompt utilisateur</span>
+                            <span className="text-gray-400">{/* // Prompt utilisateur */}</span>
                           </div>
                           <div>
                             <span className="text-cyan-400">aiAssistant</span>.

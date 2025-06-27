@@ -1,12 +1,14 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { PhotoVerificationSystem } from "@/components/photo-verification-system"
 import { ArrowLeft, Camera, Shield, Users, Zap } from "lucide-react"
 import Link from "next/link"
+
+
 
 interface UserRole {
   id: string
@@ -28,8 +30,7 @@ export default function PhotoVerificationPage() {
 
   const companyName = "Hôtel Le Meridien Yaoundé"
 
-  const roles: UserRole[] = [
-    {
+  const roles: UserRole[] = [{
       id: "admin",
       name: "Directeur Général",
       level: "admin",
@@ -48,9 +49,7 @@ export default function PhotoVerificationPage() {
       id: "housekeeping",
       name: "Gouvernante",
       level: "housekeeping",
-    },
-  ]
-
+    },]
   const demoUsers: UserType[] = [
     {
       id: "1",
@@ -149,7 +148,7 @@ export default function PhotoVerificationPage() {
                       <div className={`w-3 h-3 rounded-full ${user.isOnline ? "bg-green-500" : "bg-gray-300"}`}></div>
                     </div>
 
-                    <Badge className={`${getRoleColor(user.role.level)} mb-3`}>{user.role.name}</Badge>
+                    <Badge className={`${getRoleColor(user.role.level)} mb-3`}>user.role.name</Badge>
 
                     <div className="space-y-1">
                       <p className="text-xs font-medium text-muted-foreground">Accès autorisé:</p>
@@ -239,7 +238,7 @@ export default function PhotoVerificationPage() {
                 </div>
                 <div className="text-left">
                   <p className="text-sm font-medium">{currentUser.name}</p>
-                  <Badge className={`${getRoleColor(currentUser.role.level)} text-xs`}>{currentUser.role.name}</Badge>
+                  <Badge className={`${getRoleColor(currentUser.role.level)} text-xs`}>currentUser.role.name</Badge>
                 </div>
                 <Button size="sm" variant="outline" onClick={() => setShowRoleSelector(true)}>
                   Changer

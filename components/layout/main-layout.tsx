@@ -1,12 +1,12 @@
 "use client";
 
-import React from "react";
+import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { Header } from "@/components/layout/header";
 import { Navigation } from "@/components/layout/navigation";
 
 interface MainLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
   title: string;
   description: string;
   navigationItems: {

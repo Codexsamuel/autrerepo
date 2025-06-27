@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { Button } from '../Button'
 
+
 describe('Button Component', () => {
   it('renders with correct text', () => {
     render(<Button>Click me</Button>)

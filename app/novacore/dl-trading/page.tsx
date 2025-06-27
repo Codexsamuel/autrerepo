@@ -1,11 +1,13 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ArrowUpRight, ArrowDownRight, TrendingUp, AlertTriangle, Info } from "lucide-react"
+
+
 
 interface MarketAnalysis {
   trend: string
@@ -101,9 +103,7 @@ export default function DLTradingPage() {
             Analyse et recommandations de trading en temps réel
           </p>
         </div>
-        <Badge variant={marketAnalysis?.trend === "HAUSSIER" ? "success" : "destructive"}>
-          {marketAnalysis?.trend}
-        </Badge>
+        <Badge variant={marketAnalysis?.trend === "HAUSSIER" ? "success" : "destructive"}>marketAnalysis?.trend</Badge>
       </div>
 
       <Tabs defaultValue="analysis" className="space-y-4">
@@ -152,7 +152,7 @@ export default function DLTradingPage() {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span>Niveau de risque</span>
-                    <Badge variant="outline">{marketAnalysis?.riskLevel}</Badge>
+                    <Badge variant="outline">marketAnalysis?.riskLevel</Badge>
                   </div>
                   <div className="flex justify-between items-center">
                     <span>Volatilité</span>
@@ -163,9 +163,7 @@ export default function DLTradingPage() {
                       <span>{opp.asset}</span>
                       <div className="flex items-center">
                         <span className="text-green-500">+{opp.potential * 100}%</span>
-                        <Badge variant="outline" className="ml-2">
-                          {opp.risk}
-                        </Badge>
+                        <Badge variant="outline" className="ml-2">opp.risk</Badge>
                       </div>
                     </div>
                   ))}
@@ -216,9 +214,7 @@ export default function DLTradingPage() {
                           ? "destructive"
                           : "secondary"
                       }
-                    >
-                      {rec.action}
-                    </Badge>
+                    >rec.action</Badge>
                   </div>
                 </CardHeader>
                 <CardContent>

@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import Image from "next/image"
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Mail, ArrowLeft } from "lucide-react"
+
+
 
 export default function ForgotPasswordPage() {
   const [isLoading, setIsLoading] = useState(false)
@@ -64,9 +66,7 @@ export default function ForgotPasswordPage() {
                   type="submit"
                   className="w-full"
                   disabled={isLoading}
-                >
-                  {isLoading ? "Envoi..." : "Envoyer les instructions"}
-                </Button>
+                >isLoading ? "Envoi..." : "Envoyer les instructions"</Button>
               </form>
             ) : (
               <div className="text-center space-y-4">

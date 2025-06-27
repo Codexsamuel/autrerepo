@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getAccountInfo } from '@/lib/services/metaApiService';
 
+
 export async function GET() {
   try {
     const accountInfo = await getAccountInfo();

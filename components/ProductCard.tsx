@@ -1,16 +1,16 @@
-"use client";
-import Image from 'next/image';
-import { useState } from 'react';
+"use client"
+import { useState } from "react"
+import Image from 'next/image'
 
 interface ProductCardProps {
-  id: string;
-  title: string;
-  priceCNY: number;
-  priceFCFA: number;
-  imageUrl: string;
-  source: string;
-  deliveryTime: string;
-  rating: number;
+  id: string
+  title: string
+  priceCNY: number
+  priceFCFA: number
+  imageUrl: string
+  source: string
+  deliveryTime: string
+  rating: number
 }
 
 export default function ProductCard({
@@ -23,8 +23,7 @@ export default function ProductCard({
   deliveryTime,
   rating
 }: ProductCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
-
+  const [isHovered, setIsHovered] = useState(false)
   return (
     <div 
       className="relative bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105"
@@ -65,5 +64,5 @@ export default function ProductCard({
         </button>
       </div>
     </div>
-  );
+  )
 } 

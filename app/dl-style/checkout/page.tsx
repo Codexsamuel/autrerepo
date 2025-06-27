@@ -1,11 +1,13 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { ArrowLeft, CreditCard, Truck, Shield, Lock, Check, Gift, Smartphone, Wallet } from "lucide-react"
+
+
 
 export default function CheckoutPage() {
   const [selectedPayment, setSelectedPayment] = useState("card")
@@ -22,8 +24,7 @@ export default function CheckoutPage() {
     country: "France",
   })
 
-  const cartItems = [
-    {
+  const cartItems = [{
       id: 1,
       name: "Casque Gaming RGB Pro X",
       price: 89.99,
@@ -36,16 +37,13 @@ export default function CheckoutPage() {
       price: 24.99,
       quantity: 2,
       image: "/placeholder.svg?height=80&width=80",
-    },
-  ]
-
+    },]
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
   const shipping = selectedShipping === "express" ? 9.99 : 0
   const tax = subtotal * 0.2
   const total = subtotal + shipping + tax
 
-  const shippingOptions = [
-    {
+  const shippingOptions = [{
       id: "standard",
       name: "Livraison Standard",
       description: "3-5 jours ouvrés",
@@ -58,11 +56,8 @@ export default function CheckoutPage() {
       description: "24h (commande avant 15h)",
       price: 9.99,
       icon: Truck,
-    },
-  ]
-
-  const paymentMethods = [
-    {
+    },]
+  const paymentMethods = [{
       id: "card",
       name: "Carte Bancaire",
       description: "Visa, Mastercard, American Express",
@@ -89,9 +84,7 @@ export default function CheckoutPage() {
       description: "MTN Money, Moov Money",
       icon: "/images/mobile-money.png",
       type: "image",
-    },
-  ]
-
+    },]
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
   }

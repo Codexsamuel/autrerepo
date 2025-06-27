@@ -1,0 +1,28 @@
+Vidéos à ajouter :
+- digital-universe.mp4 (vidéo d'univers digital avec particules et effets lumineux)
+- innovation.mp4 (vidéo d'innovation technologique)
+- technology.mp4 (vidéo d'excellence technologique)
+
+En attendant, les vidéos peuvent être remplacées par des images de fond.
+
+Vidéos pour le carousel background
+
+Placez ici vos vidéos MP4 pour le carousel :
+
+1. hero-1.mp4 - Vidéo d'innovation digitale
+2. hero-2.mp4 - Vidéo de solutions métier  
+3. hero-3.mp4 - Vidéo de transformation digitale
+
+Spécifications recommandées :
+- Format : MP4
+- Résolution : 1920x1080 (Full HD) minimum
+- Durée : 10-15 secondes par vidéo
+- Taille : Optimisée pour le web (< 5MB par vidéo)
+- Contenu : Animations, transitions, effets visuels liés au digital
+
+Les vidéos seront automatiquement intégrées dans le carousel avec :
+- Transition fluide entre les vidéos
+- Overlay gradient pour la lisibilité du texte
+- Contrôles de lecture/pause
+- Navigation par points
+- Autoplay avec intervalle de 8 secondes 

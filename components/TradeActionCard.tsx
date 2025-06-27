@@ -1,13 +1,13 @@
-"use client";
-import { useState } from "react";
+"use client"
+import { useState } from "react"
 
 interface TradeActionCardProps {
-  asset: string;
-  action: 'BUY' | 'SELL' | 'HOLD';
-  confidence: number;
-  targetPrice: number;
-  stopLoss: number;
-  analysis: string;
+  asset: string
+  action: 'BUY' | 'SELL' | 'HOLD'
+  confidence: number
+  targetPrice: number
+  stopLoss: number
+  analysis: string
 }
 
 export default function TradeActionCard({ 
@@ -18,8 +18,7 @@ export default function TradeActionCard({
   stopLoss, 
   analysis 
 }: TradeActionCardProps) {
-  const [executed, setExecuted] = useState(false);
-
+  const [executed, setExecuted] = useState(false)
   const handleExecute = () => {
     fetch("/api/trade/execute", {
       method: "POST",
@@ -28,11 +27,10 @@ export default function TradeActionCard({
     })
       .then((res) => res.json())
       .then((data) => {
-        setExecuted(true);
-        alert(`Action ${action} sur ${asset} exécutée avec succès.`);
-      });
-  };
-
+        setExecuted(true)
+        alert(`Action ${action} sur ${asset} exécutée avec succès.`)
+      })
+  }
   return (
     <div className="border p-4 rounded-xl shadow-xl bg-white">
       <h2 className="text-xl font-bold">{asset}</h2>
@@ -50,5 +48,5 @@ export default function TradeActionCard({
         {executed ? "Déjà exécuté" : "Exécuter"}
       </button>
     </div>
-  );
+  )
 } 

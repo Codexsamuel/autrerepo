@@ -1,7 +1,9 @@
+import { MarketDataPoint, TechnicalIndicators, NewsItem } from './marketData';
+import { AIService, AIPrediction, MarketAnalysis, TradingSignal } from '../ai/ai-service';
+
 // Service d'IA pour les recommandations de trading
 // Intégration avec OpenAI pour l'analyse et les conseils
 
-import { MarketDataPoint, TechnicalIndicators, NewsItem } from './marketData';
 
 export interface TradingRecommendation {
   id: string;
@@ -26,37 +28,6 @@ export interface TradingRecommendation {
   volatility: number;
 }
 
-export interface MarketAnalysis {
-  overallTrend: 'bullish' | 'bearish' | 'neutral';
-  volatility: 'low' | 'medium' | 'high';
-  opportunities: number;
-  risks: string[];
-  sectors: {
-    [key: string]: {
-      performance: number;
-      trend: 'up' | 'down' | 'stable';
-      recommendation: string;
-    };
-  };
-  globalFactors: string[];
-  economicIndicators: {
-    [key: string]: {
-      value: number;
-      trend: 'up' | 'down' | 'stable';
-      impact: 'positive' | 'negative' | 'neutral';
-    };
-  };
-  aiSummary: string;
-  marketSentiment: 'optimistic' | 'pessimistic' | 'neutral';
-  recommendedAllocation: {
-    stocks: number;
-    crypto: number;
-    forex: number;
-    commodities: number;
-    cash: number;
-  };
-}
-
 export interface PortfolioOptimization {
   recommendedAssets: {
     symbol: string;
@@ -72,6 +43,31 @@ export interface PortfolioOptimization {
   rebalancingFrequency: string;
   aiRecommendations: string[];
 }
+
+export class DavyTradingAdvisor {
+  private aiService: AIService;
+
+  constructor(apiKey?: string) {
+    this.aiService = new AIService(apiKey);
+  }
+
+  async getPrediction(symbol: string, marketData?: any): Promise<AIPrediction | null> {
+    // Utilise OpenAI pour générer une prédiction sur le symbole donné
+    return this.aiService.generateOpenAIPrediction(symbol, marketData);
+  }
+
+  async getMarketAnalysis(symbol: string, newsData?: any[]): Promise<MarketAnalysis | null> {
+    // Analyse le sentiment du marché pour un symbole
+    return this.aiService.analyzeMarketSentiment(symbol, newsData);
+  }
+
+  async getTradingSignal(symbol: string, marketData?: any): Promise<TradingSignal | null> {
+    // Génère un signal de trading pour un symbole
+    return this.aiService.generateTradingSignal(symbol, marketData);
+  }
+}
+
+export default DavyTradingAdvisor;
 
 class AITradingService {
   private openaiApiKey = process.env.OPENAI_API_KEY;
@@ -157,7 +153,7 @@ class AITradingService {
       return this.parseAssetAnalysis(response, symbol, marketData);
     } catch (error) {
       console.error(`Erreur lors de l'analyse de ${symbol}:`, error);
-      return this.generateFallbackAssetAnalysis(symbol, [marketData]);
+      return this.generateFallbackAssetAnalysis(symbol, marketData);
     }
   }
 
@@ -431,16 +427,16 @@ Génère 5 insights personnalisés au format JSON.
 
   private parseAssetAnalysis(response: string, symbol: string, marketData: MarketDataPoint): TradingRecommendation {
     try {
-      const data = JSON.parse(response);
+      const analysis = JSON.parse(response);
       return {
-        ...data,
-        id: `analysis_${symbol}`,
+        ...analysis,
+        id: `asset_${symbol}_${Date.now()}`,
         symbol,
         timestamp: new Date()
       };
     } catch (error) {
-      console.error('Erreur lors du parsing de l\'analyse:', error);
-      return this.generateFallbackAssetAnalysis(symbol, [marketData]);
+      console.error('Erreur parsing analyse actif:', error);
+      return this.generateFallbackAssetAnalysis(symbol, marketData);
     }
   }
 
@@ -521,26 +517,26 @@ Génère 5 insights personnalisés au format JSON.
     };
   }
 
-  private generateFallbackAssetAnalysis(symbol: string, marketData: MarketDataPoint[]): TradingRecommendation {
+  private generateFallbackAssetAnalysis(symbol: string, marketData: MarketDataPoint): TradingRecommendation {
     const asset = marketData.find(a => a.symbol === symbol) || marketData[0];
     
     return {
       id: `fallback_${symbol}`,
-      symbol: asset.symbol,
-      action: asset.changePercent > 0 ? 'buy' : 'sell',
-      confidence: Math.abs(asset.changePercent) > 5 ? 75 : 50,
-      reasoning: `Analyse basée sur la variation de ${asset.changePercent.toFixed(2)}%`,
-      riskLevel: asset.volatility > 1.5 ? 'high' : 'medium',
+      symbol,
+      action: asset.changePercent > 0 ? 'buy' : 'hold',
+      confidence: 60,
+      reasoning: 'Analyse basée sur les données de marché disponibles',
+      riskLevel: 'medium',
       timeframe: 'medium',
-      strategy: 'Trend Following',
-      marketConditions: 'Analyse en cours',
-      newsImpact: 'Impact non évalué',
+      strategy: 'Market Analysis',
+      marketConditions: 'Conditions de marché stables',
+      newsImpact: 'Impact neutre',
       technicalAnalysis: 'Analyse technique en cours',
       fundamentalAnalysis: 'Analyse fondamentale en cours',
       timestamp: new Date(),
-      aiInsights: ['Analyse en cours de développement'],
-      riskRewardRatio: 1.5,
-      expectedReturn: asset.changePercent,
+      aiInsights: ['Analyse IA en cours de développement'],
+      riskRewardRatio: 1.2,
+      expectedReturn: Math.abs(asset.changePercent),
       volatility: asset.volatility
     };
   }

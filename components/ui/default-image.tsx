@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-interface DefaultImageProps extends React.ComponentProps<typeof Image> {
+interface DefaultImageProps extends ComponentProps<typeof Image> {
   fallbackSrc?: string;
 }
 
@@ -15,7 +15,7 @@ export function DefaultImage({
   className,
   ...props
 }: DefaultImageProps) {
-  const [imgSrc, setImgSrc] = React.useState(src);
+  const [imgSrc, setImgSrc] = useState(src);
 
   return (
     <Image

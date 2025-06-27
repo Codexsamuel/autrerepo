@@ -1,5 +1,6 @@
 import { n8nConfig } from "@/workflows/n8n/config"
 
+
 export interface Workflow {
   id: string
   name: string

@@ -1,4 +1,5 @@
-import { LucideIcon } from 'lucide-react';
+import { LucideIcon } from "lucide-react";
+
 
 // Types génériques pour les fonctionnalités
 export interface Feature {

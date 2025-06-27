@@ -1,7 +1,10 @@
-// Service d'authentification avec super admin, OTP et protection anti-bot
 import { createClient } from '@supabase/supabase-js'
 import bcrypt from 'bcryptjs'
 import { v4 as uuidv4 } from 'uuid'
+
+'use server'
+
+// Service d'authentification avec super admin, OTP et protection anti-bot
 
 // Configuration Supabase
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!

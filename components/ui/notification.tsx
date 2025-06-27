@@ -1,31 +1,50 @@
 "use client";
 
-import React from "react";
+import * as React from "react";
 import { cn } from "@/lib/utils";
+import { X } from "lucide-react";
 
 interface NotificationProps {
-  message: string;
-  type: "success" | "error" | "info";
-  show: boolean;
+  id: string;
+  title: string;
+  description?: string;
+  type?: "success" | "error" | "warning" | "info";
+  onClose: (id: string) => void;
 }
 
-export function Notification({ message, type, show }: NotificationProps) {
-  if (!show) return null;
-
-  const bgColor = {
-    success: "bg-green-500",
-    error: "bg-red-500",
-    info: "bg-blue-500",
-  }[type];
+export function Notification({ id, title, description, type = "info", onClose }: NotificationProps) {
+  const getTypeStyles = () => {
+    switch (type) {
+      case "success":
+        return "border-green-500 bg-green-50 text-green-800";
+      case "error":
+        return "border-red-500 bg-red-50 text-red-800";
+      case "warning":
+        return "border-yellow-500 bg-yellow-50 text-yellow-800";
+      default:
+        return "border-blue-500 bg-blue-50 text-blue-800";
+    }
+  };
 
   return (
-    <div
-      className={cn(
-        "fixed bottom-4 right-4 p-4 rounded-lg text-white shadow-lg transition-all duration-300",
-        bgColor
-      )}
-    >
-      {message}
+    <div className={cn(
+      "fixed top-4 right-4 z-50 w-80 rounded-lg border p-4 shadow-lg",
+      getTypeStyles()
+    )}>
+      <div className="flex items-start justify-between">
+        <div className="flex-1">
+          <h4 className="font-medium">{title}</h4>
+          {description && (
+            <p className="mt-1 text-sm opacity-90">{description}</p>
+          )}
+        </div>
+        <button
+          onClick={() => onClose(id)}
+          className="ml-4 rounded p-1 opacity-70 hover:opacity-100"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </div>
     </div>
   );
 } 

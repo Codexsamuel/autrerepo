@@ -1,336 +1,240 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs"
-import {
-  Users,
-  Search,
-  Plus,
-  FileText,
-  Calendar,
-  Heart,
-  Activity,
-  AlertCircle,
-  Clock,
-  CheckCircle2,
-  XCircle,
-} from "lucide-react"
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Plus, Search, Edit, Trash2, User, Phone, Mail } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
+
+interface Patient {
+  id: string;
+  patientNumber: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  gender: string;
+  phone: string;
+  email: string;
+  address: string;
+  bloodType: string;
+  emergencyContact: string;
+  status: 'actif' | 'inactif' | 'hospitalise';
+}
 
 export default function PatientsPage() {
-  const [activeTab, setActiveTab] = useState("all")
-  const [searchQuery, setSearchQuery] = useState("")
+  const router = useRouter();
+  const [patients, setPatients] = useState<Patient[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+
+  useEffect(() => {
+    fetchPatients();
+  }, []);
+
+  const fetchPatients = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/hospitalier/patients');
+      if (response.ok) {
+        const data = await response.json();
+        setPatients(data.patients || []);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des patients:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce patient ?')) return;
+    
+    try {
+      const response = await fetch(`/api/hospitalier/patients/${id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        toast({ title: 'Patient supprimé avec succès' });
+        fetchPatients();
+      } else {
+        throw new Error('Erreur lors de la suppression');
+      }
+    } catch (error) {
+      toast({ 
+        title: 'Erreur', 
+        description: 'Erreur lors de la suppression du patient',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const filteredPatients = patients.filter(patient =>
+    (patient.patientNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+     patient.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+     patient.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+     patient.phone.includes(searchTerm)) &&
+    (statusFilter === '' || patient.status === statusFilter)
+  );
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'actif': return 'text-green-600 bg-green-100';
+      case 'inactif': return 'text-gray-600 bg-gray-100';
+      case 'hospitalise': return 'text-red-600 bg-red-100';
+      default: return 'text-gray-600 bg-gray-100';
+    }
+  };
+
+  const calculateAge = (dateOfBirth: string) => {
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="animate-spin h-8 w-8 border-4 border-blue-500 rounded-full border-t-transparent"></div>
+        <span className="ml-4 text-gray-600">Chargement des patients...</span>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-2xl font-bold">Gestion des Patients</h1>
-            <p className="text-gray-500 dark:text-gray-400">
-              Gérez vos patients et leur suivi médical
-            </p>
-          </div>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                Nouveau patient
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-2xl">
-              <DialogHeader>
-                <DialogTitle>Ajouter un nouveau patient</DialogTitle>
-                <DialogDescription>
-                  Remplissez les informations du patient
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid grid-cols-2 gap-4 py-4">
-                <div className="space-y-2">
-                  <Label htmlFor="firstName">Prénom</Label>
-                  <Input id="firstName" placeholder="Prénom" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="lastName">Nom</Label>
-                  <Input id="lastName" placeholder="Nom" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="birthDate">Date de naissance</Label>
-                  <Input id="birthDate" type="date" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="gender">Genre</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Sélectionner" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="male">Homme</SelectItem>
-                      <SelectItem value="female">Femme</SelectItem>
-                      <SelectItem value="other">Autre</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Téléphone</Label>
-                  <Input id="phone" type="tel" placeholder="+33 6 12 34 56 78" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="patient@email.com" />
-                </div>
-                <div className="space-y-2 col-span-2">
-                  <Label htmlFor="address">Adresse</Label>
-                  <Input id="address" placeholder="Adresse complète" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="insurance">Assurance</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Sélectionner" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="public">Sécurité Sociale</SelectItem>
-                      <SelectItem value="private">Mutuelle</SelectItem>
-                      <SelectItem value="both">Les deux</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="bloodType">Groupe sanguin</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Sélectionner" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="a+">A+</SelectItem>
-                      <SelectItem value="a-">A-</SelectItem>
-                      <SelectItem value="b+">B+</SelectItem>
-                      <SelectItem value="b-">B-</SelectItem>
-                      <SelectItem value="ab+">AB+</SelectItem>
-                      <SelectItem value="ab-">AB-</SelectItem>
-                      <SelectItem value="o+">O+</SelectItem>
-                      <SelectItem value="o-">O-</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2 col-span-2">
-                  <Label htmlFor="allergies">Allergies</Label>
-                  <Input id="allergies" placeholder="Liste des allergies" />
-                </div>
-                <div className="space-y-2 col-span-2">
-                  <Label htmlFor="notes">Notes médicales</Label>
-                  <Input id="notes" placeholder="Notes importantes" />
-                </div>
-              </div>
-              <div className="flex justify-end space-x-4">
-                <Button variant="outline">Annuler</Button>
-                <Button>Enregistrer</Button>
-              </div>
-            </DialogContent>
-          </Dialog>
+    <div className="container mx-auto py-8 px-4">
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Gestion des patients</h1>
+          <p className="text-gray-600 mt-2">Gérez les dossiers patients</p>
         </div>
+        <Button onClick={() => router.push('/solutions/hospitalier/patients/creer')}>
+          <Plus className="mr-2 h-4 w-4" />
+          Nouveau patient
+        </Button>
+      </div>
 
-        <div className="space-y-8">
-          {/* Filtres et recherche */}
-          <div className="flex justify-between items-center">
-            <div className="flex space-x-4">
-              <Tabs defaultValue="all" className="w-[400px]">
-                <TabsList>
-                  <TabsTrigger value="all">Tous</TabsTrigger>
-                  <TabsTrigger value="hospitalized">Hospitalisés</TabsTrigger>
-                  <TabsTrigger value="outpatient">Consultations</TabsTrigger>
-                  <TabsTrigger value="discharged">Sortis</TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </div>
-            <div className="relative w-64">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+      <Card>
+        <CardHeader>
+          <div className="flex items-center space-x-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
-                type="search"
-                placeholder="Rechercher un patient..."
+                placeholder="Rechercher par numéro patient, nom, prénom ou téléphone..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Statut" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">Tous les statuts</SelectItem>
+                <SelectItem value="actif">Actif</SelectItem>
+                <SelectItem value="inactif">Inactif</SelectItem>
+                <SelectItem value="hospitalise">Hospitalisé</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-
-          {/* Liste des patients */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Liste des patients</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Nom</TableHead>
-                    <TableHead>Date d'admission</TableHead>
-                    <TableHead>Service</TableHead>
-                    <TableHead>Chambre</TableHead>
-                    <TableHead>Statut</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow>
-                    <TableCell className="font-medium">
-                      Jean Dupont
-                    </TableCell>
-                    <TableCell>2024-03-15</TableCell>
-                    <TableCell>Cardiologie</TableCell>
-                    <TableCell>302</TableCell>
-                    <TableCell>
-                      <div className="flex items-center">
-                        <Activity className="w-4 h-4 text-red-500 mr-2" />
-                        <span>Urgence</span>
+        </CardHeader>
+        <CardContent>
+          {filteredPatients.length === 0 ? (
+            <div className="text-center py-8">
+              <User className="mx-auto h-12 w-12 text-gray-400" />
+              <h3 className="mt-2 text-sm font-medium text-gray-900">Aucun patient trouvé</h3>
+              <p className="mt-1 text-sm text-gray-500">
+                {searchTerm || statusFilter ? 'Aucun patient ne correspond à vos critères.' : 'Commencez par créer un nouveau patient.'}
+              </p>
+            </div>
+          ) : (
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {filteredPatients.map((patient) => (
+                <Card key={patient.id} className="hover:shadow-lg transition-shadow">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <User className="h-5 w-5 text-blue-600" />
+                        <span className="font-medium">{patient.patientNumber}</span>
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <Button variant="ghost" size="sm">
-                        Voir
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium">
-                      Marie Martin
-                    </TableCell>
-                    <TableCell>2024-03-14</TableCell>
-                    <TableCell>Pédiatrie</TableCell>
-                    <TableCell>205</TableCell>
-                    <TableCell>
-                      <div className="flex items-center">
-                        <Heart className="w-4 h-4 text-yellow-500 mr-2" />
-                        <span>Surveillance</span>
+                      <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(patient.status)}`}>
+                        {patient.status === 'actif' ? 'Actif' : 
+                         patient.status === 'inactif' ? 'Inactif' : 'Hospitalisé'}
+                      </span>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      <div>
+                        <h3 className="font-semibold text-lg">
+                          {patient.firstName} {patient.lastName}
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                          {calculateAge(patient.dateOfBirth)} ans • {patient.gender}
+                        </p>
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <Button variant="ghost" size="sm">
-                        Voir
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium">
-                      Pierre Durand
-                    </TableCell>
-                    <TableCell>2024-03-13</TableCell>
-                    <TableCell>Orthopédie</TableCell>
-                    <TableCell>108</TableCell>
-                    <TableCell>
-                      <div className="flex items-center">
-                        <CheckCircle2 className="w-4 h-4 text-green-500 mr-2" />
-                        <span>Stable</span>
+                      
+                      <div className="space-y-1">
+                        <div className="flex items-center space-x-2 text-sm">
+                          <Phone className="h-4 w-4 text-gray-400" />
+                          <span>{patient.phone}</span>
+                        </div>
+                        {patient.email && (
+                          <div className="flex items-center space-x-2 text-sm">
+                            <Mail className="h-4 w-4 text-gray-400" />
+                            <span>{patient.email}</span>
+                          </div>
+                        )}
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <Button variant="ghost" size="sm">
-                        Voir
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
 
-          {/* Statistiques */}
-          <div className="grid grid-cols-4 gap-6">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Patients hospitalisés
-                </CardTitle>
-                <Users className="w-4 h-4 text-blue-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">156</div>
-                <p className="text-xs text-blue-500">
-                  +12 nouveaux aujourd'hui
-                </p>
-              </CardContent>
-            </Card>
+                      <div className="pt-2">
+                        <p className="text-xs text-gray-500">
+                          Groupe sanguin: <span className="font-medium">{patient.bloodType}</span>
+                        </p>
+                      </div>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Consultations du jour
-                </CardTitle>
-                <Calendar className="w-4 h-4 text-purple-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">48</div>
-                <p className="text-xs text-purple-500">
-                  12 en attente
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Urgences
-                </CardTitle>
-                <AlertCircle className="w-4 h-4 text-red-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">5</div>
-                <p className="text-xs text-red-500">
-                  2 en attente
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Sorties prévues
-                </CardTitle>
-                <Clock className="w-4 h-4 text-green-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">8</div>
-                <p className="text-xs text-green-500">
-                  Aujourd'hui
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
+                      <div className="flex space-x-2 pt-3">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => router.push(`/solutions/hospitalier/patients/${patient.id}`)}
+                          className="flex-1"
+                        >
+                          Voir dossier
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => router.push(`/solutions/hospitalier/patients/${patient.id}/edit`)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDelete(patient.id)}
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
-  )
-} 
+  );
+}

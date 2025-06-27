@@ -4,6 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import cron from 'node-cron';
 import { config } from './config';
 
+
 // Initialisation des clients
 const supabase = createClient(config.supabase.url, config.supabase.key);
 const translate = new TranslationServiceClient();

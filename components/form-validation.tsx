@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { AlertCircle, CheckCircle2 } from "lucide-react"
+
+
 
 interface FormField {
   id: string
@@ -99,7 +99,7 @@ export function FormValidation({ fields, onSubmit, submitLabel, successMessage }
     setTouched((prev) => ({ ...prev, [id]: true }))
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
     // Marquer tous les champs comme touchés pour validation
@@ -131,7 +131,6 @@ export function FormValidation({ fields, onSubmit, submitLabel, successMessage }
 
   const renderField = (field: FormField) => {
     const hasError = !!errors[field.id]
-
     switch (field.type) {
       case "textarea":
         return (
@@ -230,9 +229,7 @@ export function FormValidation({ fields, onSubmit, submitLabel, successMessage }
         <form onSubmit={handleSubmit} className="space-y-4">
           {fields.map((field) => renderField(field))}
 
-          <Button type="submit" className="w-full mt-6" disabled={!isValid || isSubmitting}>
-            {isSubmitting ? "Envoi en cours..." : submitLabel}
-          </Button>
+          <Button type="submit" className="w-full mt-6" disabled={!isValid || isSubmitting}>isSubmitting ? "Envoi en cours..." : submitLabel</Button>
 
           {Object.keys(errors).length > 0 && Object.keys(touched).some((key) => touched[key]) && (
             <p className="text-red-500 text-xs text-center mt-2">

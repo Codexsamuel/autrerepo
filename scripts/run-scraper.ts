@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import { spawn } from 'child_process';
 import path from 'path';
 
+
 // Chargement des variables d'environnement
 dotenv.config();
 

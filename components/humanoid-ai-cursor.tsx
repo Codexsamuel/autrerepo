@@ -1,10 +1,12 @@
-"use client"
+"use client";
 
-import { useEffect, useRef, useState } from "react"
+import { useState, useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber"
 import { useGLTF, useAnimations } from "@react-three/drei"
 import * as THREE from "three"
 import { GLTF } from "three-stdlib"
+
+
 
 type GLTFResult = GLTF & {
   nodes: {

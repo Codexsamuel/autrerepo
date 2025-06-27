@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useState } from "react"
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight, Shield, Check, ArrowLeft } from "lucide-react"
+
+
 
 export default function NovaCorSignUp() {
   const [showPassword, setShowPassword] = useState(false)
@@ -23,7 +23,7 @@ export default function NovaCorSignUp() {
   })
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleSignUp = async (e: React.FormEvent) => {
+  const handleSignUp = async (e: FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
 
@@ -39,15 +39,12 @@ export default function NovaCorSignUp() {
     setFormData((prev) => ({ ...prev, [field]: value }))
   }
 
-  const features = [
-    "Accès à tous les services DL Solutions",
+  const features = ["Accès à tous les services DL Solutions",
     "Dashboard personnalisé avec analytics",
     "Support client prioritaire 24/7",
     "Intégration IA avancée",
     "Sécurité renforcée avec 2FA",
-    "Mises à jour automatiques",
-  ]
-
+    "Mises à jour automatiques",]
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-violet-900 relative overflow-hidden">
       {/* Background Pattern */}
@@ -259,8 +256,7 @@ export default function NovaCorSignUp() {
                     type="submit"
                     disabled={isLoading || !formData.acceptTerms}
                     className="w-full h-10 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
-                  >
-                    {isLoading ? (
+                  >isLoading ? (
                       <div className="flex items-center">
                         <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
                         Création en cours...
@@ -270,8 +266,7 @@ export default function NovaCorSignUp() {
                         Créer mon compte
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </div>
-                    )}
-                  </Button>
+                    )</Button>
                 </form>
 
                 <div className="mt-6 pt-6 border-t border-gray-200 text-center">

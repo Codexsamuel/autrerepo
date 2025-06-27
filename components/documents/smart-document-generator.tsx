@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState, useRef } from "react"
+import { useState, useRef } from "react";
 import { FileText, Download, Eye, Printer, Send, Copy, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -10,6 +10,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
+
 
 interface DocumentTemplate {
   id: string
@@ -74,7 +76,6 @@ Ce contrat prend effet à compter du [DATE_DEBUT] et s'achève le [DATE_FIN].
 
 ## Article 3 - Conditions Spéciales
 [CONDITIONS]
-
 **Fait à Yaoundé, le [DATE]**
 
 **DL Solutions SARL**                    **[NOM_PARTENAIRE]**
@@ -102,10 +103,8 @@ Signature : _______________             Signature : _______________
 **Motif :** [MOTIF]
 **Bénéficiaire :** [BENEFICIAIRE]
 **Autorisé par :** [AUTORISE_PAR]
-
 **Observations :**
 [OBSERVATIONS]
-
 ---
 **Signature du bénéficiaire :** _______________
 **Signature de l'autorité :** _______________
@@ -172,22 +171,16 @@ Signature : _______________             Signature : _______________
 # RAPPORT JOURNALIER
 
 **Date :** [DATE]
-
 ## Activités Réalisées
 [ACTIVITES_REALISEES]
-
 ## Résultats Obtenus
 [RESULTATS]
-
 ## Difficultés Rencontrées
 [DIFFICULTES]
-
 ## Prochaines Actions
 [PROCHAINES_ACTIONS]
-
 ## Remarques
 [REMARQUES]
-
 ---
 **Rédigé par :** _______________
 **Validé par :** _______________
@@ -389,8 +382,7 @@ export function SmartDocumentGenerator() {
                       onClick={generateDocument}
                       disabled={!isFormValid() || isGenerating}
                       className="flex-1"
-                    >
-                      {isGenerating ? (
+                    >isGenerating ? (
                         <>
                           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
                           Génération...
@@ -400,8 +392,7 @@ export function SmartDocumentGenerator() {
                           <FileText className="mr-2 h-4 w-4" />
                           Générer le Document
                         </>
-                      )}
-                    </Button>
+                      )</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -460,9 +451,7 @@ export function SmartDocumentGenerator() {
                             </p>
                           </div>
                         </div>
-                        <Badge variant={document.status === 'draft' ? 'secondary' : 'default'}>
-                          {document.status === 'draft' ? 'Brouillon' : 'Finalisé'}
-                        </Badge>
+                        <Badge variant={document.status === 'draft' ? 'secondary' : 'default'}>document.status === 'draft' ? 'Brouillon' : 'Finalisé'</Badge>
                       </div>
                       
                       <div className="flex space-x-2">

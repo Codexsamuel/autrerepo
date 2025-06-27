@@ -1,16 +1,17 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import { FormValidation } from "@/components/form-validation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Calendar, Users, Video } from "lucide-react"
 
+
+
 export default function RendezVousPage() {
   const [activeTab, setActiveTab] = useState("info")
 
-  const personalInfoFields = [
-    {
+  const personalInfoFields = [{
       id: "name",
       label: "Nom complet",
       type: "text" as const,
@@ -45,9 +46,7 @@ export default function RendezVousPage() {
       type: "text" as const,
       required: true,
       placeholder: "Votre fonction",
-    },
-  ]
-
+    },]
   const meetingDetailsFields = [
     {
       id: "service",

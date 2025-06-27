@@ -1,7 +1,6 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-
+import { useState, useEffect } from "react";
 export function AI3DModel() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 

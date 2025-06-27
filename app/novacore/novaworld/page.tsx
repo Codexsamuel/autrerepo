@@ -1,193 +1,83 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import Link from "next/link"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import {
-  Users,
-  Briefcase,
-  MessageSquare,
-  Building2,
-  Globe,
-  Shield,
-  Sparkles,
-  TrendingUp,
-} from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Users, Briefcase, Network, Plus } from 'lucide-react';
+import Link from 'next/link';
+
+const companies = [
+  { id: 1, name: "DL Tech", logo: "https://res.cloudinary.com/dko5sommz/image/upload/v1750993226/Pierre_Essomba_fat4h7.jpg", sector: "Tech", jobs: 3 },
+  { id: 2, name: "Nova Hospitality", logo: "https://res.cloudinary.com/dko5sommz/image/upload/v1750993227/Marie_Nguemo_p5xzhh.jpg", sector: "Hospitality", jobs: 2 },
+  { id: 3, name: "AssurPro", logo: "https://res.cloudinary.com/dko5sommz/image/upload/v1750993730/trading_intelligent_rjtipd.avif", sector: "Assurance", jobs: 1 },
+];
+
+const jobs = [
+  { id: 1, title: "Développeur Fullstack", company: "DL Tech", location: "Paris", logo: companies[0].logo },
+  { id: 2, title: "Chef de projet", company: "Nova Hospitality", location: "Yaoundé", logo: companies[1].logo },
+  { id: 3, title: "Agent Assurance", company: "AssurPro", location: "Douala", logo: companies[2].logo },
+];
 
 export default function NovaWorldPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-br from-blue-600 to-blue-800 text-white">
-        <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <Image
-              src="https://res.cloudinary.com/dko5sommz/image/upload/v1745950544/novaworld-logo-generated_gqmjwf.png"
-              alt="NovaWorld Logo"
-              width={200}
-              height={50}
-              className="mx-auto h-12 w-auto"
-            />
-            <h1 className="mt-8 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-              Votre Réseau Social Professionnel
-            </h1>
-            <p className="mt-4 text-xl text-blue-100">
-              Connectez-vous avec des professionnels, développez votre réseau et trouvez des opportunités commerciales.
-            </p>
-            <div className="mt-8">
-              <Link href="/novacore/novaworld/social">
-                <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
-                  Rejoindre NovaWorld
-                </Button>
-              </Link>
+    <div className="space-y-10">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">NovaWorld</h1>
+        <Link href="/novacore/novaworld/companies/nouveau">
+          <Button className="bg-blue-600 hover:bg-blue-700">
+            <Plus className="h-4 w-4 mr-2" />
+            Nouvelle entreprise
+          </Button>
+        </Link>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {companies.map((company) => (
+          <Card key={company.id} className="hover:shadow-lg transition-shadow">
+            <CardHeader className="flex flex-row items-center gap-3 pb-2">
+              <img src={company.logo} alt={company.name} className="w-14 h-14 rounded-full object-cover" />
+              <div>
+                <CardTitle className="text-lg">{company.name}</CardTitle>
+                <p className="text-xs text-gray-500">Secteur : {company.sector}</p>
+                <span className="text-xs text-gray-400">{company.jobs} jobs</span>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <Button size="sm" variant="outline" asChild>
+                <Link href={`/novacore/novaworld/companies/${company.id}`}>Voir l'entreprise</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      <div className="mt-10">
+        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2"><Briefcase className="h-5 w-5" /> Offres d'emploi</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {jobs.map((job) => (
+            <Card key={job.id} className="hover:shadow-lg transition-shadow">
+              <CardHeader className="flex flex-row items-center gap-3 pb-2">
+                <img src={job.logo} alt={job.title} className="w-10 h-10 rounded-full object-cover" />
+                <div>
+                  <CardTitle className="text-base">{job.title}</CardTitle>
+                  <p className="text-xs text-gray-500">{job.company} - {job.location}</p>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <Button size="sm" variant="outline">Postuler</Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+      <div className="mt-10">
+        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2"><Network className="h-5 w-5" /> Réseau</h2>
+        <div className="flex flex-wrap gap-4">
+          {companies.map((company) => (
+            <div key={company.id} className="flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2">
+              <img src={company.logo} alt={company.name} className="w-8 h-8 rounded-full object-cover" />
+              <span className="text-sm font-medium">{company.name}</span>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Features Section */}
-      <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-blue-100 rounded-lg">
-                  <Users className="h-6 w-6 text-blue-600" />
-                </div>
-                <h3 className="text-lg font-semibold">Réseau</h3>
-              </div>
-              <p className="mt-4 text-gray-600">
-                Connectez-vous avec des professionnels de votre secteur et développez votre réseau.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-blue-100 rounded-lg">
-                  <Briefcase className="h-6 w-6 text-blue-600" />
-                </div>
-                <h3 className="text-lg font-semibold">Opportunités</h3>
-              </div>
-              <p className="mt-4 text-gray-600">
-                Découvrez des opportunités professionnelles et commerciales adaptées à votre profil.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-blue-100 rounded-lg">
-                  <MessageSquare className="h-6 w-6 text-blue-600" />
-                </div>
-                <h3 className="text-lg font-semibold">Communauté</h3>
-              </div>
-              <p className="mt-4 text-gray-600">
-                Rejoignez des groupes de discussion et partagez vos expériences avec la communauté.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* Social Features */}
-      <div className="bg-gray-100">
-        <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-12">Fonctionnalités Sociales</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card>
-              <CardContent className="p-6">
-                <Building2 className="h-8 w-8 text-blue-600 mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Profil Professionnel</h3>
-                <p className="text-gray-600">
-                  Créez un profil détaillé mettant en valeur votre expertise et vos réalisations.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="p-6">
-                <Globe className="h-8 w-8 text-blue-600 mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Réseau International</h3>
-                <p className="text-gray-600">
-                  Connectez-vous avec des professionnels du monde entier.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="p-6">
-                <Shield className="h-8 w-8 text-blue-600 mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Sécurité Avancée</h3>
-                <p className="text-gray-600">
-                  Vos données sont protégées avec les dernières technologies de sécurité.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="p-6">
-                <Sparkles className="h-8 w-8 text-blue-600 mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Recommandations IA</h3>
-                <p className="text-gray-600">
-                  Recevez des suggestions personnalisées basées sur votre profil.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
-
-      {/* Target Audience */}
-      <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-center mb-12">Pour Qui ?</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <Card>
-            <CardContent className="p-6">
-              <h3 className="text-lg font-semibold mb-2">Professionnels</h3>
-              <p className="text-gray-600">
-                Développez votre réseau professionnel et trouvez de nouvelles opportunités.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <h3 className="text-lg font-semibold mb-2">Entreprises</h3>
-              <p className="text-gray-600">
-                Recrutez des talents et développez votre présence en ligne.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <h3 className="text-lg font-semibold mb-2">Entrepreneurs</h3>
-              <p className="text-gray-600">
-                Trouvez des partenaires et des investisseurs pour vos projets.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* CTA Section */}
-      <div className="bg-blue-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Prêt à Rejoindre NovaWorld ?</h2>
-          <p className="text-xl text-blue-100 mb-8">
-            Commencez à développer votre réseau professionnel dès aujourd'hui.
-          </p>
-          <Link href="/novacore/novaworld/social">
-            <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
-              Rejoindre Maintenant
-            </Button>
-          </Link>
+          ))}
         </div>
       </div>
     </div>
-  )
-} 
+  );
+}

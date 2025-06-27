@@ -1,10 +1,12 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef } from "react";
 import { Search, X, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
+
+
 
 interface SearchResult {
   id: string
@@ -14,8 +16,7 @@ interface SearchResult {
   type: 'service' | 'page' | 'formation' | 'product'
 }
 
-const searchData: SearchResult[] = [
-  // Services
+const searchData: SearchResult[] = [// Services
   { id: '1', title: 'NovaCore CRM', description: 'Système de gestion de la relation client avec IA', url: '/novacore', type: 'service' },
   { id: '2', title: 'NovaWorld', description: 'Réseau social B2B professionnel', url: '/novaworld', type: 'service' },
   { id: '3', title: 'DL Style', description: 'Boutique en ligne premium', url: '/dl-style', type: 'service' },
@@ -34,9 +35,7 @@ const searchData: SearchResult[] = [
   { id: '12', title: 'IA pour Entreprises', description: 'Intégration de l\'IA dans votre business', url: '/formations/ia-entreprises', type: 'formation' },
   { id: '13', title: 'E-commerce & Vente', description: 'Maîtriser la vente en ligne', url: '/formations/ecommerce-vente', type: 'formation' },
   { id: '14', title: 'Télévente & Prospection', description: 'Techniques de vente et prospection', url: '/formations/televente-prospection', type: 'formation' },
-  { id: '15', title: 'SAV Excellence', description: 'Service après-vente de qualité', url: '/formations/sav-excellence', type: 'formation' },
-]
-
+  { id: '15', title: 'SAV Excellence', description: 'Service après-vente de qualité', url: '/formations/sav-excellence', type: 'formation' },]
 const typeColors = {
   service: 'bg-blue-100 text-blue-700',
   page: 'bg-gray-100 text-gray-700',
@@ -164,9 +163,7 @@ export function SearchBar() {
                       <h4 className="font-medium text-gray-900 truncate">
                         {result.title}
                       </h4>
-                      <Badge className={`text-xs ${typeColors[result.type]}`}>
-                        {typeLabels[result.type]}
-                      </Badge>
+                      <Badge className={`text-xs ${typeColors[result.type]}`}>typeLabels[result.type]</Badge>
                     </div>
                     <p className="text-sm text-gray-600 line-clamp-2">
                       {result.description}

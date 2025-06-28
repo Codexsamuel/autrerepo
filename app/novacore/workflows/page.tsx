@@ -34,7 +34,7 @@ export default function WorkflowsPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {workflows.map((wf) => (
+              {workflows.map((wf: any) => (
                 <div key={wf.id} className="flex items-center justify-between p-3 border rounded-lg">
                   <div>
                     <h3 className="font-semibold">{wf.name}</h3>
@@ -58,7 +58,7 @@ export default function WorkflowsPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {logs.map((log) => (
+              {logs.map((log: any) => (
                 <div key={log.id} className="flex justify-between text-sm border-b py-2">
                   <span>{log.workflow}</span>
                   <span>{log.action}</span>

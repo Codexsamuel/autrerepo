@@ -125,7 +125,7 @@ export default function FacturationPage() {
             </div>
           ) : (
             <div className="space-y-4">
-              {filteredBillings.map((billing) => (
+              {filteredBillings.map((billing: any) => (
                 <div key={billing.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
                   <div className="flex items-center space-x-4">
                     <Receipt className="h-8 w-8 text-blue-600" />

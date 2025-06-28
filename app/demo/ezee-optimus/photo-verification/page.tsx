@@ -126,7 +126,7 @@ export default function PhotoVerificationPage() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {demoUsers.map((user) => (
+              {demoUsers.map((user: any) => (
                 <Card
                   key={user.id}
                   className="cursor-pointer hover:shadow-lg transition-shadow border-2 hover:border-blue-200"

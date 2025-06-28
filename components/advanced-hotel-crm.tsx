@@ -631,7 +631,7 @@ export function AdvancedHotelCRM() {
 
               {/* Clients individuels */}
               <div className="space-y-4">
-                {clientProfiles.map((client) => (
+                {clientProfiles.map((client: any) => (
                   <Card key={client.id} className="hover:shadow-lg transition-shadow cursor-pointer">
                     <CardContent className="p-4">
                       <div className="flex items-start gap-4">
@@ -763,7 +763,7 @@ export function AdvancedHotelCRM() {
               {/* Groupes */}
               <div className="space-y-4">
                 <h4 className="font-semibold">Réservations de Groupe</h4>
-                {groupBookings.map((group) => (
+                {groupBookings.map((group: any) => (
                   <Card key={group.id} className="border-purple-200">
                     <CardContent className="p-4">
                       <div className="flex items-start justify-between mb-3">
@@ -841,7 +841,7 @@ export function AdvancedHotelCRM() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3 max-h-64 overflow-y-auto">
-                    {chatMessages.map((msg) => (
+                    {chatMessages.map((msg: any) => (
                       <div key={msg.id} className="p-2 bg-green-50 rounded-lg">
                         <div className="text-sm font-medium">
                           {clientProfiles.find((c) => c.id === msg.clientId)?.fullName}
@@ -877,7 +877,7 @@ export function AdvancedHotelCRM() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {housekeepingTasks.map((task) => (
+                  {housekeepingTasks.map((task: any) => (
                     <div key={task.id} className="p-4 border rounded-lg">
                       <div className="flex items-center justify-between mb-3">
                         <div>
@@ -895,7 +895,7 @@ export function AdvancedHotelCRM() {
                         >task.priority</Badge>
                       </div>
                       <div className="space-y-2">
-                        {task.checklistItems.map((item, index) => (
+                        {task.checklistItems.map((item: any, index: number) => (
                           <div key={index} className="flex items-center gap-2">
                             {item.completed ? (
                               <CheckCircle className="h-4 w-4 text-green-600" />
@@ -1254,7 +1254,7 @@ export function AdvancedHotelCRM() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {inventoryItems.map((item) => (
+                {inventoryItems.map((item: any) => (
                   <div key={item.id} className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex-1">
                       <h4 className="font-semibold">{item.name}</h4>
@@ -1312,7 +1312,7 @@ export function AdvancedHotelCRM() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {aiAlerts.map((alert) => (
+                  {aiAlerts.map((alert: any) => (
                     <div key={alert.id} className="p-4 border rounded-lg">
                       <div className="flex items-start justify-between mb-2">
                         <div>

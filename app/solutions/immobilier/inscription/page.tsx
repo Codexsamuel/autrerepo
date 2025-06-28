@@ -9,7 +9,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Building2, Upload, ArrowRight } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 
 
 
@@ -226,11 +225,10 @@ export default function InscriptionPage() {
                     <div className="flex items-center space-x-4">
                       <div className="relative w-24 h-24 border-2 border-dashed rounded-lg flex items-center justify-center">
                         {logoPreview ? (
-                          <Image
+                          <img
                             src={logoPreview}
                             alt="Logo preview"
-                            fill
-                            className="object-contain p-2"
+                            className="object-contain p-2 w-full h-full"
                           />
                         ) : (
                           <Upload className="w-8 h-8 text-gray-400" />

@@ -99,7 +99,7 @@ export default function AdminPage() {
         </div>
         {/* Users Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {filteredUsers.map((user) => (
+          {filteredUsers.map((user: any) => (
             <Card key={user.id} className="hover:shadow-lg transition-shadow">
               <CardHeader className="pb-4">
                 <div className="flex items-center space-x-4">
@@ -154,7 +154,7 @@ export default function AdminPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {logs.map((log) => (
+              {logs.map((log: any) => (
                 <div key={log.id} className="flex justify-between text-sm border-b py-2">
                   <span>{log.user}</span>
                   <span>{log.action}</span>

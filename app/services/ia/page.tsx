@@ -100,7 +100,7 @@ export default function IAServicesPage() {
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {aiServices.map((service) => (
+          {aiServices.map((service: any) => (
             <Card 
               key={service.id}
               className="bg-slate-800/50 border-slate-700 hover:border-purple-500/50 transition-all duration-300 cursor-pointer"
@@ -117,7 +117,7 @@ export default function IAServicesPage() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2">
-                  {service.features.map((feature, index) => (
+                  {service.features.map((feature: any, index: number) => (
                     <li key={index} className="text-sm text-gray-300 flex items-center">
                       <div className={`w-2 h-2 rounded-full bg-${service.color}-400 mr-2`} />
                       {feature}
@@ -133,19 +133,19 @@ export default function IAServicesPage() {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-4 bg-slate-800/50 border border-slate-700 mb-8">
             <TabsTrigger value="image-generation" className="data-[state=active]:bg-purple-600">
-              <Image className="w-4 h-4 mr-2" />
+              <img className="w-4 h-4 mr-2" src="/images/image.png" alt="Image" />
               Images
             </TabsTrigger>
             <TabsTrigger value="text-generation" className="data-[state=active]:bg-blue-600">
-              <FileText className="w-4 h-4 mr-2" />
+              <img className="w-4 h-4 mr-2" src="/images/text.png" alt="Text" />
               Texte
             </TabsTrigger>
             <TabsTrigger value="code-assistant" className="data-[state=active]:bg-green-600">
-              <Code className="w-4 h-4 mr-2" />
+              <img className="w-4 h-4 mr-2" src="/images/code.png" alt="Code" />
               Code
             </TabsTrigger>
             <TabsTrigger value="chat-ai" className="data-[state=active]:bg-orange-600">
-              <MessageSquare className="w-4 h-4 mr-2" />
+              <img className="w-4 h-4 mr-2" src="/images/chat.png" alt="Chat" />
               Chat
             </TabsTrigger>
           </TabsList>
@@ -186,20 +186,20 @@ export default function IAServicesPage() {
                           </>
                         ) : (
                           <>
-                            <Play className="w-4 h-4 mr-2" />
+                            <img className="w-4 h-4 mr-2" src="/images/play.png" alt="Play" />
                             Générer
                           </>
                         )}
                       </Button>
                       <Button variant="outline" className="border-slate-600 text-gray-300">
-                        <Upload className="w-4 h-4 mr-2" />
+                        <img className="w-4 h-4 mr-2" src="/images/upload.png" alt="Upload" />
                         Upload
                       </Button>
                     </div>
                   </div>
                   <div className="bg-slate-700 rounded-lg p-6 flex items-center justify-center min-h-[300px]">
                     <div className="text-center text-gray-400">
-                      <Image className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                      <img className="w-16 h-16 mx-auto mb-4 opacity-50" src="/images/image.png" alt="Generated Image" />
                       <p>Votre image générée apparaîtra ici</p>
                     </div>
                   </div>
@@ -218,7 +218,7 @@ export default function IAServicesPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-center py-12">
-                  <FileText className="w-16 h-16 text-blue-400 mx-auto mb-4" />
+                  <img className="w-16 h-16 text-blue-400 mx-auto mb-4" src="/images/text.png" alt="Text" />
                   <h3 className="text-xl font-semibold text-white mb-2">
                     Génération de Texte
                   </h3>
@@ -243,7 +243,7 @@ export default function IAServicesPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-center py-12">
-                  <Code className="w-16 h-16 text-green-400 mx-auto mb-4" />
+                  <img className="w-16 h-16 text-green-400 mx-auto mb-4" src="/images/code.png" alt="Code" />
                   <h3 className="text-xl font-semibold text-white mb-2">
                     Assistant Code
                   </h3>
@@ -268,7 +268,7 @@ export default function IAServicesPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-center py-12">
-                  <MessageSquare className="w-16 h-16 text-orange-400 mx-auto mb-4" />
+                  <img className="w-16 h-16 text-orange-400 mx-auto mb-4" src="/images/chat.png" alt="Chat" />
                   <h3 className="text-xl font-semibold text-white mb-2">
                     Chat IA
                   </h3>

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
+import { supabase } from '@/lib/supabase/client';
 
 interface TradingStats {
   totalAccounts: number;
@@ -20,7 +20,6 @@ export default function TradingDashboard() {
     totalVolume: 0,
   });
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
 
   useEffect(() => {
     fetchStats();
@@ -35,7 +34,7 @@ export default function TradingDashboard() {
         totalAccounts: accounts?.length || 0,
         totalOrders: orders?.length || 0,
         totalPositions: positions?.length || 0,
-        totalVolume: orders?.reduce((sum, o) => sum + (o.amount || 0), 0) || 0,
+        totalVolume: orders?.reduce((sum: number, o: any) => sum + (o.amount || 0), 0) || 0,
       });
     } finally {
       setLoading(false);

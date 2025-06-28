@@ -309,7 +309,7 @@ export default function NovaAgricultureERP() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {farms.map((farm) => (
+                      {farms.map((farm: any) => (
                         <div key={farm.id} className="flex items-center justify-between p-4 border rounded-lg">
                           <div className="flex items-center gap-4">
                             <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">

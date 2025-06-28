@@ -248,7 +248,7 @@ export default function IntelligentForms() {
       )}
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {forms.map((form) => (
+        {forms.map((form: any) => (
           <div
             key={form.id}
             className="bg-white p-6 rounded-xl shadow-lg border hover:shadow-xl transition-shadow"

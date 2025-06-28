@@ -1,20 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase/client';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, context: any) {
+  const { id } = context.params;
   try {
     const { data: claim, error } = await supabase
       .from('insurance_claims')
       .select('*')
-      .eq('id', params.id)
+      .eq('id', id)
       .single();
 
     if (error) throw error;
@@ -29,28 +22,16 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, context: any) {
+  const { id } = context.params;
   try {
     const body = await request.json();
-    const { claimNumber, type, clientName, amount, description, date, status } = body;
-
+    const { claim } = body;
     const { data, error } = await supabase
       .from('insurance_claims')
-      .update({
-        claim_number: claimNumber,
-        type,
-        client_name: clientName,
-        amount,
-        description,
-        date,
-        status
-      })
-      .eq('id', params.id)
-      .select()
-      .single();
+      .update(claim)
+      .eq('id', id)
+      .select();
 
     if (error) throw error;
 
@@ -64,19 +45,17 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, context: any) {
+  const { id } = context.params;
   try {
     const { error } = await supabase
       .from('insurance_claims')
       .delete()
-      .eq('id', params.id);
+      .eq('id', id);
 
     if (error) throw error;
 
-    return NextResponse.json({ message: 'Sinistre supprimé avec succès' });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Erreur lors de la suppression du sinistre:', error);
     return NextResponse.json(

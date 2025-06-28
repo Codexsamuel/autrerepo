@@ -169,7 +169,7 @@ export default function AdminDashboard() {
                     </Button>
                   </div>
                   <div className="space-y-4">
-                    {recentOrders.map((order) => (
+                    {recentOrders.map((order: any) => (
                       <div key={order.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                         <div>
                           <div className="font-medium">{order.id}</div>
@@ -280,7 +280,7 @@ export default function AdminDashboard() {
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                        {products.map((product) => (
+                        {products.map((product: any) => (
                           <tr key={product.id} className="hover:bg-gray-50">
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center">
@@ -352,7 +352,7 @@ export default function AdminDashboard() {
                     </Button>
                   </div>
                   <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {categories.map((category) => (
+                    {categories.map((category: any) => (
                       <div key={category.id} className="p-4 border rounded-lg hover:shadow-md transition-shadow">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-2xl">{category.icon}</span>
@@ -409,7 +409,7 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                   <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {mediaFiles.map((file) => (
+                    {mediaFiles.map((file: any) => (
                       <Card key={file.id} className="border hover:shadow-md transition-shadow">
                         <CardContent className="p-4">
                           <div className="aspect-square bg-gray-100 rounded-lg mb-3 flex items-center justify-center">

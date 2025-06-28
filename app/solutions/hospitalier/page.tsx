@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 
 interface HotelStats {
   totalRooms: number;
@@ -20,7 +20,6 @@ export default function HotelDashboard() {
     totalRevenue: 0,
   });
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
 
   useEffect(() => {
     fetchStats();
@@ -36,7 +35,7 @@ export default function HotelDashboard() {
         totalRooms: rooms?.length || 0,
         totalClients: clients?.length || 0,
         totalReservations: reservations?.length || 0,
-        totalRevenue: bills?.reduce((sum, b) => sum + (b.amount || 0), 0) || 0,
+        totalRevenue: bills?.reduce((sum: number, b: any) => sum + (b.amount || 0), 0) || 0,
       });
     } finally {
       setLoading(false);

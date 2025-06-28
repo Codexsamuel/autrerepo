@@ -1,15 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
 
 export async function POST(request: NextRequest) {
   try {
@@ -40,7 +34,7 @@ async function generateSubtitles(videoUrl: string) {
       language: "fr"
     });
 
-    const subtitles = parseSRT(transcription.text);
+    const subtitles = parseSRT(transcription);
     return NextResponse.json({ success: true, subtitles });
   } catch (error) {
     throw new Error('Erreur lors de la génération des sous-titres');

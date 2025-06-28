@@ -139,7 +139,7 @@ export default function CreditsPage() {
             </div>
           ) : (
             <div className="space-y-4">
-              {filteredCredits.map((credit) => (
+              {filteredCredits.map((credit: any) => (
                 <div key={credit.id} className="p-4 border rounded-lg hover:bg-gray-50">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-4">

@@ -295,10 +295,9 @@ export default function HomePage() {
             {/* Intelligence Artificielle */}
             <div className="group bg-white rounded-2xl shadow-xl border border-gray-100 p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="relative w-full h-48 mb-6 rounded-xl overflow-hidden">
-                <Image
+                <img
                   src="https://res.cloudinary.com/dko5sommz/image/upload/v1750993736/illustration-vectorielle-intelligence-artificielle_1237743-62154_t29exq.avif"
                   alt="Intelligence Artificielle"
-                  fill
                   className="object-cover group-hover:scale-110 transition-transform duration-300"
                 />
               </div>
@@ -317,10 +316,9 @@ export default function HomePage() {
             {/* Trading Intelligent */}
             <div className="group bg-white rounded-2xl shadow-xl border border-gray-100 p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="relative w-full h-48 mb-6 rounded-xl overflow-hidden">
-                <Image
+                <img
                   src="https://res.cloudinary.com/dko5sommz/image/upload/v1750993730/trading_intelligent_rjtipd.avif"
                   alt="Trading Intelligent"
-                  fill
                   className="object-cover group-hover:scale-110 transition-transform duration-300"
                 />
               </div>
@@ -339,10 +337,9 @@ export default function HomePage() {
             {/* Solutions Digitales */}
             <div className="group bg-white rounded-2xl shadow-xl border border-gray-100 p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="relative w-full h-48 mb-6 rounded-xl overflow-hidden">
-                <Image
+                <img
                   src="https://res.cloudinary.com/dko5sommz/image/upload/v1750993764/solution_digitale_pmibcf.jpg"
                   alt="Solutions Digitales"
-                  fill
                   className="object-cover group-hover:scale-110 transition-transform duration-300"
                 />
               </div>
@@ -403,10 +400,9 @@ export default function HomePage() {
                 )}
                 
                 <div className="relative w-full h-48 mb-6 rounded-xl overflow-hidden">
-                  <Image
+                  <img
                     src={pack.image}
                     alt={pack.name}
-                    fill
                     className="object-cover"
                   />
                 </div>
@@ -546,10 +542,9 @@ export default function HomePage() {
             {teamMembers.map((member, index) => (
               <div key={index} className="group bg-gradient-to-br from-blue-500/20 to-purple-600/20 p-6 rounded-2xl border border-white/20 hover:border-white/40 transition-all duration-500 transform hover:scale-105 backdrop-blur-sm shadow-xl">
                 <div className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-white/30 group-hover:border-white/50 transition-all duration-300 shadow-lg">
-                  <Image
+                  <img
                     src={member.image}
                     alt={member.name}
-                    fill
                     className="object-cover group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>
@@ -611,10 +606,9 @@ export default function HomePage() {
             {/* Service Cards */}
             <div className="group bg-gradient-to-br from-blue-500/20 to-purple-600/20 p-8 rounded-2xl border border-white/20 hover:border-white/40 transition-all duration-500 transform hover:scale-105 backdrop-blur-sm shadow-xl">
               <div className="relative w-full h-48 rounded-xl overflow-hidden mb-6">
-                <Image
+                <img
                   src="https://res.cloudinary.com/dko5sommz/image/upload/v1750993736/illustration-vectorielle-intelligence-artificielle_1237743-62154_t29exq.avif"
                   alt="Intelligence Artificielle"
-                  fill
                   className="object-cover group-hover:scale-110 transition-transform duration-300"
                 />
               </div>
@@ -626,10 +620,9 @@ export default function HomePage() {
 
             <div className="group bg-gradient-to-br from-purple-500/20 to-pink-600/20 p-8 rounded-2xl border border-white/20 hover:border-white/40 transition-all duration-500 transform hover:scale-105 backdrop-blur-sm shadow-xl">
               <div className="relative w-full h-48 rounded-xl overflow-hidden mb-6">
-                <Image
+                <img
                   src="https://res.cloudinary.com/dko5sommz/image/upload/v1750993730/trading_intelligent_rjtipd.avif"
                   alt="Trading Intelligent"
-                  fill
                   className="object-cover group-hover:scale-110 transition-transform duration-300"
                 />
               </div>
@@ -641,10 +634,9 @@ export default function HomePage() {
 
             <div className="group bg-gradient-to-br from-green-500/20 to-blue-600/20 p-8 rounded-2xl border border-white/20 hover:border-white/40 transition-all duration-500 transform hover:scale-105 backdrop-blur-sm shadow-xl">
               <div className="relative w-full h-48 rounded-xl overflow-hidden mb-6">
-                <Image
+                <img
                   src="https://res.cloudinary.com/dko5sommz/image/upload/v1750993764/solution_digitale_pmibcf.jpg"
                   alt="Solutions Digitales"
-                  fill
                   className="object-cover group-hover:scale-110 transition-transform duration-300"
                 />
               </div>

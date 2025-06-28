@@ -32,23 +32,29 @@ export default function NouveauProjetVideoPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium mb-1">Nom du projet *</label>
-              <Input
-                required
-                value={projectName}
-                onChange={(e) => setProjectName(e.target.value)}
-                placeholder="Nom du projet"
-                leftIcon={<FileText className="h-4 w-4 text-gray-400" />}
-              />
+              <div className="relative flex items-center">
+                <FileText className="absolute left-3 h-4 w-4 text-gray-400" />
+                <Input
+                  required
+                  value={projectName}
+                  onChange={(e) => setProjectName(e.target.value)}
+                  placeholder="Nom du projet"
+                  className="pl-10"
+                />
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Vidéo à importer *</label>
-              <Input
-                required
-                type="file"
-                accept="video/*"
-                onChange={handleFileChange}
-                leftIcon={<Upload className="h-4 w-4 text-gray-400" />}
-              />
+              <div className="relative flex items-center">
+                <Upload className="absolute left-3 h-4 w-4 text-gray-400" />
+                <Input
+                  required
+                  type="file"
+                  accept="video/*"
+                  onChange={handleFileChange}
+                  className="pl-10"
+                />
+              </div>
               {videoFile && (
                 <div className="mt-2 text-xs text-gray-600">Fichier sélectionné : {videoFile.name}</div>
               )}

@@ -263,7 +263,7 @@ export class AIService {
       if (validPredictions.length === 0) return null;
 
       // Combiner les prédictions (moyenne pondérée)
-      const avgConfidence = validPredictions.reduce((sum, pred) => sum + pred.confidence, 0) / validPredictions.length;
+      const avgConfidence = validPredictions.reduce((sum: number, pred: any) => sum + pred.confidence, 0) / validPredictions.length;
       const upVotes = validPredictions.filter(pred => pred.direction === 'up').length;
       const downVotes = validPredictions.filter(pred => pred.direction === 'down').length;
       

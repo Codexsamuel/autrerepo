@@ -136,7 +136,7 @@ export default function UsersPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {filteredUsers.map((user) => (
+            {filteredUsers.map((user: any) => (
               <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 rounded-full overflow-hidden">

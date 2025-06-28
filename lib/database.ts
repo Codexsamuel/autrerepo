@@ -1,11 +1,11 @@
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from '@/lib/supabase/client'
 
 
 // Configuration Supabase
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export const supabase = supabase
 
 // Types TypeScript pour la base de données
 export interface User {
@@ -290,7 +290,7 @@ export class DatabaseService {
     const totalTrades = trades.length
     const wins = trades.filter(t => t.result === 'win').length
     const losses = trades.filter(t => t.result === 'loss').length
-    const totalProfit = trades.reduce((sum, trade) => 
+    const totalProfit = trades.reduce((sum: number, trade: any) => 
       sum + (trade.exit_price - trade.entry_price), 0
     )
     
@@ -314,7 +314,7 @@ export class DatabaseService {
     const interactions = data as AIInteraction[]
     const totalInteractions = interactions.length
     const uniqueUsers = new Set(interactions.map(i => i.user_id)).size
-    const intents = interactions.reduce((acc, interaction) => {
+    const intents = interactions.reduce((acc: number, interaction: any) => {
       if (interaction.intent) {
         acc[interaction.intent] = (acc[interaction.intent] || 0) + 1
       }

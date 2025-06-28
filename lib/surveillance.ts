@@ -3,7 +3,7 @@ import winston from 'winston'
 import Redis from 'redis'
 import { createTransport } from 'nodemailer'
 import twilio from 'twilio'
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from '@/lib/supabase/client'
 
 'use server'
 
@@ -17,15 +17,9 @@ if (typeof window !== 'undefined') {
 // CONFIGURATION SURVEILLANCE IA
 // ========================================
 
-const redis = Redis.createClient({
-  url: process.env.REDIS_URL || 'redis://localhost:6379',
-  password: process.env.REDIS_PASSWORD
-})
+const redis = Redis.supabase
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+const supabase = supabase
 
 // Logger de surveillance
 const surveillanceLogger = winston.createLogger({

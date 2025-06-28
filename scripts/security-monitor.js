@@ -32,11 +32,11 @@ const config = {
 };
 
 // Initialize Redis
-const redis = Redis.createClient(config.redis);
+const redis = Redis.supabase;
 redis.connect().catch(console.error);
 
 // Initialize Supabase
-const supabase = createClient(config.supabase.url, config.supabase.key);
+const supabase = supabase;
 
 // Logger configuration
 const logger = winston.createLogger({

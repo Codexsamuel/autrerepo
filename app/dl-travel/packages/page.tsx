@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Star, MapPin, Calendar, Plane, Hotel, Utensils, Camera, Heart, Filter, Search } from "lucide-react"
-import Image from "next/image"
 import Link from "next/link"
 
 
@@ -145,7 +144,7 @@ export default function PackagesPage() {
     },
   ]
 
-  const filteredPackages = packages.filter((pkg) => {
+  const filteredPackages = packages.filter((pkg: any) => {
     const matchesSearch =
       pkg.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       pkg.destination.toLowerCase().includes(searchTerm.toLowerCase())
@@ -194,7 +193,7 @@ export default function PackagesPage() {
               <CardContent className="p-6">
                 <h3 className="font-semibold text-lg mb-4">Catégories</h3>
                 <div className="space-y-2">
-                  {categories.map((category) => (
+                  {categories.map((category: any) => (
                     <button
                       key={category.id}
                       onClick={() => setSelectedCategory(category.id)}
@@ -224,7 +223,7 @@ export default function PackagesPage() {
                     { id: "budget", name: "Économique", range: "< 800€" },
                     { id: "mid", name: "Moyen", range: "800€ - 1500€" },
                     { id: "luxury", name: "Luxe", range: "> 1500€" },
-                  ].map((price) => (
+                  ].map((price: any) => (
                     <button
                       key={price.id}
                       onClick={() => setPriceRange(price.id)}
@@ -270,10 +269,10 @@ export default function PackagesPage() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-              {filteredPackages.map((pkg) => (
+              {filteredPackages.map((pkg: any) => (
                 <Card key={pkg.id} className="overflow-hidden hover:shadow-lg transition-shadow group">
                   <div className="relative">
-                    <Image
+                    <img
                       src={pkg.image || "/placeholder.svg"}
                       alt={pkg.title}
                       width={400}
@@ -323,7 +322,7 @@ export default function PackagesPage() {
                     <p className="text-gray-600 mb-4 line-clamp-2">{pkg.description}</p>
 
                     <div className="grid grid-cols-2 gap-2 mb-4">
-                      {pkg.highlights.map((highlight, index) => (
+                      {pkg.highlights.map((highlight: any, index: number) => (
                         <div key={index} className="flex items-center gap-2 text-sm text-gray-600">
                           <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                           <span>{highlight}</span>

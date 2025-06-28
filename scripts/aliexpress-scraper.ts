@@ -1,12 +1,12 @@
 import puppeteer from 'puppeteer';
 import { TranslationServiceClient } from '@google-cloud/translate';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase/client';
 import cron from 'node-cron';
 import { config } from './config';
 
 
 // Initialisation des clients
-const supabase = createClient(config.supabase.url, config.supabase.key);
+const supabase = supabase;
 const translate = new TranslationServiceClient();
 
 interface Product {

@@ -131,7 +131,7 @@ export default function OrdersPage() {
     }
   }
 
-  const filteredOrders = orders.filter((order) => {
+  const filteredOrders = orders.filter((order: any) => {
     const matchesSearch =
       order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
       order.customer.toLowerCase().includes(searchTerm.toLowerCase())
@@ -256,7 +256,7 @@ export default function OrdersPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredOrders.map((order) => (
+                    {filteredOrders.map((order: any) => (
                       <tr key={order.id} className="border-b hover:bg-gray-50">
                         <td className="p-4 font-medium">{order.id}</td>
                         <td className="p-4">

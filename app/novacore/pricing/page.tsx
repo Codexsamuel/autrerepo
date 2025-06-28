@@ -97,7 +97,7 @@ export default function PricingPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {pricingTiers.map((tier) => (
+        {pricingTiers.map((tier: any) => (
           <Card
             key={tier.name}
             className={`relative ${
@@ -126,7 +126,7 @@ export default function PricingPage() {
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">
-                {tier.features.map((feature) => (
+                {tier.features.map((feature: any) => (
                   <li key={feature} className="flex items-center">
                     <Check className="h-4 w-4 text-primary mr-2" />
                     <span>{feature}</span>

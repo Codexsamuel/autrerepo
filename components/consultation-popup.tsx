@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, FormEvent } from 'react';
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { X, Calendar, Clock, User, MessageSquare } from "lucide-react"
@@ -140,7 +140,7 @@ export function ConsultationPopup({ isOpen, onClose }: ConsultationPopupProps) {
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               >
                 <option value="">Sélectionnez un service</option>
-                {services.map((service) => (
+                {services.map((service: any) => (
                   <option key={service} value={service}>
                     {service}
                   </option>
@@ -169,7 +169,7 @@ export function ConsultationPopup({ isOpen, onClose }: ConsultationPopupProps) {
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 >
                   <option value="">Sélectionnez une heure</option>
-                  {timeSlots.map((time) => (
+                  {timeSlots.map((time: any) => (
                     <option key={time} value={time}>
                       {time}
                     </option>

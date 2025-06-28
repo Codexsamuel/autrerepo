@@ -81,7 +81,7 @@ export default function DLCursorPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {contents.map((content) => (
+        {contents.map((content: any) => (
           <Card key={content.id}>
             <CardHeader>
               <CardTitle className="flex justify-between items-center">

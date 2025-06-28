@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { createClient } from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 
 interface HotelBilling {
   id: string;
@@ -20,8 +20,6 @@ export default function FacturationList() {
   const [bills, setBills] = useState<HotelBilling[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
-
   useEffect(() => {
     fetchBills();
   }, []);

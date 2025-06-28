@@ -326,7 +326,7 @@ export function PhotoVerificationSystem({ userLevel, userName, hotelName }: Phot
 
       {/* Liste des clients */}
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-        {filteredGuests.map((guest) => (
+        {filteredGuests.map((guest: any) => (
           <Card
             key={guest.id}
             className={`cursor-pointer transition-all hover:shadow-lg ${
@@ -337,7 +337,7 @@ export function PhotoVerificationSystem({ userLevel, userName, hotelName }: Phot
             <CardHeader className="pb-3">
               <div className="flex items-start gap-4">
                 <div className="relative">
-                  <Image
+                  <img
                     src={guest.profilePhoto || "/placeholder.svg"}
                     alt={guest.fullName}
                     width={80}
@@ -462,7 +462,7 @@ export function PhotoVerificationSystem({ userLevel, userName, hotelName }: Phot
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="space-y-4">
                 <div className="text-center">
-                  <Image
+                  <img
                     src={selectedGuest.profilePhoto || "/placeholder.svg"}
                     alt={selectedGuest.fullName}
                     width={150}
@@ -484,7 +484,7 @@ export function PhotoVerificationSystem({ userLevel, userName, hotelName }: Phot
                 {selectedGuest.passportPhoto && (
                   <div className="text-center">
                     <p className="text-sm font-medium mb-2">Photo passeport</p>
-                    <Image
+                    <img
                       src={selectedGuest.passportPhoto || "/placeholder.svg"}
                       alt="Passeport"
                       width={100}
@@ -636,7 +636,7 @@ export function PhotoVerificationSystem({ userLevel, userName, hotelName }: Phot
               <div className="grid grid-cols-2 gap-6">
                 <div className="text-center">
                   <h3 className="font-medium mb-3">Photo du profil</h3>
-                  <Image
+                  <img
                     src={selectedGuest.profilePhoto || "/placeholder.svg"}
                     alt="Photo profil"
                     width={200}
@@ -652,7 +652,7 @@ export function PhotoVerificationSystem({ userLevel, userName, hotelName }: Phot
                 <div className="text-center">
                   <h3 className="font-medium mb-3">Photo en direct</h3>
                   {livePhoto ? (
-                    <Image
+                    <img
                       src={livePhoto || "/placeholder.svg"}
                       alt="Photo live"
                       width={200}

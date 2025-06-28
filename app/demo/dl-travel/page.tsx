@@ -17,7 +17,7 @@ import {
   Search,
   Filter
 } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 
 interface TravelStats {
   totalBookings: number;
@@ -50,7 +50,6 @@ export default function DLTravelDashboard() {
   const [recentBookings, setRecentBookings] = useState<RecentBooking[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const supabase = createClient();
 
   useEffect(() => {
     fetchDashboardData();
@@ -252,7 +251,7 @@ export default function DLTravelDashboard() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {recentBookings.map((booking) => (
+            {recentBookings.map((booking: any) => (
               <div key={booking.id} className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex items-center space-x-4">
                   <div className="p-2 bg-blue-100 rounded-full">

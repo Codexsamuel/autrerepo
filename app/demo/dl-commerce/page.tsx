@@ -136,7 +136,7 @@ export default function DLCommerceDashboard() {
               { id: "1", customerName: "Marie Dubois", total: 89.99, status: "shipped", items: 3 },
               { id: "2", customerName: "Jean Martin", total: 156.50, status: "processing", items: 5 },
               { id: "3", customerName: "Sophie Bernard", total: 234.00, status: "delivered", items: 2 }
-            ].map((order) => (
+            ].map((order: any) => (
               <div key={order.id} className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex items-center space-x-4">
                   <div className="p-2 bg-blue-100 rounded-full">

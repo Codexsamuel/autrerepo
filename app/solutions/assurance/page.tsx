@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
+import { supabase } from '@/lib/supabase/client';
 
 interface AssuranceStats {
   totalPolicies: number;
@@ -20,7 +20,6 @@ export default function AssuranceDashboard() {
     totalRevenue: 0,
   });
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
 
   useEffect(() => {
     fetchStats();
@@ -36,7 +35,7 @@ export default function AssuranceDashboard() {
         totalPolicies: policies?.length || 0,
         totalClients: clients?.length || 0,
         totalClaims: claims?.length || 0,
-        totalRevenue: payments?.reduce((sum, p) => sum + (p.amount || 0), 0) || 0,
+        totalRevenue: payments?.reduce((sum: number, p: { amount?: number }) => sum + (p.amount || 0), 0) || 0,
       });
     } finally {
       setLoading(false);

@@ -258,7 +258,7 @@ export default function RHPage() {
 
             {/* Employees Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredEmployees.map((employee) => (
+              {filteredEmployees.map((employee: any) => (
                 <Card key={employee.id} className="hover:shadow-lg transition-shadow">
                   <CardHeader className="pb-4">
                     <div className="flex items-center space-x-4">
@@ -334,7 +334,7 @@ export default function RHPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {leaveRequests.map((request) => (
+                  {leaveRequests.map((request: any) => (
                     <div key={request.id} className="flex items-center justify-between p-4 border rounded-lg">
                       <div className="flex-1">
                         <h3 className="font-semibold">{request.employee}</h3>
@@ -379,7 +379,7 @@ export default function RHPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {employees.map((employee) => (
+                  {employees.map((employee: any) => (
                     <div key={employee.id} className="flex items-center justify-between p-4 border rounded-lg">
                       <div className="flex items-center space-x-4">
                         <div className="w-10 h-10 rounded-full overflow-hidden">

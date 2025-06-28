@@ -1,9 +1,9 @@
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from '@/lib/supabase/client'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+export const supabase = supabase
 
 // Types pour les entreprises
 export interface Company {
@@ -236,7 +236,7 @@ export const databaseService = {
   },
 
   // Clients
-  async createClient(client: Omit<Client, 'id' | 'created_at' | 'updated_at'>): Promise<Client> {
+  async supabase: Promise<Client> {
     const { data, error } = await supabase
       .from('clients')
       .insert([client])

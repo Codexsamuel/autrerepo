@@ -220,7 +220,7 @@ export default function SectorSelectionPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sectors.map((sector) => (
+          {sectors.map((sector: any) => (
             <Card key={sector.id} className="group hover:shadow-xl transition-all duration-300">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between mb-4">
@@ -238,7 +238,7 @@ export default function SectorSelectionPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3 mb-6">
-                  {sector.features.slice(0, 3).map((feature, index) => (
+                  {sector.features.slice(0, 3).map((feature: any, index: number) => (
                     <div key={index} className="flex items-center gap-2 text-sm">
                       <CheckCircle className="w-4 h-4 text-green-500" />
                       <span>{feature}</span>

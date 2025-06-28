@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Eye, EyeOff, Plane, MapPin, Star, Facebook, Mail, Phone } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import type { FormEvent } from "react";
 
 
 
@@ -118,7 +119,7 @@ export default function ConnexionPage() {
             <Card className="bg-gradient-to-r from-blue-600 to-orange-500 text-white">
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-4">
-                  <Image
+                  <img
                     src="/placeholder.svg?height=50&width=50"
                     alt="Client satisfait"
                     width={50}

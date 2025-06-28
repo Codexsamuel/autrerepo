@@ -193,8 +193,8 @@ export function HRDashboard() {
         const daysUntilExpiry = Math.ceil((e.contractEndDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
         return daysUntilExpiry <= 30 && daysUntilExpiry > 0
       }).length,
-      averagePerformance: Math.round(employees.reduce((sum, e) => sum + e.performance, 0) / employees.length),
-      totalSalary: employees.reduce((sum, e) => sum + e.salary, 0),
+      averagePerformance: Math.round(employees.reduce((sum: number, e: any) => sum + e.performance, 0) / employees.length),
+      totalSalary: employees.reduce((sum: number, e: any) => sum + e.salary, 0),
       leaveRequests: 3 // Simulation
     }
 
@@ -211,7 +211,7 @@ export function HRDashboard() {
     }
 
     // Analyse des salaires
-    const avgSalary = employees.reduce((sum, e) => sum + e.salary, 0) / employees.length
+    const avgSalary = employees.reduce((sum: number, e: any) => sum + e.salary, 0) / employees.length
     const highSalaryEmployees = employees.filter(e => e.salary > avgSalary * 1.5)
     if (highSalaryEmployees.length > 0) {
       insights.push(`${highSalaryEmployees.length} employé(s) ont un salaire supérieur à 150% de la moyenne.`)
@@ -384,12 +384,12 @@ export function HRDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {employees.slice(0, 5).map((employee) => (
+                  {employees.slice(0, 5).map((employee: any) => (
                     <div key={employee.id} className="flex items-center space-x-4">
                       <Avatar>
                         <AvatarImage src={employee.avatar} />
                         <AvatarFallback>
-                          {employee.name.split(' ').map(n => n[0]).join('')}
+                          {employee.name.split(' ').map((n: string) => n[0]).join('')}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
@@ -456,7 +456,7 @@ export function HRDashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {employees.map((employee) => (
+                {employees.map((employee: any) => (
                   <div
                     key={employee.id}
                     className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors"
@@ -465,7 +465,7 @@ export function HRDashboard() {
                       <Avatar>
                         <AvatarImage src={employee.avatar} />
                         <AvatarFallback>
-                          {employee.name.split(' ').map(n => n[0]).join('')}
+                          {employee.name.split(' ').map((n: string) => n[0]).join('')}
                         </AvatarFallback>
                       </Avatar>
                       <div>
@@ -504,7 +504,7 @@ export function HRDashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {alerts.filter(alert => !alert.resolved).map((alert) => (
+                {alerts.filter(alert => !alert.resolved).map((alert: any) => (
                   <div
                     key={alert.id}
                     className={`p-4 border rounded-lg ${getSeverityColor(alert.severity)}`}

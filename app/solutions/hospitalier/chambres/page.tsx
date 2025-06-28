@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { createClient } from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 
 interface HotelRoom {
   id: string;
@@ -19,8 +19,6 @@ export default function ChambresList() {
   const [rooms, setRooms] = useState<HotelRoom[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
-
   useEffect(() => {
     fetchRooms();
   }, []);

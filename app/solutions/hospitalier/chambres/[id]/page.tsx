@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { createClient } from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 
 export default function EditChambre() {
   const router = useRouter();
@@ -15,8 +15,6 @@ export default function EditChambre() {
   const [capacity, setCapacity] = useState(1);
   const [status, setStatus] = useState("available");
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
-
   useEffect(() => {
     if (id) fetchChambre();
   }, [id]);

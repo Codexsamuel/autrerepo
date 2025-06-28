@@ -132,7 +132,7 @@ export default function SignauxPage() {
             </div>
           ) : (
             <div className="space-y-4">
-              {filteredSignals.map((signal) => (
+              {filteredSignals.map((signal: any) => (
                 <div key={signal.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
                   <div className="flex items-center space-x-4">
                     <Signal className={`h-8 w-8 ${signal.direction === 'buy' ? 'text-green-600' : 'text-red-600'}`} />

@@ -55,16 +55,16 @@ export default function DashboardPage() {
       if (properties && clients && transactions) {
         setStats({
           totalProperties: properties.length,
-          availableProperties: properties.filter(p => p.status === 'available').length,
-          rentedProperties: properties.filter(p => p.status === 'rented').length,
-          soldProperties: properties.filter(p => p.status === 'sold').length,
+          availableProperties: properties.filter((p: any) => p.status === 'available').length,
+          rentedProperties: properties.filter((p: any) => p.status === 'rented').length,
+          soldProperties: properties.filter((p: any) => p.status === 'sold').length,
           totalClients: clients.length,
           monthlyRevenue: transactions
-            .filter(t => t.status === 'completed')
-            .reduce((sum, t) => sum + t.amount, 0),
+            .filter((t: any) => t.status === 'completed')
+            .reduce((sum: number, t: any) => sum + t.amount, 0),
           totalRevenue: transactions
-            .filter(t => t.status === 'completed')
-            .reduce((sum, t) => sum + t.amount, 0),
+            .filter((t: any) => t.status === 'completed')
+            .reduce((sum: number, t: any) => sum + t.amount, 0),
           recentTransactions: transactions
         });
       }

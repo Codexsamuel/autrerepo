@@ -474,7 +474,7 @@ Génère 5 insights personnalisés au format JSON.
   }
 
   private generateFallbackMarketAnalysis(marketData: MarketDataPoint[]): MarketAnalysis {
-    const avgChange = marketData.reduce((sum, asset) => sum + asset.changePercent, 0) / marketData.length;
+    const avgChange = marketData.reduce((sum: number, asset: any) => sum + asset.changePercent, 0) / marketData.length;
     
     return {
       overallTrend: avgChange > 1 ? 'bullish' : avgChange < -1 ? 'bearish' : 'neutral',

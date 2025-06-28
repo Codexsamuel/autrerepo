@@ -1,29 +1,3 @@
-import Image from 'next/image';
-
-const testimonials = [
-  {
-    name: "Jean Dupont",
-    role: "CEO, Tech Solutions",
-    image: "https://res.cloudinary.com/dko5sommz/image/upload/v1750993228/Jean_Dupont_xjsear.jpg",
-    rating: 5,
-    text: "DL Solutions a transformé notre présence digitale. L'équipe est réactive et très professionnelle. Je recommande vivement !"
-  },
-  {
-    name: "Marie Nguemo",
-    role: "Directrice Marketing, DigitalPro",
-    image: "https://res.cloudinary.com/dko5sommz/image/upload/v1750993227/Marie_Nguemo_p5xzhh.jpg",
-    rating: 5,
-    text: "Le CRM NovaCore est un vrai plus pour notre gestion client. L'IA intégrée est bluffante !"
-  },
-  {
-    name: "Pierre Essomba",
-    role: "Entrepreneur",
-    image: "https://res.cloudinary.com/dko5sommz/image/upload/v1750993226/Pierre_Essomba_fat4h7.jpg",
-    rating: 4,
-    text: "Service rapide, équipe à l'écoute, et résultats concrets. Merci DL Solutions !"
-  }
-];
-
 export default function TestimonialsSection() {
   return (
     <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
@@ -40,13 +14,12 @@ export default function TestimonialsSection() {
           {testimonials.map((t, idx) => (
             <div key={idx} className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 flex flex-col items-center text-center hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="relative mb-6">
-                <Image 
+                <img 
                   src={t.image} 
                   alt={t.name} 
                   width={80} 
                   height={80} 
                   className="rounded-full border-4 border-blue-100 shadow-lg"
-                  unoptimized
                 />
                 <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
                   <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">

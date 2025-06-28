@@ -53,7 +53,7 @@ export default function OutilsIAPage() {
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'text': return <MessageSquare className="h-6 w-6" />;
-      case 'image': return <Image className="h-6 w-6" />;
+      case 'image': return <img src="/path/to/image.png" alt="Image" className="h-6 w-6" />;
       case 'video': return <Video className="h-6 w-6" />;
       case 'analysis': return <Brain className="h-6 w-6" />;
       default: return <Zap className="h-6 w-6" />;
@@ -123,7 +123,7 @@ export default function OutilsIAPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredTools.map((tool) => (
+              {filteredTools.map((tool: any) => (
                 <Card key={tool.id} className="hover:shadow-lg transition-shadow">
                   <CardHeader>
                     <div className="flex items-center justify-between">

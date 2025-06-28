@@ -1,9 +1,9 @@
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from '@/lib/supabase/client'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+export const supabase = supabase
 
 // Types de base
 export interface Company {
@@ -143,7 +143,7 @@ export class DatabaseService {
   }
 
   // Clients
-  async createClient(clientData: Omit<Client, 'id' | 'created_at' | 'updated_at'>): Promise<Client> {
+  async supabase: Promise<Client> {
     const { data, error } = await supabase
       .from('clients')
       .insert([clientData])
@@ -230,7 +230,7 @@ export class DatabaseService {
 
     const totalRevenue = transactions
       .filter(t => t.status === 'completed')
-      .reduce((sum, t) => sum + t.amount, 0)
+      .reduce((sum: number, t: any) => sum + t.amount, 0)
 
     const monthlyRevenue = transactions
       .filter(t => {
@@ -240,7 +240,7 @@ export class DatabaseService {
                transactionDate.getMonth() === currentDate.getMonth() &&
                transactionDate.getFullYear() === currentDate.getFullYear()
       })
-      .reduce((sum, t) => sum + t.amount, 0)
+      .reduce((sum: number, t: any) => sum + t.amount, 0)
 
     return {
       totalClients: clients.length,

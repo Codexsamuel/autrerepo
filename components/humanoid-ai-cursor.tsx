@@ -4,37 +4,36 @@ import { useState, useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber"
 import { useGLTF, useAnimations } from "@react-three/drei"
 import * as THREE from "three"
-import { GLTF } from "three-stdlib"
 
 
 
 type GLTFResult = GLTF & {
   nodes: {
-    Wolf3D_Avatar: THREE.SkinnedMesh
-    Wolf3D_Body: THREE.SkinnedMesh
-    Wolf3D_Outfit_Bottom: THREE.SkinnedMesh
-    Wolf3D_Outfit_Footwear: THREE.SkinnedMesh
-    Wolf3D_Outfit_Top: THREE.SkinnedMesh
-    Wolf3D_Hair: THREE.SkinnedMesh
-    EyeLeft: THREE.SkinnedMesh
-    EyeRight: THREE.SkinnedMesh
-    Wolf3D_Head: THREE.SkinnedMesh
-    Wolf3D_Teeth: THREE.SkinnedMesh
-    Hips: THREE.Bone
+    Wolf3D_Avatar: any
+    Wolf3D_Body: any
+    Wolf3D_Outfit_Bottom: any
+    Wolf3D_Outfit_Footwear: any
+    Wolf3D_Outfit_Top: any
+    Wolf3D_Hair: any
+    EyeLeft: any
+    EyeRight: any
+    Wolf3D_Head: any
+    Wolf3D_Teeth: any
+    Hips: any
   }
   materials: {
-    Wolf3D_Avatar: THREE.MeshStandardMaterial
-    Wolf3D_Body: THREE.MeshStandardMaterial
-    Wolf3D_Outfit_Bottom: THREE.MeshStandardMaterial
-    Wolf3D_Outfit_Footwear: THREE.MeshStandardMaterial
-    Wolf3D_Outfit_Top: THREE.MeshStandardMaterial
-    Wolf3D_Hair: THREE.MeshStandardMaterial
-    EyeLeft: THREE.MeshStandardMaterial
-    EyeRight: THREE.MeshStandardMaterial
-    Wolf3D_Head: THREE.MeshStandardMaterial
-    Wolf3D_Teeth: THREE.MeshStandardMaterial
+    Wolf3D_Avatar: any
+    Wolf3D_Body: any
+    Wolf3D_Outfit_Bottom: any
+    Wolf3D_Outfit_Footwear: any
+    Wolf3D_Outfit_Top: any
+    Wolf3D_Hair: any
+    EyeLeft: any
+    EyeRight: any
+    Wolf3D_Head: any
+    Wolf3D_Teeth: any
   }
-  animations: THREE.AnimationClip[]
+  animations: any[]
 }
 
 export function HumanoidAICursor() {
@@ -75,72 +74,18 @@ export function HumanoidAICursor() {
   })
 
   return (
-    <group ref={group} dispose={null}>
-      <group name="Scene">
-        <group name="Armature" rotation={[Math.PI / 2, 0, 0]} scale={0.01}>
-          <primitive object={nodes.Hips} />
-          <skinnedMesh
-            name="Wolf3D_Avatar"
-            geometry={nodes.Wolf3D_Avatar.geometry}
-            material={materials.Wolf3D_Avatar}
-            skeleton={nodes.Wolf3D_Avatar.skeleton}
-          />
-          <skinnedMesh
-            name="Wolf3D_Body"
-            geometry={nodes.Wolf3D_Body.geometry}
-            material={materials.Wolf3D_Body}
-            skeleton={nodes.Wolf3D_Body.skeleton}
-          />
-          <skinnedMesh
-            name="Wolf3D_Outfit_Bottom"
-            geometry={nodes.Wolf3D_Outfit_Bottom.geometry}
-            material={materials.Wolf3D_Outfit_Bottom}
-            skeleton={nodes.Wolf3D_Outfit_Bottom.skeleton}
-          />
-          <skinnedMesh
-            name="Wolf3D_Outfit_Footwear"
-            geometry={nodes.Wolf3D_Outfit_Footwear.geometry}
-            material={materials.Wolf3D_Outfit_Footwear}
-            skeleton={nodes.Wolf3D_Outfit_Footwear.skeleton}
-          />
-          <skinnedMesh
-            name="Wolf3D_Outfit_Top"
-            geometry={nodes.Wolf3D_Outfit_Top.geometry}
-            material={materials.Wolf3D_Outfit_Top}
-            skeleton={nodes.Wolf3D_Outfit_Top.skeleton}
-          />
-          <skinnedMesh
-            name="Wolf3D_Hair"
-            geometry={nodes.Wolf3D_Hair.geometry}
-            material={materials.Wolf3D_Hair}
-            skeleton={nodes.Wolf3D_Hair.skeleton}
-          />
-          <skinnedMesh
-            name="EyeLeft"
-            geometry={nodes.EyeLeft.geometry}
-            material={materials.EyeLeft}
-            skeleton={nodes.EyeLeft.skeleton}
-          />
-          <skinnedMesh
-            name="EyeRight"
-            geometry={nodes.EyeRight.geometry}
-            material={materials.EyeRight}
-            skeleton={nodes.EyeRight.skeleton}
-          />
-          <skinnedMesh
-            name="Wolf3D_Head"
-            geometry={nodes.Wolf3D_Head.geometry}
-            material={materials.Wolf3D_Head}
-            skeleton={nodes.Wolf3D_Head.skeleton}
-          />
-          <skinnedMesh
-            name="Wolf3D_Teeth"
-            geometry={nodes.Wolf3D_Teeth.geometry}
-            material={materials.Wolf3D_Teeth}
-            skeleton={nodes.Wolf3D_Teeth.skeleton}
-          />
-        </group>
-      </group>
-    </group>
+    <primitive ref={group} object={group.current} dispose={null}>
+      <primitive object={nodes.Hips} />
+      <primitive object={nodes.Wolf3D_Avatar} />
+      <primitive object={nodes.Wolf3D_Body} />
+      <primitive object={nodes.Wolf3D_Outfit_Bottom} />
+      <primitive object={nodes.Wolf3D_Outfit_Footwear} />
+      <primitive object={nodes.Wolf3D_Outfit_Top} />
+      <primitive object={nodes.Wolf3D_Hair} />
+      <primitive object={nodes.EyeLeft} />
+      <primitive object={nodes.EyeRight} />
+      <primitive object={nodes.Wolf3D_Head} />
+      <primitive object={nodes.Wolf3D_Teeth} />
+    </primitive>
   )
 }

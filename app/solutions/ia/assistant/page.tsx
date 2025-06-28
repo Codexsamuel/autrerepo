@@ -97,7 +97,7 @@ export default function AssistantPage() {
           </CardHeader>
           <CardContent className="flex-1 flex flex-col">
             <div className="flex-1 overflow-y-auto space-y-4 mb-4">
-              {messages.map((message) => (
+              {messages.map((message: any) => (
                 <div
                   key={message.id}
                   className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}

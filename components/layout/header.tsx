@@ -38,7 +38,7 @@ export function Header({
           
           {showNavigation && navigationItems.length > 0 && (
             <nav className="hidden md:flex space-x-8">
-              {navigationItems.map((item) => (
+              {navigationItems.map((item: any) => (
                 <Link
                   key={item.href}
                   href={item.href}

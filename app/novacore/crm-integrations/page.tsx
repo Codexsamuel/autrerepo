@@ -22,7 +22,7 @@ export default function CRMIntegrationsPage() {
         </Button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {integrations.map((integration) => (
+        {integrations.map((integration: any) => (
           <Card key={integration.id} className="hover:shadow-lg transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <div className="flex items-center space-x-3">

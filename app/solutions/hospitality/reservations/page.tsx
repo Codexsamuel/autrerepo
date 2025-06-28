@@ -123,7 +123,7 @@ export default function ReservationsPage() {
             </div>
           ) : (
             <div className="space-y-4">
-              {filteredReservations.map((reservation) => (
+              {filteredReservations.map((reservation: any) => (
                 <div key={reservation.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
                   <div className="flex items-center space-x-4">
                     <Calendar className="h-8 w-8 text-blue-600" />

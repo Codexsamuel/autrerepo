@@ -231,7 +231,7 @@ export default function VentesFlashPage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {flashDeals.map((deal) => {
+            {flashDeals.map((deal: any) => {
               const soldPercentage = Math.round((deal.sold / deal.stock) * 100)
 
               return (

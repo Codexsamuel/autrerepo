@@ -136,7 +136,7 @@ export default function DLMiningDashboard() {
               { id: "1", name: "Site A - Cuivre", production: 4200, status: "active", efficiency: 95 },
               { id: "2", name: "Site B - Or", production: 3800, status: "active", efficiency: 92 },
               { id: "3", name: "Site C - Fer", production: 2800, status: "maintenance", efficiency: 78 }
-            ].map((site) => (
+            ].map((site: any) => (
               <div key={site.id} className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex items-center space-x-4">
                   <div className="p-2 bg-orange-100 rounded-full">

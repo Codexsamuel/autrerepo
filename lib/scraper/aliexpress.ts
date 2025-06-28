@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 import { translate } from '@google-cloud/translate';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase/client';
 
 
 // Types
@@ -25,10 +25,7 @@ const MARGIN_RATE = 2.5; // 250% de marge
 
 // Initialisation des clients
 const translateClient = new translate.TranslationServiceClient();
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+const supabase = supabase;
 
 export async function scrapeAliExpress(keyword: string): Promise<Product[]> {
   const browser = await puppeteer.launch({

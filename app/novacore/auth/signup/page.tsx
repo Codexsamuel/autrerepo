@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight, Shield, Check, ArrowLeft } from "lucide-react"
+import type { FormEvent } from "react";
 
 
 

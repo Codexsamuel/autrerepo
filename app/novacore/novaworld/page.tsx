@@ -30,7 +30,7 @@ export default function NovaWorldPage() {
         </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {companies.map((company) => (
+        {companies.map((company: any) => (
           <Card key={company.id} className="hover:shadow-lg transition-shadow">
             <CardHeader className="flex flex-row items-center gap-3 pb-2">
               <img src={company.logo} alt={company.name} className="w-14 h-14 rounded-full object-cover" />
@@ -51,7 +51,7 @@ export default function NovaWorldPage() {
       <div className="mt-10">
         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2"><Briefcase className="h-5 w-5" /> Offres d'emploi</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {jobs.map((job) => (
+          {jobs.map((job: any) => (
             <Card key={job.id} className="hover:shadow-lg transition-shadow">
               <CardHeader className="flex flex-row items-center gap-3 pb-2">
                 <img src={job.logo} alt={job.title} className="w-10 h-10 rounded-full object-cover" />
@@ -70,7 +70,7 @@ export default function NovaWorldPage() {
       <div className="mt-10">
         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2"><Network className="h-5 w-5" /> Réseau</h2>
         <div className="flex flex-wrap gap-4">
-          {companies.map((company) => (
+          {companies.map((company: any) => (
             <div key={company.id} className="flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2">
               <img src={company.logo} alt={company.name} className="w-8 h-8 rounded-full object-cover" />
               <span className="text-sm font-medium">{company.name}</span>

@@ -303,8 +303,8 @@ class MarketDataService {
   }
 
   private calculateBollingerBands(prices: number[], period: number = 20): { upper: number; middle: number; lower: number } {
-    const sma = prices.slice(-period).reduce((sum, price) => sum + price, 0) / period;
-    const variance = prices.slice(-period).reduce((sum, price) => sum + Math.pow(price - sma, 2), 0) / period;
+    const sma = prices.slice(-period).reduce((sum: number, price: any) => sum + price, 0) / period;
+    const variance = prices.slice(-period).reduce((sum: number, price: any) => sum + Math.pow(price - sma, 2), 0) / period;
     const stdDev = Math.sqrt(variance);
 
     return {
@@ -316,9 +316,9 @@ class MarketDataService {
 
   private calculateMovingAverages(prices: number[]): { sma20: number; sma50: number; sma200: number } {
     return {
-      sma20: prices.slice(-20).reduce((sum, price) => sum + price, 0) / 20,
-      sma50: prices.slice(-50).reduce((sum, price) => sum + price, 0) / 50,
-      sma200: prices.slice(-200).reduce((sum, price) => sum + price, 0) / 200
+      sma20: prices.slice(-20).reduce((sum: number, price: any) => sum + price, 0) / 20,
+      sma50: prices.slice(-50).reduce((sum: number, price: any) => sum + price, 0) / 50,
+      sma200: prices.slice(-200).reduce((sum: number, price: any) => sum + price, 0) / 200
     };
   }
 

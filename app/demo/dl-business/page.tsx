@@ -11,7 +11,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { AiInsights, Campaign as CampaignType, AiActivity, FormData } from '../../types/config'
-import type { TextareaProps } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { 
   ArrowLeft, 
@@ -306,7 +305,7 @@ export default function BusinessPage() {
           <div className="space-y-6 py-4">
             <div className="flex items-center justify-between mb-4">
               <div className="flex space-x-2">
-                {[1, 2, 3].map((step) => (
+                {[1, 2, 3].map((step: any) => (
                   <div
                     key={step}
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
@@ -403,7 +402,7 @@ export default function BusinessPage() {
                 <div>
                   <Label>Plateformes prioritaires</Label>
                   <div className="grid grid-cols-3 gap-2 mt-2">
-                    {["Facebook", "Instagram", "TikTok", "LinkedIn", "YouTube", "Twitter"].map((platform) => (
+                    {["Facebook", "Instagram", "TikTok", "LinkedIn", "YouTube", "Twitter"].map((platform: any) => (
                       <label key={platform} className="flex items-center space-x-2">
                         <input type="checkbox" className="rounded" />
                         <span className="text-sm">{platform}</span>
@@ -647,7 +646,7 @@ export default function BusinessPage() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {aiActivities.map((activity) => (
+                      {aiActivities.map((activity: any) => (
                         <div key={activity.id} className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
                           <div
                             className={`w-10 h-10 rounded-full flex items-center justify-center ${
@@ -845,7 +844,7 @@ export default function BusinessPage() {
                   <CardContent>
                     <div className="space-y-4">
                       <div className="grid grid-cols-2 gap-2">
-                        {[1, 2, 3, 4, 5, 6].map((i) => (
+                        {[1, 2, 3, 4, 5, 6].map((i: any) => (
                           <div key={i} className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
                             <img
                               src={`/placeholder.svg?height=100&width=100&text=Media${i}`}

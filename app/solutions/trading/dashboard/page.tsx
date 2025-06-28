@@ -233,7 +233,7 @@ export default function TradingDashboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {recentTrades.map((trade) => (
+              {recentTrades.map((trade: any) => (
                 <div key={trade.id} className="flex items-center justify-between p-3 border rounded-lg">
                   <div className="flex items-center space-x-3">
                     <div className={`w-3 h-3 rounded-full ${trade.type === 'buy' ? 'bg-green-500' : 'bg-red-500'}`} />

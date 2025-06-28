@@ -136,7 +136,7 @@ export default function DLRestaurantDashboard() {
               { id: "1", tableNumber: "A5", items: 3, total: 45.50, status: "preparing", time: "12:30" },
               { id: "2", tableNumber: "B2", items: 2, total: 32.00, status: "ready", time: "12:25" },
               { id: "3", tableNumber: "C8", items: 4, total: 67.80, status: "served", time: "12:20" }
-            ].map((order) => (
+            ].map((order: any) => (
               <div key={order.id} className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex items-center space-x-4">
                   <div className="p-2 bg-orange-100 rounded-full">

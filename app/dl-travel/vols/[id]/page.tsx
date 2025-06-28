@@ -7,9 +7,8 @@ import { Badge } from "@/components/ui/badge"
 import { Plane, Clock, MapPin, Luggage, Utensils, Wifi, ArrowLeft, CreditCard, Shield, Check } from "lucide-react"
 import Link from "next/link"
 
-
-
-export default function FlightDetailPage({ params }: { params: { id: string } }) {
+export default function Page(props: any) {
+  const { params } = props;
   const [selectedClass, setSelectedClass] = useState("economy")
   const [passengers, setPassengers] = useState(1)
 
@@ -258,7 +257,7 @@ export default function FlightDetailPage({ params }: { params: { id: string } })
                       onChange={(e) => setPassengers(Number(e.target.value))}
                       className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
-                      {[1, 2, 3, 4, 5, 6].map((num) => (
+                      {[1, 2, 3, 4, 5, 6].map((num: any) => (
                         <option key={num} value={num}>
                           {num} {num === 1 ? "passager" : "passagers"}
                         </option>

@@ -14,7 +14,7 @@ export async function POST(request: Request) {
 
     // Convertir le document en buffer
     const chunks: Buffer[] = []
-    doc.on("data", (chunk) => chunks.push(chunk))
+    doc.on("data", (chunk: Buffer) => chunks.push(chunk))
     
     // En-tête
     doc

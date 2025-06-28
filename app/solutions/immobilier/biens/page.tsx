@@ -138,7 +138,7 @@ export default function BiensPage() {
 
       {/* Liste des biens */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredProperties.map((property) => (
+        {filteredProperties.map((property: any) => (
           <Card key={property.id} className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="flex justify-between items-start">

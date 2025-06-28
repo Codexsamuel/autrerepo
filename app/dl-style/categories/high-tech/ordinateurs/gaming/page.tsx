@@ -173,11 +173,11 @@ export default function OrdinateursGamingPage() {
               <Filter className="h-5 w-5 text-gray-500" />
             </div>
 
-            {filters.map((filter) => (
+            {filters.map((filter: any) => (
               <div key={filter.name} className="mb-4">
                 <h3 className="font-medium mb-2">{filter.name}</h3>
                 <div className="space-y-1">
-                  {filter.options.map((option) => (
+                  {filter.options.map((option: any) => (
                     <div key={option} className="flex items-center">
                       <input
                         type="checkbox"
@@ -219,7 +219,7 @@ export default function OrdinateursGamingPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {products.map((product) => (
+            {products.map((product: any) => (
               <div
                 key={product.id}
                 className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
@@ -262,7 +262,7 @@ export default function OrdinateursGamingPage() {
                     <div>{product.specs.graphics}</div>
                   </div>
                   <div className="flex flex-wrap gap-1 mb-3">
-                    {product.features.map((feature, index) => (
+                    {product.features.map((feature: any, index: number) => (
                       <span key={index} className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded">
                         {feature}
                       </span>

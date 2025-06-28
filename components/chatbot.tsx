@@ -93,7 +93,7 @@ export function Chatbot() {
     )
   }
 
-  const handleKeyPress = (e: KeyboardEvent) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault()
       handleSendMessage()
@@ -126,7 +126,7 @@ export function Chatbot() {
           <CardContent className="flex-1 flex flex-col p-0">
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.map((message) => (
+              {messages.map((message: any) => (
                 <div key={message.id} className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}>
                   <div
                     className={`max-w-[80%] p-3 rounded-lg ${
@@ -177,7 +177,7 @@ export function Chatbot() {
             {/* Quick Actions */}
             <div className="p-3 border-t bg-gray-50">
               <div className="flex flex-wrap gap-2 mb-3">
-                {quickActions.map((action) => (
+                {quickActions.map((action: any) => (
                   <Button
                     key={action}
                     variant="outline"

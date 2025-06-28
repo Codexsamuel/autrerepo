@@ -296,7 +296,7 @@ export function SmartDocumentGenerator() {
         {/* Onglet Modèles */}
         <TabsContent value="templates" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {documentTemplates.map((template) => (
+            {documentTemplates.map((template: any) => (
               <div
                 key={template.id}
                 className={`cursor-pointer transition-all duration-200 ${
@@ -334,7 +334,7 @@ export function SmartDocumentGenerator() {
                   <p className="text-gray-600">{selectedTemplate.description}</p>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  {selectedTemplate.fields.map((field) => (
+                  {selectedTemplate.fields.map((field: any) => (
                     <div key={field.id} className="space-y-2">
                       <Label htmlFor={field.id} className="flex items-center space-x-2">
                         <span>{field.label}</span>
@@ -358,7 +358,7 @@ export function SmartDocumentGenerator() {
                             <SelectValue placeholder={field.placeholder} />
                           </SelectTrigger>
                           <SelectContent>
-                            {field.options?.map((option) => (
+                            {field.options?.map((option: any) => (
                               <SelectItem key={option} value={option}>
                                 {option}
                               </SelectItem>
@@ -434,7 +434,7 @@ export function SmartDocumentGenerator() {
         <TabsContent value="generated" className="space-y-6">
           {generatedDocuments.length > 0 ? (
             <div className="space-y-4">
-              {generatedDocuments.map((document) => (
+              {generatedDocuments.map((document: any) => (
                 <div
                   key={document.id}
                   className="transition-all duration-200"

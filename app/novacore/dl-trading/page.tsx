@@ -124,7 +124,7 @@ export default function DLTradingPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {marketAnalysis?.topPerformers.map((performer) => (
+                  {marketAnalysis?.topPerformers.map((performer: any) => (
                     <div key={performer.symbol} className="flex justify-between items-center">
                       <span className="font-medium">{performer.symbol}</span>
                       <div className="flex items-center">
@@ -158,7 +158,7 @@ export default function DLTradingPage() {
                     <span>Volatilité</span>
                     <span>{marketAnalysis?.volatility ? marketAnalysis.volatility * 100 : 0}%</span>
                   </div>
-                  {marketAnalysis?.opportunities.map((opp) => (
+                  {marketAnalysis?.opportunities.map((opp: any) => (
                     <div key={opp.asset} className="flex justify-between items-center">
                       <span>{opp.asset}</span>
                       <div className="flex items-center">
@@ -198,7 +198,7 @@ export default function DLTradingPage() {
 
         <TabsContent value="recommendations" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {recommendations.map((rec) => (
+            {recommendations.map((rec: any) => (
               <Card key={rec.symbol}>
                 <CardHeader>
                   <div className="flex justify-between items-start">

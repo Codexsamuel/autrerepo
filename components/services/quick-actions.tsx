@@ -21,7 +21,7 @@ export function QuickActions({ actions }: QuickActionsProps) {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-4">
-          {actions.map((action) => (
+          {actions.map((action: any) => (
             <Button
               key={action.label}
               variant={action.variant || "default"}

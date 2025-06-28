@@ -122,7 +122,7 @@ export default function AIChatbot() {
             {/* Messages améliorés */}
             <CardContent className="p-6 h-64 overflow-y-auto bg-gradient-to-b from-gray-50 to-white">
               <div className="space-y-4">
-                {messages.map((message) => (
+                {messages.map((message: any) => (
                   <div
                     key={message.id}
                     className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}

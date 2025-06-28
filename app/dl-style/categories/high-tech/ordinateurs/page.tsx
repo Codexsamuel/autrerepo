@@ -47,7 +47,7 @@ export default function OrdinateursPage() {
       <p className="text-gray-600 mb-8">Découvrez notre sélection d'ordinateurs pour tous les usages</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {categories.map((category) => (
+        {categories.map((category: any) => (
           <Link key={category.id} href={`/dl-style/categories/high-tech/ordinateurs/${category.id}`} className="group">
             <div className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
               <div className="h-48 overflow-hidden">

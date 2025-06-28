@@ -18,7 +18,7 @@ export function Navigation({ items }: NavigationProps) {
 
   return (
     <nav className="flex items-center space-x-4 lg:space-x-6">
-      {items.map((item) => (
+      {items.map((item: any) => (
         <Link
           key={item.href}
           href={item.href}

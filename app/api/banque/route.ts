@@ -1,10 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { supabase } from '@/lib/supabase/client';
 
 // GET - Statistiques du dashboard
 export async function GET(request: NextRequest) {
@@ -45,7 +40,10 @@ async function getStats() {
     supabase.from('bank_accounts').select('balance')
   ]);
 
-  const totalAmount = balanceData?.reduce((sum, account) => sum + (account.balance || 0), 0) || 0;
+  const totalAmount = balanceData?.reduce(
+    (sum: number, account: { balance?: number }) => sum + (account.balance || 0),
+    0
+  ) || 0;
 
   return NextResponse.json({
     totalAccounts: totalAccounts || 0,
@@ -66,7 +64,7 @@ async function getAccounts() {
 
   if (error) throw error;
 
-  const accounts = data?.map(account => ({
+  const accounts = data?.map((account: any) => ({
     id: account.id,
     accountNumber: account.account_number,
     accountType: account.account_type,
@@ -90,14 +88,17 @@ async function getClients() {
 
   if (error) throw error;
 
-  const clients = data?.map(client => ({
+  const clients = data?.map((client: any) => ({
     id: client.id,
     firstName: client.firstName,
     lastName: client.lastName,
     email: client.email,
     phone: client.phone,
     accountCount: client.bank_accounts?.length || 0,
-    totalBalance: client.bank_accounts?.reduce((sum, account) => sum + (account.balance || 0), 0) || 0,
+    totalBalance: client.bank_accounts?.reduce(
+      (sum: number, account: { balance?: number }) => sum + (account.balance || 0),
+      0
+    ) || 0,
     status: client.status,
     createdAt: client.created_at
   })) || [];
@@ -117,7 +118,7 @@ async function getTransactions() {
 
   if (error) throw error;
 
-  const transactions = data?.map(transaction => ({
+  const transactions = data?.map((transaction: any) => ({
     id: transaction.id,
     type: transaction.type,
     amount: transaction.amount,
@@ -142,7 +143,7 @@ async function getCredits() {
 
   if (error) throw error;
 
-  const credits = data?.map(credit => ({
+  const credits = data?.map((credit: any) => ({
     id: credit.id,
     clientName: `${credit.bank_clients?.firstName} ${credit.bank_clients?.lastName}`,
     amount: credit.amount,

@@ -310,14 +310,14 @@ export class SyncService {
     const successfulSyncs = this.logs.filter(log => log.status === 'success').length
     const failedSyncs = this.logs.filter(log => log.status === 'error').length
     const averageDuration = this.logs.length > 0 
-      ? this.logs.reduce((sum, log) => sum + log.duration, 0) / this.logs.length 
+      ? this.logs.reduce((sum: number, log: any) => sum + log.duration, 0) / this.logs.length 
       : 0
     
     const last24hStats = {
       syncs: recentLogs.length,
-      productsUpdated: recentLogs.reduce((sum, log) => sum + log.productsUpdated, 0),
-      productsAdded: recentLogs.reduce((sum, log) => sum + log.productsAdded, 0),
-      productsRemoved: recentLogs.reduce((sum, log) => sum + log.productsRemoved, 0)
+      productsUpdated: recentLogs.reduce((sum: number, log: any) => sum + log.productsUpdated, 0),
+      productsAdded: recentLogs.reduce((sum: number, log: any) => sum + log.productsAdded, 0),
+      productsRemoved: recentLogs.reduce((sum: number, log: any) => sum + log.productsRemoved, 0)
     }
     
     return {

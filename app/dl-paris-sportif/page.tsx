@@ -187,7 +187,7 @@ export default function DLParisSportifPage() {
               <CardContent className="p-6">
                 <h3 className="font-semibold mb-4">Sports</h3>
                 <div className="space-y-2">
-                  {sports.map((sport) => (
+                  {sports.map((sport: any) => (
                     <button
                       key={sport.id}
                       onClick={() => setSelectedSport(sport.id)}
@@ -293,7 +293,7 @@ export default function DLParisSportifPage() {
             {/* Live Matches */}
             {selectedTab === "live" && (
               <div className="space-y-4">
-                {liveMatches.map((match) => (
+                {liveMatches.map((match: any) => (
                   <Card key={match.id} className="border-0 shadow-lg">
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between mb-4">
@@ -371,7 +371,7 @@ export default function DLParisSportifPage() {
             {/* Upcoming Matches */}
             {selectedTab === "upcoming" && (
               <div className="space-y-4">
-                {upcomingMatches.map((match) => (
+                {upcomingMatches.map((match: any) => (
                   <Card key={match.id} className="border-0 shadow-lg">
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between mb-4">

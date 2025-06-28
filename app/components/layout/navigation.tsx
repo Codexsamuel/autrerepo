@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link"
-import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 
@@ -30,7 +29,7 @@ export function Navigation() {
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
               <Link href="/novacore">
-                <Image
+                <img
                   src="https://res.cloudinary.com/dko5sommz/image/upload/v1748454501/Logo_NovaCore_mrqlfs.svg"
                   alt="NovaCore Logo"
                   width={150}
@@ -40,7 +39,7 @@ export function Navigation() {
               </Link>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              {navigation.map((item) => (
+              {navigation.map((item: any) => (
                 <Link
                   key={item.name}
                   href={item.href}
@@ -51,7 +50,7 @@ export function Navigation() {
                       : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
                   )}
                 >
-                  <Image
+                  <img
                     src={item.logo}
                     alt={`${item.name} Logo`}
                     width={100}

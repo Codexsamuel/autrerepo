@@ -24,7 +24,7 @@ export default function DLTravelPage() {
         </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {packages.map((pack) => (
+        {packages.map((pack: any) => (
           <Card key={pack.id} className="hover:shadow-lg transition-shadow">
             <CardHeader className="flex flex-row items-center gap-3 pb-2">
               <img src={pack.image} alt={pack.name} className="w-14 h-14 rounded-lg object-cover" />

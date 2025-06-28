@@ -21,7 +21,7 @@ export function ServiceStatusList({ services }: ServiceStatusListProps) {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {services.map((service) => (
+          {services.map((service: any) => (
             <div key={service.name} className="flex items-center justify-between">
               <div>
                 <p className="font-medium">{service.name}</p>

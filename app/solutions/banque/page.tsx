@@ -16,7 +16,7 @@ import {
   Plus
 } from 'lucide-react';
 import Link from 'next/link';
-import { createClient } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase/client';
 
 interface BankStats {
   totalAccounts: number;
@@ -37,8 +37,6 @@ export default function BanqueDashboard() {
     activeLoans: 0
   });
   const [loading, setLoading] = useState(true);
-
-  const supabase = createClient();
 
   useEffect(() => {
     fetchBankStats();
@@ -69,8 +67,8 @@ export default function BanqueDashboard() {
         return;
       }
 
-      const totalBalance = accounts?.reduce((sum, account) => sum + (account.balance || 0), 0) || 0;
-      const monthlyRevenue = transactions?.reduce((sum, transaction) => {
+      const totalBalance = accounts?.reduce((sum: number, account: any) => sum + (account.balance || 0), 0) || 0;
+      const monthlyRevenue = transactions?.reduce((sum: number, transaction: any) => {
         const transactionDate = new Date(transaction.created_at);
         const currentMonth = new Date().getMonth();
         const currentYear = new Date().getFullYear();

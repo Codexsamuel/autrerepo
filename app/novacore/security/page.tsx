@@ -29,7 +29,7 @@ export default function SecurityPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {accessLogs.map((log) => (
+              {accessLogs.map((log: any) => (
                 <div key={log.id} className="flex justify-between text-sm border-b py-2">
                   <span>{log.user}</span>
                   <span>{log.action}</span>

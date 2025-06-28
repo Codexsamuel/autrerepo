@@ -167,7 +167,7 @@ export default function CreerTransaction() {
                     <SelectValue placeholder="Sélectionnez une propriété" />
                   </SelectTrigger>
                   <SelectContent>
-                    {properties.map((property) => (
+                    {properties.map((property: any) => (
                       <SelectItem key={property.id} value={property.id}>
                         {property.title} - {property.address}
                       </SelectItem>
@@ -183,7 +183,7 @@ export default function CreerTransaction() {
                     <SelectValue placeholder="Sélectionnez un client" />
                   </SelectTrigger>
                   <SelectContent>
-                    {clients.map((client) => (
+                    {clients.map((client: any) => (
                       <SelectItem key={client.id} value={client.id}>
                         {client.firstName} {client.lastName} - {client.email}
                       </SelectItem>
@@ -236,7 +236,7 @@ export default function CreerTransaction() {
                     <Calendar
                       mode="single"
                       selected={formData.date}
-                      onSelect={(date) => date && handleInputChange('date', date)}
+                      onSelect={(date: any) => date && handleInputChange('date', date)}
                       initialFocus
                     />
                   </PopoverContent>

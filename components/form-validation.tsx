@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -99,7 +99,7 @@ export function FormValidation({ fields, onSubmit, submitLabel, successMessage }
     setTouched((prev) => ({ ...prev, [id]: true }))
   }
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     // Marquer tous les champs comme touchés pour validation
@@ -172,10 +172,8 @@ export function FormValidation({ fields, onSubmit, submitLabel, successMessage }
                 <SelectValue placeholder={field.placeholder || "Sélectionner..."} />
               </SelectTrigger>
               <SelectContent>
-                {field.options?.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
+                {field.options?.map((option: any) => (
+                  <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -227,7 +225,7 @@ export function FormValidation({ fields, onSubmit, submitLabel, successMessage }
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
-          {fields.map((field) => renderField(field))}
+          {fields.map((field: any) => renderField(field))}
 
           <Button type="submit" className="w-full mt-6" disabled={!isValid || isSubmitting}>isSubmitting ? "Envoi en cours..." : submitLabel</Button>
 

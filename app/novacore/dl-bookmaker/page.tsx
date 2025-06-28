@@ -24,7 +24,7 @@ export default function DLBookmakerPage() {
         </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {bets.map((bet) => (
+        {bets.map((bet: any) => (
           <Card key={bet.id} className="hover:shadow-lg transition-shadow">
             <CardHeader className="flex flex-row items-center gap-3 pb-2">
               <img src={bet.image} alt={bet.match} className="w-14 h-14 rounded-lg object-cover" />
@@ -67,7 +67,7 @@ export default function DLBookmakerPage() {
             <CardTitle className="text-base">Total misé</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-lg font-bold">{bets.reduce((acc, b) => acc + b.amount, 0)} €</div>
+            <div className="text-lg font-bold">{bets.reduce((acc: number, b: any) => acc + b.amount, 0)} €</div>
             <div className="text-xs text-gray-500">sur {bets.length} paris</div>
           </CardContent>
         </Card>

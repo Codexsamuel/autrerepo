@@ -48,7 +48,7 @@ export function ServiceCards() {
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      {services.map((service) => (
+      {services.map((service: any) => (
         <Card key={service.title} className="flex flex-col">
           <CardHeader>
             <div className="flex items-center justify-between">
@@ -60,7 +60,7 @@ export function ServiceCards() {
           </CardHeader>
           <CardContent className="flex-1">
             <div className="space-y-2">
-              {service.features.map((feature) => (
+              {service.features.map((feature: any) => (
                 <div key={feature} className="flex items-center text-sm">
                   <span className="mr-2">•</span>
                   {feature}

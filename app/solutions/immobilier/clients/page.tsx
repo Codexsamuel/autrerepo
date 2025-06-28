@@ -8,8 +8,16 @@ import { Users, Plus, Edit, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase-client";
 
+interface Client {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  [key: string]: any;
+}
+
 export default function ClientsPage() {
-  const [clients, setClients] = useState([]);
+  const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
@@ -32,7 +40,7 @@ export default function ClientsPage() {
     }
   };
 
-  const deleteClient = async (id) => {
+  const deleteClient = async (id: string) => {
     if (confirm('Supprimer ce client ?')) {
       try {
         await supabase.from('clients').delete().eq('id', id);
@@ -69,7 +77,7 @@ export default function ClientsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredClients.map((client) => (
+        {filteredClients.map((client: Client) => (
           <Card key={client.id}>
             <CardHeader>
               <CardTitle>{client.first_name} {client.last_name}</CardTitle>

@@ -7,7 +7,7 @@ import rateLimit from 'express-rate-limit'
 import slowDown from 'express-slow-down'
 import { sanitize } from 'sanitize-html'
 import xss from 'xss'
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from '@/lib/supabase/client'
 import { createTransport } from 'nodemailer'
 import twilio from 'twilio'
 import winston from 'winston'
@@ -29,10 +29,7 @@ const MAX_OTP_ATTEMPTS = parseInt(process.env.OTP_MAX_ATTEMPTS || '3')
 const JWT_SECRET = process.env.JWT_SECRET || 'jwt-secret-key'
 
 // Redis client pour le cache et les sessions
-const redis = Redis.createClient({
-  url: process.env.REDIS_URL || 'redis://localhost:6379',
-  password: process.env.REDIS_PASSWORD
-})
+const redis = Redis.supabase
 
 // Logger de sécurité
 const securityLogger = winston.createLogger({

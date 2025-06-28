@@ -26,7 +26,7 @@ export default function NovaCoreLayout({ children }: { children: ReactNode }) {
           <span className="font-bold text-xl tracking-wide">NovaCore</span>
         </div>
         <nav className="flex-1 space-y-2">
-          {navItems.map((item) => (
+          {navItems.map((item: any) => (
             <Link key={item.href} href={item.href} className="block px-3 py-2 rounded hover:bg-white/10 transition-colors font-medium">
               {item.label}
             </Link>

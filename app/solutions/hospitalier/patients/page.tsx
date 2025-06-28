@@ -158,7 +158,7 @@ export default function PatientsPage() {
             </div>
           ) : (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {filteredPatients.map((patient) => (
+              {filteredPatients.map((patient: any) => (
                 <Card key={patient.id} className="hover:shadow-lg transition-shadow">
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">

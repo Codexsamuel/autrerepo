@@ -38,7 +38,7 @@ export default function CheckoutPage() {
       quantity: 2,
       image: "/placeholder.svg?height=80&width=80",
     },]
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  const subtotal = cartItems.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0)
   const shipping = selectedShipping === "express" ? 9.99 : 0
   const tax = subtotal * 0.2
   const total = subtotal + shipping + tax
@@ -260,7 +260,7 @@ export default function CheckoutPage() {
 
                     <h3 className="text-lg font-semibold mb-4">Options de livraison</h3>
                     <div className="space-y-4 mb-8">
-                      {shippingOptions.map((option) => (
+                      {shippingOptions.map((option: any) => (
                         <label
                           key={option.id}
                           className={`flex items-center p-4 border rounded-lg cursor-pointer transition-colors ${
@@ -302,7 +302,7 @@ export default function CheckoutPage() {
                     <h2 className="text-2xl font-bold mb-6">Méthode de paiement</h2>
 
                     <div className="grid md:grid-cols-2 gap-4 mb-8">
-                      {paymentMethods.map((method) => (
+                      {paymentMethods.map((method: any) => (
                         <label
                           key={method.id}
                           className={`flex items-center p-6 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
@@ -455,7 +455,7 @@ export default function CheckoutPage() {
                 <h3 className="text-xl font-bold mb-6">Récapitulatif</h3>
 
                 <div className="space-y-4 mb-6">
-                  {cartItems.map((item) => (
+                  {cartItems.map((item: any) => (
                     <div key={item.id} className="flex items-center space-x-3">
                       <img
                         src={item.image || "/placeholder.svg"}

@@ -383,7 +383,7 @@ export class StripeService {
         limit: 100,
       });
 
-      const totalAmount = payments.data.reduce((sum, payment) => {
+      const totalAmount = payments.data.reduce((sum: number, payment: any) => {
         return sum + (payment.amount || 0);
       }, 0);
 

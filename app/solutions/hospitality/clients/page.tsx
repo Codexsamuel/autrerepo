@@ -113,7 +113,7 @@ export default function ClientsPage() {
             </div>
           ) : (
             <div className="space-y-4">
-              {filteredClients.map((client) => (
+              {filteredClients.map((client: any) => (
                 <div key={client.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
                   <div className="flex items-center space-x-4">
                     <User className="h-8 w-8 text-blue-600" />

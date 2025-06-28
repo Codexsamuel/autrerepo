@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { createClient } from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 
 interface InsuranceClaim {
   id: string;
@@ -22,7 +22,6 @@ export default function SinistresList() {
   const [claims, setClaims] = useState<InsuranceClaim[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
 
   useEffect(() => {
     fetchClaims();

@@ -1,10 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { supabase } from '@/lib/supabase/client';
 
 export async function GET(request: NextRequest) {
   try {
@@ -26,10 +21,10 @@ export async function GET(request: NextRequest) {
     if (paymentsError) throw paymentsError;
 
     // Calculer les statistiques
-    const totalRevenue = payments?.reduce((sum, payment) => sum + payment.amount, 0) || 0;
+    const totalRevenue = payments?.reduce((sum: number, payment: { amount: number }) => sum + payment.amount, 0) || 0;
     const totalInvoices = invoices?.length || 0;
     const totalPayments = payments?.length || 0;
-    const outstandingAmount = invoices?.reduce((sum, invoice) => {
+    const outstandingAmount = invoices?.reduce((sum: number, invoice: { status: string, amount: number }) => {
       if (invoice.status !== 'paid') return sum + invoice.amount;
       return sum;
     }, 0) || 0;

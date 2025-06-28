@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Plane, Hotel, MapPin, Calendar, Download, Eye, Star, ArrowRight, Plus, Filter } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 
 
 
@@ -134,7 +133,7 @@ export default function MesVoyagesPage() {
       <Card key={voyage.id} className="overflow-hidden hover:shadow-lg transition-shadow">
         <div className="flex">
           <div className="relative w-48 h-32">
-            <Image src={voyage.image || "/placeholder.svg"} alt={voyage.destination} fill className="object-cover" />
+            <img src={voyage.image || "/placeholder.svg"} alt={voyage.destination} className="object-cover w-full h-full" />
             <Badge className={`absolute top-2 left-2 ${getStatusColor(voyage.status)}`}>voyage.status</Badge>
           </div>
 
@@ -242,7 +241,7 @@ export default function MesVoyagesPage() {
           <Card>
             <CardContent className="p-6 text-center">
               <div className="text-3xl font-bold text-orange-600 mb-2">
-                {voyages.past.reduce((acc, v) => acc + (v.rating || 0), 0) / voyages.past.length || 0}
+                {voyages.past.reduce((acc: number, v: any) => acc + (v.rating || 0), 0) / voyages.past.length || 0}
               </div>
               <div className="text-gray-600">Note moyenne</div>
             </CardContent>
@@ -250,7 +249,7 @@ export default function MesVoyagesPage() {
           <Card>
             <CardContent className="p-6 text-center">
               <div className="text-3xl font-bold text-purple-600 mb-2">
-                {[...voyages.upcoming, ...voyages.past].reduce((acc, v) => acc + v.price, 0)}€
+                {[...voyages.upcoming, ...voyages.past].reduce((acc: number, v: any) => acc + v.price, 0)}€
               </div>
               <div className="text-gray-600">Total dépensé</div>
             </CardContent>

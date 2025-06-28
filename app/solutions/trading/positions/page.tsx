@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { createClient } from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 
 interface TradingPosition {
   id: string;
@@ -21,7 +21,6 @@ export default function PositionsList() {
   const [positions, setPositions] = useState<TradingPosition[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
 
   useEffect(() => {
     fetchPositions();

@@ -8,8 +8,18 @@ import { Euro, Plus, Edit, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase-client";
 
+interface Transaction {
+  id: string;
+  description?: string;
+  type?: string;
+  amount?: number;
+  status?: string;
+  created_at?: string;
+  [key: string]: any;
+}
+
 export default function TransactionsPage() {
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
@@ -32,7 +42,7 @@ export default function TransactionsPage() {
     }
   };
 
-  const deleteTransaction = async (id) => {
+  const deleteTransaction = async (id: string) => {
     if (confirm('Supprimer cette transaction ?')) {
       try {
         await supabase.from('transactions').delete().eq('id', id);
@@ -68,11 +78,13 @@ export default function TransactionsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredTransactions.map((t) => (
+        {filteredTransactions.map((t: Transaction) => (
           <Card key={t.id}>
             <CardHeader>
               <CardTitle>{t.description || t.type}</CardTitle>
-              <div className="text-sm text-gray-600">{new Date(t.created_at).toLocaleDateString('fr-FR')}</div>
+              <div className="text-sm text-gray-600">
+                {t.created_at ? new Date(t.created_at).toLocaleDateString('fr-FR') : 'Date inconnue'}
+              </div>
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-2 mb-2">

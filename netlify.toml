@@ -1,12 +1,13 @@
 [build]
-  command = "pnpm build"
-  publish = ".next"
+  command = "pnpm run build"
+  publish = "out"
   functions = "netlify/functions"
 
 [build.environment]
   NEXT_TELEMETRY_DISABLED = "1"
-  NODE_VERSION = "18.20.0"
+  NODE_VERSION = "18"
   NODE_ENV = "production"
+  NPM_FLAGS = "--version"
 
 [dev]
   command = "npm run dev"
@@ -21,8 +22,39 @@
 # Redirections pour Next.js App Router
 [[redirects]]
   from = "/api/*"
-  to = "/api/:splat"
+  to = "https://dl-solutions-backend.vercel.app/api/:splat"
   status = 200
+  force = true
+
+[[redirects]]
+  from = "/novacore/*"
+  to = "https://dl-solutions-backend.vercel.app/novacore/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/intranet/*"
+  to = "https://dl-solutions-backend.vercel.app/intranet/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/solutions/*"
+  to = "https://dl-solutions-backend.vercel.app/solutions/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/formations/*"
+  to = "https://dl-solutions-backend.vercel.app/formations/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/admin/*"
+  to = "https://dl-solutions-backend.vercel.app/admin/:splat"
+  status = 200
+  force = true
 
 [[redirects]]
   from = "/*"
@@ -30,6 +62,7 @@
   status = 200
 
 [functions]
+  directory = "netlify/functions"
   node_bundler = "esbuild"
   external_node_modules = ["@prisma/client"]
 
@@ -78,4 +111,22 @@
   paths = [
     "node_modules/.cache",
     ".next/cache"
-  ] 
+  ]
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[edge_functions]]
+  function = "auth"
+  path = "/api/auth/*"
+
+[[edge_functions]]
+  function = "api"
+  path = "/api/*" 

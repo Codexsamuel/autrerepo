@@ -49,7 +49,7 @@ export class TelegramBotService {
         await this.sendStats(chatId);
         break;
       case '/predict':
-        await this.sendPrediction(chatId, msg.text);
+        await this.sendPrediction(chatId, msg.text || '');
         break;
       case '/help':
         await this.sendHelp(chatId);

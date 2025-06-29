@@ -247,10 +247,8 @@ export default function EditTransaction() {
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0">
                     <Calendar
-                      mode="single"
                       selected={formData.date}
                       onSelect={(date: any) => date && handleInputChange('date', date)}
-                      initialFocus
                     />
                   </PopoverContent>
                 </Popover>

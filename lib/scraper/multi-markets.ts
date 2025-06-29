@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer';
+import puppeteer, { Browser, ElementHandle } from 'puppeteer';
 import * as cheerio from 'cheerio';
 
 export interface Product {
@@ -104,7 +104,7 @@ const MARKETS_CONFIG: Record<string, MarketConfig> = {
 };
 
 export class MultiMarketScraper {
-  private browser: puppeteer.Browser | null = null;
+  private browser: Browser | null = null;
 
   async initialize() {
     this.browser = await puppeteer.launch({
@@ -159,7 +159,7 @@ export class MultiMarketScraper {
   }
 
   private async extractProductData(
-    element: puppeteer.ElementHandle, 
+    element: ElementHandle<Element>, 
     config: MarketConfig, 
     market: string
   ): Promise<Product | null> {

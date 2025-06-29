@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, TextChannel, EmbedBuilder, ActivityType } from 'discord.js';
+import { Client, GatewayIntentBits, TextChannel, EmbedBuilder, ActivityType, ColorResolvable } from 'discord.js';
 import { oneWinAPI, OneWinBet, OneWinPrediction } from '../trading/1win-api';
 
 
@@ -232,7 +232,7 @@ export class DiscordBot {
       const embed = new EmbedBuilder()
         .setTitle(title)
         .setDescription(message)
-        .setColor(color)
+        .setColor(color as ColorResolvable)
         .setTimestamp();
 
       await channel.send({ embeds: [embed] });

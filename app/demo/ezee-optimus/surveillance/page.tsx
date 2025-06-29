@@ -37,7 +37,6 @@ import {
   Play,
   Pause,
   Circle,
-  Stop,
   RefreshCw,
   Maximize,
   Minimize,

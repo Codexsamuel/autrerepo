@@ -132,7 +132,7 @@ export const clientHelpers = {
   },
 
   // Create client
-  async supabase: Promise<Client | null> {
+  async createClient(clientData: Omit<Client, 'id'>): Promise<Client | null> {
     const { data, error } = await supabase
       .from('clients')
       .insert([clientData])
@@ -335,8 +335,8 @@ export const dashboardHelpers = {
       .select('*')
       .eq('employee_id', employeeId)
 
-    const totalValue = commissions?.reduce((sum: number, comm: any) => sum + (comm.contract_value || 0), 0) || 0
-    const totalCommission = commissions?.reduce((sum: number, comm: any) => {
+    const totalValue = commissions?.reduce((sum: number, comm: Commission) => sum + (comm.contract_value || 0), 0) || 0
+    const totalCommission = commissions?.reduce((sum: number, comm: Commission) => {
       const rate = comm.commission_rate || 25.0
       return sum + ((comm.contract_value || 0) * rate / 100)
     }, 0) || 0
@@ -345,7 +345,7 @@ export const dashboardHelpers = {
       totalContracts: commissions?.length || 0,
       totalValue,
       totalCommission,
-      pendingCommissions: commissions?.filter(c => c.status === 'en_attente').length || 0
+      pendingCommissions: commissions?.filter((c: Commission) => c.status === 'en_attente').length || 0
     }
   }
 } 

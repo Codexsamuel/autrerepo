@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase/client'
+import { supabase as supabaseClient } from '@/lib/supabase/client'
 import bcrypt from 'bcryptjs'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid'
 // Configuration Supabase
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-const supabase = supabase
+// const supabase = supabase // ligne supprimée pour éviter le conflit
 
 // Super Admin par défaut
 export const SUPER_ADMIN = {
@@ -83,7 +83,7 @@ export class AuthService {
   // Authentification utilisateur normal
   static async authenticateUser(email: string, password: string): Promise<User | null> {
     try {
-      const { data: user, error } = await supabase
+      const { data: user, error } = await supabaseClient
         .from('users')
         .select('*')
         .eq('email', email.toLowerCase())
@@ -131,13 +131,13 @@ export class AuthService {
 
     try {
       // Supprimer les anciens codes OTP
-      await supabase
+      await supabaseClient
         .from('otp_codes')
         .delete()
         .eq('user_id', userId)
 
       // Insérer le nouveau code
-      const { error } = await supabase
+      const { error } = await supabaseClient
         .from('otp_codes')
         .insert({
           id: uuidv4(),
@@ -162,7 +162,7 @@ export class AuthService {
   // Vérifier OTP
   static async verifyOTP(userId: string, code: string): Promise<boolean> {
     try {
-      const { data: otpData, error } = await supabase
+      const { data: otpData, error } = await supabaseClient
         .from('otp_codes')
         .select('*')
         .eq('user_id', userId)
@@ -176,7 +176,7 @@ export class AuthService {
       if (!isValidCode) return false
 
       // Marquer le code comme utilisé
-      await supabase
+      await supabaseClient
         .from('otp_codes')
         .update({ used: true })
         .eq('id', otpData.id)
@@ -192,7 +192,7 @@ export class AuthService {
   static async checkBotProtection(ip: string, userAgent: string): Promise<boolean> {
     try {
       // Vérifier les tentatives récentes
-      const { data: recentAttempts, error } = await supabase
+      const { data: recentAttempts, error } = await supabaseClient
         .from('login_attempts')
         .select('*')
         .eq('ip', ip)
@@ -200,7 +200,7 @@ export class AuthService {
 
       if (error) return true
 
-      const failedAttempts = recentAttempts?.filter(attempt => !attempt.success) || []
+      const failedAttempts = recentAttempts?.filter((attempt: any) => !attempt.success) || []
       
       // Bloquer si plus de 5 tentatives échouées en 15 minutes
       if (failedAttempts.length >= 5) {
@@ -237,7 +237,7 @@ export class AuthService {
     otpVerified?: boolean
   ): Promise<void> {
     try {
-      await supabase
+      await supabaseClient
         .from('login_attempts')
         .insert({
           id: uuidv4(),
@@ -256,7 +256,7 @@ export class AuthService {
   // Enregistrer échec de connexion
   static async recordFailedLogin(email: string): Promise<void> {
     try {
-      const { data: user } = await supabase
+      const { data: user } = await supabaseClient
         .from('users')
         .select('login_attempts')
         .eq('email', email.toLowerCase())
@@ -265,7 +265,7 @@ export class AuthService {
       const newAttempts = (user?.login_attempts || 0) + 1
       const lockedUntil = newAttempts >= 5 ? new Date(Date.now() + 30 * 60 * 1000) : null // 30 minutes
 
-      await supabase
+      await supabaseClient
         .from('users')
         .update({
           login_attempts: newAttempts,
@@ -280,7 +280,7 @@ export class AuthService {
   // Réinitialiser tentatives de connexion
   static async resetLoginAttempts(email: string): Promise<void> {
     try {
-      await supabase
+      await supabaseClient
         .from('users')
         .update({
           login_attempts: 0,
@@ -304,7 +304,7 @@ export class AuthService {
     try {
       const hashedPassword = await bcrypt.hash(password, 12)
       
-      const { data: user, error } = await supabase
+      const { data: user, error } = await supabaseClient
         .from('users')
         .insert({
           id: uuidv4(),
@@ -342,14 +342,14 @@ export class AuthService {
   // Obtenir tous les utilisateurs (super admin seulement)
   static async getAllUsers(): Promise<User[]> {
     try {
-      const { data: users, error } = await supabase
+      const { data: users, error } = await supabaseClient
         .from('users')
         .select('*')
         .order('created_at', { ascending: false })
 
       if (error) throw error
 
-      return users.map(user => ({
+      return users.map((user: any) => ({
         id: user.id,
         email: user.email,
         name: user.name,

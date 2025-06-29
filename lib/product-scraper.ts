@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer'
+import puppeteer, { Browser } from 'puppeteer'
 
 
 export interface ScrapedProduct {
@@ -30,7 +30,7 @@ export interface ScrapedProduct {
 }
 
 export class ProductScraper {
-  private browser: puppeteer.Browser | null = null
+  private browser: Browser | null = null
 
   async initialize() {
     this.browser = await puppeteer.launch({

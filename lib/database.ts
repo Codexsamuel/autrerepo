@@ -1,11 +1,8 @@
 import { supabase } from '@/lib/supabase/client'
 
-
 // Configuration Supabase
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-
-export const supabase = supabase
 
 // Types TypeScript pour la base de données
 export interface User {
@@ -91,6 +88,24 @@ export interface NewsFeed {
   summary: string
   relevance_score: number
   detected_at: string
+}
+
+export interface Document {
+  id: number;
+  user_id: number;
+  title: string;
+  content: string;
+  created_at: string;
+}
+
+export interface Commission {
+  id: number;
+  employee_id: number;
+  client_id: number;
+  contract_value: number;
+  commission_rate: number;
+  status: string;
+  date_signed: string;
 }
 
 // Fonctions utilitaires pour la base de données
@@ -314,7 +329,7 @@ export class DatabaseService {
     const interactions = data as AIInteraction[]
     const totalInteractions = interactions.length
     const uniqueUsers = new Set(interactions.map(i => i.user_id)).size
-    const intents = interactions.reduce((acc: number, interaction: any) => {
+    const intents = interactions.reduce((acc: Record<string, number>, interaction: any) => {
       if (interaction.intent) {
         acc[interaction.intent] = (acc[interaction.intent] || 0) + 1
       }
@@ -382,4 +397,6 @@ export const databaseConfig = {
       detectSessionInUrl: true
     }
   }
-} 
+}
+
+export { supabase }; 

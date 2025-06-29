@@ -1,5 +1,5 @@
-import puppeteer from 'puppeteer';
-import { translate } from '@google-cloud/translate';
+import puppeteer, { Browser, ElementHandle } from 'puppeteer';
+import { TranslationServiceClient } from '@google-cloud/translate';
 import { supabase } from '@/lib/supabase/client';
 
 
@@ -24,8 +24,7 @@ const EXCHANGE_RATE = 95; // 1 CNY = 95 FCFA
 const MARGIN_RATE = 2.5; // 250% de marge
 
 // Initialisation des clients
-const translateClient = new translate.TranslationServiceClient();
-const supabase = supabase;
+const translateClient = new TranslationServiceClient();
 
 export async function scrapeAliExpress(keyword: string): Promise<Product[]> {
   const browser = await puppeteer.launch({
@@ -84,14 +83,14 @@ export async function scrapeAliExpress(keyword: string): Promise<Product[]> {
           targetLanguageCode: 'fr',
         });
 
-        const translatedTitle = translation.translations[0].translatedText;
+        const translatedTitle = translation.translations && translation.translations[0] && translation.translations[0].translatedText ? translation.translations[0].translatedText : product.title || "";
 
         // Calcul du prix en FCFA avec marge
         const priceFCFA = Math.round(product.price * EXCHANGE_RATE * MARGIN_RATE);
 
         return {
           id: crypto.randomUUID(),
-          title: translatedTitle,
+          title: translatedTitle || "",
           originalTitle: product.title,
           priceCNY: product.price,
           priceFCFA,
@@ -179,7 +178,7 @@ export interface ScrapingOptions {
 }
 
 export class AliExpressScraper {
-  private browser: puppeteer.Browser | null = null;
+  private browser: Browser | null = null;
 
   async initialize(): Promise<void> {
     try {
@@ -294,7 +293,7 @@ export class AliExpressScraper {
     return `${baseUrl}?${params.toString()}`;
   }
 
-  private async extractProductData(element: puppeteer.ElementHandle): Promise<ProductData | null> {
+  private async extractProductData(element: ElementHandle<Element>): Promise<ProductData | null> {
     try {
       const productId = await element.evaluate(el => el.getAttribute('data-product-id'));
       if (!productId) return null;
@@ -414,7 +413,7 @@ export class AliExpressScraper {
         shippingInfo: productData.shippingInfo,
         url: productUrl,
         category: productData.category,
-        tags: productData.tags
+        tags: (productData.tags || []).filter((tag: string | undefined): tag is string => !!tag)
       };
 
     } catch (error) {

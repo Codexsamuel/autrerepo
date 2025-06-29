@@ -36,7 +36,7 @@ import {
   Upload,
   Play,
   Pause,
-  Record,
+  Circle,
   Stop,
   RefreshCw,
   Maximize,
@@ -481,7 +481,7 @@ export default function SurveillancePage() {
                         <span className="text-gray-500">{camera.resolution}</span>
                         <div className="flex items-center space-x-1">
                           {camera.aiEnabled && <Brain className="w-3 h-3 text-purple-600" />}
-                          {camera.recording && <Record className="w-3 h-3 text-red-600" />}
+                          {camera.recording && <Circle className="w-3 h-3 text-red-600" />}
                         </div>
                       </div>
                     </div>
@@ -570,7 +570,7 @@ export default function SurveillancePage() {
                         )}
                         {selectedCamera.recording && (
                           <Badge className="bg-red-600 text-white text-xs">
-                            <Record className="w-3 h-3 mr-1" />
+                            <Circle className="w-3 h-3 mr-1" />
                             REC
                           </Badge>
                         )}

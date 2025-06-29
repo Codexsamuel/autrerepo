@@ -161,7 +161,6 @@ export default function DLRestaurantDashboard() {
               </CardHeader>
               <CardContent>
                 <Calendar
-                  mode="single"
                   selected={selectedDate}
                   onSelect={setSelectedDate}
                   className="rounded-md border"

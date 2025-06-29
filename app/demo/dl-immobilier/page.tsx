@@ -1,3 +1,6 @@
+// Dashboard Immobilier premium NovaWorld - Inspiré Salesforce/Yardi
+// Modules : Navbar, Alertes IA, KPI, Pipeline, VIP, Recos IA, Footer
+// Personnalisation facile : modifiez les mock data ou les modules selon vos besoins.
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -66,7 +69,9 @@ import {
   Bed,
   Bath,
   Square,
-  Euro
+  Euro,
+  ChevronRight,
+  ChevronLeft
 } from 'lucide-react';
 
 interface RealEstateEvent {

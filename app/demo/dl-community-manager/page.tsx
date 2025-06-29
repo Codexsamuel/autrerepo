@@ -69,8 +69,14 @@ import {
   Image,
   Video,
   Hash,
-  AtSign
+  AtSign,
+  ChevronRight,
+  ChevronLeft
 } from 'lucide-react';
+
+// Dashboard Community Management premium NovaCore - Inspiré Sprout Social/Hootsuite
+// Modules : Navbar, Alertes IA, KPI, Pipeline, Influenceurs, Recos IA, Footer
+// Personnalisation facile : modifiez les mock data ou les modules selon vos besoins.
 
 interface SocialMediaEvent {
   id: string;

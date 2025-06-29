@@ -85,7 +85,7 @@ export default function AIChatbot() {
       {/* Bouton flottant amélioré */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-blue-600 to-purple-700 text-white p-4 rounded-full shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 hover:scale-110 border-2 border-blue-400/30"
+        className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-blue-600 to-purple-700 text-white p-4 rounded-full shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 hover:scale-110 border-2 border-blue-400/30"
         aria-label="Ouvrir l'assistant IA"
       >
         <MessageCircle className="w-7 h-7" />

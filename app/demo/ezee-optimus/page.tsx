@@ -112,6 +112,180 @@ interface Client {
   };
 }
 
+function EzeeOptimusNavbar() {
+  return (
+    <nav className="bg-white border-b shadow-sm sticky top-0 z-40">
+      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
+        <div className="flex items-center space-x-4">
+          <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+            <img src="/logos/novacore.svg" alt="NovaCore Logo" className="w-7 h-7" />
+          </div>
+          <span className="font-bold text-lg text-gray-900">Hôtel Le Meridien Yaoundé</span>
+        </div>
+        <div className="flex-1 max-w-md mx-8">
+          <input type="text" placeholder="Rechercher..." className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
+        </div>
+        <div className="flex items-center space-x-4">
+          <button className="relative">
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1">1</span>
+            <Bell className="w-6 h-6 text-blue-600" />
+          </button>
+          <div className="flex items-center space-x-2">
+            <Avatar className="w-8 h-8">
+              <AvatarImage src="https://res.cloudinary.com/dko5sommz/image/upload/v1749401792/WhatsApp_Image_2025-06-06_at_23.18.58_1_wwefxu.jpg" />
+              <AvatarFallback>SO</AvatarFallback>
+            </Avatar>
+            <div className="hidden md:block">
+              <span className="font-medium text-sm">Samuel OBAM</span>
+              <div className="text-xs text-gray-500">Directeur Général</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+function IAAlertBanner() {
+  return (
+    <div className="bg-gradient-to-r from-yellow-100 to-red-100 border-l-4 border-yellow-400 p-4 flex items-center justify-between mb-6 mt-2 rounded shadow">
+      <div className="flex items-center space-x-3">
+        <AlertTriangle className="w-6 h-6 text-yellow-600" />
+        <span className="font-semibold text-yellow-900">IA NovaCore:</span>
+        <span className="text-sm text-gray-800">Tarif concurrent - Booking.com 15% moins cher ce weekend</span>
+      </div>
+      <button className="bg-yellow-400 text-white px-3 py-1 rounded font-medium hover:bg-yellow-500 transition">Voir toutes les alertes</button>
+    </div>
+  );
+}
+
+type TapeChartProps = { rooms: Room[]; reservations: Reservation[] };
+function TapeChart({ rooms, reservations }: TapeChartProps) {
+  const days = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() + i);
+    return d;
+  });
+  return (
+    <div className="overflow-x-auto bg-white rounded-lg shadow p-4 mb-8">
+      <div className="flex items-center mb-2">
+        <CalendarIcon className="w-5 h-5 text-blue-600 mr-2" />
+        <span className="font-semibold text-lg">Plan d'occupation - Tape Chart</span>
+      </div>
+      <table className="min-w-full text-xs">
+        <thead>
+          <tr>
+            <th className="p-2 text-left">Chambre</th>
+            {days.map((day, i) => (
+              <th key={i} className="p-2 text-center">{day.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric' })}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rooms.map((room: Room) => (
+            <tr key={room.id} className="border-b">
+              <td className="p-2 font-medium">{room.number} <span className="text-gray-400">({room.type})</span></td>
+              {days.map((day, i) => {
+                const res = reservations.find((r: Reservation) => r.roomNumber === room.number && new Date(r.checkIn) <= day && new Date(r.checkOut) > day);
+                return (
+                  <td key={i} className="p-1 text-center">
+                    {res ? (
+                      <span className={`inline-block px-2 py-1 rounded text-white text-xs cursor-pointer ${res.status === 'checked-in' ? 'bg-green-500' : res.status === 'confirmed' ? 'bg-blue-500' : res.status === 'cancelled' ? 'bg-red-400' : 'bg-yellow-400'}`}
+                        title={`Client: ${res.guestName}\nStatut: ${res.status}`}
+                      >
+                        {res.guestName.split(' ')[0]}
+                      </span>
+                    ) : (
+                      <span className="inline-block w-4 h-4 bg-gray-100 rounded-full"></span>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+type VIPClientsProps = { clients: Client[] };
+function VIPClients({ clients }: VIPClientsProps) {
+  const vips = clients.filter((c: Client) => c.loyaltyLevel === 'gold' || c.loyaltyLevel === 'platinum');
+  if (!vips.length) return null;
+  return (
+    <Card className="mb-8">
+      <CardHeader>
+        <CardTitle className="flex items-center space-x-2">
+          <Star className="w-5 h-5 text-yellow-500" />
+          <span>Clients VIP Présents</span>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-wrap gap-4">
+          {vips.map((client: Client) => (
+            <div key={client.id} className="flex items-center space-x-2 p-2 border rounded-lg">
+              <Avatar className="w-8 h-8">
+                <AvatarImage src={client.photo} />
+                <AvatarFallback>{client.name.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div>
+                <div className="font-medium text-sm">{client.name}</div>
+                <div className="text-xs text-gray-500">{client.loyaltyLevel}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function IAInsights() {
+  return (
+    <Card className="mb-8 bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+      <CardContent className="p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <Brain className="w-8 h-8 text-blue-600" />
+            <div>
+              <h3 className="font-semibold text-blue-900">Insights IA</h3>
+              <p className="text-sm text-blue-700">
+                Taux d'occupation: 85% | Revenus prévus: €12,500 | Alertes: 2
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <TrendingUp className="w-5 h-5 text-green-600" />
+            <BarChart3 className="w-5 h-5 text-green-600" />
+          </div>
+        </div>
+        <div className="mt-2 text-sm text-blue-800">Opportunité détectée : L'IA recommande d'augmenter le budget Instagram de 30% pour maximiser le ROI sur votre audience 25-35 ans.</div>
+        <button className="mt-2 bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">Appliquer la recommandation</button>
+      </CardContent>
+    </Card>
+  );
+}
+
+function EzeeOptimusFooter() {
+  return (
+    <footer className="bg-white border-t mt-12 py-6 text-center text-xs text-gray-500">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-4">
+        <div className="flex items-center space-x-2">
+          <img src="/logos/novacore.svg" alt="NovaCore Logo" className="w-6 h-6" />
+          <span>NovaCore Hospitality</span>
+        </div>
+        <div>
+          Made by Samuel OBAM, CEO of DL Solutions &nbsp;|&nbsp; +237 694 341 586 &nbsp;|&nbsp; Rue École de Police, Yaoundé &nbsp;|&nbsp; sobam@daveandlucesolutions.com
+        </div>
+        <div>
+          © 2024 NovaCore Hospitality CRM. Tous droits réservés. Powered by NovaCore AI.
+        </div>
+      </div>
+    </footer>
+  );
+}
+
 export default function EzeeOptimusPage() {
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const [reservations, setReservations] = useState<Reservation[]>([]);
@@ -124,7 +298,6 @@ export default function EzeeOptimusPage() {
   const [filterType, setFilterType] = useState<'all' | 'room' | 'spa' | 'restaurant'>('all');
 
   useEffect(() => {
-    // Simuler le chargement des données
     setTimeout(() => {
       loadData();
       setLoading(false);
@@ -132,7 +305,6 @@ export default function EzeeOptimusPage() {
   }, []);
 
   const loadData = () => {
-    // Métriques principales
     setMetrics([
       {
         title: "Taux d'Occupation",
@@ -164,7 +336,6 @@ export default function EzeeOptimusPage() {
       }
     ]);
 
-    // Clients avec photos et IA
     setClients([
       {
         id: "1",
@@ -202,7 +373,6 @@ export default function EzeeOptimusPage() {
       }
     ]);
 
-    // Réservations avec IA
     setReservations([
       {
         id: "RES-001",
@@ -268,7 +438,6 @@ export default function EzeeOptimusPage() {
       }
     ]);
 
-    // Chambres avec photos clients
     setRooms([
       { id: "1", number: "101", type: "standard", status: "available", floor: 1, price: 120, amenities: ["WiFi", "TV", "Salle de bain"] },
       { id: "2", number: "102", type: "standard", status: "reserved", floor: 1, price: 120, amenities: ["WiFi", "TV", "Salle de bain"] },
@@ -299,7 +468,6 @@ export default function EzeeOptimusPage() {
       { id: "8", number: "502", type: "presidential", status: "reserved", floor: 5, price: 500, amenities: ["WiFi", "TV", "Mini-bar", "Balcon", "Jacuzzi", "Service conciergerie"] }
     ]);
 
-    // Services avec IA
     setServices([
       {
         id: "SRV-001",
@@ -421,60 +589,14 @@ export default function EzeeOptimusPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <Building2 className="w-6 h-6 text-white" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-bold text-gray-900">Ezee Optimus</span>
-                <span className="text-sm text-gray-500">Gestion Hôtelière Intelligente</span>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                <Brain className="w-3 h-3 mr-1" />
-                IA Active
-              </Badge>
-              <Button variant="outline" size="sm">
-                <Camera className="w-4 h-4 mr-2" />
-                Surveillance
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
-
+      <EzeeOptimusNavbar />
+      <IAAlertBanner />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {metrics.map((metric, index) => (
-            <Card key={index}>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{metric.title}</CardTitle>
-                <div className={`p-2 rounded-lg ${metric.color.replace('text-', 'bg-').replace('-600', '-100')}`}>
-                  {metric.icon}
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{metric.value}</div>
-                <div className={`flex items-center text-xs ${metric.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                  {metric.change >= 0 ? <ArrowUpRight className="w-3 h-3 mr-1" /> : <ArrowDownRight className="w-3 h-3 mr-1" />}
-                  {Math.abs(metric.change)}%
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Main Content Grid */}
+        <IAInsights />
+        <TapeChart rooms={rooms} reservations={reservations} />
+        <VIPClients clients={clients} />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Calendar & AI Insights */}
           <div className="lg:col-span-1 space-y-6">
-            {/* Calendar with AI */}
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -525,7 +647,6 @@ export default function EzeeOptimusPage() {
               </CardContent>
             </Card>
 
-            {/* AI Risk Analysis */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
@@ -561,7 +682,6 @@ export default function EzeeOptimusPage() {
               </CardContent>
             </Card>
 
-            {/* Recent Reservations with Photos */}
             <Card>
               <CardHeader>
                 <CardTitle>Réservations Récentes</CardTitle>
@@ -597,9 +717,7 @@ export default function EzeeOptimusPage() {
             </Card>
           </div>
 
-          {/* Right Column - Rooms & Services */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Rooms Status with Photos */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
@@ -641,7 +759,6 @@ export default function EzeeOptimusPage() {
               </CardContent>
             </Card>
 
-            {/* Services with AI Recommendations */}
             <Card>
               <CardHeader>
                 <CardTitle>Services en Cours - IA</CardTitle>
@@ -686,7 +803,6 @@ export default function EzeeOptimusPage() {
               </CardContent>
             </Card>
 
-            {/* Client Profiles */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
@@ -745,7 +861,6 @@ export default function EzeeOptimusPage() {
               </CardContent>
             </Card>
 
-            {/* Quick Actions */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <Button className="h-20 flex flex-col items-center justify-center">
                 <CalendarIcon className="h-6 w-6 mb-2" />
@@ -765,7 +880,6 @@ export default function EzeeOptimusPage() {
               </Button>
             </div>
 
-            {/* Additional Modules */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
               <Button 
                 variant="outline" 
@@ -803,6 +917,7 @@ export default function EzeeOptimusPage() {
           </div>
         </div>
       </div>
+      <EzeeOptimusFooter />
     </div>
   );
 }

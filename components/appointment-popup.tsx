@@ -21,7 +21,7 @@ export default function AppointmentPopup() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-24 right-6 z-50 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-full shadow-2xl hover:scale-105 transition-all"
+        className="fixed bottom-24 right-6 z-40 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-full shadow-2xl hover:scale-105 transition-all"
       >
         Prendre rendez-vous
       </button>

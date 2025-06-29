@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calendar } from '@/components/ui/calendar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import SubscriptionWrapper from '@/components/subscription/SubscriptionWrapper';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
-  Calendar as CalendarIcon,
+  Calendar,
   Clock,
   User,
   Bed,
@@ -26,122 +26,258 @@ import {
   Shield,
   Bell,
   QrCode,
-  FileText
+  FileText,
+  Search,
+  Filter,
+  MoreHorizontal,
+  CheckCircle,
+  AlertCircle,
+  XCircle,
+  Eye,
+  Edit,
+  Phone,
+  Mail,
+  MapPin,
+  CreditCard,
+  CalendarDays,
+  Users as UsersIcon,
+  DollarSign,
+  Clock as ClockIcon
 } from 'lucide-react';
 
-interface CalendarEvent {
+interface Reservation {
   id: string;
-  title: string;
   clientName: string;
+  clientEmail: string;
+  clientPhone: string;
   clientPhoto?: string;
-  type: 'reservation' | 'spa' | 'restaurant' | 'concierge';
-  startTime: string;
-  endTime: string;
-  status: 'confirmed' | 'pending' | 'cancelled';
+  type: 'room' | 'spa' | 'restaurant' | 'concierge' | 'event';
+  checkIn: string;
+  checkOut: string;
+  status: 'confirmed' | 'pending' | 'cancelled' | 'checked-in' | 'checked-out' | 'no-show';
   roomNumber?: string;
+  roomType?: string;
+  guests: number;
+  totalAmount: number;
+  paidAmount: number;
+  specialRequests: string[];
   aiRiskScore: number;
   aiRecommendations: string[];
-  totalAmount: number;
-  specialRequests: string[];
+  createdAt: string;
+  updatedAt: string;
+  priority: 'low' | 'medium' | 'high' | 'vip';
+  source: 'direct' | 'booking.com' | 'airbnb' | 'expedia' | 'phone';
 }
 
-function IntelligentCalendarPage() {
-  const [events, setEvents] = useState<CalendarEvent[]>([]);
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
-  const [viewMode, setViewMode] = useState<'day' | 'week' | 'month'>('week');
-  const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
+function ReservationManagementPage() {
+  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [filteredReservations, setFilteredReservations] = useState<Reservation[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState<string>('all');
+  const [selectedType, setSelectedType] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
 
   useEffect(() => {
-    loadData();
+    loadReservations();
   }, []);
 
-  const loadData = () => {
-    setEvents([
+  useEffect(() => {
+    filterReservations();
+  }, [reservations, selectedStatus, selectedType, searchTerm]);
+
+  const loadReservations = () => {
+    const mockReservations: Reservation[] = [
       {
-        id: "1",
-        title: "Réservation - Jean Dupont",
+        id: "RES-001",
         clientName: "Jean Dupont",
+        clientEmail: "jean.dupont@email.com",
+        clientPhone: "+33 6 12 34 56 78",
         clientPhoto: "https://res.cloudinary.com/dko5sommz/image/upload/v1749401792/WhatsApp_Image_2025-06-06_at_23.18.58_1_wwefxu.jpg",
-        type: "reservation",
-        startTime: "2024-02-14 15:00",
-        endTime: "2024-02-16 11:00",
+        type: "room",
+        checkIn: "2024-02-14 15:00",
+        checkOut: "2024-02-16 11:00",
         status: "confirmed",
         roomNumber: "101",
+        roomType: "Suite Deluxe",
+        guests: 2,
+        totalAmount: 850,
+        paidAmount: 850,
+        specialRequests: ["Vue mer", "Lit king-size", "Champagne de bienvenue"],
         aiRiskScore: 0.15,
-        aiRecommendations: [
-          "Préparer champagne de bienvenue",
-          "Décorer la chambre pour l'anniversaire",
-          "Réserver table restaurant gastronomique"
-        ],
-        totalAmount: 500,
-        specialRequests: ["Vue mer", "Lit king-size", "Champagne"]
+        aiRecommendations: ["Préparer champagne de bienvenue", "Décorer la chambre pour l'anniversaire"],
+        createdAt: "2024-02-10 10:30",
+        updatedAt: "2024-02-12 14:20",
+        priority: "vip",
+        source: "direct"
       },
       {
-        id: "2",
-        title: "Spa - Marie Martin",
+        id: "RES-002",
         clientName: "Marie Martin",
+        clientEmail: "marie.martin@email.com",
+        clientPhone: "+33 6 98 76 54 32",
         clientPhoto: "https://res.cloudinary.com/dko5sommz/image/upload/v1748407312/Lucie_u6swnq.jpg",
         type: "spa",
-        startTime: "2024-02-15 10:00",
-        endTime: "2024-02-15 12:00",
+        checkIn: "2024-02-15 10:00",
+        checkOut: "2024-02-15 12:00",
         status: "pending",
-        aiRiskScore: 0.25,
-        aiRecommendations: [
-          "Préparer huiles essentielles bio",
-          "Musique zen en arrière-plan",
-          "Thé bio après le massage"
-        ],
+        guests: 1,
         totalAmount: 120,
-        specialRequests: ["Produits bio", "Musique zen"]
+        paidAmount: 0,
+        specialRequests: ["Produits bio", "Musique zen"],
+        aiRiskScore: 0.25,
+        aiRecommendations: ["Préparer huiles essentielles bio", "Musique zen en arrière-plan"],
+        createdAt: "2024-02-13 16:45",
+        updatedAt: "2024-02-13 16:45",
+        priority: "medium",
+        source: "booking.com"
+      },
+      {
+        id: "RES-003",
+        clientName: "Pierre Dubois",
+        clientEmail: "pierre.dubois@email.com",
+        clientPhone: "+33 6 11 22 33 44",
+        type: "room",
+        checkIn: "2024-02-14 14:00",
+        checkOut: "2024-02-15 11:00",
+        status: "checked-in",
+        roomNumber: "205",
+        roomType: "Chambre Standard",
+        guests: 1,
+        totalAmount: 180,
+        paidAmount: 180,
+        specialRequests: ["Vue jardin"],
+        aiRiskScore: 0.05,
+        aiRecommendations: ["Client régulier - service premium"],
+        createdAt: "2024-02-08 09:15",
+        updatedAt: "2024-02-14 14:30",
+        priority: "high",
+        source: "expedia"
+      },
+      {
+        id: "RES-004",
+        clientName: "Sophie Laurent",
+        clientEmail: "sophie.laurent@email.com",
+        clientPhone: "+33 6 55 66 77 88",
+        type: "restaurant",
+        checkIn: "2024-02-16 19:00",
+        checkOut: "2024-02-16 22:00",
+        status: "confirmed",
+        guests: 4,
+        totalAmount: 280,
+        paidAmount: 100,
+        specialRequests: ["Table fenêtre", "Menu végétarien"],
+        aiRiskScore: 0.35,
+        aiRecommendations: ["Préparer menu végétarien", "Table avec vue"],
+        createdAt: "2024-02-11 12:20",
+        updatedAt: "2024-02-12 10:15",
+        priority: "medium",
+        source: "phone"
+      },
+      {
+        id: "RES-005",
+        clientName: "Marc Bernard",
+        clientEmail: "marc.bernard@email.com",
+        clientPhone: "+33 6 99 88 77 66",
+        type: "room",
+        checkIn: "2024-02-13 16:00",
+        checkOut: "2024-02-14 10:00",
+        status: "cancelled",
+        roomNumber: "302",
+        roomType: "Suite Junior",
+        guests: 2,
+        totalAmount: 320,
+        paidAmount: 0,
+        specialRequests: [],
+        aiRiskScore: 0.75,
+        aiRecommendations: ["Raison: changement de plans"],
+        createdAt: "2024-02-09 15:30",
+        updatedAt: "2024-02-12 18:45",
+        priority: "low",
+        source: "airbnb"
       }
-    ]);
+    ];
+    setReservations(mockReservations);
+  };
+
+  const filterReservations = () => {
+    let filtered = reservations;
+
+    if (selectedStatus !== 'all') {
+      filtered = filtered.filter(res => res.status === selectedStatus);
+    }
+
+    if (selectedType !== 'all') {
+      filtered = filtered.filter(res => res.type === selectedType);
+    }
+
+    if (searchTerm) {
+      filtered = filtered.filter(res => 
+        res.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        res.clientEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        res.id.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    setFilteredReservations(filtered);
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'confirmed': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'confirmed': return 'bg-green-100 text-green-800 border-green-200';
+      case 'pending': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'cancelled': return 'bg-red-100 text-red-800 border-red-200';
+      case 'checked-in': return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'checked-out': return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'no-show': return 'bg-orange-100 text-orange-800 border-orange-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'confirmed': return <CheckCircle className="w-4 h-4" />;
+      case 'pending': return <Clock className="w-4 h-4" />;
+      case 'cancelled': return <XCircle className="w-4 h-4" />;
+      case 'checked-in': return <User className="w-4 h-4" />;
+      case 'checked-out': return <CalendarDays className="w-4 h-4" />;
+      case 'no-show': return <AlertCircle className="w-4 h-4" />;
+      default: return <Clock className="w-4 h-4" />;
     }
   };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'reservation': return <Bed className="w-4 h-4" />;
+      case 'room': return <Bed className="w-4 h-4" />;
       case 'spa': return <Heart className="w-4 h-4" />;
       case 'restaurant': return <Utensils className="w-4 h-4" />;
       case 'concierge': return <User className="w-4 h-4" />;
-      default: return <CalendarIcon className="w-4 h-4" />;
+      case 'event': return <Calendar className="w-4 h-4" />;
+      default: return <Calendar className="w-4 h-4" />;
     }
   };
 
-  const getRiskScoreColor = (score: number) => {
-    if (score < 0.3) return 'text-green-600';
-    if (score < 0.7) return 'text-yellow-600';
-    return 'text-red-600';
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'vip': return 'bg-purple-100 text-purple-800 border-purple-200';
+      case 'high': return 'bg-red-100 text-red-800 border-red-200';
+      case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'low': return 'bg-gray-100 text-gray-800 border-gray-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
   };
 
-  const getWeekDays = () => {
-    const days = [];
-    const today = new Date();
-    const startOfWeek = new Date(today);
-    startOfWeek.setDate(today.getDate() - today.getDay() + 1);
+  const getStats = () => {
+    const total = reservations.length;
+    const confirmed = reservations.filter(r => r.status === 'confirmed').length;
+    const pending = reservations.filter(r => r.status === 'pending').length;
+    const checkedIn = reservations.filter(r => r.status === 'checked-in').length;
+    const revenue = reservations.reduce((sum, r) => sum + r.paidAmount, 0);
     
-    for (let i = 0; i < 7; i++) {
-      const day = new Date(startOfWeek);
-      day.setDate(startOfWeek.getDate() + i);
-      days.push(day);
-    }
-    return days;
+    return { total, confirmed, pending, checkedIn, revenue };
   };
 
-  const getEventsForDay = (date: Date) => {
-    return events.filter(event => {
-      const eventDate = new Date(event.startTime);
-      return eventDate.toDateString() === date.toDateString();
-    });
-  };
+  const stats = getStats();
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -149,10 +285,14 @@ function IntelligentCalendarPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Calendrier de Gestion - EZEE Optimus</h1>
-            <p className="text-gray-600">Système intelligent de réservation avec IA</p>
+            <h1 className="text-3xl font-bold text-gray-900">Gestionnaire de Réservations</h1>
+            <p className="text-gray-600">EZEE Optimus - Système de gestion intelligent</p>
           </div>
           <div className="flex items-center space-x-4">
+            <Button variant="outline">
+              <Filter className="w-4 h-4 mr-2" />
+              Filtres
+            </Button>
             <Button>
               <Plus className="w-4 h-4 mr-2" />
               Nouvelle Réservation
@@ -169,7 +309,7 @@ function IntelligentCalendarPage() {
                 <div>
                   <h3 className="font-semibold text-blue-900">Insights IA</h3>
                   <p className="text-sm text-blue-700">
-                    Taux d'occupation: 85% | Revenus prévus: €12,500 | Alertes: 2
+                    Taux d'occupation: 85% | Revenus prévus: €12,500 | Alertes: 2 | Clients VIP: 3
                   </p>
                 </div>
               </div>
@@ -181,295 +321,290 @@ function IntelligentCalendarPage() {
           </CardContent>
         </Card>
 
-        {/* Controls */}
-        <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm">
-          <div className="flex items-center space-x-4">
-            <h2 className="text-lg font-semibold">
-              {selectedDate?.toLocaleDateString('fr-FR', { 
-                month: 'long', 
-                year: 'numeric' 
-              })}
-            </h2>
-          </div>
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Total Réservations</p>
+                  <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+                </div>
+                <Calendar className="w-8 h-8 text-blue-600" />
+              </div>
+            </CardContent>
+          </Card>
           
-          <div className="flex items-center space-x-4">
-            <Select value={viewMode} onValueChange={(value: any) => setViewMode(value)}>
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="day">Jour</SelectItem>
-                <SelectItem value="week">Semaine</SelectItem>
-                <SelectItem value="month">Mois</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Confirmées</p>
+                  <p className="text-2xl font-bold text-green-600">{stats.confirmed}</p>
+                </div>
+                <CheckCircle className="w-8 h-8 text-green-600" />
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">En Attente</p>
+                  <p className="text-2xl font-bold text-yellow-600">{stats.pending}</p>
+                </div>
+                <Clock className="w-8 h-8 text-yellow-600" />
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Check-in</p>
+                  <p className="text-2xl font-bold text-blue-600">{stats.checkedIn}</p>
+                </div>
+                <User className="w-8 h-8 text-blue-600" />
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Revenus</p>
+                  <p className="text-2xl font-bold text-green-600">€{stats.revenue}</p>
+                </div>
+                <DollarSign className="w-8 h-8 text-green-600" />
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Main Calendar View */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Calendar Sidebar */}
-          <div className="lg:col-span-1 space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <CalendarIcon className="w-5 h-5" />
-                  <span>Calendrier</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Calendar
-                  selected={selectedDate}
-                  onSelect={setSelectedDate}
-                  className="rounded-md border"
-                />
-              </CardContent>
-            </Card>
-
-            {/* Quick Stats */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm">Statistiques Rapides</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Réservations</span>
-                  <Badge variant="outline">{events.filter(e => e.type === 'reservation').length}</Badge>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Spa</span>
-                  <Badge variant="outline">{events.filter(e => e.type === 'spa').length}</Badge>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Restaurant</span>
-                  <Badge variant="outline">{events.filter(e => e.type === 'restaurant').length}</Badge>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Main Calendar Grid */}
-          <div className="lg:col-span-3">
-            <Card>
-              <CardHeader>
-                <CardTitle>Vue Semaine</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {/* Week Header */}
-                <div className="grid grid-cols-8 gap-1 mb-2">
-                  <div className="p-2 text-sm font-medium text-gray-500">Heure</div>
-                  {getWeekDays().map((day, index) => (
-                    <div key={index} className="p-2 text-sm font-medium text-center">
-                      <div className="text-gray-900">{day.toLocaleDateString('fr-FR', { weekday: 'short' })}</div>
-                      <div className="text-gray-500">{day.getDate()}</div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Time Grid */}
-                <div className="space-y-1">
-                  {Array.from({ length: 17 }, (_, i) => i + 6).map((hour) => {
-                    const time = `${hour.toString().padStart(2, '0')}:00`;
-                    return (
-                      <div key={time} className="grid grid-cols-8 gap-1">
-                        <div className="p-2 text-xs text-gray-500 border-r">
-                          {time}
-                        </div>
-                        {getWeekDays().map((day, dayIndex) => {
-                          const dayEvents = getEventsForDay(day);
-                          const timeEvents = dayEvents.filter(event => {
-                            const eventHour = new Date(event.startTime).getHours();
-                            return eventHour === hour;
-                          });
-
-                          return (
-                            <div key={dayIndex} className="p-1 border-b border-r min-h-[60px] relative">
-                              {timeEvents.map((event) => (
-                                <div
-                                  key={event.id}
-                                  className="absolute inset-1 bg-blue-100 border border-blue-300 rounded p-1 cursor-pointer hover:bg-blue-200 transition-colors"
-                                  onClick={() => setSelectedEvent(event)}
-                                >
-                                  <div className="flex items-center space-x-1">
-                                    {getTypeIcon(event.type)}
-                                    <span className="text-xs font-medium truncate">
-                                      {event.clientName}
-                                    </span>
-                                  </div>
-                                  <div className="text-xs text-gray-600 truncate">
-                                    {event.type === 'reservation' ? `Ch. ${event.roomNumber}` : event.type}
-                                  </div>
-                                  <Badge className={`text-xs ${getStatusColor(event.status)}`}>
-                                    {event.status}
-                                  </Badge>
-                                </div>
-                              ))}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        {/* Today's Events */}
+        {/* Filters and Search */}
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Clock className="w-5 h-5" />
-              <span>Événements Aujourd'hui</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {getEventsForDay(new Date()).map((event) => (
-                <div key={event.id} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer" onClick={() => setSelectedEvent(event)}>
-                  <Avatar className="w-10 h-10">
-                    <AvatarImage src={event.clientPhoto} />
-                    <AvatarFallback>{event.clientName.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2">
-                      <span className="font-medium">{event.title}</span>
-                      <Badge className={getStatusColor(event.status)}>
-                        {event.status}
-                      </Badge>
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      {event.startTime} - {event.endTime}
-                    </div>
-                    <div className="flex items-center space-x-2 text-xs text-gray-500">
-                      {getTypeIcon(event.type)}
-                      <span>{event.type}</span>
-                      {event.roomNumber && <span>• Ch. {event.roomNumber}</span>}
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className={`text-sm font-bold ${getRiskScoreColor(event.aiRiskScore)}`}>
-                      {Math.round(event.aiRiskScore * 100)}% risque
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      €{event.totalAmount}
-                    </div>
-                  </div>
+          <CardContent className="p-4">
+            <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
+              <div className="flex flex-col sm:flex-row gap-4 flex-1">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <Input
+                    placeholder="Rechercher par nom, email ou ID..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
                 </div>
-              ))}
+                
+                <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                  <SelectTrigger className="w-40">
+                    <SelectValue placeholder="Statut" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Tous les statuts</SelectItem>
+                    <SelectItem value="confirmed">Confirmées</SelectItem>
+                    <SelectItem value="pending">En attente</SelectItem>
+                    <SelectItem value="cancelled">Annulées</SelectItem>
+                    <SelectItem value="checked-in">Check-in</SelectItem>
+                    <SelectItem value="checked-out">Check-out</SelectItem>
+                    <SelectItem value="no-show">No-show</SelectItem>
+                  </SelectContent>
+                </Select>
+                
+                <Select value={selectedType} onValueChange={setSelectedType}>
+                  <SelectTrigger className="w-40">
+                    <SelectValue placeholder="Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Tous les types</SelectItem>
+                    <SelectItem value="room">Chambres</SelectItem>
+                    <SelectItem value="spa">Spa</SelectItem>
+                    <SelectItem value="restaurant">Restaurant</SelectItem>
+                    <SelectItem value="concierge">Conciergerie</SelectItem>
+                    <SelectItem value="event">Événements</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant={viewMode === 'list' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setViewMode('list')}
+                >
+                  Liste
+                </Button>
+                <Button
+                  variant={viewMode === 'grid' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setViewMode('grid')}
+                >
+                  Grille
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Quick Actions */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
-            <Bell className="h-6 w-6 mb-2" />
-            <span>Rappels</span>
-          </Button>
-          <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
-            <QrCode className="h-6 w-6 mb-2" />
-            <span>QR Codes</span>
-          </Button>
-          <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
-            <FileText className="h-6 w-6 mb-2" />
-            <span>Documents</span>
-          </Button>
-          <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
-            <BarChart3 className="h-6 w-6 mb-2" />
-            <span>Analytics</span>
-          </Button>
-        </div>
-      </div>
-
-      {/* Event Detail Modal */}
-      {selectedEvent && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold">Détails de l'événement</h2>
-              <Button variant="ghost" size="sm" onClick={() => setSelectedEvent(null)}>
-                <X className="w-4 h-4" />
-              </Button>
+        {/* Reservations List */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
+              <span>Réservations ({filteredReservations.length})</span>
+              <div className="text-sm text-gray-500">
+                Mis à jour: {new Date().toLocaleTimeString('fr-FR')}
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50 border-b">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Client
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Type
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Dates
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Statut
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Montant
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Priorité
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {filteredReservations.map((reservation) => (
+                    <tr key={reservation.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <Avatar className="w-10 h-10 mr-3">
+                            <AvatarImage src={reservation.clientPhoto} />
+                            <AvatarFallback>
+                              {reservation.clientName.split(' ').map(n => n[0]).join('')}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <div className="text-sm font-medium text-gray-900">
+                              {reservation.clientName}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              {reservation.clientEmail}
+                            </div>
+                            <div className="text-xs text-gray-400">
+                              ID: {reservation.id}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          {getTypeIcon(reservation.type)}
+                          <span className="ml-2 text-sm text-gray-900 capitalize">
+                            {reservation.type}
+                          </span>
+                          {reservation.roomNumber && (
+                            <span className="ml-2 text-xs text-gray-500">
+                              #{reservation.roomNumber}
+                            </span>
+                          )}
+                        </div>
+                        {reservation.roomType && (
+                          <div className="text-xs text-gray-500 mt-1">
+                            {reservation.roomType}
+                          </div>
+                        )}
+                      </td>
+                      
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">
+                          {new Date(reservation.checkIn).toLocaleDateString('fr-FR')}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {new Date(reservation.checkIn).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+                        </div>
+                        {reservation.checkOut && (
+                          <div className="text-xs text-gray-400">
+                            → {new Date(reservation.checkOut).toLocaleDateString('fr-FR')}
+                          </div>
+                        )}
+                      </td>
+                      
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <Badge className={`${getStatusColor(reservation.status)} flex items-center w-fit`}>
+                          {getStatusIcon(reservation.status)}
+                          <span className="ml-1 capitalize">{reservation.status}</span>
+                        </Badge>
+                      </td>
+                      
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">
+                          €{reservation.totalAmount}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          Payé: €{reservation.paidAmount}
+                        </div>
+                        {reservation.totalAmount > reservation.paidAmount && (
+                          <div className="text-xs text-red-500">
+                            Reste: €{reservation.totalAmount - reservation.paidAmount}
+                          </div>
+                        )}
+                      </td>
+                      
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <Badge className={`${getPriorityColor(reservation.priority)} text-xs`}>
+                          {reservation.priority.toUpperCase()}
+                        </Badge>
+                      </td>
+                      
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <div className="flex items-center space-x-2">
+                          <Button size="sm" variant="outline">
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                          <Button size="sm" variant="outline">
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                          <Button size="sm" variant="outline">
+                            <Phone className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
             
-            <div className="space-y-4">
-              <div className="flex items-center space-x-4">
-                <Avatar className="w-16 h-16">
-                  <AvatarImage src={selectedEvent.clientPhoto} />
-                  <AvatarFallback>{selectedEvent.clientName.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="text-lg font-medium">{selectedEvent.title}</h3>
-                  <p className="text-gray-600">{selectedEvent.clientName}</p>
-                  <Badge className={getStatusColor(selectedEvent.status)}>
-                    {selectedEvent.status}
-                  </Badge>
-                </div>
+            {filteredReservations.length === 0 && (
+              <div className="text-center py-12">
+                <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Aucune réservation trouvée</h3>
+                <p className="text-gray-500">Essayez de modifier vos filtres de recherche</p>
               </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Date et heure</label>
-                  <p className="text-sm">{selectedEvent.startTime} - {selectedEvent.endTime}</p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Type</label>
-                  <p className="text-sm capitalize">{selectedEvent.type}</p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Montant</label>
-                  <p className="text-sm">€{selectedEvent.totalAmount}</p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Risque IA</label>
-                  <p className={`text-sm font-bold ${getRiskScoreColor(selectedEvent.aiRiskScore)}`}>
-                    {Math.round(selectedEvent.aiRiskScore * 100)}%
-                  </p>
-                </div>
-              </div>
-
-              {selectedEvent.specialRequests.length > 0 && (
-                <div>
-                  <label className="text-sm font-medium">Demandes spéciales</label>
-                  <div className="flex flex-wrap gap-2 mt-1">
-                    {selectedEvent.specialRequests.map((request, index) => (
-                      <Badge key={index} variant="outline">{request}</Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {selectedEvent.aiRecommendations.length > 0 && (
-                <div>
-                  <label className="text-sm font-medium">Recommandations IA</label>
-                  <div className="space-y-2 mt-1">
-                    {selectedEvent.aiRecommendations.map((rec, index) => (
-                      <div key={index} className="p-2 bg-blue-50 rounded text-sm">
-                        🤖 {rec}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div className="flex justify-end space-x-2 pt-4">
-                <Button variant="outline">Modifier</Button>
-                <Button>Confirmer</Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
 
 export default function CalendarPage() {
-  return (
-    <SubscriptionWrapper delayMinutes={1}>
-      <IntelligentCalendarPage />
-    </SubscriptionWrapper>
-  );
+  return <ReservationManagementPage />;
 } 

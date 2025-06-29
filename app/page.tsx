@@ -140,9 +140,7 @@ export default function HomePage() {
             {/* Logo et Description */}
             <div className="flex items-center space-x-4">
               <Link href="/" className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-xl">DL</span>
-                </div>
+                <img src="/images/dl-logo.jpg" alt="DL Solutions Logo" className="h-20 w-20 object-contain mx-auto" />
                 <div className="flex flex-col">
                   <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent leading-tight">
                     Dave and Luce

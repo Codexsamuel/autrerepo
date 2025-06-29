@@ -17,7 +17,11 @@ import {
   TrendingUp,
   Activity,
   Zap,
-  BarChart3
+  BarChart3,
+  Home,
+  Utensils,
+  Stethoscope,
+  Crown
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -120,6 +124,60 @@ const modules = [
     color: "text-slate-600",
     bgColor: "bg-slate-50",
     stats: "15 paramètres"
+  },
+  {
+    title: "DL Immobilier",
+    description: "Gestion immobilière avancée",
+    icon: Home,
+    href: "/novacore/dl-immobilier",
+    color: "text-orange-600",
+    bgColor: "bg-orange-50",
+    stats: "4 biens"
+  },
+  {
+    title: "DL Trading",
+    description: "Comptes, positions et ordres de trading",
+    icon: TrendingUp,
+    href: "/novacore/dl-trading",
+    color: "text-green-600",
+    bgColor: "bg-green-50",
+    stats: "3 comptes"
+  },
+  {
+    title: "DL Community",
+    description: "Gestion de communauté et événements",
+    icon: Users,
+    href: "/novacore/dl-community",
+    color: "text-purple-600",
+    bgColor: "bg-purple-50",
+    stats: "3 groupes"
+  },
+  {
+    title: "DL Restaurant",
+    description: "Gestion des commandes et tables",
+    icon: Utensils,
+    href: "/novacore/dl-restaurant",
+    color: "text-orange-600",
+    bgColor: "bg-orange-50",
+    stats: "5 tables"
+  },
+  {
+    title: "DL Hospital",
+    description: "Gestion hospitalière CHU",
+    icon: Stethoscope,
+    href: "/novacore/dl-hospital",
+    color: "text-blue-600",
+    bgColor: "bg-blue-50",
+    stats: "2 patients"
+  },
+  {
+    title: "Men Travel VIP",
+    description: "Agence de voyage de luxe",
+    icon: Crown,
+    href: "/novacore/dl-travel-vip",
+    color: "text-purple-600",
+    bgColor: "bg-purple-50",
+    stats: "2 clients VIP"
   }
 ];
 

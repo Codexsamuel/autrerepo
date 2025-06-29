@@ -1,4 +1,7 @@
-import { forwardRef, ReactNode } from "react";
+"use client"
+
+import * as React from "react"
+import { forwardRef, ReactNode, ComponentPropsWithoutRef, ComponentProps } from "react";
 import { Slot } from "@radix-ui/react-slot"
 import { ChevronRight, MoreHorizontal } from "lucide-react"
 import { cn } from "@/lib/utils"

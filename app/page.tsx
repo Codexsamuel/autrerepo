@@ -196,6 +196,12 @@ export default function HomePage() {
                 Contact
               </Link>
               <Link 
+                href="/solutions/selection" 
+                className="bg-gradient-to-r from-green-500 to-blue-600 text-white px-4 py-2 rounded-full hover:from-green-600 hover:to-blue-700 transition-all duration-300 shadow-lg text-sm font-medium"
+              >
+                Connecter Tout
+              </Link>
+              <Link 
                 href="/sign-in" 
                 className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-full hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-lg"
               >

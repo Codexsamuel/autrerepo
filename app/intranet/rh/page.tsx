@@ -163,7 +163,7 @@ export default function RHPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header title="Ressources Humaines" />
+      <Header title="Ressources Humaines" description="Gestion des ressources humaines et des équipes" />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats */}

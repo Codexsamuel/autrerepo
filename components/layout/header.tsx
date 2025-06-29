@@ -5,7 +5,8 @@ import Image from 'next/image';
 import { cn } from "@/lib/utils";
 
 interface HeaderProps {
-  title?: string;
+  title: string;
+  description: string;
   showNavigation?: boolean;
   navigationItems?: Array<{
     label: string;
@@ -14,7 +15,8 @@ interface HeaderProps {
 }
 
 export function Header({ 
-  title = "DL Solutions", 
+  title, 
+  description,
   showNavigation = false,
   navigationItems = []
 }: HeaderProps) {
@@ -31,6 +33,9 @@ export function Header({
                 <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   {title}
                 </span>
+                {description && (
+                  <span className="text-xs text-gray-400">{description}</span>
+                )}
                 <span className="text-xs text-gray-500">Solutions Intelligentes</span>
               </div>
             </Link>
@@ -38,7 +43,7 @@ export function Header({
           
           {showNavigation && navigationItems.length > 0 && (
             <nav className="hidden md:flex space-x-8">
-              {navigationItems.map((item: any) => (
+              {navigationItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}

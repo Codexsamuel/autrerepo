@@ -1,3 +1,27 @@
+const testimonials = [
+  {
+    name: "Jean DUPONT",
+    role: "Directeur Marketing",
+    image: "https://res.cloudinary.com/dko5sommz/image/upload/v1750993228/Jean_Dupont_xjsear.jpg",
+    rating: 5,
+    text: "DL Solutions a transformé notre façon de travailler. L'équipe est réactive et les outils sont puissants !"
+  },
+  {
+    name: "Marie NGUEMO",
+    role: "Responsable IT",
+    image: "https://res.cloudinary.com/dko5sommz/image/upload/v1750993227/Marie_Nguemo_p5xzhh.jpg",
+    rating: 5,
+    text: "Une plateforme fiable et intuitive. Le support client est exceptionnel. Je recommande vivement."
+  },
+  {
+    name: "Pierre ESSOMBA",
+    role: "Chef de projet",
+    image: "https://res.cloudinary.com/dko5sommz/image/upload/v1750993226/Pierre_Essomba_fat4h7.jpg",
+    rating: 4,
+    text: "Des solutions sur-mesure et une équipe à l'écoute. Notre productivité a augmenté de 30%."
+  }
+];
+
 export default function TestimonialsSection() {
   return (
     <section className="py-20 bg-gradient-to-b from-gray-50 to-white">

@@ -109,7 +109,7 @@ const services = [
 export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header title="Services" />
+      <Header title="Services" description="Nos solutions digitales sur mesure pour votre entreprise" />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero Section */}

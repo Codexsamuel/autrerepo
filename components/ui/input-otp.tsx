@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, forwardRef } from "react";
+import { useContext, forwardRef, ElementRef, ComponentPropsWithoutRef } from "react";
 import { OTPInput, OTPInputContext } from "input-otp"
 import { Dot } from "lucide-react"
 import { cn } from "@/lib/utils"

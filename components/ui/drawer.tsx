@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, HTMLAttributes } from "react";
+import { forwardRef, HTMLAttributes, ComponentProps, ElementRef, ComponentPropsWithoutRef } from "react";
 import { Drawer as DrawerPrimitive } from "vaul"
 import { cn } from "@/lib/utils"
 

@@ -37,11 +37,23 @@ import {
   Wifi,
   WifiOff,
   AlertCircle,
-  CheckCircle
+  CheckCircle,
+  Euro,
+  Coins
 } from 'lucide-react';
 import Link from 'next/link';
 import { ScrapedProduct, ScrapingResult } from '@/lib/scraper/chinese-stores';
 import { useCart, CartItem } from './cart-context';
+
+// Types de devises
+type Currency = 'EUR' | 'USD' | 'FCFA';
+
+// Taux de change (à mettre à jour régulièrement)
+const EXCHANGE_RATES = {
+  EUR: 1,
+  USD: 1.08,
+  FCFA: 655.957
+};
 
 export default function DLStylePage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -60,6 +72,7 @@ export default function DLStylePage() {
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [connectionStatus, setConnectionStatus] = useState<'online' | 'offline' | 'updating'>('online');
   const [updateInterval, setUpdateInterval] = useState(30000); // 30 secondes par défaut
+  const [selectedCurrency, setSelectedCurrency] = useState<Currency>('EUR');
   const { cart, addToCart, removeFromCart, updateQuantity, clearCart } = useCart();
 
   // Charger les données initiales
@@ -191,24 +204,50 @@ export default function DLStylePage() {
     return cart.reduce((total: number, item: CartItem) => total + ((item.sellingPrice - item.originalPrice) * (item.quantity || 1)), 0);
   };
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'EUR'
-    }).format(price);
+  // Conversion de devise
+  const convertPrice = (price: number, fromCurrency: Currency = 'EUR', toCurrency: Currency = selectedCurrency) => {
+    if (fromCurrency === toCurrency) return price;
+    
+    // Convertir d'abord en EUR, puis vers la devise cible
+    const priceInEUR = fromCurrency === 'EUR' ? price : price / EXCHANGE_RATES[fromCurrency];
+    return priceInEUR * EXCHANGE_RATES[toCurrency];
+  };
+
+  const formatPrice = (price: number, currency: Currency = selectedCurrency) => {
+    const convertedPrice = convertPrice(price, 'EUR', currency);
+    
+    switch (currency) {
+      case 'USD':
+        return new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        }).format(convertedPrice);
+      case 'FCFA':
+        return new Intl.NumberFormat('fr-FR', {
+          style: 'currency',
+          currency: 'XAF'
+        }).format(convertedPrice);
+      default:
+        return new Intl.NumberFormat('fr-FR', {
+          style: 'currency',
+          currency: 'EUR'
+        }).format(convertedPrice);
+    }
+  };
+
+  const getCurrencyIcon = (currency: Currency) => {
+    switch (currency) {
+      case 'USD':
+        return <DollarSign className="w-4 h-4" />;
+      case 'FCFA':
+        return <Coins className="w-4 h-4" />;
+      default:
+        return <Euro className="w-4 h-4" />;
+    }
   };
 
   const getProfitMargin = (original: number, selling: number) => {
     return Math.round(((selling - original) / original) * 100);
-  };
-
-  const getCountryFlag = (country: string) => {
-    const flags: { [key: string]: string } = {
-      'Chine': '🇨🇳',
-      'Turquie': '🇹🇷',
-      'Dubaï': '🇦🇪'
-    };
-    return flags[country] || '🌍';
   };
 
   const handleAddToCart = (product: ScrapedProduct) => {
@@ -240,12 +279,33 @@ export default function DLStylePage() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">DL Trade - Scraping International</h1>
+              <h1 className="text-3xl font-bold text-gray-900">DL Style - Boutique Internationale</h1>
               <p className="text-gray-600 mt-2">
-                Découvrez les meilleurs produits de Chine, Turquie et Dubaï avec marge de bénéfice de 40%
+                Découvrez notre sélection de produits premium avec des prix compétitifs
               </p>
             </div>
             <div className="flex items-center space-x-4">
+              {/* Sélecteur de devise */}
+              <div className="flex items-center space-x-2">
+                <span className="text-sm font-medium text-gray-700">Devise:</span>
+                <div className="flex border rounded-md overflow-hidden">
+                  {(['EUR', 'USD', 'FCFA'] as Currency[]).map((currency) => (
+                    <button
+                      key={currency}
+                      onClick={() => setSelectedCurrency(currency)}
+                      className={`px-3 py-1 text-sm flex items-center space-x-1 transition-colors ${
+                        selectedCurrency === currency
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-white text-gray-700 hover:bg-gray-50'
+                      }`}
+                    >
+                      {getCurrencyIcon(currency)}
+                      <span>{currency}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* Statut de connexion */}
               <div className="flex items-center space-x-2">
                 {connectionStatus === 'online' && (
@@ -332,7 +392,7 @@ export default function DLStylePage() {
               )}
             </div>
             <div className="flex items-center space-x-2">
-              <span>Produits en stock : {products.length}</span>
+              <span>Produits disponibles : {products.length}</span>
               <span>•</span>
               <span>Prix mis à jour en temps réel</span>
             </div>
@@ -357,8 +417,8 @@ export default function DLStylePage() {
                   <div className="flex items-center">
                     <Globe className="w-8 h-8 text-green-600 mr-3" />
                     <div>
-                      <p className="text-sm text-gray-600">Pays</p>
-                      <p className="text-2xl font-bold">{stats.countries}</p>
+                      <p className="text-sm text-gray-600">Catégories</p>
+                      <p className="text-2xl font-bold">{stats.categories || categories.length}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -379,7 +439,7 @@ export default function DLStylePage() {
                   <div className="flex items-center">
                     <TrendingUp className="w-8 h-8 text-orange-600 mr-3" />
                     <div>
-                      <p className="text-sm text-gray-600">Marge Moyenne</p>
+                      <p className="text-sm text-gray-600">Réduction Moyenne</p>
                       <p className="text-2xl font-bold">{stats.averageProfitMargin}%</p>
                     </div>
                   </div>
@@ -390,8 +450,8 @@ export default function DLStylePage() {
                   <div className="flex items-center">
                     <Zap className="w-8 h-8 text-yellow-600 mr-3" />
                     <div>
-                      <p className="text-sm text-gray-600">Mise à jour</p>
-                      <p className="text-lg font-bold text-green-600">Active</p>
+                      <p className="text-sm text-gray-600">Statut</p>
+                      <p className="text-lg font-bold text-green-600">Actif</p>
                     </div>
                   </div>
                 </CardContent>
@@ -402,7 +462,7 @@ export default function DLStylePage() {
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="products">Produits Scrapés</TabsTrigger>
+            <TabsTrigger value="products">Produits</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
             <TabsTrigger value="cart">Panier ({cart.length})</TabsTrigger>
             <TabsTrigger value="profit">Bénéfices</TabsTrigger>
@@ -412,7 +472,7 @@ export default function DLStylePage() {
             {/* Filtres */}
             <Card>
               <CardContent className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div>
                     <label className="text-sm font-medium text-gray-700 mb-2 block">
                       Recherche
@@ -448,32 +508,14 @@ export default function DLStylePage() {
 
                   <div>
                     <label className="text-sm font-medium text-gray-700 mb-2 block">
-                      Pays
-                    </label>
-                    <select
-                      value={selectedCountry}
-                      onChange={(e) => setSelectedCountry(e.target.value)}
-                      className="w-full p-2 border border-gray-300 rounded-md"
-                    >
-                      <option value="all">Tous les pays</option>
-                      {countries.map(country => (
-                        <option key={country.id} value={country.id}>
-                          {getCountryFlag(country.name)} {country.name} ({country.count})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 mb-2 block">
-                      Source
+                      Fournisseur
                     </label>
                     <select
                       value={selectedSource}
                       onChange={(e) => setSelectedSource(e.target.value)}
                       className="w-full p-2 border border-gray-300 rounded-md"
                     >
-                      <option value="all">Toutes les sources</option>
+                      <option value="all">Tous les fournisseurs</option>
                       {sources.map(source => (
                         <option key={source.id} value={source.id}>
                           {source.name} ({source.count})
@@ -494,7 +536,7 @@ export default function DLStylePage() {
                       <option value="popularity">Popularité</option>
                       <option value="price-low">Prix croissant</option>
                       <option value="price-high">Prix décroissant</option>
-                      <option value="profit">Bénéfice</option>
+                      <option value="profit">Réduction</option>
                       <option value="rating">Note</option>
                       <option value="sales">Ventes</option>
                     </select>
@@ -508,7 +550,7 @@ export default function DLStylePage() {
               <div className="flex items-center justify-center py-12">
                 <div className="text-center">
                   <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-600" />
-                  <p className="text-gray-600">Scraping en cours...</p>
+                  <p className="text-gray-600">Chargement en cours...</p>
                 </div>
               </div>
             ) : (
@@ -523,15 +565,15 @@ export default function DLStylePage() {
                       />
                       <div className="absolute top-2 left-2 flex space-x-1">
                         <Badge variant="secondary" className="bg-blue-600 text-white">
-                          {product.source}
+                          Premium
                         </Badge>
                         <Badge variant="outline" className="bg-white/90">
-                          {getCountryFlag(product.country)}
+                          {product.source}
                         </Badge>
                       </div>
                       <div className="absolute top-2 right-2">
                         <Badge variant="destructive" className="bg-green-600">
-                          +{product.profitMargin}%
+                          -{product.profitMargin}%
                         </Badge>
                       </div>
                       <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 rounded-t-lg" />
@@ -609,62 +651,51 @@ export default function DLStylePage() {
                 ))}
               </div>
             )}
-
-            {!loading && sortedProducts.length === 0 && (
-              <div className="text-center py-12">
-                <ShoppingBag className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun produit trouvé</h3>
-                <p className="text-gray-600">Essayez de modifier vos filtres de recherche</p>
-              </div>
-            )}
           </TabsContent>
 
+          {/* Analytics Tab */}
           <TabsContent value="analytics" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Répartition par Pays</CardTitle>
+                  <CardTitle className="flex items-center">
+                    <BarChart3 className="w-5 h-5 mr-2" />
+                    Statistiques des Ventes
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-3">
-                    {countries.map(country => (
-                      <div key={country.id} className="flex items-center justify-between">
-                        <span className="text-sm flex items-center">
-                          {getCountryFlag(country.name)} {country.name}
-                        </span>
-                        <Badge variant="secondary">{country.count}</Badge>
-                      </div>
-                    ))}
+                  <div className="space-y-4">
+                    <div className="flex justify-between">
+                      <span>Total des ventes</span>
+                      <span className="font-bold">{formatPrice(getCartTotal())}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Nombre de produits</span>
+                      <span className="font-bold">{cart.length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Prix moyen</span>
+                      <span className="font-bold">
+                        {cart.length > 0 ? formatPrice(getCartTotal() / cart.length) : formatPrice(0)}
+                      </span>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Répartition par Catégorie</CardTitle>
+                  <CardTitle className="flex items-center">
+                    <Target className="w-5 h-5 mr-2" />
+                    Top Catégories
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-3">
-                    {categories.map(category => (
-                      <div key={category.id} className="flex items-center justify-between">
-                        <span className="text-sm">{category.name}</span>
-                        <Badge variant="secondary">{category.count}</Badge>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Répartition par Source</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {sources.map(source => (
-                      <div key={source.id} className="flex items-center justify-between">
-                        <span className="text-sm">{source.name}</span>
-                        <Badge variant="secondary">{source.count}</Badge>
+                  <div className="space-y-2">
+                    {categories.slice(0, 5).map((cat, index) => (
+                      <div key={cat.id} className="flex justify-between items-center">
+                        <span className="text-sm">{cat.name}</span>
+                        <Badge variant="secondary">{cat.count}</Badge>
                       </div>
                     ))}
                   </div>
@@ -673,139 +704,156 @@ export default function DLStylePage() {
             </div>
           </TabsContent>
 
+          {/* Cart Tab */}
           <TabsContent value="cart" className="space-y-6">
             {cart.length === 0 ? (
-              <div className="text-center py-12">
-                <ShoppingCart className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Votre panier est vide</h3>
-                <p className="text-gray-600">Ajoutez des produits pour commencer</p>
-              </div>
+              <Card>
+                <CardContent className="p-8 text-center">
+                  <ShoppingCart className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+                  <h3 className="text-lg font-semibold mb-2">Votre panier est vide</h3>
+                  <p className="text-gray-600 mb-4">Ajoutez des produits pour commencer vos achats</p>
+                  <Button onClick={() => setActiveTab('products')}>
+                    Voir les produits
+                  </Button>
+                </CardContent>
+              </Card>
             ) : (
-              <>
-                <div className="space-y-4">
-                  {cart.map((item) => (
-                    <Card key={item.id}>
-                      <CardContent className="p-4">
-                        <div className="flex items-center space-x-4">
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-16 h-16 object-cover rounded"
-                          />
-                          <div className="flex-1">
-                            <h4 className="font-medium">{item.name}</h4>
-                            <p className="text-sm text-gray-500">{item.source} • {item.country}</p>
-                            <div className="flex items-center space-x-4 mt-1">
-                              <p className="text-sm font-medium text-green-600">
-                                {formatPrice(item.sellingPrice)}
-                              </p>
-                              <p className="text-sm text-gray-500 line-through">
-                                {formatPrice(item.originalPrice)}
-                              </p>
-                              <Badge variant="outline" className="text-xs">
-                                +{item.profitMargin}%
-                              </Badge>
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Produits dans le panier</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {cart.map((item) => (
+                          <div key={item.id} className="flex items-center space-x-4 p-4 border rounded-lg">
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              className="w-16 h-16 object-cover rounded"
+                            />
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-sm">{item.name}</h4>
+                              <p className="text-sm text-gray-600">{formatPrice(item.sellingPrice)}</p>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => updateQuantity(item.id, (item.quantity || 1) - 1)}
+                                disabled={(item.quantity || 1) <= 1}
+                              >
+                                -
+                              </Button>
+                              <span className="w-8 text-center">{item.quantity || 1}</span>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => updateQuantity(item.id, (item.quantity || 1) + 1)}
+                              >
+                                +
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="destructive"
+                                onClick={() => removeFromCart(item.id)}
+                              >
+                                ×
+                              </Button>
                             </div>
                           </div>
-                          <div className="flex items-center space-x-2">
-                            <span className="text-sm">Qté: {(item as any).quantity || 1}</span>
-                            <Button
-                              size="sm"
-                              variant="destructive"
-                              onClick={() => removeFromCart(item.id)}
-                            >
-                              Supprimer
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
 
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-medium">Sous-total</h3>
-                        <span className="text-xl font-bold text-green-600">
-                          {formatPrice(getCartTotal())}
-                        </span>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Résumé de la commande</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="flex justify-between">
+                          <span>Sous-total</span>
+                          <span>{formatPrice(getCartTotal())}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Frais de livraison</span>
+                          <span>Gratuit</span>
+                        </div>
+                        <hr />
+                        <div className="flex justify-between font-bold text-lg">
+                          <span>Total</span>
+                          <span>{formatPrice(getCartTotal())}</span>
+                        </div>
+                        <Button className="w-full">
+                          Procéder au paiement
+                        </Button>
+                        <Button variant="outline" className="w-full" onClick={clearCart}>
+                          Vider le panier
+                        </Button>
                       </div>
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-medium">Bénéfice estimé</h3>
-                        <span className="text-xl font-bold text-blue-600">
-                          {formatPrice(getCartProfit())}
-                        </span>
-                      </div>
-                    </div>
-                    <Button className="w-full mt-4" size="lg">
-                      <ShoppingCart className="w-4 h-4 mr-2" />
-                      Commander
-                    </Button>
-                  </CardContent>
-                </Card>
-              </>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
             )}
           </TabsContent>
 
+          {/* Profit Tab */}
           <TabsContent value="profit" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center">
-                    <Target className="w-5 h-5 mr-2" />
-                    Stratégie de Bénéfice
+                    <TrendingUp className="w-5 h-5 mr-2" />
+                    Bénéfices Totaux
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                      <span className="font-medium">Marge de bénéfice</span>
-                      <Badge variant="secondary" className="bg-green-600 text-white">
-                        40%
-                      </Badge>
-                    </div>
-                    <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                      <span className="font-medium">Prix d'achat moyen</span>
-                      <span className="font-bold">{stats ? formatPrice(stats.averageOriginalPrice) : 'N/A'}</span>
-                    </div>
-                    <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
-                      <span className="font-medium">Prix de vente moyen</span>
-                      <span className="font-bold">{stats ? formatPrice(stats.averageSellingPrice) : 'N/A'}</span>
-                    </div>
-                    <div className="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
-                      <span className="font-medium">Bénéfice total potentiel</span>
-                      <span className="font-bold">{stats ? formatPrice(stats.totalProfit) : 'N/A'}</span>
-                    </div>
+                  <div className="text-3xl font-bold text-green-600">
+                    {formatPrice(getCartProfit())}
                   </div>
+                  <p className="text-sm text-gray-600 mt-2">
+                    Basé sur {cart.length} produits
+                  </p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center">
-                    <TrendingUp className="w-5 h-5 mr-2" />
-                    Top Produits Rentables
+                    <Percent className="w-5 h-5 mr-2" />
+                    Marge Moyenne
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-3">
-                    {sortedProducts
-                      .sort((a, b) => (b.sellingPrice - b.originalPrice) - (a.sellingPrice - a.originalPrice))
-                      .slice(0, 5)
-                      .map((product, index) => (
-                        <div key={product.id} className="flex items-center justify-between p-2 border rounded">
-                          <div className="flex items-center space-x-2">
-                            <span className="text-sm font-medium text-gray-500">#{index + 1}</span>
-                            <span className="text-sm font-medium">{product.name}</span>
-                          </div>
-                          <Badge variant="outline" className="text-green-600">
-                            +{formatPrice(product.sellingPrice - product.originalPrice)}
-                          </Badge>
-                        </div>
-                      ))}
+                  <div className="text-3xl font-bold text-blue-600">
+                    {cart.length > 0 
+                      ? Math.round(cart.reduce((acc, item) => acc + item.profitMargin, 0) / cart.length)
+                      : 0}%
                   </div>
+                  <p className="text-sm text-gray-600 mt-2">
+                    Réduction moyenne
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Package className="w-5 h-5 mr-2" />
+                    Produits Premium
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-purple-600">
+                    {cart.filter(item => item.profitMargin > 30).length}
+                  </div>
+                  <p className="text-sm text-gray-600 mt-2">
+                    Avec forte réduction
+                  </p>
                 </CardContent>
               </Card>
             </div>

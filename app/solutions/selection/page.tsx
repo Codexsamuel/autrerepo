@@ -116,15 +116,15 @@ export default function CRMSSelectionPage() {
             <div className="flex items-center space-x-4">
               <Link href="/" className="flex items-center space-x-3">
                 <Image
-                  src="/logos/logo-dl.png"
-                  alt="DL Solutions Logo"
-                  width={50}
-                  height={50}
-                  className="w-12 h-12 object-contain"
+                  src="/logo.svg"
+                  alt="NovaCore Logo"
+                  width={40}
+                  height={40}
+                  className="w-10 h-10 object-contain"
                 />
                 <div className="flex flex-col">
                   <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                    DL Solutions
+                    NovaCore
                   </span>
                   <span className="text-xs text-gray-500">Sélection CRM</span>
                 </div>

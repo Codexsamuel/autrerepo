@@ -21,11 +21,33 @@ import {
   TrendingUp,
   Shield,
   Zap,
-  Globe
+  Globe,
+  User,
+  LogIn,
+  UserPlus,
+  Crown,
+  Settings
 } from "lucide-react";
 import { mediaConfig } from "@/app/config/media";
 import ContextualHelp from '@/components/onboarding/ContextualHelp';
 import ModernNavigation from '@/components/layout/ModernNavigation';
+
+// Types pour l'authentification
+interface User {
+  email: string;
+  password: string;
+  name: string;
+  role: 'user' | 'super_admin';
+  createdAt?: string;
+}
+
+// Configuration du super admin
+const SUPER_ADMIN: User = {
+  email: "sobam@daveandlucesolutions.com",
+  password: "@DavyFrantz2025", // En production, utiliser des variables d'environnement
+  name: "Super Admin",
+  role: "super_admin"
+};
 
 const heroVideos = [
   {
@@ -47,6 +69,109 @@ const heroVideos = [
 
 export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  const [authForm, setAuthForm] = useState({
+    email: '',
+    password: '',
+    name: '',
+    confirmPassword: ''
+  });
+  const [authError, setAuthError] = useState('');
+
+  // Vérifier l'authentification au chargement
+  useEffect(() => {
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+      const user = JSON.parse(savedUser) as User;
+      setCurrentUser(user);
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const handleAuth = (mode: 'login' | 'register') => {
+    setAuthMode(mode);
+    setShowAuthModal(true);
+    setAuthError('');
+    setAuthForm({
+      email: '',
+      password: '',
+      name: '',
+      confirmPassword: ''
+    });
+  };
+
+  const handleLogin = () => {
+    setAuthError('');
+    
+    // Vérifier si c'est le super admin
+    if (authForm.email === SUPER_ADMIN.email && authForm.password === SUPER_ADMIN.password) {
+      const user: User = { ...SUPER_ADMIN };
+      setCurrentUser(user);
+      setIsAuthenticated(true);
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      setShowAuthModal(false);
+      return;
+    }
+
+    // Vérifier les utilisateurs enregistrés (simulation)
+    const registeredUsers: User[] = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+    const user = registeredUsers.find((u: User) => u.email === authForm.email && u.password === authForm.password);
+    
+    if (user) {
+      setCurrentUser(user);
+      setIsAuthenticated(true);
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      setShowAuthModal(false);
+    } else {
+      setAuthError('Email ou mot de passe incorrect');
+    }
+  };
+
+  const handleRegister = () => {
+    setAuthError('');
+    
+    if (authForm.password !== authForm.confirmPassword) {
+      setAuthError('Les mots de passe ne correspondent pas');
+      return;
+    }
+
+    if (authForm.password.length < 6) {
+      setAuthError('Le mot de passe doit contenir au moins 6 caractères');
+      return;
+    }
+
+    const registeredUsers: User[] = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+    
+    if (registeredUsers.find((u: User) => u.email === authForm.email)) {
+      setAuthError('Cet email est déjà utilisé');
+      return;
+    }
+
+    const newUser: User = {
+      email: authForm.email,
+      password: authForm.password,
+      name: authForm.name,
+      role: 'user',
+      createdAt: new Date().toISOString()
+    };
+
+    registeredUsers.push(newUser);
+    localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+    
+    setCurrentUser(newUser);
+    setIsAuthenticated(true);
+    localStorage.setItem('currentUser', JSON.stringify(newUser));
+    setShowAuthModal(false);
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    setIsAuthenticated(false);
+    localStorage.removeItem('currentUser');
+  };
 
   const slides = [
     {
@@ -127,8 +252,192 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
-      {/* Navigation moderne */}
+      {/* Navigation moderne avec authentification */}
       <ModernNavigation />
+
+      {/* Barre d'authentification */}
+      <div className="bg-gradient-to-r from-blue-900 to-purple-900 border-b border-blue-700">
+        <div className="container mx-auto px-4 py-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              {isAuthenticated ? (
+                <>
+                  <div className="flex items-center space-x-2">
+                    {currentUser?.role === 'super_admin' ? (
+                      <Crown className="w-4 h-4 text-yellow-400" />
+                    ) : (
+                      <User className="w-4 h-4 text-blue-300" />
+                    )}
+                    <span className="text-sm text-white">
+                      {currentUser?.name || currentUser?.email}
+                    </span>
+                    {currentUser?.role === 'super_admin' && (
+                      <span className="text-xs bg-yellow-600 text-white px-2 py-1 rounded-full">
+                        Super Admin
+                      </span>
+                    )}
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleLogout}
+                    className="text-white border-white hover:bg-white hover:text-blue-900"
+                  >
+                    Déconnexion
+                  </Button>
+                </>
+              ) : (
+                <div className="flex items-center space-x-3">
+                  <span className="text-sm text-blue-200">
+                    Accédez à nos solutions premium
+                  </span>
+                  <Button
+                    size="sm"
+                    onClick={() => handleAuth('login')}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    <LogIn className="w-4 h-4 mr-1" />
+                    Connexion
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleAuth('register')}
+                    className="border-white text-white hover:bg-white hover:text-blue-900"
+                  >
+                    <UserPlus className="w-4 h-4 mr-1" />
+                    Inscription
+                  </Button>
+                </div>
+              )}
+            </div>
+            
+            {isAuthenticated && (
+              <div className="flex items-center space-x-2">
+                <Link href="/novacore">
+                  <Button size="sm" className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700">
+                    <Settings className="w-4 h-4 mr-1" />
+                    Dashboard
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Modal d'authentification */}
+      {showAuthModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-gray-900">
+                {authMode === 'login' ? 'Connexion' : 'Inscription'}
+              </h2>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowAuthModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </Button>
+            </div>
+
+            {authError && (
+              <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                {authError}
+              </div>
+            )}
+
+            <div className="space-y-4">
+              {authMode === 'register' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Nom complet
+                  </label>
+                  <input
+                    type="text"
+                    value={authForm.name}
+                    onChange={(e) => setAuthForm({ ...authForm, name: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Votre nom complet"
+                  />
+                </div>
+              )}
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={authForm.email}
+                  onChange={(e) => setAuthForm({ ...authForm, email: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="votre@email.com"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Mot de passe
+                </label>
+                <input
+                  type="password"
+                  value={authForm.password}
+                  onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="••••••••"
+                />
+              </div>
+
+              {authMode === 'register' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Confirmer le mot de passe
+                  </label>
+                  <input
+                    type="password"
+                    value={authForm.confirmPassword}
+                    onChange={(e) => setAuthForm({ ...authForm, confirmPassword: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="••••••••"
+                  />
+                </div>
+              )}
+
+              <div className="flex space-x-3">
+                <Button
+                  onClick={authMode === 'login' ? handleLogin : handleRegister}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700"
+                >
+                  {authMode === 'login' ? 'Se connecter' : 'S\'inscrire'}
+                </Button>
+              </div>
+
+              <div className="text-center">
+                <button
+                  onClick={() => setAuthMode(authMode === 'login' ? 'register' : 'login')}
+                  className="text-sm text-blue-600 hover:text-blue-800"
+                >
+                  {authMode === 'login' 
+                    ? 'Pas encore de compte ? S\'inscrire' 
+                    : 'Déjà un compte ? Se connecter'
+                  }
+                </button>
+              </div>
+
+              {authMode === 'login' && (
+                <div className="text-center text-xs text-gray-500">
+                  <p>Super Admin : sobam@daveandlucesolutions.com</p>
+                  <p>Mot de passe : @DavyFrantz2025</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Contenu principal avec padding-top pour la navigation */}
       <main className="pt-20">
@@ -159,17 +468,37 @@ export default function HomePage() {
               {slides[currentSlide].description}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/solutions/selection">
-                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 text-base font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
-                  Découvrir nos Solutions
-                  <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-              </Link>
-              <Link href="/contact">
-                <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black px-6 py-3 text-base font-semibold rounded-full transition-all duration-300">
-                  Nous Contacter
-                </Button>
-              </Link>
+              {isAuthenticated ? (
+                <>
+                  <Link href="/demo/dlsolutions-hub">
+                    <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 text-base font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+                      Accéder aux Dashboards
+                      <ArrowRight className="ml-2 w-4 h-4" />
+                    </Button>
+                  </Link>
+                  <Link href="/novacore">
+                    <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black px-6 py-3 text-base font-semibold rounded-full transition-all duration-300">
+                      NovaCore Dashboard
+                    </Button>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Button 
+                    size="lg" 
+                    onClick={() => handleAuth('register')}
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 text-base font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    Commencer Maintenant
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                  </Button>
+                  <Link href="/contact">
+                    <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black px-6 py-3 text-base font-semibold rounded-full transition-all duration-300">
+                      Nous Contacter
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
 
@@ -262,6 +591,126 @@ export default function HomePage() {
                   </Link>
                 </Button>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section Formations */}
+        <section data-onboarding="formations" className="py-20 bg-gradient-to-r from-blue-50 to-indigo-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Formations Professionnelles
+              </h2>
+              <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+                Développez vos compétences avec nos formations spécialisées en technologies et stratégies digitales
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              {[
+                {
+                  title: "Intelligence Artificielle pour Entreprises",
+                  description: "Maîtrisez l'IA pour transformer votre entreprise et automatiser vos processus",
+                  duration: "5 jours",
+                  price: "€1,200",
+                  rating: 4.8,
+                  students: 156,
+                  icon: "🧠",
+                  color: "from-purple-500 to-pink-500"
+                },
+                {
+                  title: "Marketing Digital & Réseaux Sociaux",
+                  description: "Développez votre présence en ligne et maîtrisez les stratégies digitales",
+                  duration: "4 jours",
+                  price: "€950",
+                  rating: 4.7,
+                  students: 203,
+                  icon: "🎯",
+                  color: "from-blue-500 to-cyan-500"
+                },
+                {
+                  title: "E-commerce & Vente en Ligne",
+                  description: "Créez et gérez votre boutique en ligne de A à Z",
+                  duration: "6 jours",
+                  price: "€1,400",
+                  rating: 4.9,
+                  students: 89,
+                  icon: "🛒",
+                  color: "from-green-500 to-emerald-500"
+                },
+                {
+                  title: "CRM & Gestion Client",
+                  description: "Optimisez votre relation client avec les meilleures pratiques CRM",
+                  duration: "3 jours",
+                  price: "€750",
+                  rating: 4.6,
+                  students: 134,
+                  icon: "👥",
+                  color: "from-orange-500 to-red-500"
+                },
+                {
+                  title: "Création Visuelle & Design",
+                  description: "Créez des visuels professionnels pour vos supports marketing",
+                  duration: "4 jours",
+                  price: "€850",
+                  rating: 4.5,
+                  students: 167,
+                  icon: "🎨",
+                  color: "from-yellow-500 to-orange-500"
+                },
+                {
+                  title: "Télévente & Prospection",
+                  description: "Développez vos compétences commerciales et techniques de vente",
+                  duration: "3 jours",
+                  price: "€650",
+                  rating: 4.7,
+                  students: 98,
+                  icon: "📞",
+                  color: "from-red-500 to-pink-500"
+                }
+              ].map((formation, index) => (
+                <div key={index} className="group bg-white rounded-2xl shadow-xl border border-gray-100 p-6 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className={`p-3 rounded-lg bg-gradient-to-r ${formation.color} text-white text-2xl`}>
+                      {formation.icon}
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-gray-900">{formation.price}</div>
+                      <div className="text-sm text-gray-500">{formation.duration}</div>
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">{formation.title}</h3>
+                  <p className="text-gray-600 text-sm mb-4 leading-relaxed">{formation.description}</p>
+                  
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center">
+                      <Star className="h-4 w-4 text-yellow-500 mr-1" />
+                      <span className="text-sm font-medium">{formation.rating}</span>
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {formation.students} étudiants
+                    </div>
+                  </div>
+                  
+                  <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white" asChild>
+                    <Link href="/formations">
+                      Voir la formation
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 shadow-lg font-semibold" asChild>
+                <Link href="/formations">
+                  Voir toutes les formations
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
             </div>
           </div>
         </section>

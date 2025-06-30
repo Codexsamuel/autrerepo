@@ -1,6 +1,3 @@
-// Dashboard Immobilier premium NovaWorld - Inspiré Salesforce/Yardi
-// Modules : Navbar, Alertes IA, KPI, Pipeline, VIP, Recos IA, Footer
-// Personnalisation facile : modifiez les mock data ou les modules selon vos besoins.
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -71,8 +68,23 @@ import {
   Square,
   Euro,
   ChevronRight,
-  ChevronLeft
+  ChevronLeft,
+  Wrench,
+  Store
 } from 'lucide-react';
+
+// Import des composants modaux et de la base de données
+import PropertyDetailsModal from '@/components/real-estate/PropertyDetailsModal';
+import ScheduledVisitsModal from '@/components/real-estate/ScheduledVisitsModal';
+import ConversionRateModal from '@/components/real-estate/ConversionRateModal';
+import AveragePriceModal from '@/components/real-estate/AveragePriceModal';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { 
+  getAvailableProperties, 
+  getScheduledVisits, 
+  getConversionRate, 
+  getAveragePrice 
+} from '@/lib/database/real-estate';
 
 interface RealEstateEvent {
   id: string;
@@ -164,10 +176,36 @@ export default function DLImmobilierPage() {
   const [aiInsights, setAiInsights] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
+  // États pour les modaux
+  const [showPropertiesModal, setShowPropertiesModal] = useState(false);
+  const [showVisitsModal, setShowVisitsModal] = useState(false);
+  const [showConversionModal, setShowConversionModal] = useState(false);
+  const [showPriceModal, setShowPriceModal] = useState(false);
+
+  // Données réelles de la base de données
+  const [realProperties, setRealProperties] = useState<any[]>([]);
+  const [realVisits, setRealVisits] = useState<any[]>([]);
+  const [conversionRate, setConversionRate] = useState(0);
+  const [averagePrice, setAveragePrice] = useState(0);
+
   useEffect(() => {
     loadData();
+    loadRealData();
     generateAIInsights();
   }, []);
+
+  const loadRealData = () => {
+    // Charger les données réelles
+    const availableProperties = getAvailableProperties();
+    const scheduledVisits = getScheduledVisits();
+    const conversionData = getConversionRate();
+    const priceData = getAveragePrice();
+
+    setRealProperties(availableProperties);
+    setRealVisits(scheduledVisits);
+    setConversionRate(conversionData);
+    setAveragePrice(priceData);
+  };
 
   const loadData = () => {
     // Propriétés
@@ -308,7 +346,7 @@ export default function DLImmobilierPage() {
         propertyAddress: "123 Rue de la Paix, Paris 8ème",
         propertyType: "apartment",
         transactionType: "rent",
-        rentPrice: 3500,
+        price: 3500,
         documents: ["Bail", "État des lieux", "Quittances"],
         aiCompatibilityScore: 0.78,
         aiRecommendations: ["Vérifier garant", "Expliquer conditions"],
@@ -350,19 +388,19 @@ export default function DLImmobilierPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'scheduled': return 'bg-blue-100 text-blue-800';
-      case 'confirmed': return 'bg-green-100 text-green-800';
-      case 'completed': return 'bg-gray-100 text-gray-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
-      case 'urgent': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'confirmed': return 'border-l-4 border-l-green-500 bg-green-50';
+      case 'scheduled': return 'border-l-4 border-l-blue-500 bg-blue-50';
+      case 'completed': return 'border-l-4 border-l-gray-500 bg-gray-50';
+      case 'cancelled': return 'border-l-4 border-l-red-500 bg-red-50';
+      case 'urgent': return 'border-l-4 border-l-orange-500 bg-orange-50';
+      default: return 'border-l-4 border-l-gray-300 bg-gray-50';
     }
   };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
       case 'visit': return <Eye className="w-4 h-4" />;
-      case 'contract': return <FileText className="w-4 h-4" />;
+      case 'contract': return <FileCheck className="w-4 h-4" />;
       case 'maintenance': return <Wrench className="w-4 h-4" />;
       case 'inspection': return <Search className="w-4 h-4" />;
       case 'payment': return <DollarSign className="w-4 h-4" />;
@@ -376,313 +414,307 @@ export default function DLImmobilierPage() {
       case 'apartment': return <Building className="w-4 h-4" />;
       case 'house': return <Home className="w-4 h-4" />;
       case 'commercial': return <Store className="w-4 h-4" />;
-      case 'land': return <MapPinIcon className="w-4 h-4" />;
+      case 'land': return <MapPin className="w-4 h-4" />;
       default: return <Home className="w-4 h-4" />;
     }
   };
 
   const getCompatibilityScoreColor = (score: number) => {
-    if (score > 0.8) return 'text-green-600';
-    if (score > 0.6) return 'text-yellow-600';
+    if (score >= 0.8) return 'text-green-600';
+    if (score >= 0.6) return 'text-yellow-600';
     return 'text-red-600';
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600"></div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Chargement du dashboard...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center space-x-4">
-              <div className="bg-green-600 p-2 rounded-lg">
-                <Home className="h-8 w-8 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">DL Immobilier</h1>
-                <p className="text-sm text-gray-600">Gestion intelligente des biens et transactions</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button variant="outline" size="sm">
-                <Settings className="w-4 h-4 mr-2" />
-                Paramètres
-              </Button>
-              <Button size="sm">
-                <Plus className="w-4 h-4 mr-2" />
-                Nouveau bien
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* AI Insights Dashboard */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
+    <ErrorBoundary>
+      <div className="min-h-screen bg-gray-50">
+        {/* Header */}
+        <div className="bg-white shadow-sm border-b">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center py-6">
+              <div className="flex items-center space-x-4">
+                <div className="bg-green-600 p-2 rounded-lg">
+                  <Home className="h-8 w-8 text-white" />
+                </div>
                 <div>
-                  <p className="text-green-100">Biens Disponibles</p>
-                  <p className="text-3xl font-bold">{aiInsights?.totalProperties}</p>
+                  <h1 className="text-2xl font-bold text-gray-900">DL Immobilier</h1>
+                  <p className="text-sm text-gray-600">Gestion intelligente des biens et transactions</p>
                 </div>
-                <Home className="h-8 w-8 text-green-200" />
               </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-blue-100">Visites Programmées</p>
-                  <p className="text-3xl font-bold">{aiInsights?.activeVisits}</p>
-                </div>
-                <Eye className="h-8 w-8 text-blue-200" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-r from-purple-500 to-purple-600 text-white">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-purple-100">Taux de Conversion</p>
-                  <p className="text-3xl font-bold">{(aiInsights?.conversionRate * 100).toFixed(0)}%</p>
-                </div>
-                <TrendingUp className="h-8 w-8 text-purple-200" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-r from-orange-500 to-orange-600 text-white">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-orange-100">Prix Moyen</p>
-                  <p className="text-3xl font-bold">{aiInsights?.averagePrice.toLocaleString()}€</p>
-                </div>
-                <Euro className="h-8 w-8 text-orange-200" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Calendar Sidebar */}
-          <div className="lg:col-span-1">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <CalendarIcon className="w-5 h-5 mr-2" />
-                  Calendrier
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Calendar
-                  selected={selectedDate}
-                  onSelect={setSelectedDate}
-                  className="rounded-md border"
-                />
-                
-                {/* Quick Actions */}
-                <div className="mt-6 space-y-3">
-                  <Button className="w-full" size="sm">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Nouvelle visite
-                  </Button>
-                  <Button variant="outline" className="w-full" size="sm">
-                    <FileCheck className="w-4 h-4 mr-2" />
-                    Signature contrat
-                  </Button>
-                  <Button variant="outline" className="w-full" size="sm">
-                    <Search className="w-4 h-4 mr-2" />
-                    Inspection
-                  </Button>
-                </div>
-
-                {/* AI Recommendations */}
-                <div className="mt-6">
-                  <h4 className="font-semibold text-sm text-gray-700 mb-3 flex items-center">
-                    <Brain className="w-4 h-4 mr-2" />
-                    Recommandations IA
-                  </h4>
-                  <div className="space-y-2">
-                    {aiInsights?.recommendations.map((rec: string, index: number) => (
-                      <div key={index} className="text-xs bg-green-50 p-2 rounded border-l-2 border-green-500">
-                        {rec}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Calendar View */}
-          <div className="lg:col-span-3">
-            <Card>
-              <CardHeader>
-                <div className="flex justify-between items-center">
-                  <CardTitle>Calendrier des Événements</CardTitle>
-                  <div className="flex items-center space-x-2">
-                    <Select value={viewMode} onValueChange={(value: any) => setViewMode(value)}>
-                      <SelectTrigger className="w-32">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="day">Jour</SelectItem>
-                        <SelectItem value="week">Semaine</SelectItem>
-                        <SelectItem value="month">Mois</SelectItem>
-                        <SelectItem value="agenda">Agenda</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <Select value={filterType} onValueChange={(value: any) => setFilterType(value)}>
-                      <SelectTrigger className="w-40">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">Tous les types</SelectItem>
-                        <SelectItem value="visit">Visites</SelectItem>
-                        <SelectItem value="contract">Contrats</SelectItem>
-                        <SelectItem value="maintenance">Maintenance</SelectItem>
-                        <SelectItem value="inspection">Inspections</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {/* Calendar Grid */}
-                <div className="space-y-4">
-                  {events
-                    .filter(event => filterType === 'all' || event.type === filterType)
-                    .map((event) => (
-                      <div
-                        key={event.id}
-                        className={`p-4 rounded-lg border cursor-pointer transition-all hover:shadow-md ${
-                          getStatusColor(event.status)
-                        }`}
-                        onClick={() => {
-                          setSelectedEvent(event);
-                          setShowEventModal(true);
-                        }}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-3">
-                            {getTypeIcon(event.type)}
-                            <div>
-                              <h4 className="font-semibold">{event.title}</h4>
-                              <p className="text-sm text-gray-600">
-                                {new Date(event.startTime).toLocaleDateString()} - {new Date(event.startTime).toLocaleTimeString()}
-                              </p>
-                              <p className="text-xs text-gray-500">{event.propertyAddress}</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Badge className={getStatusColor(event.status)}>
-                              {event.status}
-                            </Badge>
-                            <Badge variant="outline">
-                              {getPropertyTypeIcon(event.propertyType)}
-                              {event.propertyType}
-                            </Badge>
-                            {event.aiCompatibilityScore > 0.8 && (
-                              <CheckCircle className="w-4 h-4 text-green-500" />
-                            )}
-                          </div>
-                        </div>
-                        
-                        {event.price && (
-                          <div className="mt-2 flex items-center space-x-4 text-sm">
-                            <span className="font-medium">
-                              {event.transactionType === 'sale' ? 'Prix:' : 'Loyer:'} {event.price.toLocaleString()}€
-                            </span>
-                            <span className={`font-medium ${getCompatibilityScoreColor(event.aiCompatibilityScore)}`}>
-                              Compatibilité: {(event.aiCompatibilityScore * 100).toFixed(0)}%
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        {/* Event Modal */}
-        {showEventModal && selectedEvent && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-              <div className="flex justify-between items-start mb-4">
-                <h3 className="text-xl font-bold">{selectedEvent.title}</h3>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowEventModal(false)}
-                >
-                  <X className="w-4 h-4" />
+              <div className="flex items-center space-x-4">
+                <Button variant="outline" size="sm">
+                  <Settings className="w-4 h-4 mr-2" />
+                  Paramètres
+                </Button>
+                <Button size="sm">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Nouveau bien
                 </Button>
               </div>
+            </div>
+          </div>
+        </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h4 className="font-semibold mb-2">Détails de l'événement</h4>
-                  <div className="space-y-2 text-sm">
-                    <p><strong>Type:</strong> {selectedEvent.type}</p>
-                    <p><strong>Statut:</strong> {selectedEvent.status}</p>
-                    <p><strong>Priorité:</strong> {selectedEvent.priority}</p>
-                    <p><strong>Agent assigné:</strong> {selectedEvent.assignedAgent}</p>
-                    <p><strong>Lieu:</strong> {selectedEvent.location}</p>
-                    <p><strong>Description:</strong> {selectedEvent.description}</p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* AI Insights Dashboard */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <Card 
+              className="bg-gradient-to-r from-green-500 to-green-600 text-white cursor-pointer hover:shadow-lg transition-all"
+              onClick={() => setShowPropertiesModal(true)}
+            >
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-green-100">Biens Disponibles</p>
+                    <p className="text-3xl font-bold">{realProperties.length}</p>
                   </div>
+                  <Home className="h-8 w-8 text-green-200" />
                 </div>
+              </CardContent>
+            </Card>
 
-                <div>
-                  <h4 className="font-semibold mb-2">Analyse IA</h4>
-                  <div className="space-y-2 text-sm">
-                    <p><strong>Score de compatibilité:</strong> 
-                      <span className={`ml-1 ${getCompatibilityScoreColor(selectedEvent.aiCompatibilityScore)}`}>
-                        {(selectedEvent.aiCompatibilityScore * 100).toFixed(0)}%
-                      </span>
-                    </p>
-                    <div>
-                      <strong>Recommandations:</strong>
-                      <ul className="mt-1 space-y-1">
-                        {selectedEvent.aiRecommendations.map((rec, index) => (
-                          <li key={index} className="text-xs bg-green-50 p-1 rounded">
-                            {rec}
-                          </li>
-                        ))}
-                      </ul>
+            <Card 
+              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white cursor-pointer hover:shadow-lg transition-all"
+              onClick={() => setShowVisitsModal(true)}
+            >
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-blue-100">Visites Programmées</p>
+                    <p className="text-3xl font-bold">{realVisits.length}</p>
+                  </div>
+                  <Eye className="h-8 w-8 text-blue-200" />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card 
+              className="bg-gradient-to-r from-purple-500 to-purple-600 text-white cursor-pointer hover:shadow-lg transition-all"
+              onClick={() => setShowConversionModal(true)}
+            >
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-purple-100">Taux de Conversion</p>
+                    <p className="text-3xl font-bold">{conversionRate}%</p>
+                  </div>
+                  <TrendingUp className="h-8 w-8 text-purple-200" />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card 
+              className="bg-gradient-to-r from-orange-500 to-orange-600 text-white cursor-pointer hover:shadow-lg transition-all"
+              onClick={() => setShowPriceModal(true)}
+            >
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-orange-100">Prix Moyen</p>
+                    <p className="text-3xl font-bold">{averagePrice.toLocaleString()}€</p>
+                  </div>
+                  <Euro className="h-8 w-8 text-orange-200" />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Main Content */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            {/* Calendar Sidebar */}
+            <div className="lg:col-span-1">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <CalendarIcon className="w-5 h-5 mr-2" />
+                    Calendrier
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Calendar
+                    selected={selectedDate}
+                    onSelect={setSelectedDate}
+                    className="rounded-md border"
+                  />
+                  
+                  {/* Quick Actions */}
+                  <div className="mt-6 space-y-3">
+                    <Button className="w-full" size="sm">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Nouvelle visite
+                    </Button>
+                    <Button variant="outline" className="w-full" size="sm">
+                      <FileCheck className="w-4 h-4 mr-2" />
+                      Signature contrat
+                    </Button>
+                    <Button variant="outline" className="w-full" size="sm">
+                      <Search className="w-4 h-4 mr-2" />
+                      Inspection
+                    </Button>
+                  </div>
+
+                  {/* AI Recommendations */}
+                  <div className="mt-6">
+                    <h4 className="font-semibold text-sm text-gray-700 mb-3 flex items-center">
+                      <Brain className="w-4 h-4 mr-2" />
+                      Recommandations IA
+                    </h4>
+                    <div className="space-y-2">
+                      {aiInsights?.recommendations.map((rec: string, index: number) => (
+                        <div key={index} className="text-xs bg-green-50 p-2 rounded border-l-2 border-green-500">
+                          {rec}
+                        </div>
+                      ))}
                     </div>
                   </div>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
+            </div>
 
-              <div className="mt-6 flex justify-end space-x-2">
-                <Button variant="outline" onClick={() => setShowEventModal(false)}>
-                  Fermer
-                </Button>
-                <Button>
-                  <Edit className="w-4 h-4 mr-2" />
-                  Modifier
-                </Button>
-              </div>
+            {/* Calendar View */}
+            <div className="lg:col-span-3">
+              <Card>
+                <CardHeader>
+                  <div className="flex justify-between items-center">
+                    <CardTitle>Calendrier des Événements</CardTitle>
+                    <div className="flex items-center space-x-2">
+                      <Select value={viewMode} onValueChange={(value: any) => setViewMode(value)}>
+                        <SelectTrigger className="w-32">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="day">Jour</SelectItem>
+                          <SelectItem value="week">Semaine</SelectItem>
+                          <SelectItem value="month">Mois</SelectItem>
+                          <SelectItem value="agenda">Agenda</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Select value={filterType} onValueChange={(value: any) => setFilterType(value)}>
+                        <SelectTrigger className="w-40">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Tous les types</SelectItem>
+                          <SelectItem value="visit">Visites</SelectItem>
+                          <SelectItem value="contract">Contrats</SelectItem>
+                          <SelectItem value="maintenance">Maintenance</SelectItem>
+                          <SelectItem value="inspection">Inspections</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {/* Calendar Grid */}
+                  <div className="space-y-4">
+                    {events
+                      .filter(event => filterType === 'all' || event.type === filterType)
+                      .map((event) => (
+                        <div
+                          key={event.id}
+                          className={`p-4 rounded-lg border cursor-pointer transition-all hover:shadow-md ${
+                            getStatusColor(event.status)
+                          }`}
+                          onClick={() => {
+                            setSelectedEvent(event);
+                            setShowEventModal(true);
+                          }}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-3">
+                              <div className="flex items-center space-x-2">
+                                {getTypeIcon(event.type)}
+                                <span className="font-medium">{event.title}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Badge variant={event.status === 'confirmed' ? 'default' : 'secondary'}>
+                                {event.status}
+                              </Badge>
+                              <span className="text-sm text-gray-500">
+                                {new Date(event.startTime).toLocaleTimeString('fr-FR', { 
+                                  hour: '2-digit', 
+                                  minute: '2-digit' 
+                                })}
+                              </span>
+                            </div>
+                          </div>
+                          
+                          <div className="mt-3 grid grid-cols-2 gap-4 text-sm">
+                            <div className="flex items-center space-x-2">
+                              <User className="w-4 h-4 text-gray-400" />
+                              <span>{event.clientName}</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <MapPin className="w-4 h-4 text-gray-400" />
+                              <span className="truncate">{event.location}</span>
+                            </div>
+                          </div>
+
+                          {event.aiCompatibilityScore && (
+                            <div className="mt-3 flex items-center justify-between">
+                              <div className="flex items-center space-x-2">
+                                <Brain className="w-4 h-4 text-purple-500" />
+                                <span className="text-sm">Score IA: </span>
+                                <span className={`text-sm font-medium ${getCompatibilityScoreColor(event.aiCompatibilityScore)}`}>
+                                  {Math.round(event.aiCompatibilityScore * 100)}%
+                                </span>
+                              </div>
+                              <div className="flex items-center space-x-1">
+                                {event.verification?.identityVerified && (
+                                  <Shield className="w-4 h-4 text-green-500" />
+                                )}
+                                {event.verification?.documentsVerified && (
+                                  <FileCheck className="w-4 h-4 text-blue-500" />
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
-        )}
+        </div>
+
+        {/* Modals */}
+        <PropertyDetailsModal 
+          isOpen={showPropertiesModal} 
+          onClose={() => setShowPropertiesModal(false)}
+          properties={realProperties}
+        />
+        
+        <ScheduledVisitsModal 
+          isOpen={showVisitsModal} 
+          onClose={() => setShowVisitsModal(false)}
+          visits={realVisits}
+        />
+        
+        <ConversionRateModal 
+          isOpen={showConversionModal} 
+          onClose={() => setShowConversionModal(false)}
+          conversionRate={conversionRate}
+        />
+        
+        <AveragePriceModal 
+          isOpen={showPriceModal} 
+          onClose={() => setShowPriceModal(false)}
+          averagePrice={averagePrice}
+        />
       </div>
-    </div>
+    </ErrorBoundary>
   );
 } 

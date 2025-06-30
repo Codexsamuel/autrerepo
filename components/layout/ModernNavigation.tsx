@@ -25,6 +25,7 @@ export default function ModernNavigation({ className = '' }: ModernNavigationPro
   const navigationItems = [
     { name: t.navigation.home, href: '/', icon: Home },
     { name: t.navigation.services, href: '/services', icon: Briefcase },
+    { name: 'Formations', href: '/formations', icon: Building, dataOnboarding: 'formations' },
     { name: t.navigation.about, href: '/a-propos', icon: Info },
     { name: 'NovaCore', href: '/novacore', icon: Settings, dataOnboarding: 'novacore' },
     { name: t.navigation.intranet, href: '/intranet', icon: Building },

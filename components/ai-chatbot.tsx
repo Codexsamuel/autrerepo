@@ -35,6 +35,53 @@ export default function AIChatbot() {
     scrollToBottom();
   }, [messages]);
 
+  const getIntelligentResponse = (userMessage: string): string => {
+    const lowerMessage = userMessage.toLowerCase();
+    
+    // Salutations
+    if (lowerMessage.includes('bonjour') || lowerMessage.includes('salut') || lowerMessage.includes('hello')) {
+      return "Bonjour ! Ravi de vous rencontrer. Je suis l'assistant IA de DL Solutions. Comment puis-je vous aider aujourd'hui ?";
+    }
+    
+    // Services
+    if (lowerMessage.includes('service') || lowerMessage.includes('solutions') || lowerMessage.includes('offre')) {
+      return "DL Solutions propose plusieurs services : NovaWorld (réseau social B2B), DL Style (e-commerce), DL Travel (voyages), DL Bookmaker (paris sportifs), et des solutions CRM/ERP sectorielles. Quel domaine vous intéresse ?";
+    }
+    
+    // Formations
+    if (lowerMessage.includes('formation') || lowerMessage.includes('cours') || lowerMessage.includes('apprendre')) {
+      return "Nous proposons des formations certifiantes en IA, marketing digital, e-commerce, CRM, création visuelle et télévente. Nos formations sont pratiques et adaptées aux professionnels. Voulez-vous voir notre catalogue ?";
+    }
+    
+    // IA
+    if (lowerMessage.includes('ia') || lowerMessage.includes('intelligence artificielle') || lowerMessage.includes('ai')) {
+      return "L'Intelligence Artificielle peut transformer votre entreprise ! Nous proposons des solutions IA pour l'automatisation, l'analyse de données, les chatbots et l'optimisation des processus. Quel est votre secteur d'activité ?";
+    }
+    
+    // Prix/Tarifs
+    if (lowerMessage.includes('prix') || lowerMessage.includes('tarif') || lowerMessage.includes('coût') || lowerMessage.includes('devis')) {
+      return "Nos tarifs varient selon vos besoins. Les formations commencent à 650€, les solutions CRM à 299€/mois. Je peux vous mettre en contact avec un expert pour un devis personnalisé. Souhaitez-vous un rendez-vous ?";
+    }
+    
+    // Contact
+    if (lowerMessage.includes('contact') || lowerMessage.includes('téléphone') || lowerMessage.includes('email') || lowerMessage.includes('appeler')) {
+      return "Vous pouvez nous contacter au +33 1 23 45 67 89 ou par email à contact@dlsolutions.com. Nous proposons aussi des consultations gratuites. Voulez-vous réserver un créneau ?";
+    }
+    
+    // Aide
+    if (lowerMessage.includes('aide') || lowerMessage.includes('help') || lowerMessage.includes('problème')) {
+      return "Je suis là pour vous aider ! Je peux vous informer sur nos services, formations, tarifs ou vous mettre en contact avec nos experts. Que souhaitez-vous savoir ?";
+    }
+    
+    // Questions générales
+    if (lowerMessage.includes('quoi') || lowerMessage.includes('comment') || lowerMessage.includes('pourquoi')) {
+      return "Excellente question ! Pour vous donner une réponse précise et personnalisée, je vous recommande de parler directement avec un de nos experts. Voulez-vous que je vous mette en relation ?";
+    }
+    
+    // Réponse par défaut intelligente
+    return "Merci pour votre message ! Pour vous apporter la meilleure réponse possible, je vous suggère de préciser votre besoin ou de prendre rendez-vous avec un de nos experts. Comment puis-je vous orienter ?";
+  };
+
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
 
@@ -49,28 +96,20 @@ export default function AIChatbot() {
     setInputValue('');
     setIsTyping(true);
 
-    // Simuler une réponse IA
+    // Simuler une réponse IA intelligente
     setTimeout(() => {
-      const botResponses = [
-        "Merci pour votre message ! Notre équipe va vous répondre dans les plus brefs délais.",
-        "Excellente question ! Je vais vous orienter vers le service le plus approprié.",
-        "Je comprends votre besoin. Laissez-moi vous proposer une solution adaptée.",
-        "C'est un projet intéressant ! Nos experts peuvent vous accompagner dans cette démarche.",
-        "Pour ce type de demande, je recommande de prendre rendez-vous avec notre équipe commerciale."
-      ];
-
-      const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)];
+      const botResponse = getIntelligentResponse(inputValue);
       
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: randomResponse,
+        text: botResponse,
         sender: 'bot',
         timestamp: new Date()
       };
 
       setMessages(prev => [...prev, botMessage]);
       setIsTyping(false);
-    }, 1500);
+    }, 1000);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

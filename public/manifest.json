@@ -1,21 +1,164 @@
 {
-  "name": "DL Solutions",
+  "name": "DL Solutions - Écosystème Digital Complet",
   "short_name": "DL Solutions",
-  "description": "Plateforme digitale tout-en-un : CRM, IA, e-commerce, trading, intranet, médias.",
+  "description": "CRM, ERP, boutique internationale, formations professionnelles. Livraison au Cameroun - École de Police, bureaux disponibles.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#1e293b",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "fr",
+  "dir": "ltr",
+  "categories": ["business", "productivity", "education", "shopping"],
   "icons": [
     {
-      "src": "/logos/logo-dl.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "/images/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
     },
     {
-      "src": "/logos/logo-dl.png",
+      "src": "/images/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/images/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/images/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/images/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/images/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/images/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/images/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/screenshot-home.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Page d'accueil DL Solutions"
+    },
+    {
+      "src": "/images/screenshot-boutique.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Boutique internationale DL Style"
+    },
+    {
+      "src": "/images/screenshot-formations.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Formations professionnelles"
+    },
+    {
+      "src": "/images/screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Version mobile DL Solutions"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Boutique DL Style",
+      "short_name": "Boutique",
+      "description": "Accéder à la boutique internationale",
+      "url": "/novacore/dl-style/",
+      "icons": [
+        {
+          "src": "/images/shortcut-boutique.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Formations",
+      "short_name": "Formations",
+      "description": "Consulter les formations professionnelles",
+      "url": "/formations/",
+      "icons": [
+        {
+          "src": "/images/shortcut-formations.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Solutions",
+      "short_name": "Solutions",
+      "description": "Découvrir nos solutions sectorielles",
+      "url": "/solutions/selection/",
+      "icons": [
+        {
+          "src": "/images/shortcut-solutions.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "NovaCore",
+      "short_name": "NovaCore",
+      "description": "Accéder à la plateforme NovaCore",
+      "url": "/novacore/",
+      "icons": [
+        {
+          "src": "/images/shortcut-novacore.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://dlsolutions.com"
+    }
+  ],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "handle_links": "preferred",
+  "protocol_handlers": [
+    {
+      "protocol": "web+dlsolutions",
+      "url": "/novacore/?protocol=%s"
     }
   ]
 } 

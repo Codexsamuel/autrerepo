@@ -282,7 +282,7 @@ function ReservationManagementPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
+      {/* Header */}
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Gestionnaire de Réservations</h1>
@@ -292,11 +292,11 @@ function ReservationManagementPage() {
             <Button variant="outline">
               <Filter className="w-4 h-4 mr-2" />
               Filtres
-            </Button>
+              </Button>
             <Button>
               <Plus className="w-4 h-4 mr-2" />
               Nouvelle Réservation
-            </Button>
+              </Button>
           </div>
         </div>
 
@@ -318,32 +318,32 @@ function ReservationManagementPage() {
                 <BarChart3 className="w-5 h-5 text-green-600" />
               </div>
             </div>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-          <Card>
+            <Card>
             <CardContent className="p-4">
-              <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Total Réservations</p>
                   <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
-                </div>
+                    </div>
                 <Calendar className="w-8 h-8 text-blue-600" />
-              </div>
+                  </div>
             </CardContent>
           </Card>
           
           <Card>
             <CardContent className="p-4">
-              <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Confirmées</p>
                   <p className="text-2xl font-bold text-green-600">{stats.confirmed}</p>
-                </div>
+                    </div>
                 <CheckCircle className="w-8 h-8 text-green-600" />
-              </div>
+                  </div>
             </CardContent>
           </Card>
           
@@ -353,9 +353,9 @@ function ReservationManagementPage() {
                 <div>
                   <p className="text-sm font-medium text-gray-600">En Attente</p>
                   <p className="text-2xl font-bold text-yellow-600">{stats.pending}</p>
-                </div>
+                      </div>
                 <Clock className="w-8 h-8 text-yellow-600" />
-              </div>
+                  </div>
             </CardContent>
           </Card>
           
@@ -367,22 +367,22 @@ function ReservationManagementPage() {
                   <p className="text-2xl font-bold text-blue-600">{stats.checkedIn}</p>
                 </div>
                 <User className="w-8 h-8 text-blue-600" />
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
             <CardContent className="p-4">
-              <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Revenus</p>
                   <p className="text-2xl font-bold text-green-600">€{stats.revenue}</p>
                 </div>
                 <DollarSign className="w-8 h-8 text-green-600" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
 
         {/* Filters and Search */}
         <Card>
@@ -450,15 +450,15 @@ function ReservationManagementPage() {
         </Card>
 
         {/* Reservations List */}
-        <Card>
-          <CardHeader>
+            <Card>
+              <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <span>Réservations ({filteredReservations.length})</span>
               <div className="text-sm text-gray-500">
                 Mis à jour: {new Date().toLocaleTimeString('fr-FR')}
               </div>
             </CardTitle>
-          </CardHeader>
+              </CardHeader>
           <CardContent className="p-0">
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -507,7 +507,7 @@ function ReservationManagementPage() {
                             </div>
                             <div className="text-xs text-gray-400">
                               ID: {reservation.id}
-                            </div>
+                              </div>
                           </div>
                         </div>
                       </td>
@@ -541,7 +541,7 @@ function ReservationManagementPage() {
                         {reservation.checkOut && (
                           <div className="text-xs text-gray-400">
                             → {new Date(reservation.checkOut).toLocaleDateString('fr-FR')}
-                          </div>
+                        </div>
                         )}
                       </td>
                       
@@ -596,11 +596,11 @@ function ReservationManagementPage() {
                 <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">Aucune réservation trouvée</h3>
                 <p className="text-gray-500">Essayez de modifier vos filtres de recherche</p>
-              </div>
-            )}
+                </div>
+              )}
           </CardContent>
         </Card>
-      </div>
+        </div>
     </div>
   );
 }

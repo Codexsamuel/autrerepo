@@ -29,7 +29,49 @@ export async function GET(request: NextRequest) {
       case 'scrape':
       default:
         const result = await scrapeChineseStores(query, category, country);
-        return NextResponse.json({ success: true, data: result });
+        // Convertir les ScrapedProduct en Product pour la compatibilité
+        const products = result.products.map((scrapedProduct: any) => ({
+          id: scrapedProduct.id || `product_${Date.now()}_${Math.random()}`,
+          name: scrapedProduct.name || 'Produit Premium',
+          description: scrapedProduct.description || 'Description du produit',
+          originalPrice: scrapedProduct.originalPrice || 0,
+          sellingPrice: scrapedProduct.sellingPrice || 0,
+          currency: scrapedProduct.currency || 'USD',
+          images: [scrapedProduct.image || 'https://via.placeholder.com/400x400'],
+          category: scrapedProduct.category || 'Général',
+          market: (scrapedProduct.country || 'chine').toLowerCase() === 'chine' ? 'china' : 
+                  (scrapedProduct.country || 'chine').toLowerCase() === 'dubaï' ? 'dubai' :
+                  (scrapedProduct.country || 'chine').toLowerCase() === 'turquie' ? 'turkey' :
+                  (scrapedProduct.country || 'chine').toLowerCase() === 'cameroun' ? 'cameroon' : 'china',
+          supplier: {
+            name: scrapedProduct.brand || 'Fournisseur Premium',
+            contact: `contact@${(scrapedProduct.source || 'default').toLowerCase()}.com`,
+            location: scrapedProduct.country || 'International'
+          },
+          specifications: {
+            brand: scrapedProduct.brand || 'Marque Premium',
+            features: (scrapedProduct.features || []).join(', '),
+            source: scrapedProduct.source || 'International'
+          },
+          shippingOptions: {
+            withCustoms: true,
+            withTransport: true,
+            customsFee: (scrapedProduct.originalPrice || 0) * 0.15,
+            transportFee: 50
+          },
+          stock: scrapedProduct.stock || 10,
+          rating: scrapedProduct.rating || 4.5,
+          reviews: scrapedProduct.reviews || 0,
+          createdAt: new Date(scrapedProduct.scrapedAt || Date.now())
+        }));
+        
+        return NextResponse.json({ 
+          success: true, 
+          products: products,
+          total: products.length,
+          source: result.source,
+          timestamp: result.timestamp
+        });
     }
 
   } catch (error) {
@@ -48,9 +90,48 @@ export async function POST(request: NextRequest) {
 
     const result = await scrapeChineseStores(query, category, country);
     
+    // Convertir les ScrapedProduct en Product pour la compatibilité
+    const products = result.products.map((scrapedProduct: any) => ({
+      id: scrapedProduct.id || `product_${Date.now()}_${Math.random()}`,
+      name: scrapedProduct.name || 'Produit Premium',
+      description: scrapedProduct.description || 'Description du produit',
+      originalPrice: scrapedProduct.originalPrice || 0,
+      sellingPrice: scrapedProduct.sellingPrice || 0,
+      currency: scrapedProduct.currency || 'USD',
+      images: [scrapedProduct.image || 'https://via.placeholder.com/400x400'],
+      category: scrapedProduct.category || 'Général',
+      market: (scrapedProduct.country || 'chine').toLowerCase() === 'chine' ? 'china' : 
+              (scrapedProduct.country || 'chine').toLowerCase() === 'dubaï' ? 'dubai' :
+              (scrapedProduct.country || 'chine').toLowerCase() === 'turquie' ? 'turkey' :
+              (scrapedProduct.country || 'chine').toLowerCase() === 'cameroun' ? 'cameroon' : 'china',
+      supplier: {
+        name: scrapedProduct.brand || 'Fournisseur Premium',
+        contact: `contact@${(scrapedProduct.source || 'default').toLowerCase()}.com`,
+        location: scrapedProduct.country || 'International'
+      },
+      specifications: {
+        brand: scrapedProduct.brand || 'Marque Premium',
+        features: (scrapedProduct.features || []).join(', '),
+        source: scrapedProduct.source || 'International'
+      },
+      shippingOptions: {
+        withCustoms: true,
+        withTransport: true,
+        customsFee: (scrapedProduct.originalPrice || 0) * 0.15,
+        transportFee: 50
+      },
+      stock: scrapedProduct.stock || 10,
+      rating: scrapedProduct.rating || 4.5,
+      reviews: scrapedProduct.reviews || 0,
+      createdAt: new Date(scrapedProduct.scrapedAt || Date.now())
+    }));
+    
     return NextResponse.json({ 
       success: true, 
-      data: result,
+      products: products,
+      total: products.length,
+      source: result.source,
+      timestamp: result.timestamp,
       message: 'Scraping terminé avec succès'
     });
 

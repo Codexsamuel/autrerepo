@@ -1,65 +1,176 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import { Product } from '@/lib/scraper/multi-markets';
 
-export type CartItem = {
-  id: string;
-  name: string;
-  image: string;
-  sellingPrice: number;
-  originalPrice: number;
-  profitMargin: number;
-  source: string;
-  country: string;
+export interface CartItem {
+  product: Product;
   quantity: number;
+}
+
+interface CartState {
+  items: CartItem[];
+  total: number;
+}
+
+type CartAction =
+  | { type: 'ADD_ITEM'; payload: Product }
+  | { type: 'REMOVE_ITEM'; payload: string }
+  | { type: 'UPDATE_QUANTITY'; payload: { productId: string; quantity: number } }
+  | { type: 'CLEAR_CART' }
+  | { type: 'LOAD_CART'; payload: CartItem[] };
+
+const cartReducer = (state: CartState, action: CartAction): CartState => {
+  switch (action.type) {
+    case 'ADD_ITEM': {
+      const existingItem = state.items.find(item => item.product.id === action.payload.id);
+      
+      if (existingItem) {
+        return {
+          ...state,
+          items: state.items.map(item =>
+            item.product.id === action.payload.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          ),
+          total: state.total + action.payload.sellingPrice
+        };
+      } else {
+        return {
+          ...state,
+          items: [...state.items, { product: action.payload, quantity: 1 }],
+          total: state.total + action.payload.sellingPrice
+        };
+      }
+    }
+    
+    case 'REMOVE_ITEM': {
+      const itemToRemove = state.items.find(item => item.product.id === action.payload);
+      if (!itemToRemove) return state;
+      
+      return {
+        ...state,
+        items: state.items.filter(item => item.product.id !== action.payload),
+        total: state.total - (itemToRemove.product.sellingPrice * itemToRemove.quantity)
+      };
+    }
+    
+    case 'UPDATE_QUANTITY': {
+      const { productId, quantity } = action.payload;
+      const item = state.items.find(item => item.product.id === productId);
+      
+      if (!item) return state;
+      
+      const quantityDiff = quantity - item.quantity;
+      
+      return {
+        ...state,
+        items: state.items.map(item =>
+          item.product.id === productId
+            ? { ...item, quantity }
+            : item
+        ),
+        total: state.total + (item.product.sellingPrice * quantityDiff)
+      };
+    }
+    
+    case 'CLEAR_CART':
+      return {
+        items: [],
+        total: 0
+      };
+    
+    case 'LOAD_CART':
+      return {
+        items: action.payload,
+        total: action.payload.reduce((sum, item) => sum + (item.product.sellingPrice * item.quantity), 0)
+      };
+    
+    default:
+      return state;
+  }
 };
 
-type CartContextType = {
-  cart: CartItem[];
-  addToCart: (item: CartItem) => void;
-  removeFromCart: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
+interface CartContextType {
+  items: CartItem[];
+  total: number;
+  addToCart: (product: Product) => void;
+  removeFromCart: (productId: string) => void;
+  updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
-};
+  getItemQuantity: (productId: string) => number;
+}
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export const useCart = () => {
-  const context = useContext(CartContext);
-  if (!context) throw new Error('useCart must be used within a CartProvider');
-  return context;
-};
+export function CartProvider({ children }: { children: React.ReactNode }) {
+  const [state, dispatch] = useReducer(cartReducer, {
+    items: [],
+    total: 0
+  });
 
-export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cart, setCart] = useState<CartItem[]>([]);
-
-  const addToCart = (item: CartItem) => {
-    setCart((prev) => {
-      const existing = prev.find((i) => i.id === item.id);
-      if (existing) {
-        return prev.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i
-        );
+  // Charger le panier depuis localStorage au montage
+  useEffect(() => {
+    const savedCart = localStorage.getItem('dl-style-cart');
+    if (savedCart) {
+      try {
+        const parsedCart = JSON.parse(savedCart);
+        dispatch({ type: 'LOAD_CART', payload: parsedCart });
+      } catch (error) {
+        console.error('Erreur lors du chargement du panier:', error);
       }
-      return [...prev, item];
-    });
+    }
+  }, []);
+
+  // Sauvegarder le panier dans localStorage à chaque modification
+  useEffect(() => {
+    localStorage.setItem('dl-style-cart', JSON.stringify(state.items));
+  }, [state.items]);
+
+  const addToCart = (product: Product) => {
+    dispatch({ type: 'ADD_ITEM', payload: product });
   };
 
-  const removeFromCart = (id: string) => {
-    setCart((prev) => prev.filter((i) => i.id !== id));
+  const removeFromCart = (productId: string) => {
+    dispatch({ type: 'REMOVE_ITEM', payload: productId });
   };
 
-  const updateQuantity = (id: string, quantity: number) => {
-    setCart((prev) =>
-      prev.map((i) => (i.id === id ? { ...i, quantity } : i))
-    );
+  const updateQuantity = (productId: string, quantity: number) => {
+    if (quantity <= 0) {
+      removeFromCart(productId);
+    } else {
+      dispatch({ type: 'UPDATE_QUANTITY', payload: { productId, quantity } });
+    }
   };
 
-  const clearCart = () => setCart([]);
+  const clearCart = () => {
+    dispatch({ type: 'CLEAR_CART' });
+  };
+
+  const getItemQuantity = (productId: string) => {
+    const item = state.items.find(item => item.product.id === productId);
+    return item ? item.quantity : 0;
+  };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart }}>
+    <CartContext.Provider value={{
+      items: state.items,
+      total: state.total,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
+      getItemQuantity
+    }}>
       {children}
     </CartContext.Provider>
   );
-}; 
+}
+
+export function useCart() {
+  const context = useContext(CartContext);
+  if (context === undefined) {
+    throw new Error('useCart must be used within a CartProvider');
+  }
+  return context;
+} 

@@ -36,7 +36,7 @@ export default async function FormationPage({ params }: { params: Promise<{ slug
         </div>
       </div>
     }>
-      <FormationClient formationData={formationData} />
+      <FormationClient formation={formationData} />
     </Suspense>
   );
 }

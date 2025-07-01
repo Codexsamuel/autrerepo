@@ -564,7 +564,7 @@ export default function CoursPage({ params }: { params: { slug: string } }) {
                 <CardContent className="p-12 text-center">
                   <BookOpen className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-xl font-semibold mb-2">Sélectionnez une leçon</h3>
-                  <p className="text-gray-600">
+      <p className="text-gray-600">
                     Choisissez une leçon dans le menu de gauche pour commencer votre formation.
                   </p>
                 </CardContent>

@@ -26,23 +26,23 @@ export async function GET(request: NextRequest) {
         const stats = getScrapingStats();
         return NextResponse.json({ success: true, data: stats });
 
-      case 'scrape':
       default:
+        console.log(`🔍 Scraping en temps réel: ${category}`);
         const result = await scrapeChineseStores(query, category, country);
-        // Convertir les ScrapedProduct en Product pour la compatibilité
-        const products = result.products.map((scrapedProduct: any) => ({
-          id: scrapedProduct.id || `product_${Date.now()}_${Math.random()}`,
+        const products = result.products || [];
+        console.log(`✅ Scraping terminé: ${products.length} produits trouvés`);
+        
+        // Corriger les propriétés undefined
+        const correctedProducts = products.map((scrapedProduct: any) => ({
+          id: scrapedProduct.id || `product-${Date.now()}-${Math.random()}`,
           name: scrapedProduct.name || 'Produit Premium',
           description: scrapedProduct.description || 'Description du produit',
           originalPrice: scrapedProduct.originalPrice || 0,
           sellingPrice: scrapedProduct.sellingPrice || 0,
           currency: scrapedProduct.currency || 'USD',
-          images: [scrapedProduct.image || 'https://via.placeholder.com/400x400'],
+          images: scrapedProduct.images || [],
           category: scrapedProduct.category || 'Général',
-          market: (scrapedProduct.country || 'chine').toLowerCase() === 'chine' ? 'china' : 
-                  (scrapedProduct.country || 'chine').toLowerCase() === 'dubaï' ? 'dubai' :
-                  (scrapedProduct.country || 'chine').toLowerCase() === 'turquie' ? 'turkey' :
-                  (scrapedProduct.country || 'chine').toLowerCase() === 'cameroun' ? 'cameroon' : 'china',
+          market: scrapedProduct.market || 'china',
           supplier: {
             name: scrapedProduct.brand || 'Fournisseur Premium',
             contact: `contact@${(scrapedProduct.source || 'default').toLowerCase()}.com`,
@@ -56,24 +56,17 @@ export async function GET(request: NextRequest) {
           shippingOptions: {
             withCustoms: true,
             withTransport: true,
-            customsFee: (scrapedProduct.originalPrice || 0) * 0.15,
-            transportFee: 50
+            customsFee: scrapedProduct.customsFee || 0,
+            transportFee: scrapedProduct.transportFee || 0
           },
-          stock: scrapedProduct.stock || 10,
-          rating: scrapedProduct.rating || 4.5,
+          stock: scrapedProduct.stock || 0,
+          rating: scrapedProduct.rating || 0,
           reviews: scrapedProduct.reviews || 0,
-          createdAt: new Date(scrapedProduct.scrapedAt || Date.now())
+          createdAt: scrapedProduct.createdAt || new Date()
         }));
-        
-        return NextResponse.json({ 
-          success: true, 
-          products: products,
-          total: products.length,
-          source: result.source,
-          timestamp: result.timestamp
-        });
-    }
 
+        return NextResponse.json({ success: true, data: correctedProducts });
+    }
   } catch (error) {
     console.error('Erreur API scraping:', error);
     return NextResponse.json(
@@ -86,24 +79,24 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { query, category, country, sources } = body;
+    const { query, category, country } = body;
 
+    console.log(`🔍 Scraping POST: ${category}`);
     const result = await scrapeChineseStores(query, category, country);
-    
-    // Convertir les ScrapedProduct en Product pour la compatibilité
-    const products = result.products.map((scrapedProduct: any) => ({
-      id: scrapedProduct.id || `product_${Date.now()}_${Math.random()}`,
+    const products = result.products || [];
+    console.log(`✅ Scraping POST terminé: ${products.length} produits trouvés`);
+
+    // Corriger les propriétés undefined
+    const correctedProducts = products.map((scrapedProduct: any) => ({
+      id: scrapedProduct.id || `product-${Date.now()}-${Math.random()}`,
       name: scrapedProduct.name || 'Produit Premium',
       description: scrapedProduct.description || 'Description du produit',
       originalPrice: scrapedProduct.originalPrice || 0,
       sellingPrice: scrapedProduct.sellingPrice || 0,
       currency: scrapedProduct.currency || 'USD',
-      images: [scrapedProduct.image || 'https://via.placeholder.com/400x400'],
+      images: scrapedProduct.images || [],
       category: scrapedProduct.category || 'Général',
-      market: (scrapedProduct.country || 'chine').toLowerCase() === 'chine' ? 'china' : 
-              (scrapedProduct.country || 'chine').toLowerCase() === 'dubaï' ? 'dubai' :
-              (scrapedProduct.country || 'chine').toLowerCase() === 'turquie' ? 'turkey' :
-              (scrapedProduct.country || 'chine').toLowerCase() === 'cameroun' ? 'cameroon' : 'china',
+      market: scrapedProduct.market || 'china',
       supplier: {
         name: scrapedProduct.brand || 'Fournisseur Premium',
         contact: `contact@${(scrapedProduct.source || 'default').toLowerCase()}.com`,
@@ -117,24 +110,16 @@ export async function POST(request: NextRequest) {
       shippingOptions: {
         withCustoms: true,
         withTransport: true,
-        customsFee: (scrapedProduct.originalPrice || 0) * 0.15,
-        transportFee: 50
+        customsFee: scrapedProduct.customsFee || 0,
+        transportFee: scrapedProduct.transportFee || 0
       },
-      stock: scrapedProduct.stock || 10,
-      rating: scrapedProduct.rating || 4.5,
+      stock: scrapedProduct.stock || 0,
+      rating: scrapedProduct.rating || 0,
       reviews: scrapedProduct.reviews || 0,
-      createdAt: new Date(scrapedProduct.scrapedAt || Date.now())
+      createdAt: scrapedProduct.createdAt || new Date()
     }));
-    
-    return NextResponse.json({ 
-      success: true, 
-      products: products,
-      total: products.length,
-      source: result.source,
-      timestamp: result.timestamp,
-      message: 'Scraping terminé avec succès'
-    });
 
+    return NextResponse.json({ success: true, data: correctedProducts });
   } catch (error) {
     console.error('Erreur API scraping POST:', error);
     return NextResponse.json(

@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
   ShoppingCart, 
   Star, 
@@ -28,7 +29,8 @@ import {
   CheckCircle,
   Euro,
   Coins,
-  RefreshCw
+  RefreshCw,
+  TrendingUp
 } from 'lucide-react';
 import { useCart } from './cart-context';
 import { Product } from '@/lib/scraper/multi-markets';
@@ -39,6 +41,13 @@ interface ChineseStoresClientProps {
   convertPrice: (priceUSD: number, currency: 'EUR' | 'USD' | 'FCFA') => number;
   formatPrice: (price: number, currency: 'EUR' | 'USD' | 'FCFA') => string;
   getCurrencySymbol: (currency: 'EUR' | 'USD' | 'FCFA') => string;
+}
+
+interface ScrapingStats {
+  totalProducts: number;
+  categories: string[];
+  sources: string[];
+  countries: string[];
 }
 
 export default function ChineseStoresClient({
@@ -54,13 +63,22 @@ export default function ChineseStoresClient({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMarket, setSelectedMarket] = useState('all');
   const { addToCart } = useCart();
+  const [stats, setStats] = useState<ScrapingStats | null>(null);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [sources, setSources] = useState<string[]>([]);
+  const [countries, setCountries] = useState<string[]>([]);
 
   // Fonction pour charger les produits depuis l'API
   const loadProducts = async () => {
     setLoading(true);
     try {
-      // Appel à l'API de scraping
-      const response = await fetch(`/api/scraping/chinese-stores/?query=&category=${encodeURIComponent(category)}&country=all`);
+      const params = new URLSearchParams({
+        query: searchQuery,
+        category: category,
+        country: selectedMarket
+      });
+      
+      const response = await fetch(`/api/scraping/chinese-stores?${params}`);
       
       if (!response.ok) {
         throw new Error('Erreur lors du chargement des produits');
@@ -68,296 +86,57 @@ export default function ChineseStoresClient({
       
       const data = await response.json();
       
-      if (data.products && Array.isArray(data.products)) {
-        setProducts(data.products);
-        setFilteredProducts(data.products);
+      if (data.success) {
+        setProducts(data.data);
+        setFilteredProducts(data.data);
       } else {
-        // Fallback vers les données statiques si l'API ne retourne rien
-        console.warn('API ne retourne pas de produits, utilisation des données statiques');
-        setProducts(REAL_VEHICLES_DATA);
-        setFilteredProducts(REAL_VEHICLES_DATA);
+        // Fallback vers un tableau vide si l'API ne retourne rien
+        setProducts([]);
+        setFilteredProducts([]);
       }
     } catch (error) {
       console.error('Erreur lors du chargement des produits:', error);
-      // Fallback vers les données statiques en cas d'erreur
-      setProducts(REAL_VEHICLES_DATA);
-      setFilteredProducts(REAL_VEHICLES_DATA);
+      setProducts([]);
+      setFilteredProducts([]);
     } finally {
       setLoading(false);
     }
   };
 
-  // Données de véhicules réels scrapés depuis de vrais sites (fallback)
-  const REAL_VEHICLES_DATA: Product[] = [
-    // Chine - Véhicules électriques
-    {
-      id: 'china_ev_001',
-      name: 'BYD Han EV - Berline Électrique Premium',
-      description: 'Berline électrique BYD Han avec autonomie de 605km, technologie Blade Battery',
-      originalPrice: 32000,
-      sellingPrice: 57600,
-      currency: 'USD',
-      images: ['https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=400&fit=crop'],
-      category: 'Véhicules',
-      market: 'china',
-      supplier: {
-        name: 'BYD Auto China',
-        contact: 'sales@byd.com.cn',
-        location: 'Shenzhen, Chine'
-      },
-      specifications: {
-        autonomie: '605km',
-        puissance: '222kW',
-        acceleration: '3.9s (0-100km/h)',
-        batterie: '77.4kWh Blade Battery'
-      },
-      shippingOptions: {
-        withCustoms: true,
-        withTransport: true,
-        customsFee: 4800,
-        transportFee: 2500
-      },
-      stock: 15,
-      rating: 4.8,
-      reviews: 234,
-      createdAt: new Date()
-    },
-    {
-      id: 'china_ev_002',
-      name: 'NIO ES8 - SUV Électrique Luxueux',
-      description: 'SUV électrique NIO ES8 avec système de changement de batterie rapide',
-      originalPrice: 68000,
-      sellingPrice: 122400,
-      currency: 'USD',
-      images: ['https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=400&fit=crop'],
-      category: 'Véhicules',
-      market: 'china',
-      supplier: {
-        name: 'NIO Inc.',
-        contact: 'export@nio.com',
-        location: 'Shanghai, Chine'
-      },
-      specifications: {
-        autonomie: '580km',
-        puissance: '400kW',
-        acceleration: '4.9s (0-100km/h)',
-        batterie: '100kWh'
-      },
-      shippingOptions: {
-        withCustoms: true,
-        withTransport: true,
-        customsFee: 10200,
-        transportFee: 3500
-      },
-      stock: 8,
-      rating: 4.9,
-      reviews: 156,
-      createdAt: new Date()
-    },
+  const loadStats = async () => {
+    try {
+      const response = await fetch('/api/scraping/chinese-stores?action=stats');
+      const data = await response.json();
+      if (data.success) {
+        setStats(data.data);
+      }
 
-    // Dubaï - Véhicules de luxe
-    {
-      id: 'dubai_luxury_001',
-      name: 'Mercedes-Benz S-Class 2024 - Berline de Luxe',
-      description: 'Berline de luxe Mercedes-Benz S-Class avec technologies avancées',
-      originalPrice: 120000,
-      sellingPrice: 216000,
-      currency: 'AED',
-      images: ['https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400&h=400&fit=crop'],
-      category: 'Véhicules',
-      market: 'dubai',
-      supplier: {
-        name: 'Al Tayer Motors',
-        contact: 'sales@altayer.com',
-        location: 'Dubaï, Émirats Arabes Unis'
-      },
-      specifications: {
-        moteur: '3.0L I6 Turbo',
-        puissance: '367hp',
-        transmission: '9G-TRONIC',
-        intérieur: 'Cuir Nappa'
-      },
-      shippingOptions: {
-        withCustoms: true,
-        withTransport: true,
-        customsFee: 18000,
-        transportFee: 5000
-      },
-      stock: 5,
-      rating: 4.9,
-      reviews: 89,
-      createdAt: new Date()
-    },
-    {
-      id: 'dubai_luxury_002',
-      name: 'Range Rover Sport 2024 - SUV Premium',
-      description: 'SUV premium Range Rover Sport avec capacités tout-terrain exceptionnelles',
-      originalPrice: 85000,
-      sellingPrice: 153000,
-      currency: 'AED',
-      images: ['https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=400&fit=crop'],
-      category: 'Véhicules',
-      market: 'dubai',
-      supplier: {
-        name: 'Al Futtaim Motors',
-        contact: 'info@alfuttaim.com',
-        location: 'Dubaï, Émirats Arabes Unis'
-      },
-      specifications: {
-        moteur: '3.0L I6 Mild Hybrid',
-        puissance: '400hp',
-        transmission: '8-speed Automatic',
-        traction: '4WD Terrain Response 2'
-      },
-      shippingOptions: {
-        withCustoms: true,
-        withTransport: true,
-        customsFee: 12750,
-        transportFee: 4000
-      },
-      stock: 12,
-      rating: 4.7,
-      reviews: 234,
-      createdAt: new Date()
-    },
+      const categoriesResponse = await fetch('/api/scraping/chinese-stores?action=categories');
+      const categoriesData = await categoriesResponse.json();
+      if (categoriesData.success) {
+        setCategories(categoriesData.data);
+      }
 
-    // Turquie - Véhicules utilitaires
-    {
-      id: 'turkey_utility_001',
-      name: 'Ford Transit Custom - Fourgon Utilitaire',
-      description: 'Fourgon utilitaire Ford Transit Custom avec espace de chargement optimisé',
-      originalPrice: 45000,
-      sellingPrice: 81000,
-      currency: 'TRY',
-      images: ['https://images.unsplash.com/photo-1563720223185-11003d516935?w=400&h=400&fit=crop'],
-      category: 'Véhicules',
-      market: 'turkey',
-      supplier: {
-        name: 'Ford Otosan',
-        contact: 'commercial@fordotosan.com.tr',
-        location: 'Istanbul, Turquie'
-      },
-      specifications: {
-        moteur: '2.0L EcoBlue Diesel',
-        puissance: '170hp',
-        capacité: '8.3m³',
-        charge: '1.2 tonnes'
-      },
-      shippingOptions: {
-        withCustoms: true,
-        withTransport: true,
-        customsFee: 6750,
-        transportFee: 3000
-      },
-      stock: 25,
-      rating: 4.6,
-      reviews: 445,
-      createdAt: new Date()
-    },
-    {
-      id: 'turkey_utility_002',
-      name: 'Renault Kangoo - Utilitaire Compact',
-      description: 'Utilitaire compact Renault Kangoo parfait pour la livraison urbaine',
-      originalPrice: 28000,
-      sellingPrice: 50400,
-      currency: 'TRY',
-      images: ['https://images.unsplash.com/photo-1563720223185-11003d516935?w=400&h=400&fit=crop'],
-      category: 'Véhicules',
-      market: 'turkey',
-      supplier: {
-        name: 'Oyak Renault',
-        contact: 'fleet@oyakrenault.com.tr',
-        location: 'Bursa, Turquie'
-      },
-      specifications: {
-        moteur: '1.5L dCi',
-        puissance: '95hp',
-        capacité: '3.9m³',
-        charge: '650kg'
-      },
-      shippingOptions: {
-        withCustoms: true,
-        withTransport: true,
-        customsFee: 4200,
-        transportFee: 2000
-      },
-      stock: 35,
-      rating: 4.5,
-      reviews: 678,
-      createdAt: new Date()
-    },
+      const sourcesResponse = await fetch('/api/scraping/chinese-stores?action=sources');
+      const sourcesData = await sourcesResponse.json();
+      if (sourcesData.success) {
+        setSources(sourcesData.data);
+      }
 
-    // Cameroun - Véhicules d'occasion
-    {
-      id: 'cameroon_used_001',
-      name: 'Toyota Land Cruiser 2018 - SUV 4x4',
-      description: 'SUV 4x4 Toyota Land Cruiser 2018 en excellent état, parfait pour l\'Afrique',
-      originalPrice: 35000,
-      sellingPrice: 63000,
-      currency: 'XAF',
-      images: ['https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=400&fit=crop'],
-      category: 'Véhicules',
-      market: 'cameroon',
-      supplier: {
-        name: 'Auto Import Plus',
-        contact: 'contact@autoimportplus.cm',
-        location: 'Douala, Cameroun'
-      },
-      specifications: {
-        moteur: '4.5L V8 Diesel',
-        puissance: '272hp',
-        transmission: '6-speed Automatic',
-        kilométrage: '85,000km'
-      },
-      shippingOptions: {
-        withCustoms: true,
-        withTransport: true,
-        customsFee: 5250,
-        transportFee: 1500
-      },
-      stock: 3,
-      rating: 4.8,
-      reviews: 123,
-      createdAt: new Date()
-    },
-    {
-      id: 'cameroon_used_002',
-      name: 'Honda Civic 2020 - Berline Économique',
-      description: 'Berline économique Honda Civic 2020, faible consommation, entretien facile',
-      originalPrice: 18000,
-      sellingPrice: 32400,
-      currency: 'XAF',
-      images: ['https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=400&fit=crop'],
-      category: 'Véhicules',
-      market: 'cameroon',
-      supplier: {
-        name: 'Car Market Yaoundé',
-        contact: 'sales@carmarket.cm',
-        location: 'Yaoundé, Cameroun'
-      },
-      specifications: {
-        moteur: '1.8L i-VTEC',
-        puissance: '140hp',
-        transmission: 'CVT',
-        kilométrage: '45,000km'
-      },
-      shippingOptions: {
-        withCustoms: true,
-        withTransport: true,
-        customsFee: 2700,
-        transportFee: 800
-      },
-      stock: 8,
-      rating: 4.6,
-      reviews: 234,
-      createdAt: new Date()
+      const countriesResponse = await fetch('/api/scraping/chinese-stores?action=countries');
+      const countriesData = await countriesResponse.json();
+      if (countriesData.success) {
+        setCountries(countriesData.data);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des statistiques:', error);
     }
-  ];
+  };
 
   useEffect(() => {
-    // Charger les produits au montage du composant
+    loadStats();
     loadProducts();
-  }, [category]);
+  }, []);
 
   useEffect(() => {
     let filtered = products;
@@ -378,16 +157,16 @@ export default function ChineseStoresClient({
     setFilteredProducts(filtered);
   }, [products, searchQuery, selectedMarket]);
 
+  // Fonction pour ajouter un produit au panier
   const handleAddToCart = (product: Product) => {
-    const cartItem = {
+    addToCart({
       id: product.id,
       name: product.name,
-      price: convertPrice(product.sellingPrice, selectedCurrency),
-      currency: selectedCurrency,
-      image: product.images[0],
+      price: product.sellingPrice,
+      currency: selectedCurrency as 'EUR' | 'USD' | 'FCFA',
+      image: product.images[0] || '',
       quantity: 1
-    };
-    addToCart(cartItem);
+    });
   };
 
   const getMarketName = (market: string) => {
@@ -408,6 +187,25 @@ export default function ChineseStoresClient({
       cameroon: '🇨🇲'
     };
     return flags[market as keyof typeof flags] || '🌍';
+  };
+
+  const getMarketColor = (market: string) => {
+    switch (market) {
+      case 'china':
+        return 'bg-red-100 text-red-800';
+      case 'dubai':
+        return 'bg-green-100 text-green-800';
+      case 'turkey':
+        return 'bg-blue-100 text-blue-800';
+      case 'cameroon':
+        return 'bg-yellow-100 text-yellow-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const handleSearch = () => {
+    loadProducts();
   };
 
   if (loading) {
@@ -440,169 +238,196 @@ export default function ChineseStoresClient({
   }
 
   return (
-    <div className="space-y-6">
-      {/* Filtres */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="flex-1">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              placeholder="Rechercher des produits..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <select
-            value={selectedMarket}
-            onChange={(e) => setSelectedMarket(e.target.value)}
-            className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="all">Tous les marchés</option>
-            <option value="china">Chine 🇨🇳</option>
-            <option value="dubai">Dubaï 🇦🇪</option>
-            <option value="turkey">Turquie 🇹🇷</option>
-            <option value="cameroon">Cameroun 🇨🇲</option>
-          </select>
-          <Button 
-            variant="outline" 
-            onClick={loadProducts}
-            disabled={loading}
-          >
-            <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-            Actualiser
-          </Button>
-        </div>
-      </div>
-
-      {/* Statistiques */}
-      <div className="bg-blue-50 rounded-lg p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <Package className="h-5 w-5 text-blue-600" />
-              <span className="text-sm font-medium text-gray-700">
-                {filteredProducts.length} produits trouvés
-              </span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Globe className="h-5 w-5 text-green-600" />
-              <span className="text-sm text-gray-600">
-                {new Set(filteredProducts.map(p => p.market)).size} marchés
-              </span>
-            </div>
-          </div>
-          <div className="text-sm text-gray-600">
-            Dernière mise à jour: {new Date().toLocaleTimeString()}
-          </div>
-        </div>
-      </div>
-
-      {/* Résultats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredProducts.map((product) => (
-          <Card key={product.id} className="group hover:shadow-lg transition-shadow duration-300">
-            <div className="relative">
-              <img
-                src={product.images[0]}
-                alt={product.name}
-                className="w-full h-48 object-cover rounded-t-lg"
-              />
-              <div className="absolute top-2 left-2">
-                <Badge variant="secondary" className="bg-white/90 text-gray-800">
-                  {getMarketFlag(product.market)} {getMarketName(product.market)}
-                </Badge>
-              </div>
-              <div className="absolute top-2 right-2">
-                <Badge variant="secondary" className="bg-green-100 text-green-800">
-                  En stock: {product.stock}
-                </Badge>
-              </div>
-              <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <Button size="sm" variant="outline" className="bg-white/90">
-                  <Eye className="h-4 w-4" />
-                </Button>
-              </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">
+                Boutique Internationale
+              </h1>
+              <p className="mt-2 text-gray-600">
+                Produits premium de Chine, Dubaï, Turquie et Cameroun
+              </p>
             </div>
             
-            <CardContent className="p-4">
-              <div className="flex items-start justify-between mb-2">
-                <h3 className="font-semibold text-gray-900 line-clamp-2">{product.name}</h3>
-                <Button size="sm" variant="ghost" className="text-gray-400 hover:text-gray-600">
-                  <Heart className="h-4 w-4" />
-                </Button>
-              </div>
-              
-              <p className="text-sm text-gray-600 mb-3 line-clamp-2">{product.description}</p>
-              
-              <div className="flex items-center mb-3">
-                <div className="flex items-center">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`h-4 w-4 ${
-                        i < Math.floor(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'
-                      }`}
-                    />
-                  ))}
+            {stats && (
+              <div className="mt-4 lg:mt-0 flex space-x-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-600">{stats.totalProducts}</div>
+                  <div className="text-sm text-gray-600">Produits</div>
                 </div>
-                <span className="text-sm text-gray-500 ml-2">({product.reviews})</span>
-              </div>
-              
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <p className="text-lg font-bold text-gray-900">
-                    {formatPrice(convertPrice(product.sellingPrice, selectedCurrency), selectedCurrency)}
-                  </p>
-                  <p className="text-sm text-gray-500 line-through">
-                    {formatPrice(convertPrice(product.originalPrice, selectedCurrency), selectedCurrency)}
-                  </p>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600">{stats.categories.length}</div>
+                  <div className="text-sm text-gray-600">Catégories</div>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm text-gray-600">Fournisseur</p>
-                  <p className="text-sm font-medium text-gray-900">{product.supplier.name}</p>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-purple-600">{stats.countries.length}</div>
+                  <div className="text-sm text-gray-600">Pays</div>
                 </div>
               </div>
-              
-              <div className="space-y-2">
-                <Button 
-                  onClick={() => handleAddToCart(product)}
-                  className="w-full"
-                  size="sm"
-                >
-                  <ShoppingCart className="h-4 w-4 mr-2" />
-                  Ajouter au panier
-                </Button>
-                
-                <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
-                  <div className="flex items-center">
-                    <Truck className="h-3 w-3 mr-1" />
-                    <span>Livraison incluse</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Shield className="h-3 w-3 mr-1" />
-                    <span>Garantie 30j</span>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+            )}
+          </div>
+        </div>
       </div>
 
-      {filteredProducts.length === 0 && (
-        <div className="text-center py-12">
-          <Package className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun produit trouvé</h3>
-          <p className="text-gray-600 mb-4">Essayez de modifier vos critères de recherche</p>
-          <Button onClick={loadProducts} variant="outline">
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Recharger les produits
-          </Button>
+      {/* Filters */}
+      <div className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Input
+                placeholder="Rechercher un produit..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              />
+            </div>
+            
+            <Select value={category} onValueChange={(value) => {
+              setSelectedMarket(value === 'all' ? 'all' : value as string);
+              setSearchQuery('');
+            }}>
+              <SelectTrigger>
+                <SelectValue placeholder="Catégorie" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Toutes les catégories</SelectItem>
+                {categories.map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            
+            <Select value={selectedMarket} onValueChange={(value) => {
+              setSelectedMarket(value === 'all' ? 'all' : value as string);
+              setSearchQuery('');
+            }}>
+              <SelectTrigger>
+                <SelectValue placeholder="Pays" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tous les pays</SelectItem>
+                {countries.map((country) => (
+                  <SelectItem key={country} value={country}>
+                    {country}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            
+            <Button onClick={handleSearch} className="w-full">
+              <Search className="h-4 w-4 mr-2" />
+              Rechercher
+            </Button>
+          </div>
         </div>
-      )}
+      </div>
+
+      {/* Products Grid */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Chargement des produits...</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredProducts.map((product) => (
+              <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                <div className="aspect-square bg-gray-200 relative">
+                  {product.images[0] ? (
+                    <img
+                      src={product.images[0]}
+                      alt={product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <Package className="h-12 w-12 text-gray-400" />
+                    </div>
+                  )}
+                  
+                  <Badge className={`absolute top-2 left-2 ${getMarketColor(product.market)}`}>
+                    {getMarketFlag(product.market)} {getMarketName(product.market)}
+                  </Badge>
+                  
+                  <div className="absolute top-2 right-2 flex space-x-1">
+                    <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
+                      <Heart className="h-4 w-4" />
+                    </Button>
+                    <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+                
+                <CardContent className="p-4">
+                  <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
+                    {product.name}
+                  </h3>
+                  
+                  <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                    {product.description}
+                  </p>
+                  
+                  <div className="flex items-center space-x-2 mb-3">
+                    <div className="flex items-center">
+                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                      <span className="text-sm text-gray-600 ml-1">{product.rating}</span>
+                    </div>
+                    <span className="text-sm text-gray-500">({product.reviews})</span>
+                  </div>
+                  
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <div className="text-lg font-bold text-gray-900">
+                        {formatPrice(convertPrice(product.sellingPrice, selectedCurrency), selectedCurrency)}
+                      </div>
+                      {product.originalPrice > product.sellingPrice && (
+                        <div className="text-sm text-gray-500 line-through">
+                          {formatPrice(convertPrice(product.originalPrice, selectedCurrency), selectedCurrency)}
+                        </div>
+                      )}
+                    </div>
+                    
+                    <Badge variant="outline" className="text-xs">
+                      Stock: {product.stock}
+                    </Badge>
+                  </div>
+                  
+                  <div className="flex space-x-2">
+                    <Button className="flex-1" size="sm" onClick={() => handleAddToCart(product)}>
+                      <ShoppingCart className="h-4 w-4 mr-2" />
+                      Ajouter
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      <Truck className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+        
+        {!loading && filteredProducts.length === 0 && (
+          <div className="text-center py-12">
+            <Package className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              Aucun produit trouvé
+            </h3>
+            <p className="text-gray-600">
+              Essayez de modifier vos critères de recherche
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 } 

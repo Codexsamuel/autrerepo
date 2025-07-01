@@ -27,13 +27,13 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ success: true, data: stats });
 
       default:
-        console.log(`🔍 Scraping en temps réel: ${category}`);
+        console.log('🔍 Scraping en temps réel:', category);
         const result = await scrapeChineseStores(query, category, country);
         const products = result.products || [];
-        console.log(`✅ Scraping terminé: ${products.length} produits trouvés`);
+        console.log('✅ Scraping terminé:', products.length, 'produits trouvés');
         
-        // Corriger les propriétés undefined
-        const correctedProducts = products.map((scrapedProduct: any) => ({
+        // Transformer les données pour correspondre au format attendu
+        const transformedProducts = products.map((scrapedProduct: any) => ({
           id: scrapedProduct.id || `product-${Date.now()}-${Math.random()}`,
           name: scrapedProduct.name || 'Produit Premium',
           description: scrapedProduct.description || 'Description du produit',
@@ -59,20 +59,25 @@ export async function GET(request: NextRequest) {
             customsFee: scrapedProduct.customsFee || 0,
             transportFee: scrapedProduct.transportFee || 0
           },
-          stock: scrapedProduct.stock || 0,
-          rating: scrapedProduct.rating || 0,
+          stock: scrapedProduct.stock || 10,
+          rating: scrapedProduct.rating || 4.5,
           reviews: scrapedProduct.reviews || 0,
-          createdAt: scrapedProduct.createdAt || new Date()
+          createdAt: new Date()
         }));
 
-        return NextResponse.json({ success: true, data: correctedProducts });
+        return NextResponse.json({ 
+          success: true, 
+          data: transformedProducts,
+          total: transformedProducts.length
+        });
     }
   } catch (error) {
     console.error('Erreur API scraping:', error);
-    return NextResponse.json(
-      { success: false, error: 'Erreur lors du scraping' },
-      { status: 500 }
-    );
+    return NextResponse.json({ 
+      success: false, 
+      error: 'Erreur lors du scraping',
+      data: []
+    }, { status: 500 });
   }
 }
 

@@ -8,9 +8,7 @@ interface DLStyleLayoutProps {
 export default function DLStyleLayout({ children }: DLStyleLayoutProps) {
   return (
     <CartProvider>
-      <div className="min-h-screen bg-gray-50">
-        {children}
-      </div>
+      {children}
     </CartProvider>
   );
 } 

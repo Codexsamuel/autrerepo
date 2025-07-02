@@ -19,11 +19,10 @@
 # [[plugins]]
 #   package = "@netlify/plugin-nextjs"
 
-# Configuration des fonctions désactivée pour éviter les problèmes de variables d'environnement
-# [functions]
-#   directory = "netlify/functions"
-#   node_bundler = "esbuild"
-#   external_node_modules = ["@prisma/client"]
+# Configuration des fonctions Netlify
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
 
 [[headers]]
   for = "/*"
@@ -55,6 +54,12 @@
   from = "/_ipx/*"
   query = {q = ":quality", url = ":url", w = ":width"}
   to = "/.netlify/images?url=:url&w=:width&q=:quality"
+  status = 200
+
+# Redirection pour tester les fonctions Netlify
+[[redirects]]
+  from = "/api/test"
+  to = "/.netlify/functions/api-hello"
   status = 200
 
 # Redirection des API vers Vercel (à configurer après déploiement backend)

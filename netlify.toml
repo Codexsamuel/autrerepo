@@ -62,4 +62,9 @@
 #   from = "/api/*"
 #   to = "https://votre-backend-api.vercel.app/api/:splat"
 #   status = 200
-#   force = true 
+#   force = true
+
+# Configuration alternative pour déploiement statique (si nécessaire)
+# [build]
+#   command = "pnpm run build && pnpm run export"
+#   publish = "out" 

@@ -56,10 +56,21 @@
   to = "/.netlify/images?url=:url&w=:width&q=:quality"
   status = 200
 
-# Redirection pour tester les fonctions Netlify
+# Redirections pour tester les fonctions Netlify
 [[redirects]]
   from = "/api/test"
-  to = "/.netlify/functions/api-hello"
+  to = "/.netlify/functions/hello"
+  status = 200
+
+[[redirects]]
+  from = "/api/hello"
+  to = "/.netlify/functions/hello"
+  status = 200
+
+# Redirections pour l'API de trading
+[[redirects]]
+  from = "/api/trading/*"
+  to = "/.netlify/functions/trading-api/:splat"
   status = 200
 
 # Redirection des API vers Vercel (à configurer après déploiement backend)

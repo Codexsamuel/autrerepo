@@ -47,6 +47,11 @@ const Navigation: React.FC = () => {
       name: 'NovaWorld',
       href: '/novaworld',
       icon: Globe
+    },
+    {
+      name: 'Dashboard',
+      href: '/dashboard',
+      icon: User
     }
   ];
 

@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build"
+  command = "pnpm run build"
   publish = ".next"
 
 [build.environment]
@@ -9,7 +9,7 @@
   NPM_FLAGS = "--version"
 
 [dev]
-  command = "npm run dev"
+  command = "pnpm run dev"
   port = 3000
   targetPort = 3000
   publish = ".next"

@@ -1,7 +1,6 @@
 [build]
   command = "pnpm run build"
   publish = ".next"
-  functions = "netlify/functions"
 
 [build.environment]
   NEXT_TELEMETRY_DISABLED = "1"
@@ -19,10 +18,11 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
-  external_node_modules = ["@prisma/client"]
+# Configuration des fonctions désactivée pour éviter les problèmes de variables d'environnement
+# [functions]
+#   directory = "netlify/functions"
+#   node_bundler = "esbuild"
+#   external_node_modules = ["@prisma/client"]
 
 [[headers]]
   for = "/*"

@@ -36,7 +36,6 @@ const redis = Redis.supabase;
 redis.connect().catch(console.error);
 
 // Initialize Supabase
-const supabase = supabase;
 
 // Logger configuration
 const logger = winston.createLogger({

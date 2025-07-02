@@ -42,7 +42,7 @@ import {
   Coins
 } from 'lucide-react';
 import Link from 'next/link';
-import { ScrapedProduct, ScrapingResult } from '@/lib/scraper/chinese-stores';
+import { ScrapedProduct } from '@/lib/scraper/chinese-stores';
 import { useCart, CartItem } from './cart-context';
 import { Suspense } from 'react';
 import ChineseStoresClient from './ChineseStoresClient';
@@ -60,7 +60,7 @@ const EXCHANGE_RATES = {
 export default function DLStyleClient() {
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>('EUR');
   const [isLoading, setIsLoading] = useState(false);
-  const { addToCart, items } = useCart();
+  const { items } = useCart();
 
   const convertPrice = (priceUSD: number, currency: Currency): number => {
     const priceEUR = priceUSD / EXCHANGE_RATES.USD;

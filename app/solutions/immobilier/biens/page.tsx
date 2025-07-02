@@ -17,7 +17,7 @@ import {
   Home
 } from "lucide-react";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase-client";
+import { supabase } from "@/lib/supabase/client";
 
 interface Property {
   id: string;

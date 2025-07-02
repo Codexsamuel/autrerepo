@@ -51,17 +51,26 @@ export class MarketDataService {
       
       for (const [id, data] of Object.entries(response.data)) {
         const symbol = this.getSymbolFromId(id);
-        if (symbol) {
+        if (symbol && typeof data === 'object' && data !== null) {
+          const cryptoData = data as {
+            usd: number;
+            usd_24h_change?: number;
+            usd_24h_vol?: number;
+            usd_market_cap?: number;
+            usd_24h_high?: number;
+            usd_24h_low?: number;
+          };
+          
           marketData.push({
             symbol,
-            price: data.usd,
-            change24h: data.usd_24h_change || 0,
-            volume24h: data.usd_24h_vol || 0,
-            marketCap: data.usd_market_cap,
-            high24h: data.usd_24h_high || data.usd,
-            low24h: data.usd_24h_low || data.usd,
-            trend: this.calculateTrend(data.usd_24h_change),
-            volatility: this.calculateVolatility(data.usd_24h_high, data.usd_24h_low, data.usd),
+            price: cryptoData.usd,
+            change24h: cryptoData.usd_24h_change || 0,
+            volume24h: cryptoData.usd_24h_vol || 0,
+            marketCap: cryptoData.usd_market_cap,
+            high24h: cryptoData.usd_24h_high || cryptoData.usd,
+            low24h: cryptoData.usd_24h_low || cryptoData.usd,
+            trend: this.calculateTrend(cryptoData.usd_24h_change || 0),
+            volatility: this.calculateVolatility(cryptoData.usd_24h_high || cryptoData.usd, cryptoData.usd_24h_low || cryptoData.usd, cryptoData.usd),
             lastUpdated: new Date(),
           });
         }

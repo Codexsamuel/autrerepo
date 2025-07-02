@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
           market: scrapedProduct.market || 'china',
           supplier: {
             name: scrapedProduct.brand || 'Fournisseur Premium',
-            contact: `contact@${(scrapedProduct.source || 'default').toLowerCase()}.com`,
+            contact: `contact@${scrapedProduct.source ? scrapedProduct.source.toLowerCase() : 'default'}.com`,
             location: scrapedProduct.country || 'International'
           },
           specifications: {
@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
       market: scrapedProduct.market || 'china',
       supplier: {
         name: scrapedProduct.brand || 'Fournisseur Premium',
-        contact: `contact@${(scrapedProduct.source || 'default').toLowerCase()}.com`,
+        contact: `contact@${scrapedProduct.source ? scrapedProduct.source.toLowerCase() : 'default'}.com`,
         location: scrapedProduct.country || 'International'
       },
       specifications: {

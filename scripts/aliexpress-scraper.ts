@@ -6,7 +6,6 @@ import { config } from './config';
 
 
 // Initialisation des clients
-const supabase = supabase;
 const translate = new TranslationServiceClient();
 
 interface Product {

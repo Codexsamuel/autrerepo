@@ -159,14 +159,7 @@ export default function ChineseStoresClient({
 
   // Fonction pour ajouter un produit au panier
   const handleAddToCart = (product: Product) => {
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.sellingPrice,
-      currency: selectedCurrency as 'EUR' | 'USD' | 'FCFA',
-      image: product.images[0] || '',
-      quantity: 1
-    });
+    addToCart(product);
   };
 
   const getMarketName = (market: string) => {

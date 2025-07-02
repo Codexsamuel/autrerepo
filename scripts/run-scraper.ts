@@ -37,7 +37,7 @@ scraper.on('error', (error) => {
 scraper.on('close', (code) => {
   if (code !== 0) {
     console.error(`Le scraper s'est terminé avec le code ${code}`);
-    process.exit(code);
+    process.exit(code ?? undefined);
   }
   console.log('Scraper terminé avec succès');
 }); 

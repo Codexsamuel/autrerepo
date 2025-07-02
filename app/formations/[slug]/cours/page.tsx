@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from '@/components/layout/header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -216,17 +216,28 @@ const courseData: Module[] = [
   }
 ];
 
-export default function CoursPage({ params }: { params: { slug: string } }) {
-  const formationData = getFormationBySlug(params.slug);
-  
-  if (!formationData) {
-    notFound();
-  }
-
+export default function CoursPage({ params }: { params: Promise<{ slug: string }> }) {
+  const [slug, setSlug] = useState<string>('');
+  const [formationData, setFormationData] = useState<any>(null);
   const [expandedModules, setExpandedModules] = useState<string[]>(["module-1"]);
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(courseData[0].lessons[0]);
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
   const [showQuizResults, setShowQuizResults] = useState(false);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const { slug: resolvedSlug } = await params;
+      setSlug(resolvedSlug);
+      
+      const formation = getFormationBySlug(resolvedSlug);
+      if (!formation) {
+        notFound();
+      }
+      setFormationData(formation);
+    };
+    
+    loadData();
+  }, [params]);
 
   const toggleModule = (moduleId: string) => {
     setExpandedModules(prev => 
@@ -278,7 +289,7 @@ export default function CoursPage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header title={`Cours - ${formationData.title}`} description="Suivez votre formation à votre rythme" />
+      <Header title={`Cours - ${formationData?.title}`} description="Suivez votre formation à votre rythme" />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">

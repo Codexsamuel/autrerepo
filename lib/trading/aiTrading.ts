@@ -192,7 +192,7 @@ ${marketData.map(asset => `
 - ${asset.symbol}: $${asset.price} (${asset.changePercent > 0 ? '+' : ''}${asset.changePercent.toFixed(2)}%)
   Volume: ${asset.volume.toLocaleString()}
   Type: ${asset.type}
-  Tendance: ${asset.trend}
+  Tendance: ${asset.changePercent > 0 ? 'Hausse' : asset.changePercent < 0 ? 'Baisse' : 'Stable'}
 `).join('')}
 
 INDICATEURS TECHNIQUES:
@@ -458,7 +458,7 @@ Génère 5 insights personnalisés au format JSON.
       action: asset.changePercent > 0 ? 'buy' : 'hold',
       confidence: Math.abs(asset.changePercent) > 5 ? 75 : 50,
       reasoning: `Analyse basée sur la variation de ${asset.changePercent.toFixed(2)}%`,
-      riskLevel: asset.volatility > 1.5 ? 'high' : 'medium',
+      riskLevel: 1 > 1.5 ? 'high' : 'medium',
       timeframe: 'medium',
       strategy: 'Trend Following',
       marketConditions: 'Analyse en cours',
@@ -469,7 +469,7 @@ Génère 5 insights personnalisés au format JSON.
       aiInsights: ['Analyse IA en cours de développement'],
       riskRewardRatio: 1.5,
       expectedReturn: Math.abs(asset.changePercent),
-      volatility: asset.volatility
+      volatility: 1
     }));
   }
 
@@ -477,22 +477,12 @@ Génère 5 insights personnalisés au format JSON.
     const avgChange = marketData.reduce((sum: number, asset: any) => sum + asset.changePercent, 0) / marketData.length;
     
     return {
-      overallTrend: avgChange > 1 ? 'bullish' : avgChange < -1 ? 'bearish' : 'neutral',
-      volatility: 'medium',
-      opportunities: Math.max(1, Math.floor(marketData.length / 2)),
-      risks: ['Analyse des risques en cours'],
-      sectors: {},
-      globalFactors: ['Facteurs globaux en cours d\'analyse'],
-      economicIndicators: {},
-      aiSummary: 'Analyse IA en cours de développement',
-      marketSentiment: 'neutral',
-      recommendedAllocation: {
-        stocks: 40,
-        crypto: 20,
-        forex: 20,
-        commodities: 10,
-        cash: 10
-      }
+      symbol: 'GENERIC',
+      sentiment: avgChange > 1 ? 'bullish' : avgChange < -1 ? 'bearish' : 'neutral',
+      confidence: Math.abs(avgChange) / 10,
+      keyFactors: ['Analyse des facteurs en cours'],
+      recommendation: avgChange > 0 ? 'Considérer l\'achat' : 'Maintenir la position',
+      riskLevel: Math.abs(avgChange) > 5 ? 'high' : 'medium'
     };
   }
 
@@ -505,7 +495,7 @@ Génère 5 insights personnalisés au format JSON.
         symbol: asset.symbol,
         allocation: 20,
         expectedReturn: Math.abs(asset.changePercent),
-        risk: asset.volatility,
+        risk: 1,
         reasoning: 'Recommandation basée sur les données de marché'
       })),
       totalExpectedReturn: 5,
@@ -518,7 +508,7 @@ Génère 5 insights personnalisés au format JSON.
   }
 
   private generateFallbackAssetAnalysis(symbol: string, marketData: MarketDataPoint): TradingRecommendation {
-    const asset = marketData.find(a => a.symbol === symbol) || marketData[0];
+    const asset = marketData;
     
     return {
       id: `fallback_${symbol}`,
@@ -537,7 +527,7 @@ Génère 5 insights personnalisés au format JSON.
       aiInsights: ['Analyse IA en cours de développement'],
       riskRewardRatio: 1.2,
       expectedReturn: Math.abs(asset.changePercent),
-      volatility: asset.volatility
+      volatility: 1
     };
   }
 }

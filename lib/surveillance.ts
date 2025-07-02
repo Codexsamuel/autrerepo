@@ -17,9 +17,9 @@ if (typeof window !== 'undefined') {
 // CONFIGURATION SURVEILLANCE IA
 // ========================================
 
-const redis = Redis.supabase
-
-const supabase = supabase
+const redis = Redis.createClient({
+  url: process.env.REDIS_URL || 'redis://localhost:6379'
+})
 
 // Logger de surveillance
 const surveillanceLogger = winston.createLogger({
@@ -190,7 +190,7 @@ export class AISurveillanceSystem {
   // Analyser une requête pour détecter les menaces
   async analyzeRequest(req: NextRequest): Promise<SecurityEvent[]> {
     const events: SecurityEvent[] = []
-    const ip = req.ip || req.headers.get('x-forwarded-for') || 'unknown'
+    const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown'
     const userAgent = req.headers.get('user-agent') || ''
     const path = req.nextUrl.pathname
     const method = req.method
@@ -293,7 +293,7 @@ export class AISurveillanceSystem {
   private async handleCriticalEvent(event: SecurityEvent): Promise<void> {
     // Bloquer immédiatement l'IP
     if (event.ip) {
-      await redis.setex(`blocked:${event.ip}`, 86400, JSON.stringify({
+      await redis.setEx(`blocked:${event.ip}`, 86400, JSON.stringify({
         reason: event.description,
         blockedAt: Date.now(),
         severity: 'critical'
@@ -302,7 +302,7 @@ export class AISurveillanceSystem {
 
     // Bloquer l'utilisateur si identifié
     if (event.userId) {
-      await redis.setex(`blocked_user:${event.userId}`, 86400, JSON.stringify({
+      await redis.setEx(`blocked_user:${event.userId}`, 86400, JSON.stringify({
         reason: event.description,
         blockedAt: Date.now(),
         severity: 'critical'
@@ -317,7 +317,7 @@ export class AISurveillanceSystem {
   private async handleHighEvent(event: SecurityEvent): Promise<void> {
     // Ralentir l'IP
     if (event.ip) {
-      await redis.setex(`slowdown:${event.ip}`, 3600, 'true')
+      await redis.setEx(`slowdown:${event.ip}`, 3600, 'true')
     }
 
     // Enregistrer dans la base de données
@@ -329,7 +329,7 @@ export class AISurveillanceSystem {
     // Surveiller l'IP
     if (event.ip) {
       const watchCount = await redis.get(`watch:${event.ip}`) || '0'
-      await redis.setex(`watch:${event.ip}`, 3600, (parseInt(watchCount) + 1).toString())
+      await redis.setEx(`watch:${event.ip}`, 3600, (parseInt(watchCount) + 1).toString())
     }
 
     // Enregistrer dans la base de données
@@ -377,7 +377,7 @@ Action: ${event.action || 'Aucune'}
         await twilioClient.messages.create({
           body: `🚨 ALERTE CRITIQUE DAVY Trading: ${event.type} - ${event.description}`,
           from: process.env.TWILIO_PHONE_NUMBER,
-          to: process.env.TWILIO_PHONE_NUMBER // Envoyer à l'admin
+          to: process.env.TWILIO_PHONE_NUMBER || '', // Envoyer à l'admin
         })
       } catch (error) {
         surveillanceLogger.error('Erreur envoi alerte SMS', { error, event })

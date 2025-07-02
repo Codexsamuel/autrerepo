@@ -1,10 +1,12 @@
 "use client";
+export const dynamic = "force-dynamic";
 
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { useNotification } from "@/components/ui/notification-provider"
+import { NotificationProvider } from "@/components/ui/notification-provider";
 
 
 
@@ -70,51 +72,53 @@ export default function DLCursorPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">DL Cursor - Gestionnaire de Contenu IA</h1>
-        <div className="space-x-4">
-          <Button onClick={handleCreateContent}>Créer du Contenu</Button>
-          <Button onClick={handleIntegrateCapcut}>Intégrer CapCut</Button>
-          <Button onClick={handleIntegrateCanva}>Intégrer Canva</Button>
+    <NotificationProvider>
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold">DL Cursor - Gestionnaire de Contenu IA</h1>
+          <div className="space-x-4">
+            <Button onClick={handleCreateContent}>Créer du Contenu</Button>
+            <Button onClick={handleIntegrateCapcut}>Intégrer CapCut</Button>
+            <Button onClick={handleIntegrateCanva}>Intégrer Canva</Button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {contents.map((content: any) => (
+            <Card key={content.id}>
+              <CardHeader>
+                <CardTitle className="flex justify-between items-center">
+                  <span>{content.title}</span>
+                  <Badge
+                    variant={
+                      content.status === "published"
+                        ? "success"
+                        : content.status === "review"
+                        ? "warning"
+                        : "secondary"
+                    }
+                  >content.status</Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">
+                    Plateforme: {content.platform}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Créé le: {new Date(content.createdAt).toLocaleDateString()}
+                  </p>
+                  {content.scheduledFor && (
+                    <p className="text-sm text-muted-foreground">
+                      Programmé pour: {new Date(content.scheduledFor).toLocaleDateString()}
+                    </p>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {contents.map((content: any) => (
-          <Card key={content.id}>
-            <CardHeader>
-              <CardTitle className="flex justify-between items-center">
-                <span>{content.title}</span>
-                <Badge
-                  variant={
-                    content.status === "published"
-                      ? "success"
-                      : content.status === "review"
-                      ? "warning"
-                      : "secondary"
-                  }
-                >content.status</Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">
-                  Plateforme: {content.platform}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Créé le: {new Date(content.createdAt).toLocaleDateString()}
-                </p>
-                {content.scheduledFor && (
-                  <p className="text-sm text-muted-foreground">
-                    Programmé pour: {new Date(content.scheduledFor).toLocaleDateString()}
-                  </p>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </div>
+    </NotificationProvider>
   )
 } 

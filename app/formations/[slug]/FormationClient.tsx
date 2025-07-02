@@ -69,21 +69,28 @@ export default function FormationClient({ formation }: FormationClientProps) {
     }
   };
 
-  const getCategoryIcon = (category: string | undefined) => {
+  const getCategoryIcon = (category?: string) => {
     if (!category) return <BookOpen className="h-5 w-5" />;
     
-    switch (category.toLowerCase()) {
+    const categoryLower = category.toLowerCase();
+    switch (categoryLower) {
       case 'crm':
+      case 'gestion client':
         return <Users className="h-5 w-5" />;
       case 'marketing':
+      case 'marketing digital':
         return <TrendingUp className="h-5 w-5" />;
       case 'e-commerce':
+      case 'vente en ligne':
         return <ShoppingCart className="h-5 w-5" />;
       case 'ia':
+      case 'intelligence artificielle':
         return <Zap className="h-5 w-5" />;
       case 'design':
+      case 'création visuelle':
         return <Palette className="h-5 w-5" />;
-      case 'vente':
+      case 'télévente':
+      case 'prospection':
         return <Target className="h-5 w-5" />;
       default:
         return <BookOpen className="h-5 w-5" />;
@@ -100,11 +107,11 @@ export default function FormationClient({ formation }: FormationClientProps) {
             <div className="lg:col-span-2">
               <div className="flex items-center space-x-2 mb-4">
                 <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-                  {getCategoryIcon(formation.category)}
-                  <span className="ml-2">{formation.category}</span>
+                  {getCategoryIcon(formation.icon)}
+                  <span className="ml-2">{formation.title}</span>
                 </Badge>
-                <Badge className={getDifficultyColor(formation.difficulty)}>
-                  {formation.difficulty}
+                <Badge className={getDifficultyColor(formation.level)}>
+                  {formation.level}
                 </Badge>
               </div>
               
@@ -132,9 +139,9 @@ export default function FormationClient({ formation }: FormationClientProps) {
               </div>
               
               <div className="flex flex-wrap gap-2 mb-6">
-                {formation.tags.map((tag, index) => (
+                {formation.features.map((feature, index) => (
                   <Badge key={index} variant="secondary">
-                    {tag}
+                    {feature}
                   </Badge>
                 ))}
               </div>
@@ -233,55 +240,55 @@ export default function FormationClient({ formation }: FormationClientProps) {
                   Contenu de la formation
                 </CardTitle>
                 <p className="text-sm text-gray-600">
-                  {formation.modules.length} modules • {formation.lessons} leçons • {formation.duration}
+                  {formation.program.length} modules • {formation.program.reduce((total, day) => total + day.modules.length, 0)} leçons • {formation.duration}
                 </p>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {formation.modules.map((module, moduleIndex) => (
-                    <div key={moduleIndex} className="border rounded-lg">
+                  {formation.program.map((day, dayIndex) => (
+                    <div key={dayIndex} className="border rounded-lg">
                       <button
-                        onClick={() => setSelectedModule(moduleIndex)}
+                        onClick={() => setSelectedModule(dayIndex)}
                         className="w-full p-4 text-left flex items-center justify-between hover:bg-gray-50"
                       >
                         <div className="flex items-center space-x-3">
                           <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                             <span className="text-sm font-medium text-blue-600">
-                              {moduleIndex + 1}
+                              {dayIndex + 1}
                             </span>
                           </div>
                           <div>
-                            <h4 className="font-medium text-gray-900">{module.title}</h4>
+                            <h4 className="font-medium text-gray-900">{day.title}</h4>
                             <p className="text-sm text-gray-600">
-                              {module.lessons.length} leçons • {module.duration}
+                              {day.modules.length} leçons • {day.duration}
                             </p>
                           </div>
                         </div>
                         <ArrowRight className="h-4 w-4 text-gray-400" />
                       </button>
                       
-                      {selectedModule === moduleIndex && (
+                      {selectedModule === dayIndex && (
                         <div className="border-t bg-gray-50 p-4">
                           <div className="space-y-3">
-                            {module.lessons.map((lesson, lessonIndex) => (
-                              <div key={lessonIndex} className="flex items-center space-x-3">
+                            {day.modules.map((module, moduleIndex) => (
+                              <div key={moduleIndex} className="flex items-center space-x-3">
                                 <div className="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center">
                                   <span className="text-xs text-gray-600">
-                                    {lessonIndex + 1}
+                                    {moduleIndex + 1}
                                   </span>
                                 </div>
                                 <div className="flex-1">
                                   <h5 className="text-sm font-medium text-gray-900">
-                                    {lesson.title}
+                                    {module.title}
                                   </h5>
                                   <p className="text-xs text-gray-600">
-                                    {lesson.duration} • {lesson.type}
+                                    {module.duration} • {module.type}
                                   </p>
                                 </div>
                                 <div className="flex items-center space-x-2">
-                                  {lesson.type === 'video' && <Video className="h-3 w-3 text-blue-500" />}
-                                  {lesson.type === 'quiz' && <FileText className="h-3 w-3 text-green-500" />}
-                                  {lesson.type === 'exercice' && <Code className="h-3 w-3 text-purple-500" />}
+                                  {module.type === 'Théorie' && <FileText className="h-3 w-3 text-blue-500" />}
+                                  {module.type === 'Pratique' && <Code className="h-3 w-3 text-green-500" />}
+                                  {module.type === 'Workshop' && <Target className="h-3 w-3 text-purple-500" />}
                                 </div>
                               </div>
                             ))}
@@ -304,10 +311,10 @@ export default function FormationClient({ formation }: FormationClientProps) {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2">
-                  {formation.requirements.map((requirement, index) => (
+                  {formation.prerequisites.map((prerequisite, index) => (
                     <li key={index} className="flex items-start space-x-3">
                       <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
-                      <span className="text-gray-700">{requirement}</span>
+                      <span className="text-gray-700">{prerequisite}</span>
                     </li>
                   ))}
                 </ul>
@@ -331,15 +338,15 @@ export default function FormationClient({ formation }: FormationClientProps) {
                   />
                   <div className="flex-1">
                     <h4 className="font-semibold text-gray-900">{formation.instructor.name}</h4>
-                    <p className="text-gray-600 mb-2">{formation.instructor.title}</p>
-                    <p className="text-sm text-gray-600 mb-3">{formation.instructor.bio}</p>
-                    <div className="flex items-center space-x-4 text-sm text-gray-600">
-                      <span>{formation.instructor.students} étudiants</span>
-                      <span>{formation.instructor.courses} formations</span>
-                      <div className="flex items-center">
-                        <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
-                        <span>{formation.instructor.rating}/5</span>
-                      </div>
+                    <p className="text-sm text-gray-600">{formation.instructor.title}</p>
+                    <p className="text-sm text-gray-600">{formation.instructor.experience}</p>
+                    <p className="text-sm text-gray-600 mt-2">{formation.instructor.description}</p>
+                    <div className="flex flex-wrap gap-1 mt-2">
+                      {formation.instructor.companies.map((company, index) => (
+                        <Badge key={index} variant="outline" className="text-xs">
+                          {company}
+                        </Badge>
+                      ))}
                     </div>
                   </div>
                 </div>

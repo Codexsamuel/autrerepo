@@ -160,7 +160,7 @@ export const generateOrganizationSchema = (locale: string = 'fr'): Organization 
         }
       ]
     }
-  }
+  } as any
 }
 
 export const generatePersonSchema = (person: 'samuel' | 'sabine'): Person => {
@@ -234,7 +234,7 @@ export const generatePersonSchema = (person: 'samuel' | 'sabine'): Person => {
       addressLocality: 'Yaoundé',
       addressCountry: 'CM'
     }
-  }
+  } as any
 }
 
 export const generateWebsiteSchema = (): WebSite => {
@@ -263,7 +263,7 @@ export const generateWebsiteSchema = (): WebSite => {
         url: `${baseUrl}/images/dl-logo.jpg`
       }
     }
-  }
+  } as any
 }
 
 // ========================================
@@ -406,7 +406,7 @@ export const generateBreadcrumbSchema = (breadcrumbs: Array<{ name: string; url:
       name: crumb.name,
       item: `${baseUrl}${crumb.url}`
     }))
-  }
+  } as any
 }
 
 // ========================================

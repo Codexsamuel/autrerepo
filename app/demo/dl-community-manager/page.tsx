@@ -71,7 +71,8 @@ import {
   Hash,
   AtSign,
   ChevronRight,
-  ChevronLeft
+  ChevronLeft,
+  Megaphone
 } from 'lucide-react';
 
 // Dashboard Community Management premium NovaCore - Inspiré Sprout Social/Hootsuite

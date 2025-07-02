@@ -5,7 +5,7 @@
 
 [build.environment]
   NEXT_TELEMETRY_DISABLED = "1"
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
   NODE_ENV = "production"
   NPM_FLAGS = "--version"
 
@@ -18,11 +18,6 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-# Configuration pour la branche de déploiement
-[context.deployment-v2]
-  command = "pnpm run build"
-  publish = ".next"
 
 [functions]
   directory = "netlify/functions"
@@ -38,58 +33,19 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.clerk.com https://*.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: https://*.unsplash.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.netlify.com https://*.vercel.com https://*.supabase.com https://*.clerk.com https://*.stripe.com https://*.openai.com https://*.elevenlabs.io;"
 
-[context.production.environment]
-  NODE_ENV = "production"
-  NEXT_PUBLIC_APP_URL = "https://votre-domaine.netlify.app"
-  NEXT_PUBLIC_API_URL = "https://votre-backend-api.vercel.app"
-
-[context.branch-deploy.environment]
-  NODE_ENV = "staging"
-  NEXT_PUBLIC_APP_URL = "https://staging.votre-domaine.netlify.app"
-  NEXT_PUBLIC_API_URL = "https://votre-backend-api.vercel.app"
-
-[context.deploy-preview.environment]
-  NODE_ENV = "preview"
-  NEXT_PUBLIC_APP_URL = "https://preview.votre-domaine.netlify.app"
-  NEXT_PUBLIC_API_URL = "https://votre-backend-api.vercel.app"
-
-[build.processing]
-  skip_processing = false
-
-[build.processing.css]
-  bundle = true
-  minify = true
-
-[build.processing.js]
-  bundle = true
-  minify = true
-
-[build.processing.html]
-  pretty_urls = true
-
-[build.processing.images]
-  compress = true
-
-[build.processing.cache]
-  paths = [
-    "node_modules/.cache",
-    ".next/cache"
-  ]
-
 [[headers]]
   for = "/images/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+  Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
   for = "/_next/static/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+  Cache-Control = "public, max-age=31536000, immutable"
 
-[[edge_functions]]
-  function = "auth"
-  path = "/api/auth/*"
-
-[[edge_functions]]
-  function = "api"
-  path = "/api/*" 
+# Redirection des API vers Vercel
+[[redirects]]
+  from = "/api/*"
+  to = "https://votre-backend-api.vercel.app/api/:splat"
+  status = 200
+  force = true 

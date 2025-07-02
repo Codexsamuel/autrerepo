@@ -108,7 +108,7 @@ class MarketDataService {
         date: new Date(timestamp * 1000),
         price: prices[index] || 0,
         volume: volumes[index] || 0
-      })).filter(point => point.price > 0);
+      })).filter((point: { date: Date; price: number; volume: number }) => point.price > 0);
     } catch (error) {
       console.error(`Erreur lors de la récupération des données historiques pour ${symbol}:`, error);
       return [];

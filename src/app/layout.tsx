@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/toaster";
-import { ThemeProvider } from "@/components/theme-provider";
+import { themeprovider as Themeprovider } from "@/components/theme-provider";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -48,15 +48,10 @@ export default function RootLayout({
           <meta name="msvalidate.01" content="C236FBA72D7A305CAF1A05F7904E8122" />
         </head>
         <body className={inter.className}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
+          <Themeprovider>
             {children}
             <Toaster />
-          </ThemeProvider>
+          </Themeprovider>
         </body>
       </html>
     </ClerkProvider>

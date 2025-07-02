@@ -1,11 +1,21 @@
-import { INodeExecutionData, IWorkflowExecuteAdditionalData } from 'n8n-workflow';
+// import { INodeExecutionData, IWorkflowExecuteAdditionalData } from 'n8n-workflow';
+
+// Types temporaires pour permettre la compilation
+interface INodeExecutionData {
+  json: any;
+  binary?: any;
+}
+
+interface IWorkflowExecuteAdditionalData {
+  [key: string]: any;
+}
 
 export interface DLStyleWorkflow {
   id: string;
   name: string;
   description: string;
   nodes: any[];
-  connections: any[];
+  connections: Record<string, any>;
   active: boolean;
 }
 
@@ -511,4 +521,7 @@ export class DLStyleWorkflowManager {
   }
 }
 
-export default DLStyleWorkflowManager; 
+export default DLStyleWorkflowManager;
+
+// Export du tableau de workflows pour l'import dans index.ts
+export const dlStyleWorkflows = new DLStyleWorkflowManager().getAllWorkflows(); 

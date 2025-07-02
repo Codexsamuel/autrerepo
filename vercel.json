@@ -1,41 +1,13 @@
 {
   "version": 2,
-  "name": "dl-solutions-backend",
   "builds": [
     {
       "src": "package.json",
       "use": "@vercel/next"
     }
   ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/novacore/(.*)",
-      "dest": "/novacore/$1"
-    },
-    {
-      "src": "/intranet/(.*)",
-      "dest": "/intranet/$1"
-    },
-    {
-      "src": "/solutions/(.*)",
-      "dest": "/solutions/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ],
   "env": {
     "NODE_ENV": "production"
-  },
-  "functions": {
-    "app/api/**/*.ts": {
-      "maxDuration": 30
-    }
   },
   "regions": ["cdg1"],
   "headers": [
@@ -55,6 +27,12 @@
           "value": "Content-Type, Authorization"
         }
       ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
     }
   ]
 }

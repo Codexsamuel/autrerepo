@@ -1,24 +1,24 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { useCart, CartItem } from '../cart-context';
+import { useCart } from '../cart-context';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, Package, Mail, Phone, MapPin } from 'lucide-react';
 import Link from 'next/link';
 
 export default function CommandeConfirmeePage() {
-  const { cart, clearCart } = useCart();
+  const { items, clearCart } = useCart();
   const [orderNumber] = useState(() => `CMD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`);
 
   useEffect(() => {
     // Vider le panier après confirmation
-    if (cart.length > 0) {
+    if (items.length > 0) {
       clearCart();
     }
-  }, [cart.length, clearCart]);
+  }, [items.length, clearCart]);
 
-  const total = cart.reduce((sum: number, item: CartItem) => sum + (item.sellingPrice * item.quantity), 0);
+  const total = items.reduce((sum: number, item) => sum + (item.product.sellingPrice * item.quantity), 0);
 
   return (
     <div className="max-w-2xl mx-auto p-6">

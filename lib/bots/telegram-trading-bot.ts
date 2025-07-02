@@ -1,6 +1,6 @@
 import { Telegraf, Context } from 'telegraf';
 import { DavyTradingAdvisor } from '../trading/aiTrading';
-import { AIPrediction, MarketAnalysis, TradingSignal } from '../ai/ai-service';
+import { AIPrediction, TradingSignal } from '../ai/ai-service';
 
 export interface BotConfig {
   token: string;
@@ -152,13 +152,13 @@ ${prediction.reasoning}
         const analysis = await this.advisor.getMarketAnalysis(symbol);
         
         if (analysis) {
-          const sentimentEmoji = {
+          const sentimentEmoji: Record<string, string> = {
             bullish: '🐂',
             bearish: '🐻',
             neutral: '➡️'
           };
 
-          const riskEmoji = {
+          const riskEmoji: Record<string, string> = {
             low: '🟢',
             medium: '🟡',
             high: '🔴'
@@ -167,9 +167,9 @@ ${prediction.reasoning}
           const message = `
 📈 **Analyse de sentiment - ${symbol}**
 
-${sentimentEmoji[analysis.sentiment]} **Sentiment :** ${analysis.sentiment.toUpperCase()}
+${sentimentEmoji[analysis.sentiment] || '➡️'} **Sentiment :** ${analysis.sentiment.toUpperCase()}
 🎯 **Confiance :** ${Math.round(analysis.confidence * 100)}%
-${riskEmoji[analysis.riskLevel]} **Risque :** ${analysis.riskLevel.toUpperCase()}
+${riskEmoji[analysis.riskLevel] || '🟡'} **Risque :** ${analysis.riskLevel.toUpperCase()}
 
 💡 **Recommandation :**
 ${analysis.recommendation}

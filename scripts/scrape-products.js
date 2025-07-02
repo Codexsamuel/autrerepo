@@ -79,7 +79,6 @@ const config = {
 };
 
 // Initialize Supabase
-const supabase = supabase;
 
 // Logger configuration
 const logger = winston.createLogger({

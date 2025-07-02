@@ -4,15 +4,13 @@ import qrcode from 'qrcode'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import rateLimit from 'express-rate-limit'
-import slowDown from 'express-slow-down'
-import { sanitize } from 'sanitize-html'
+import sanitize from 'sanitize-html'
 import xss from 'xss'
 import { supabase } from '@/lib/supabase/client'
 import { createTransport } from 'nodemailer'
 import twilio from 'twilio'
 import winston from 'winston'
 import Redis from 'redis'
-import { supabase } from './database'
 
 'use server'
 
@@ -26,10 +24,10 @@ if (typeof window !== 'undefined') {
 const OTP_SECRET = process.env.OTP_SECRET_KEY || 'fallback-secret-key'
 const OTP_EXPIRY = parseInt(process.env.OTP_EXPIRY_MINUTES || '10') * 60 * 1000
 const MAX_OTP_ATTEMPTS = parseInt(process.env.OTP_MAX_ATTEMPTS || '3')
-const JWT_SECRET = process.env.JWT_SECRET || 'jwt-secret-key'
+const JWT_SECRET: string = process.env.JWT_SECRET || 'jwt-secret-key'
 
 // Redis client pour le cache et les sessions
-const redis = Redis.supabase
+const redis = Redis.createClient()
 
 // Logger de sécurité
 const securityLogger = winston.createLogger({
@@ -79,7 +77,7 @@ export class OTPService {
     })
 
     // Stocker l'OTP avec expiration
-    await redis.setex(`otp:${userId}:${type}`, OTP_EXPIRY / 1000, JSON.stringify({
+    await redis.setEx(`otp:${userId}:${type}`, OTP_EXPIRY / 1000, JSON.stringify({
       token,
       secret: secret.base32,
       attempts: 0,
@@ -96,7 +94,7 @@ export class OTPService {
     const data = JSON.parse(otpData)
     
     if (data.attempts >= MAX_OTP_ATTEMPTS) {
-      await this.blockUser(userId, 'OTP max attempts exceeded')
+      await ThreatDetector.blockUser(userId, 'OTP max attempts exceeded')
       return false
     }
 
@@ -112,7 +110,7 @@ export class OTPService {
       return true
     } else {
       data.attempts++
-      await redis.setex(`otp:${userId}:${type}`, OTP_EXPIRY / 1000, JSON.stringify(data))
+      await redis.setEx(`otp:${userId}:${type}`, OTP_EXPIRY / 1000, JSON.stringify(data))
       return false
     }
   }
@@ -166,11 +164,11 @@ export const rateLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: (req) => {
-    return req.ip || req.headers['x-forwarded-for'] || 'unknown'
+    return (req.headers.get('x-forwarded-for') || 'unknown')
   },
   handler: (req, res) => {
     securityLogger.warn('Rate limit exceeded', {
-      ip: req.ip,
+      ip: (req.headers.get('x-forwarded-for') || 'unknown'),
       userAgent: req.headers['user-agent'],
       path: req.path
     })
@@ -181,19 +179,13 @@ export const rateLimiter = rateLimit({
   }
 })
 
-export const slowDownLimiter = slowDown({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  delayAfter: 50, // Allow 50 requests per 15 minutes at full speed
-  delayMs: 500 // Add 500ms delay per request after delayAfter
-})
-
 // ========================================
 // THREAT DETECTION & BLOCKING
 // ========================================
 
 export class ThreatDetector {
   static async detectThreat(req: NextRequest): Promise<{ isThreat: boolean; reason?: string }> {
-    const ip = req.ip || req.headers.get('x-forwarded-for') || 'unknown'
+    const ip = (req.headers.get('x-forwarded-for') || 'unknown')
     const userAgent = req.headers.get('user-agent') || ''
     const path = req.nextUrl.pathname
     const method = req.method
@@ -246,7 +238,7 @@ export class ThreatDetector {
   }
 
   static async blockIP(ip: string, reason: string): Promise<void> {
-    await redis.setex(`blocked:${ip}`, 3600, JSON.stringify({
+    await redis.setEx(`blocked:${ip}`, 3600, JSON.stringify({
       reason,
       blockedAt: Date.now(),
       expiresAt: Date.now() + 3600000
@@ -263,7 +255,7 @@ export class ThreatDetector {
   }
 
   static async blockUser(userId: string, reason: string): Promise<void> {
-    await redis.setex(`blocked_user:${userId}`, 3600, JSON.stringify({
+    await redis.setEx(`blocked_user:${userId}`, 3600, JSON.stringify({
       reason,
       blockedAt: Date.now(),
       expiresAt: Date.now() + 3600000
@@ -357,7 +349,7 @@ export class InputSanitizer {
 
 export class TokenService {
   static generateToken(payload: any, expiresIn: string = '24h'): string {
-    return jwt.sign(payload, JWT_SECRET, { expiresIn })
+    return jwt.sign(payload, JWT_SECRET, { expiresIn } as any)
   }
 
   static verifyToken(token: string): any {
@@ -370,7 +362,7 @@ export class TokenService {
   }
 
   static async blacklistToken(token: string): Promise<void> {
-    await redis.setex(`blacklist:${token}`, 86400, 'true') // 24h
+    await redis.setEx(`blacklist:${token}`, 86400, 'true') // 24h
   }
 
   static async isTokenBlacklisted(token: string): Promise<boolean> {
@@ -388,7 +380,7 @@ export async function securityMiddleware(req: NextRequest): Promise<NextResponse
   const threat = await ThreatDetector.detectThreat(req)
   if (threat.isThreat) {
     securityLogger.warn('Menace détectée et bloquée', {
-      ip: req.ip,
+      ip: (req.headers.get('x-forwarded-for') || 'unknown'),
       path: req.nextUrl.pathname,
       reason: threat.reason
     })

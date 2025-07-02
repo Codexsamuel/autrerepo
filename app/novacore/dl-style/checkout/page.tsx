@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { ShoppingCart, CreditCard, User, MapPin, Phone, Mail } from 'lucide-react';
 
 export default function CheckoutPage() {
-  const { cart, clearCart } = useCart();
+  const { items, clearCart } = useCart();
   const [loading, setLoading] = useState(false);
   const [customerInfo, setCustomerInfo] = useState({
     firstName: '',
@@ -22,15 +22,15 @@ export default function CheckoutPage() {
     country: 'France'
   });
 
-  const total = cart.reduce((sum: number, item: CartItem) => sum + (item.sellingPrice * item.quantity), 0);
-  const profit = cart.reduce((sum: number, item: CartItem) => sum + ((item.sellingPrice - item.originalPrice) * item.quantity), 0);
+  const total = items.reduce((sum: number, item: CartItem) => sum + (item.product.sellingPrice * item.quantity), 0);
+  const profit = items.reduce((sum: number, item: CartItem) => sum + ((item.product.sellingPrice - item.product.originalPrice) * item.quantity), 0);
 
   const handleInputChange = (field: string, value: string) => {
     setCustomerInfo(prev => ({ ...prev, [field]: value }));
   };
 
   const handleCheckout = async () => {
-    if (cart.length === 0) {
+    if (items.length === 0) {
       alert('Votre panier est vide');
       return;
     }
@@ -49,11 +49,11 @@ export default function CheckoutPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          cart: cart.map(item => ({
-            id: item.id,
-            name: item.name,
-            image: item.image,
-            price: item.sellingPrice,
+          cart: items.map(item => ({
+            id: item.product.id,
+            name: item.product.name,
+            image: item.product.images[0],
+            price: item.product.sellingPrice,
             quantity: item.quantity
           })),
           customer: customerInfo,
@@ -77,7 +77,7 @@ export default function CheckoutPage() {
     }
   };
 
-  if (cart.length === 0) {
+  if (items.length === 0) {
     return (
       <div className="max-w-2xl mx-auto p-6">
         <div className="text-center py-12">
@@ -191,63 +191,42 @@ export default function CheckoutPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {cart.map((item) => (
-                  <div key={item.id} className="flex items-center gap-4 border-b pb-4">
-                    <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded" />
+                {items.map((item) => (
+                  <div key={item.product.id} className="flex items-center gap-4 border-b pb-4">
+                    <img src={item.product.images[0]} alt={item.product.name} className="w-16 h-16 object-cover rounded" />
                     <div className="flex-1">
-                      <div className="font-semibold">{item.name}</div>
+                      <div className="font-semibold">{item.product.name}</div>
                       <div className="text-sm text-gray-500">
-                        {item.source} • {item.country}
+                        {item.product.supplier?.name} • {item.product.market}
                       </div>
-                      <div className="text-sm">Quantité: {item.quantity}</div>
+                      <div className="text-xs text-gray-400">
+                        {item.product.description}
+                      </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-semibold">{(item.sellingPrice * item.quantity).toFixed(2)} €</div>
-                      <div className="text-xs text-green-600">
-                        +{((item.sellingPrice - item.originalPrice) * item.quantity).toFixed(2)} € profit
-                      </div>
+                      <div className="font-semibold">{item.product.sellingPrice} €</div>
+                      <div className="text-xs text-gray-500">x{item.quantity}</div>
                     </div>
                   </div>
                 ))}
-                
-                <div className="border-t pt-4 space-y-2">
-                  <div className="flex justify-between">
-                    <span>Sous-total:</span>
-                    <span>{total.toFixed(2)} €</span>
-                  </div>
-                  <div className="flex justify-between text-green-600">
-                    <span>Profit estimé:</span>
-                    <span>+{profit.toFixed(2)} €</span>
-                  </div>
-                  <div className="flex justify-between font-bold text-lg border-t pt-2">
-                    <span>Total:</span>
-                    <span>{total.toFixed(2)} €</span>
-                  </div>
-                </div>
               </div>
+              <div className="flex justify-between items-center mt-6">
+                <div className="font-semibold">Total</div>
+                <div className="text-2xl font-bold">{total} €</div>
+              </div>
+              <div className="flex justify-between items-center mt-2">
+                <div className="text-sm text-gray-500">Profit estimé</div>
+                <div className="text-sm text-green-600 font-semibold">{profit} €</div>
+              </div>
+              <Button className="w-full mt-6" onClick={handleCheckout} disabled={loading}>
+                <CreditCard className="h-4 w-4 mr-2" />
+                {loading ? 'Paiement en cours...' : 'Payer maintenant'}
+              </Button>
+              <Button variant="outline" className="w-full mt-2" onClick={clearCart}>
+                Vider le panier
+              </Button>
             </CardContent>
           </Card>
-
-          {/* Bouton de paiement */}
-          <div className="mt-6">
-            <Button 
-              onClick={handleCheckout}
-              disabled={loading}
-              className="w-full h-12 text-lg"
-            >
-              {loading ? (
-                <div className="flex items-center gap-2">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                  Traitement...
-                </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <CreditCard className="h-5 w-5" />
-                  Payer {total.toFixed(2)} €
-                </div>
-              )}
-            </Button>
-          </div>
         </div>
       </div>
     </div>

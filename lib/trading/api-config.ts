@@ -398,7 +398,7 @@ export function getTimeframeSeconds(timeframe: string): number {
 
 export function validateAPIKey(apiName: string): boolean {
   const config = API_CONFIGS[apiName];
-  return config && config.apiKey && config.apiKey.length > 0;
+  return !!(config && typeof config.apiKey === 'string' && config.apiKey.length > 0);
 }
 
 export function getEnabledAPIs(): APIConfig[] {

@@ -26,11 +26,15 @@ import {
   LogIn,
   UserPlus,
   Crown,
-  Settings
+  Settings,
+  DollarSign,
+  BarChart3
 } from "lucide-react";
 import { mediaConfig } from "@/app/config/media";
 import ContextualHelp from '@/components/onboarding/ContextualHelp';
 import ModernNavigation from '@/components/layout/ModernNavigation';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 // Types pour l'authentification
 interface User {

@@ -15,8 +15,9 @@
   publish = ".next"
   autoLaunch = true
 
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+# Plugin Next.js désactivé pour éviter les problèmes de fonctions Lambda
+# [[plugins]]
+#   package = "@netlify/plugin-nextjs"
 
 # Configuration des fonctions désactivée pour éviter les problèmes de variables d'environnement
 # [functions]
@@ -42,6 +43,19 @@
   for = "/_next/static/*"
   [headers.values]
   Cache-Control = "public, max-age=31536000, immutable"
+
+# Redirections Next.js
+[[redirects]]
+  from = "/_next/image"
+  query = {q = ":quality", url = ":url", w = ":width"}
+  to = "/.netlify/images?url=:url&w=:width&q=:quality"
+  status = 200
+
+[[redirects]]
+  from = "/_ipx/*"
+  query = {q = ":quality", url = ":url", w = ":width"}
+  to = "/.netlify/images?url=:url&w=:width&q=:quality"
+  status = 200
 
 # Redirection des API vers Vercel (à configurer après déploiement backend)
 # [[redirects]]

@@ -37,7 +37,7 @@
     "build": "next build",
     "build:frontend": "NEXT_PUBLIC_API_URL=https://votre-backend-api.vercel.app next build",
     "build:backend": "next build",
-    "build:static": "next build && next export",
+    "build:static": "NEXT_CONFIG_FILE=next.config.static.js next build",
     "clean": "rm -rf .next node_modules && pnpm install",
     "db:migrate": "node scripts/database-migration.js",
     "db:seed": "node scripts/database-seed.js",

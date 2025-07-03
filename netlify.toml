@@ -1,5 +1,5 @@
 # Configuration Netlify pour DAVY Trading Platform
-# Version: 2.0 - Configuration corrigée pour TypeScript et build statique
+# Version: 3.0 - Configuration simplifiée et corrigée
 
 [build]
   # Commande de build corrigée - pas d'export nécessaire
@@ -10,8 +10,6 @@
   NEXT_TELEMETRY_DISABLED = "1"
   NODE_VERSION = "18.20.0"
   NODE_ENV = "production"
-  # Force l'installation de TypeScript en production
-  NPM_FLAGS = "--production=false"
 
 [dev]
   command = "pnpm run dev"

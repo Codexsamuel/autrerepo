@@ -149,7 +149,7 @@ class MarketDataService {
 
       const data = await response.json();
       
-      return data.articles.map((article: any, index: number) => ({
+      return data.articles.map((article: { title: string; description: string; url: string; publishedAt: string; source: { name: string } }, index: number) => ({
         id: `news_${index}`,
         title: article.title,
         description: article.description,
@@ -177,7 +177,7 @@ class MarketDataService {
 
       const data = await response.json();
       
-      return data.quotes.map((quote: any) => ({
+      return data.quotes.map((quote: { symbol: string; shortname?: string; longname?: string; quoteType?: string }) => ({
         symbol: quote.symbol,
         name: quote.shortname || quote.longname,
         type: this.determineAssetType(quote.symbol, quote.quoteType)
@@ -303,8 +303,8 @@ class MarketDataService {
   }
 
   private calculateBollingerBands(prices: number[], period: number = 20): { upper: number; middle: number; lower: number } {
-    const sma = prices.slice(-period).reduce((sum: number, price: any) => sum + price, 0) / period;
-    const variance = prices.slice(-period).reduce((sum: number, price: any) => sum + Math.pow(price - sma, 2), 0) / period;
+    const sma = prices.slice(-period).reduce((sum: number, price: number) => sum + price, 0) / period;
+    const variance = prices.slice(-period).reduce((sum: number, price: number) => sum + Math.pow(price - sma, 2), 0) / period;
     const stdDev = Math.sqrt(variance);
 
     return {
@@ -316,9 +316,9 @@ class MarketDataService {
 
   private calculateMovingAverages(prices: number[]): { sma20: number; sma50: number; sma200: number } {
     return {
-      sma20: prices.slice(-20).reduce((sum: number, price: any) => sum + price, 0) / 20,
-      sma50: prices.slice(-50).reduce((sum: number, price: any) => sum + price, 0) / 50,
-      sma200: prices.slice(-200).reduce((sum: number, price: any) => sum + price, 0) / 200
+      sma20: prices.slice(-20).reduce((sum: number, price: number) => sum + price, 0) / 20,
+      sma50: prices.slice(-50).reduce((sum: number, price: number) => sum + price, 0) / 50,
+      sma200: prices.slice(-200).reduce((sum: number, price: number) => sum + price, 0) / 200
     };
   }
 
@@ -389,7 +389,7 @@ export const marketDataService = new MarketDataService();
 // Fonctions utilitaires pour l'export
 export const getMarketData = (symbol: string) => marketDataService.getMarketData(symbol);
 export const getMultipleMarketData = (symbols: string[]) => marketDataService.getMultipleMarketData(symbols);
-export const getHistoricalData = (symbol: string, period?: any) => marketDataService.getHistoricalData(symbol, period);
+export const getHistoricalData = (symbol: string, period?: '1d' | '5d' | '1mo' | '3mo' | '6mo' | '1y' | '2y' | '5y' | '10y' | 'ytd' | 'max') => marketDataService.getHistoricalData(symbol, period);
 export const getTechnicalIndicators = (symbol: string) => marketDataService.getTechnicalIndicators(symbol);
 export const getFinancialNews = (symbols?: string[]) => marketDataService.getFinancialNews(symbols);
 export const searchAssets = (query: string) => marketDataService.searchAssets(query); 

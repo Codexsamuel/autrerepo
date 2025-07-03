@@ -232,4 +232,88 @@ Une fois déployé, votre application sera accessible sur :
 - **Vercel** : `https://votre-projet.vercel.app`
 - **Netlify** : `https://votre-projet.netlify.app`
 
-N'oubliez pas de configurer vos domaines personnalisés si nécessaire ! 
+N'oubliez pas de configurer vos domaines personnalisés si nécessaire !
+
+## Architecture
+- **Frontend**: Netlify (export statique Next.js)
+- **Backend**: Vercel (API routes)
+- **Base de données**: Supabase
+
+## Déploiement Rapide
+
+### 1. Déploiement automatique
+```bash
+./scripts/deploy.sh "Votre message de commit"
+```
+
+### 2. Déploiement manuel
+```bash
+git add .
+git commit -m "Votre message"
+git push origin clean-start
+```
+
+## Configuration Netlify
+
+### Variables d'environnement requises
+```env
+NEXT_PUBLIC_SUPABASE_URL=votre_url_supabase
+NEXT_PUBLIC_SUPABASE_ANON_KEY=votre_clé_supabase
+NEXT_PUBLIC_SITE_URL=https://votre-site.netlify.app
+```
+
+### Build Settings
+- **Build command**: `pnpm run build`
+- **Publish directory**: `out`
+- **Node version**: `18.20.0`
+
+## Configuration Vercel (Backend)
+
+### Variables d'environnement
+```env
+SUPABASE_URL=votre_url_supabase
+SUPABASE_SERVICE_ROLE_KEY=votre_clé_service
+JWT_SECRET=votre_secret_jwt
+```
+
+## Monitoring
+
+### Netlify
+- Dashboard: https://app.netlify.com/sites/[votre-site]
+- Logs: Disponibles dans l'onglet "Deploys"
+
+### Vercel
+- Dashboard: https://vercel.com/dashboard
+- Logs: Disponibles dans l'onglet "Functions"
+
+## Troubleshooting
+
+### Erreurs courantes
+1. **Build failed**: Vérifier les logs Netlify
+2. **API errors**: Vérifier la configuration Vercel
+3. **Environment variables**: S'assurer que toutes les variables sont définies
+
+### Commandes utiles
+```bash
+# Test local
+pnpm run build
+pnpm run dev
+
+# Vérifier les erreurs
+pnpm run lint
+pnpm run type-check
+```
+
+## Performance
+
+### Optimisations appliquées
+- ✅ Export statique Next.js
+- ✅ Compression des assets
+- ✅ Cache headers optimisés
+- ✅ Images optimisées
+- ✅ Code splitting automatique
+
+### Métriques cibles
+- **First Contentful Paint**: < 1.5s
+- **Largest Contentful Paint**: < 2.5s
+- **Cumulative Layout Shift**: < 0.1 

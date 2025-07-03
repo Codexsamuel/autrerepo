@@ -1,11 +1,11 @@
 'use server'
 
-import { NextRequest } from 'next/server'
-import winston from 'winston'
-import Redis from 'redis'
-import { createTransport } from 'nodemailer'
-import twilio from 'twilio'
 import { supabase } from '@/lib/supabase/client'
+import { NextRequest } from 'next/server'
+import { createTransport } from 'nodemailer'
+import Redis from 'redis'
+import twilio from 'twilio'
+import winston from 'winston'
 
 // Vérification serveur uniquement
 // if (typeof window !== 'undefined') {
@@ -39,8 +39,8 @@ const emailTransporter = createTransport({
   port: parseInt(process.env.SMTP_PORT || '587'),
   secure: false,
   auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS
+    user: process.env.SMTP_USER || '',
+    pass: process.env.SMTP_PASS || ''
   }
 })
 
@@ -362,7 +362,7 @@ Action: ${event.action || 'Aucune'}
     try {
       await emailTransporter.sendMail({
         from: process.env.SMTP_FROM,
-        to: process.env.SMTP_USER,
+        to: process.env.SMTP_USER || '',
         subject: `🚨 ALERTE SÉCURITÉ - ${event.severity.toUpperCase()} - ${event.type}`,
         html: alertMessage.replace(/\n/g, '<br>')
       })

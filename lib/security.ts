@@ -44,8 +44,8 @@ const emailTransporter = createTransport({
   port: parseInt(process.env.SMTP_PORT || '587'),
   secure: false,
   auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
+    user: process.env.SMTP_USER || '',
+    pass: process.env.SMTP_PASS || '',
   },
 })
 
@@ -262,7 +262,7 @@ export class ThreatDetector {
       // Email d'alerte
       await emailTransporter.sendMail({
         from: process.env.SMTP_FROM,
-        to: process.env.SMTP_USER,
+        to: process.env.SMTP_USER || '',
         subject: `🚨 ALERTE SÉCURITÉ DAVY Trading - ${title}`,
         html: `
           <h2>🚨 Alerte de sécurité</h2>

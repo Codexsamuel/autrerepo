@@ -3,58 +3,55 @@
 # Script de monitoring du déploiement Netlify
 # Usage: ./scripts/monitor-deploy.sh
 
-set -e
+echo "🚀 Monitoring du déploiement Netlify..."
+echo "======================================"
 
-echo "🔍 Monitoring du déploiement Netlify..."
+# Vérifier l'état du repository
+echo "📊 État du repository:"
+git status --porcelain
+echo ""
 
-# Couleurs pour l'affichage
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+# Vérifier les derniers commits
+echo "📝 Derniers commits:"
+git log --oneline -5
+echo ""
 
-# Vérifier si netlify-cli est installé
-if ! command -v netlify &> /dev/null; then
-    echo -e "${YELLOW}⚠️  netlify-cli n'est pas installé${NC}"
-    echo "📦 Installation: npm install -g netlify-cli"
-    echo ""
-    echo "🔗 Ou surveillez manuellement sur: https://app.netlify.com"
-    exit 0
+# Vérifier la configuration Netlify
+echo "⚙️  Configuration Netlify:"
+if [ -f "netlify.toml" ]; then
+    echo "✅ netlify.toml trouvé"
+    echo "📋 Contenu de la configuration:"
+    cat netlify.toml | head -20
+else
+    echo "❌ netlify.toml manquant"
 fi
-
-echo -e "${BLUE}📊 Récupération du statut du déploiement...${NC}"
-
-# Récupérer le statut du dernier déploiement
-DEPLOY_STATUS=$(netlify status --json 2>/dev/null | jq -r '.status' 2>/dev/null || echo "unknown")
-
-case $DEPLOY_STATUS in
-    "ready")
-        echo -e "${GREEN}✅ Déploiement réussi !${NC}"
-        SITE_URL=$(netlify status --json 2>/dev/null | jq -r '.url' 2>/dev/null || echo "URL non disponible")
-        echo -e "${GREEN}🌐 Site accessible sur: ${SITE_URL}${NC}"
-        ;;
-    "building")
-        echo -e "${YELLOW}🏗️  Déploiement en cours...${NC}"
-        echo "⏳ Patientez quelques minutes..."
-        ;;
-    "error")
-        echo -e "${RED}❌ Erreur de déploiement${NC}"
-        echo "📋 Vérifiez les logs sur: https://app.netlify.com"
-        ;;
-    *)
-        echo -e "${YELLOW}⚠️  Statut inconnu: $DEPLOY_STATUS${NC}"
-        echo "🔗 Vérifiez manuellement sur: https://app.netlify.com"
-        ;;
-esac
-
 echo ""
-echo -e "${BLUE}📋 Logs récents:${NC}"
-netlify logs --tail=10 2>/dev/null || echo "Impossible de récupérer les logs"
 
+# Vérifier package.json
+echo "📦 Dépendances de production:"
+if [ -f "package.json" ]; then
+    echo "✅ package.json trouvé"
+    echo "🔧 TypeScript dans dependencies:"
+    grep -A 5 -B 5 "typescript" package.json
+else
+    echo "❌ package.json manquant"
+fi
 echo ""
-echo -e "${BLUE}🚀 Prochaines étapes:${NC}"
-echo "1. Vérifiez que le site est accessible"
-echo "2. Testez les fonctionnalités principales"
-echo "3. Configurez les variables d'environnement si nécessaire"
-echo "4. Activez les redirections pour les API routes" 
+
+# Test de build local
+echo "🔨 Test de build local:"
+if pnpm run build > /dev/null 2>&1; then
+    echo "✅ Build local réussi"
+    echo "📄 Pages générées: $(find out -name "*.html" | wc -l)"
+else
+    echo "❌ Build local échoué"
+fi
+echo ""
+
+echo "🎯 Prochaines étapes:"
+echo "1. Surveiller le dashboard Netlify"
+echo "2. Vérifier les logs de build"
+echo "3. Tester le site une fois déployé"
+echo ""
+echo "🔗 Dashboard Netlify: https://app.netlify.com/"
+echo "📊 Logs de build: Voir dans le dashboard Netlify" 

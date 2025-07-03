@@ -1,15 +1,14 @@
+'use server'
+
 import { supabase as supabaseClient } from '@/lib/supabase/client'
 import bcrypt from 'bcryptjs'
 import { v4 as uuidv4 } from 'uuid'
 
-'use server'
-
 // Service d'authentification avec super admin, OTP et protection anti-bot
 
 // Configuration Supabase
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-// const supabase = supabase // ligne supprimée pour éviter le conflit
+// const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+// const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
 // Super Admin par défaut
 export const SUPER_ADMIN = {

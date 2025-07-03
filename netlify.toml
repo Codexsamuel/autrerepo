@@ -1,12 +1,11 @@
 [build]
-  command = "pnpm run build"
-  publish = ".next"
+  command = "pnpm run build && pnpm run export"
+  publish = "out"
 
 [build.environment]
   NEXT_TELEMETRY_DISABLED = "1"
-  NODE_VERSION = "20"
+  NODE_VERSION = "18"
   NODE_ENV = "production"
-  NPM_FLAGS = "--version"
 
 [dev]
   command = "pnpm run dev"
@@ -15,14 +14,10 @@
   publish = ".next"
   autoLaunch = true
 
-# Plugin Next.js désactivé pour éviter les problèmes de fonctions Lambda
-# [[plugins]]
-#   package = "@netlify/plugin-nextjs"
-
-# Configuration des fonctions Netlify
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
+# Configuration des fonctions Netlify désactivée temporairement
+# [functions]
+#   directory = "netlify/functions"
+#   node_bundler = "esbuild"
 
 [[headers]]
   for = "/*"
@@ -31,7 +26,6 @@
     X-Content-Type-Options = "nosniff"
     X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.clerk.com https://*.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: https://*.unsplash.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.netlify.com https://*.vercel.com https://*.supabase.com https://*.clerk.com https://*.stripe.com https://*.openai.com https://*.elevenlabs.io;"
 
 [[headers]]
   for = "/images/*"
@@ -43,44 +37,18 @@
   [headers.values]
   Cache-Control = "public, max-age=31536000, immutable"
 
-# Redirections Next.js
-[[redirects]]
-  from = "/_next/image"
-  query = {q = ":quality", url = ":url", w = ":width"}
-  to = "/.netlify/images?url=:url&w=:width&q=:quality"
-  status = 200
-
-[[redirects]]
-  from = "/_ipx/*"
-  query = {q = ":quality", url = ":url", w = ":width"}
-  to = "/.netlify/images?url=:url&w=:width&q=:quality"
-  status = 200
-
-# Redirections pour tester les fonctions Netlify
-[[redirects]]
-  from = "/api/test"
-  to = "/.netlify/functions/hello"
-  status = 200
-
-[[redirects]]
-  from = "/api/hello"
-  to = "/.netlify/functions/hello"
-  status = 200
-
-# Redirections pour l'API de trading
-[[redirects]]
-  from = "/api/trading/*"
-  to = "/.netlify/functions/trading-api/:splat"
-  status = 200
-
-# Redirection des API vers Vercel (à configurer après déploiement backend)
+# Redirections pour les fonctions Netlify désactivées temporairement
 # [[redirects]]
-#   from = "/api/*"
-#   to = "https://votre-backend-api.vercel.app/api/:splat"
+#   from = "/api/test"
+#   to = "/.netlify/functions/hello"
 #   status = 200
-#   force = true
 
-# Configuration alternative pour déploiement statique (si nécessaire)
-# [build]
-#   command = "pnpm run build && pnpm run export"
-#   publish = "out" 
+# [[redirects]]
+#   from = "/api/hello"
+#   to = "/.netlify/functions/hello"
+#   status = 200
+
+# [[redirects]]
+#   from = "/api/trading/*"
+#   to = "/.netlify/functions/trading-api/:splat"
+#   status = 200 

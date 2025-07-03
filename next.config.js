@@ -1,10 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Configuration pour export statique (commenté par défaut)
-  // output: 'export',
-  // trailingSlash: true,
+  output: 'export',
   images: {
-    // unoptimized: true,
     domains: [
       'images.unsplash.com',
       'via.placeholder.com',

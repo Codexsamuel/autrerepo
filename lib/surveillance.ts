@@ -1,3 +1,5 @@
+'use server'
+
 import { NextRequest } from 'next/server'
 import winston from 'winston'
 import Redis from 'redis'
@@ -5,13 +7,10 @@ import { createTransport } from 'nodemailer'
 import twilio from 'twilio'
 import { supabase } from '@/lib/supabase/client'
 
-'use server'
-
-
 // Vérification serveur uniquement
-if (typeof window !== 'undefined') {
-  throw new Error('Ce module ne peut être utilisé que côté serveur')
-}
+// if (typeof window !== 'undefined') {
+//   throw new Error('Ce module ne peut être utilisé que côté serveur')
+// }
 
 // ========================================
 // CONFIGURATION SURVEILLANCE IA

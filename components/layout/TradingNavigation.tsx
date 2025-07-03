@@ -11,7 +11,8 @@ import {
   Settings, 
   User,
   Activity,
-  Globe
+  Globe,
+  Bell
 } from 'lucide-react';
 
 const Navigation: React.FC = () => {
@@ -32,6 +33,11 @@ const Navigation: React.FC = () => {
       name: 'Graphiques',
       href: '/trading-charts',
       icon: BarChart3
+    },
+    {
+      name: 'Alertes',
+      href: '/price-alerts',
+      icon: Bell
     },
     {
       name: 'API Test',

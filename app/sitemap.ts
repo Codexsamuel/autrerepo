@@ -1,5 +1,9 @@
 import { MetadataRoute } from 'next'
 
+// Configuration pour l'export statique
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://dlsolutions.com'
   

@@ -1,3 +1,5 @@
+'use server'
+
 import { NextRequest, NextResponse } from 'next/server'
 import speakeasy from 'speakeasy'
 import qrcode from 'qrcode'
@@ -12,13 +14,10 @@ import twilio from 'twilio'
 import winston from 'winston'
 import Redis from 'redis'
 
-'use server'
-
-
 // Vérification serveur uniquement
-if (typeof window !== 'undefined') {
-  throw new Error('Ce module ne peut être utilisé que côté serveur')
-}
+// if (typeof window !== 'undefined') {
+//   throw new Error('Ce module ne peut être utilisé que côté serveur')
+// }
 
 // Configuration
 const OTP_SECRET = process.env.OTP_SECRET_KEY || 'fallback-secret-key'

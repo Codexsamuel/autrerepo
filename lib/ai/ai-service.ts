@@ -351,9 +351,9 @@ export class AIService {
     
     let sentiment: 'bullish' | 'bearish' | 'neutral' = 'neutral';
     let confidence = 0.5;
-    let keyFactors: string[] = [];
-    let recommendation = 'Attendre';
-    let riskLevel: 'low' | 'medium' | 'high' = 'medium';
+    const keyFactors: string[] = [];
+    const recommendation = 'Attendre';
+    const riskLevel: 'low' | 'medium' | 'high' = 'medium';
 
     for (const line of lines) {
       if (line.toLowerCase().includes('bullish')) sentiment = 'bullish';
@@ -380,10 +380,10 @@ export class AIService {
     const lines = response.split('\n').map(line => line.trim());
     
     let action: 'buy' | 'sell' | 'hold' = 'hold';
-    let strength = 0.5;
+    const strength = 0.5;
     let stopLoss: number | undefined;
     let takeProfit: number | undefined;
-    let reasoning = 'Analyse technique';
+    const reasoning = 'Analyse technique';
 
     for (const line of lines) {
       if (line.toLowerCase().includes('buy')) action = 'buy';

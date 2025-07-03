@@ -1,7 +1,7 @@
+'use client';
+
 import { useState, useEffect } from "react";
 import { Plus, Trash2, Copy, Eye, Download, Share2, Lock, Unlock } from "lucide-react";
-
-'use client';
 
 
 interface FormField {

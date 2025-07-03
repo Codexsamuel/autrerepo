@@ -243,9 +243,6 @@ dependencies:
   sonner:
     specifier: ^1.2.4
     version: 1.2.4(react-dom@18.2.0)(react@18.2.0)
-  speakeasy:
-    specifier: 2.0.0
-    version: 2.0.0
   stripe:
     specifier: ^14.7.0
     version: 14.7.0
@@ -281,9 +278,6 @@ devDependencies:
   '@types/qrcode':
     specifier: 1.5.5
     version: 1.5.5
-  '@types/speakeasy':
-    specifier: 2.0.10
-    version: 2.0.10
   '@types/twilio':
     specifier: 3.19.3
     version: 3.19.3
@@ -3437,12 +3431,6 @@ packages:
     resolution: {integrity: sha512-WFHp9YUJQ6CKshqoC37iOlHnQSmxNc795UhB26CyBBttrN9svdIrUjl/NjnNmfcwtncN0h/0PPAFWv9ovP8mLA==}
     dev: false
 
-  /@types/speakeasy@2.0.10:
-    resolution: {integrity: sha512-QVRlDW5r4yl7p7xkNIbAIC/JtyOcClDIIdKfuG7PWdDT1MmyhtXSANsildohy0K+Lmvf/9RUtLbNLMacvrVwxA==}
-    dependencies:
-      '@types/node': 20.10.5
-    dev: true
-
   /@types/tough-cookie@4.0.5:
     resolution: {integrity: sha512-/Ad8+nIOV7Rl++6f1BdKxFSMgmoqEoYbHRpPcx3JEfv8VRsQe9Z4mCXeJBzxs7mbHY/XOZZuXlRNfhpVPbs6ZA==}
     dev: false
@@ -4152,10 +4140,6 @@ packages:
       streamx: 2.22.1
     dev: false
     optional: true
-
-  /base32.js@0.0.1:
-    resolution: {integrity: sha512-EGHIRiegFa62/SsA1J+Xs2tIzludPdzM064N9wjbiEgHnGnJ1V0WEpA4pEwCYT5nDvZk3ubf0shqaCS7k6xeUQ==}
-    dev: false
 
   /base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
@@ -7995,13 +7979,6 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
-
-  /speakeasy@2.0.0:
-    resolution: {integrity: sha512-lW2A2s5LKi8rwu77ewisuUOtlCydF/hmQSOJjpTqTj1gZLkNgTaYnyvfxy2WBr4T/h+9c4g8HIITfj83OkFQFw==}
-    engines: {node: '>= 0.10.0'}
-    dependencies:
-      base32.js: 0.0.1
-    dev: false
 
   /sprintf-js@1.1.3:
     resolution: {integrity: sha512-Oo+0REFV59/rz3gfJNKQiBlwfHaSESl1pcGyABQsnnIfWOFt6JNj5gCog2U6MLZ//IGYD+nA8nI+mTShREReaA==}

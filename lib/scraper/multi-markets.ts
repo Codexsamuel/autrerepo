@@ -1,4 +1,5 @@
-import puppeteer, { Browser, ElementHandle } from 'puppeteer';
+// Stub version - Puppeteer not available in current Node.js version
+// This file provides mock data instead of real scraping functionality
 
 export interface Product {
   id: string;
@@ -102,7 +103,7 @@ const MARKETS_CONFIG: Record<string, MarketConfig> = {
   }
 };
 
-// Données de véhicules réels scrapés depuis de vrais sites
+// Mock data for real vehicles scraped from real sites
 const REAL_VEHICLES_DATA: Product[] = [
   // Chine - Véhicules électriques
   {
@@ -369,119 +370,87 @@ const REAL_VEHICLES_DATA: Product[] = [
   }
 ];
 
+// Stub class for multi-market scraper
 export class MultiMarketScraper {
-  private browser: Browser | null = null;
+  private browser: any = null;
 
   async initialize() {
-    this.browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
+    console.log('MultiMarketScraper: Mock initialization');
+    this.browser = null;
   }
 
   async close() {
+    console.log('MultiMarketScraper: Mock browser closed');
     if (this.browser) {
-      await this.browser.close();
+      this.browser = null;
     }
   }
 
   async scrapeMarket(market: string, category: string, limit: number = 50): Promise<Product[]> {
-    if (!this.browser) {
-      await this.initialize();
-    }
-
-    const config = MARKETS_CONFIG[market];
-    if (!config) {
-      throw new Error(`Market ${market} not supported`);
-    }
-
-    // Pour les véhicules, retourner les données réelles scrapées
-    if (category.toLowerCase().includes('véhicule') || category.toLowerCase().includes('vehicle')) {
-      return REAL_VEHICLES_DATA.filter(vehicle => vehicle.market === market).slice(0, limit);
-    }
-
-    const products: Product[] = [];
-    const page = await this.browser!.newPage();
+    console.log(`MultiMarketScraper: Mock scraping ${market} for category: ${category}`);
     
-    try {
-      // Navigate to market with category
-      const searchUrl = `${config.baseUrl}/search?q=${encodeURIComponent(category)}`;
-      await page.goto(searchUrl, { waitUntil: 'networkidle2' });
-
-      // Extract products
-      const productElements = await page.$$(config.selectors.productList);
-      
-      for (let i = 0; i < Math.min(productElements.length, limit); i++) {
-        const element = productElements[i];
-        
-        const product = await this.extractProductData(element, config, market);
-        if (product) {
-          products.push(product);
-        }
-      }
-
-    } catch (error) {
-      console.error(`Error scraping ${market}:`, error);
-    } finally {
-      await page.close();
+    // Simulate delay
+    await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
+    
+    let filteredProducts = REAL_VEHICLES_DATA;
+    
+    // Filter by market
+    if (market && market !== 'all') {
+      filteredProducts = filteredProducts.filter(product => product.market === market);
     }
-
-    return products;
+    
+    // Filter by category
+    if (category && category !== 'all') {
+      filteredProducts = filteredProducts.filter(product => 
+        product.category.toLowerCase().includes(category.toLowerCase())
+      );
+    }
+    
+    // Return limited results
+    return filteredProducts.slice(0, limit);
   }
 
   private async extractProductData(
-    element: ElementHandle<Element>, 
+    element: any, 
     config: MarketConfig, 
     market: string
   ): Promise<Product | null> {
-    try {
-      const title = await element.$eval(config.selectors.productTitle, el => el.textContent?.trim() || '');
-      const priceText = await element.$eval(config.selectors.productPrice, el => el.textContent?.trim() || '0');
-      const imageUrl = await element.$eval(config.selectors.productImage, el => el.getAttribute('src') || '');
-      const productUrl = await element.$eval(config.selectors.productLink, el => el.getAttribute('href') || '');
-
-      // Parse price
-      const originalPrice = this.parsePrice(priceText, config.currency);
-      const sellingPrice = this.calculateSellingPrice(originalPrice, market);
-
-      // Generate product ID
-      const productId = this.generateProductId(market, title);
-
-      return {
-        id: productId,
-        name: title,
-        description: `${title} - Produit de qualité du marché ${config.name}`,
-        originalPrice,
-        sellingPrice,
-        currency: 'USD', // Always convert to USD for consistency
-        images: [imageUrl],
-        category: 'General',
-        market: market as any,
-        supplier: {
-          name: `Fournisseur ${market}`,
-          contact: `contact@${market}.com`,
-          location: config.name
-        },
-        specifications: {
-          origin: config.name,
-          quality: 'Premium',
-          warranty: 'Standard'
-        },
-        shippingOptions: {
-          withCustoms: true,
-          withTransport: true,
-          customsFee: this.calculateCustomsFee(originalPrice, market),
-          transportFee: this.calculateTransportFee(market)
-        },
-        stock: Math.floor(Math.random() * 100) + 10,
-        rating: Math.random() * 2 + 3, // 3-5 stars
-        reviews: Math.floor(Math.random() * 1000),
-        createdAt: new Date()
-      };
-    } catch (error) {
-      console.error('Error extracting product data:', error);
-      return null;
-    }
+    console.log(`MultiMarketScraper: Mock extracting product data for ${market}`);
+    
+    // Return a mock product
+    const mockProduct: Product = {
+      id: `${market}-mock-${Date.now()}`,
+      name: `Produit ${config.name} Mock`,
+      description: `Description du produit ${config.name}`,
+      originalPrice: Math.floor(Math.random() * 1000) + 100,
+      sellingPrice: Math.floor(Math.random() * 1500) + 150,
+      currency: 'USD',
+      images: ['https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop'],
+      category: 'General',
+      market: market as any,
+      supplier: {
+        name: `Fournisseur ${market}`,
+        contact: `contact@${market}.com`,
+        location: config.name
+      },
+      specifications: {
+        origin: config.name,
+        quality: 'Premium',
+        warranty: 'Standard'
+      },
+      shippingOptions: {
+        withCustoms: true,
+        withTransport: true,
+        customsFee: Math.floor(Math.random() * 100) + 10,
+        transportFee: Math.floor(Math.random() * 50) + 5
+      },
+      stock: Math.floor(Math.random() * 100) + 10,
+      rating: Math.random() * 2 + 3,
+      reviews: Math.floor(Math.random() * 1000),
+      createdAt: new Date()
+    };
+    
+    return mockProduct;
   }
 
   private parsePrice(priceText: string, currency: string): number {
@@ -491,10 +460,10 @@ export class MultiMarketScraper {
 
   private calculateSellingPrice(originalPrice: number, market: string): number {
     const margins = {
-      china: 1.8, // 80% margin
-      dubai: 1.6, // 60% margin
-      turkey: 1.7, // 70% margin
-      cameroon: 1.5 // 50% margin
+      china: 1.8,
+      dubai: 1.6,
+      turkey: 1.7,
+      cameroon: 1.5
     };
     
     return originalPrice * (margins[market as keyof typeof margins] || 1.5);
@@ -502,10 +471,10 @@ export class MultiMarketScraper {
 
   private calculateCustomsFee(price: number, market: string): number {
     const customsRates = {
-      china: 0.15, // 15%
-      dubai: 0.10, // 10%
-      turkey: 0.12, // 12%
-      cameroon: 0.08 // 8%
+      china: 0.15,
+      dubai: 0.10,
+      turkey: 0.12,
+      cameroon: 0.08
     };
     
     return price * (customsRates[market as keyof typeof customsRates] || 0.10);
@@ -529,18 +498,14 @@ export class MultiMarketScraper {
   }
 
   async scrapeAllMarkets(category: string, limit: number = 20): Promise<Product[]> {
+    console.log(`MultiMarketScraper: Mock scraping all markets for category: ${category}`);
+    
     const products: Product[] = [];
     
-    // Chine
+    // Mock data for all markets
     products.push(...await this.scrapeMarket('china', category, limit));
-    
-    // Dubaï
     products.push(...await this.scrapeMarket('dubai', category, limit));
-    
-    // Turquie
     products.push(...await this.scrapeMarket('turkey', category, limit));
-    
-    // Cameroun
     products.push(...await this.scrapeMarket('cameroon', category, limit));
     
     return products;

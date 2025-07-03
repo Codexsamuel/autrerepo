@@ -1,5 +1,4 @@
 import puppeteer, { Browser, ElementHandle } from 'puppeteer';
-import * as cheerio from 'cheerio';
 
 export interface Product {
   id: string;

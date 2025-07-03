@@ -35,6 +35,7 @@
   "author": "DAVY Trading Team",
   "scripts": {
     "build": "next build",
+    "build:clean": "rm -rf out .next && next build",
     "build:frontend": "NEXT_PUBLIC_API_URL=https://votre-backend-api.vercel.app next build",
     "build:backend": "next build",
     "build:static": "NEXT_CONFIG_FILE=next.config.static.js next build",
@@ -50,7 +51,8 @@
     "lint": "next lint",
     "reset": "rm -rf .next node_modules package-lock.json pnpm-lock.yaml && pnpm install",
     "scrape:aliexpress": "node scripts/aliexpress-scraper.js",
-    "start": "next start",
+    "cleanup": "node scripts/cleanup-unused-imports.js",
+    "start": "npx serve@latest out -p 3000 --single",
     "test": "jest",
     "test:e2e": "cypress run",
     "test:e2e:open": "cypress open",

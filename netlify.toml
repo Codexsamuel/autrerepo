@@ -1,18 +1,19 @@
 # Configuration Netlify pour DAVY Trading Platform
-# Version: 3.0 - Configuration simplifiée et corrigée
+# Version: 3.1 - Configuration corrigée pour npm
 
 [build]
-  # Commande de build corrigée - pas d'export nécessaire
-  command = "pnpm run build"
+  # Commande de build avec npm
+  command = "npm run build"
   publish = "out"
 
 [build.environment]
   NEXT_TELEMETRY_DISABLED = "1"
   NODE_VERSION = "18.20.0"
   NODE_ENV = "production"
+  NPM_FLAGS = "--legacy-peer-deps"
 
 [dev]
-  command = "pnpm run dev"
+  command = "npm run dev"
   port = 3000
   targetPort = 3000
   publish = ".next"

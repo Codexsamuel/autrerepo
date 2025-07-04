@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "echo 'Backend build completed'",
+  "buildCommand": "npm run vercel-build",
   "installCommand": "npm ci",
   "framework": null,
   "ignoreCommand": "echo 'Skipping build'",
@@ -12,6 +12,34 @@
   ],
   "routes": [
     {
+      "src": "/api/auth/(.*)",
+      "dest": "/api-backup/auth/$1"
+    },
+    {
+      "src": "/api/trading/(.*)",
+      "dest": "/api-backup/trading/$1"
+    },
+    {
+      "src": "/api/hospitality/(.*)",
+      "dest": "/api-backup/hospitality/$1"
+    },
+    {
+      "src": "/api/banque/(.*)",
+      "dest": "/api-backup/banque/$1"
+    },
+    {
+      "src": "/api/assurance/(.*)",
+      "dest": "/api-backup/assurance/$1"
+    },
+    {
+      "src": "/api/ai/(.*)",
+      "dest": "/api-backup/ai/$1"
+    },
+    {
+      "src": "/api/admin/(.*)",
+      "dest": "/api-backup/admin/$1"
+    },
+    {
       "src": "/api/(.*)",
       "dest": "/api-backup/$1"
     },
@@ -20,12 +48,9 @@
       "dest": "/api-backup/index.ts"
     }
   ],
-  "functions": {
-    "api-backup/**/*.ts": {
-      "maxDuration": 30
-    }
-  },
   "env": {
     "NODE_ENV": "production"
-  }
+  },
+  "regions": ["cdg1"],
+  "public": false
 }

@@ -1,7 +1,7 @@
 {
   "name": "dl-solutions-platform",
   "version": "1.0.0",
-  "description": "DL Solutions - Plateforme Complète",
+  "description": "DL Solutions - Plateforme Complète (Vercel Backend)",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

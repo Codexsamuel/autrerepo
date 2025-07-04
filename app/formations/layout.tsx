@@ -63,7 +63,7 @@ export default function FormationsLayout({
               "longitude": 11.502075
             },
             "telephone": "+237-694-341-586",
-            "email": "formations@dlsolutions.com",
+            "email": "sobam@daveandlucesolutions.com",
             "hasOfferCatalog": {
               "@type": "OfferCatalog",
               "name": "Catalogue de Formations",

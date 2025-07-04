@@ -117,7 +117,8 @@ export default function RootLayout({
                 "telephone": "+237-694-341-586",
                 "contactType": "customer service",
                 "areaServed": "CM",
-                "availableLanguage": ["French", "English", "Spanish", "Arabic"]
+                "availableLanguage": ["French", "English", "Spanish", "Arabic"],
+                "email": "sobam@daveandlucesolutions.com"
               },
               "sameAs": [
                 "https://facebook.com/dlsolutions",
@@ -182,6 +183,7 @@ export default function RootLayout({
               },
               "url": "https://daveandlucesolutions.com",
               "telephone": "+237-694-341-586",
+              "email": "sobam@daveandlucesolutions.com",
               "openingHours": "Mo-Fr 08:00-18:00",
               "priceRange": "€€",
               "servesCuisine": "Services Digitaux",
@@ -262,6 +264,7 @@ export default function RootLayout({
         <meta name="business:contact_data:postal_code" content="00000" />
         <meta name="business:contact_data:country_name" content="Cameroun" />
         <meta name="business:contact_data:phone_number" content="+237-694-341-586" />
+        <meta name="business:contact_data:email" content="sobam@daveandlucesolutions.com" />
         
         {/* Geo Meta Tags */}
         <meta name="geo.region" content="CM" />

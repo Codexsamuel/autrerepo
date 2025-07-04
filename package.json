@@ -1,8 +1,7 @@
 {
-  "name": "dl-solutions-backend",
+  "name": "dl-solutions-platform",
   "version": "1.0.0",
-  "description": "Backend API pour DL Solutions",
-  "main": "api-backup/index.ts",
+  "description": "DL Solutions - Plateforme Complète",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -13,9 +12,7 @@
   "dependencies": {
     "next": "^15.0.0",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
-  },
-  "devDependencies": {
+    "react-dom": "^18.0.0",
     "@types/node": "^20.0.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",

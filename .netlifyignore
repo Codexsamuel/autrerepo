@@ -1,0 +1,31 @@
+# API routes (backend sur Vercel)
+api-backup/
+app/_ignore_*
+
+# Development files
+.env*
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Build artifacts
+.next/
+out/
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db 

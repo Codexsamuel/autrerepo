@@ -1,70 +1,19 @@
 [build]
+  publish = "out"
   command = "npm run build"
-  publish = ".next"
 
 [build.environment]
-  NEXT_TELEMETRY_DISABLED = "1"
-  NODE_VERSION = "20"
-  NODE_ENV = "production"
-  NPM_FLAGS = "--version"
+  NODE_VERSION = "18"
 
-[dev]
-  command = "npm run dev"
-  port = 3000
-  targetPort = 3000
-  publish = ".next"
-  autoLaunch = true
-
-# Plugin Next.js désactivé pour éviter les problèmes de fonctions Lambda
-# [[plugins]]
-#   package = "@netlify/plugin-nextjs"
-
-# Configuration des fonctions désactivée pour éviter les problèmes de variables d'environnement
-# [functions]
-#   directory = "netlify/functions"
-#   node_bundler = "esbuild"
-#   external_node_modules = ["@prisma/client"]
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
 
 [[headers]]
   for = "/*"
-    [headers.values]
+  [headers.values]
     X-Frame-Options = "DENY"
-    X-Content-Type-Options = "nosniff"
     X-XSS-Protection = "1; mode=block"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.clerk.com https://*.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: https://*.unsplash.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.netlify.com https://*.vercel.com https://*.supabase.com https://*.clerk.com https://*.stripe.com https://*.openai.com https://*.elevenlabs.io;"
-
-[[headers]]
-  for = "/images/*"
-  [headers.values]
-  Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  for = "/_next/static/*"
-  [headers.values]
-  Cache-Control = "public, max-age=31536000, immutable"
-
-# Redirections Next.js
-[[redirects]]
-  from = "/_next/image"
-  query = {q = ":quality", url = ":url", w = ":width"}
-  to = "/.netlify/images?url=:url&w=:width&q=:quality"
-  status = 200
-
-[[redirects]]
-  from = "/_ipx/*"
-  query = {q = ":quality", url = ":url", w = ":width"}
-  to = "/.netlify/images?url=:url&w=:width&q=:quality"
-  status = 200
-
-# Redirection des API vers Vercel (à configurer après déploiement backend)
-# [[redirects]]
-#   from = "/api/*"
-#   to = "https://votre-backend-api.vercel.app/api/:splat"
-#   status = 200
-#   force = true
-
-# Configuration alternative pour déploiement statique (si nécessaire)
-# [build]
-#   command = "pnpm run build && pnpm run export"
-#   publish = "out" 
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin" 

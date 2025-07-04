@@ -1,8 +1,8 @@
+import OnboardingProvider from '@/components/onboarding/OnboardingProvider'
+import { Toaster } from '@/components/ui/toaster'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { Toaster } from '@/components/ui/toaster'
-import OnboardingProvider from '@/components/onboarding/OnboardingProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://dlsolutions.com'),
+  metadataBase: new URL('https://daveandlucesolutions.com'),
   alternates: {
     canonical: '/',
     languages: {
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'fr_FR',
-    url: 'https://dlsolutions.com',
+    url: 'https://daveandlucesolutions.com',
     siteName: 'DL Solutions',
     title: 'DL Solutions - Écosystème Digital Complet',
     description: 'CRM, ERP, boutique internationale, formations professionnelles. Livraison au Cameroun - École de Police, bureaux disponibles.',
@@ -71,9 +71,9 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'your-google-verification-code',
-    yandex: 'your-yandex-verification-code',
-    yahoo: 'your-yahoo-verification-code',
+    google: 'google-site-verification-code',
+    yandex: 'yandex-verification-code',
+    yahoo: 'yahoo-verification-code',
   },
   category: 'technology',
   classification: 'Business Software',
@@ -101,8 +101,8 @@ export default function RootLayout({
             "@context": "https://schema.org",
             "@type": "Organization",
               "name": "DL Solutions",
-            "url": "https://dlsolutions.com",
-              "logo": "https://dlsolutions.com/images/logo-dl-solutions.png",
+            "url": "https://daveandlucesolutions.com",
+              "logo": "https://daveandlucesolutions.com/images/logo-dl-solutions.png",
               "description": "Écosystème digital complet avec CRM, ERP, boutique internationale, formations professionnelles",
               "address": {
                 "@type": "PostalAddress",
@@ -114,7 +114,7 @@ export default function RootLayout({
               },
               "contactPoint": {
                 "@type": "ContactPoint",
-                "telephone": "+237-XXX-XXX-XXX",
+                "telephone": "+237-694-341-586",
                 "contactType": "customer service",
                 "areaServed": "CM",
                 "availableLanguage": ["French", "English", "Spanish", "Arabic"]
@@ -166,7 +166,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
               "name": "DL Solutions - Bureaux Cameroun",
-              "image": "https://dlsolutions.com/images/bureaux-cameroun.jpg",
+              "image": "https://daveandlucesolutions.com/images/bureaux-cameroun.jpg",
               "description": "Bureaux DL Solutions au Cameroun - École de Police, Yaoundé",
               "address": {
                 "@type": "PostalAddress",
@@ -180,12 +180,12 @@ export default function RootLayout({
                 "latitude": 3.848033,
                 "longitude": 11.502075
               },
-              "url": "https://dlsolutions.com",
-              "telephone": "+237-XXX-XXX-XXX",
+              "url": "https://daveandlucesolutions.com",
+              "telephone": "+237-694-341-586",
               "openingHours": "Mo-Fr 08:00-18:00",
               "priceRange": "€€",
               "servesCuisine": "Services Digitaux",
-              "hasMenu": "https://dlsolutions.com/services"
+              "hasMenu": "https://daveandlucesolutions.com/services"
             })
           }}
         />
@@ -198,11 +198,11 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               "name": "DL Solutions",
-              "url": "https://dlsolutions.com",
+              "url": "https://daveandlucesolutions.com",
               "description": "Écosystème digital complet avec CRM, ERP, boutique internationale",
               "potentialAction": {
                 "@type": "SearchAction",
-                "target": "https://dlsolutions.com/search?q={search_term_string}",
+                "target": "https://daveandlucesolutions.com/search?q={search_term_string}",
                 "query-input": "required name=search_term_string"
               }
             })
@@ -261,7 +261,7 @@ export default function RootLayout({
         <meta name="business:contact_data:region" content="Centre" />
         <meta name="business:contact_data:postal_code" content="00000" />
         <meta name="business:contact_data:country_name" content="Cameroun" />
-        <meta name="business:contact_data:phone_number" content="+237-XXX-XXX-XXX" />
+        <meta name="business:contact_data:phone_number" content="+237-694-341-586" />
         
         {/* Geo Meta Tags */}
         <meta name="geo.region" content="CM" />

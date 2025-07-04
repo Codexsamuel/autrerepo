@@ -48,8 +48,8 @@ export default function FormationsLayout({
             "@type": "EducationalOrganization",
             "name": "DL Solutions - Centre de Formation",
             "description": "Centre de formation professionnelle en technologies digitales",
-            "url": "https://dlsolutions.com/formations",
-            "image": "https://dlsolutions.com/images/formations-dl-solutions.jpg",
+            "url": "https://daveandlucesolutions.com/formations",
+            "image": "https://daveandlucesolutions.com/images/formations-dl-solutions.jpg",
             "address": {
               "@type": "PostalAddress",
               "streetAddress": "École de Police",
@@ -62,7 +62,7 @@ export default function FormationsLayout({
               "latitude": 3.848033,
               "longitude": 11.502075
             },
-            "telephone": "+237-XXX-XXX-XXX",
+            "telephone": "+237-694-341-586",
             "email": "formations@dlsolutions.com",
             "hasOfferCatalog": {
               "@type": "OfferCatalog",

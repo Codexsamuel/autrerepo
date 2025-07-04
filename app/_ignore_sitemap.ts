@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://dlsolutions.com'
+  const baseUrl = 'https://daveandlucesolutions.com'
   
   // Pages principales
   const mainPages = [

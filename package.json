@@ -4,10 +4,22 @@
   "description": "Backend API pour DL Solutions",
   "main": "api-backup/index.ts",
   "scripts": {
-    "vercel-build": "echo 'Vercel build completed'"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "vercel-build": "next build",
+    "deploy": "vercel --prod"
   },
   "dependencies": {
-    "next": "^15.0.0"
+    "next": "^15.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "typescript": "^5.0.0"
   },
   "engines": {
     "node": ">=18.0.0"

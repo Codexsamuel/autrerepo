@@ -1,9 +1,11 @@
+import GoogleAutoAds from '@/components/ads/GoogleAutoAds'
+import GoogleAnalytics from '@/components/analytics/GoogleAnalytics'
+import TradingNavigation from '@/components/layout/TradingNavigation'
+import OnboardingProvider from '@/components/onboarding/OnboardingProvider'
+import { Toaster } from '@/components/ui/toaster'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { Toaster } from '@/components/ui/toaster'
-import OnboardingProvider from '@/components/onboarding/OnboardingProvider'
-import TradingNavigation from '@/components/layout/TradingNavigation'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -36,6 +38,18 @@ export const metadata: Metadata = {
       'es': '/es',
       'ar': '/ar',
     },
+  },
+  other: {
+    'geo.region': 'CM',
+    'geo.placename': 'Cameroun',
+    'geo.position': '3.848033;11.502075',
+    'ICBM': '3.848033, 11.502075',
+    // Hreflang pour l'internationalisation
+    'hreflang-fr': 'https://dlsolutions.com/fr',
+    'hreflang-en': 'https://dlsolutions.com/en',
+    'hreflang-es': 'https://dlsolutions.com/es',
+    'hreflang-ar': 'https://dlsolutions.com/ar',
+    'hreflang-x-default': 'https://dlsolutions.com',
   },
   openGraph: {
     type: 'website',
@@ -78,12 +92,6 @@ export const metadata: Metadata = {
   },
   category: 'technology',
   classification: 'Business Software',
-  other: {
-    'geo.region': 'CM',
-    'geo.placename': 'Cameroun',
-    'geo.position': '3.848033;11.502075',
-    'ICBM': '3.848033, 11.502075',
-  },
 }
 
 export default function RootLayout({
@@ -284,6 +292,8 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
+        <GoogleAnalytics />
+        <GoogleAutoAds />
         <OnboardingProvider>
           <TradingNavigation />
           {children}

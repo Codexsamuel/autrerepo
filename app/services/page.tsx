@@ -1,11 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Brain, Users, Palette, Megaphone, Zap, CheckCircle, Star, Camera, ShoppingCart, Building2, TrendingUp, Shield, Globe, Smartphone, Video, Database, Target } from "lucide-react"
-import { Header } from '@/components/layout/header'
-import Link from 'next/link'
+import ContentAd from '@/components/ads/ContentAds';
+import { Brain, Building2, Database, Globe, Shield, ShoppingCart, Smartphone, Target, TrendingUp, Users, Video, Zap } from "lucide-react";
 
 const services = [
   {
@@ -108,80 +104,102 @@ const services = [
 
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header title="Services" description="Nos solutions digitales sur mesure pour votre entreprise" />
-      
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Hero Section */}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Nos Services Intelligents
+            Nos Services Premium
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Découvrez notre gamme complète de services technologiques pour transformer 
-            votre entreprise et accélérer votre croissance digitale.
+            Découvrez notre écosystème digital complet avec des solutions sur mesure pour votre entreprise
           </p>
         </div>
 
-        {/* Services Grid */}
+        {/* Publicité en haut de page */}
+        <ContentAd position="top" className="mb-8" />
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {services.map((service, index) => (
-            <Card key={index} className="group hover:shadow-lg transition-all duration-300">
-              <CardHeader>
-                <div className="flex items-center justify-between mb-4">
-                  <div className={`p-3 rounded-lg bg-gradient-to-r ${service.color}`}>
-                    <service.icon className="h-6 w-6 text-white" />
-                  </div>
-                  <Badge variant={service.status === 'active' ? 'default' : 'secondary'}>
-                    {service.status === 'active' ? 'Actif' : 'Bêta'}
-                  </Badge>
-                </div>
-                <CardTitle className="text-xl mb-2">{service.title}</CardTitle>
-                <p className="text-gray-600 text-sm">{service.description}</p>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex flex-wrap gap-2">
-                    {service.features.map((feature, featureIndex) => (
-                      <Badge key={featureIndex} variant="outline" className="text-xs">
-                        {feature}
-                      </Badge>
-                    ))}
-                  </div>
-                  <Button className="w-full mt-4" asChild>
-                    <Link href="/contact">
-                      En savoir plus
-                    </Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+          {/* Service 1 */}
+          <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+            <div className="text-3xl mb-4">🏢</div>
+            <h3 className="text-xl font-semibold mb-3">CRM & Gestion Client</h3>
+            <p className="text-gray-600 mb-4">
+              Solutions CRM complètes pour optimiser la relation client et augmenter vos ventes.
+            </p>
+            <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+              En savoir plus
+            </button>
+          </div>
 
-        {/* CTA Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-center text-white">
-          <h2 className="text-3xl font-bold mb-4">
-            Prêt à transformer votre entreprise ?
-          </h2>
-          <p className="text-xl mb-6 opacity-90">
-            Contactez-nous pour discuter de vos besoins et découvrir comment nos solutions 
-            peuvent vous aider à atteindre vos objectifs.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" asChild>
-              <Link href="/contact">
-                Demander un devis
-              </Link>
-            </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600" asChild>
-              <Link href="/formations">
-                Nos formations
-              </Link>
-            </Button>
+          {/* Service 2 */}
+          <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+            <div className="text-3xl mb-4">🛒</div>
+            <h3 className="text-xl font-semibold mb-3">Boutique Internationale</h3>
+            <p className="text-gray-600 mb-4">
+              Boutique en ligne avec produits du monde entier et livraison au Cameroun.
+            </p>
+            <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+              Découvrir
+            </button>
+          </div>
+
+          {/* Service 3 */}
+          <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+            <div className="text-3xl mb-4">🎓</div>
+            <h3 className="text-xl font-semibold mb-3">Formations Professionnelles</h3>
+            <p className="text-gray-600 mb-4">
+              Formations certifiantes en ligne pour développer vos compétences.
+            </p>
+            <button className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+              Commencer
+            </button>
           </div>
         </div>
-      </main>
+
+        {/* Publicité au milieu */}
+        <ContentAd position="middle" className="my-12" />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          {/* Service 4 */}
+          <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+            <div className="text-3xl mb-4">📊</div>
+            <h3 className="text-xl font-semibold mb-3">Analytics & Reporting</h3>
+            <p className="text-gray-600 mb-4">
+              Tableaux de bord avancés et analyses détaillées pour prendre les bonnes décisions.
+            </p>
+            <button className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700">
+              Analyser
+            </button>
+          </div>
+
+          {/* Service 5 */}
+          <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+            <div className="text-3xl mb-4">🔒</div>
+            <h3 className="text-xl font-semibold mb-3">Sécurité & Conformité</h3>
+            <p className="text-gray-600 mb-4">
+              Protection de vos données et conformité aux réglementations internationales.
+            </p>
+            <button className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+              Sécuriser
+            </button>
+          </div>
+        </div>
+
+        {/* Publicité en bas */}
+        <ContentAd position="bottom" className="mt-8" />
+
+        <div className="text-center mt-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">
+            Prêt à transformer votre entreprise ?
+          </h2>
+          <p className="text-lg text-gray-600 mb-8">
+            Rejoignez des milliers d'entreprises qui font confiance à DL Solutions
+          </p>
+          <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all">
+            Commencer Maintenant
+          </button>
+        </div>
+      </div>
     </div>
   )
 }

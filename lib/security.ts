@@ -51,8 +51,8 @@ const emailTransporter = createTransport({
 
 // Configuration SMS
 const twilioClient = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
+  process.env.TWILIO_ACCOUNT_SID || '',
+  process.env.TWILIO_AUTH_TOKEN || ''
 )
 
 // ========================================
@@ -126,7 +126,7 @@ export class OTPService {
     try {
       await twilioClient.messages.create({
         body: `DAVY Trading - Code ${type}: ${otp} (expire dans ${OTP_EXPIRY / 60000}min)`,
-        from: process.env.TWILIO_PHONE_NUMBER,
+        from: process.env.TWILIO_PHONE_NUMBER || '',
         to: phone
       })
       return true

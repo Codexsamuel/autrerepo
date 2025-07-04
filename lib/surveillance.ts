@@ -46,8 +46,8 @@ const emailTransporter = createTransport({
 
 // Configuration SMS
 const twilioClient = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
+  process.env.TWILIO_ACCOUNT_SID || '',
+  process.env.TWILIO_AUTH_TOKEN || ''
 )
 
 // ========================================
@@ -375,7 +375,7 @@ Action: ${event.action || 'Aucune'}
       try {
         await twilioClient.messages.create({
           body: `🚨 ALERTE CRITIQUE DAVY Trading: ${event.type} - ${event.description}`,
-          from: process.env.TWILIO_PHONE_NUMBER,
+          from: process.env.TWILIO_PHONE_NUMBER || '',
           to: process.env.TWILIO_PHONE_NUMBER || '', // Envoyer à l'admin
         })
       } catch (error) {

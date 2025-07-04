@@ -194,3 +194,4 @@ pnpm start
 
 **DAVY Trading Platform** - Votre partenaire de trading intelligent 🚀
 # Force rebuild
+# Configuration Netlify corrigée - Sat Jul  5 01:18:46 CEST 2025

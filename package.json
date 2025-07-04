@@ -1,87 +1,19 @@
 {
-  "name": "davy-trading-platform",
-  "version": "0.1.0",
+  "name": "dl-solutions-platform",
+  "version": "1.0.0",
   "private": true,
-  "description": "Plateforme de trading innovante avec IA - DAVY Trading Platform",
-  "keywords": [
-    "trading",
-    "ai",
-    "nextjs",
-    "typescript",
-    "supabase",
-    "clerk",
-    "stripe",
-    "ecommerce",
-    "scraping",
-    "platform",
-    "cryptocurrency",
-    "forex",
-    "stocks",
-    "predictions",
-    "bot",
-    "discord",
-    "telegram",
-    "cinetpay"
-  ],
-  "homepage": "https://davy-trading.com",
-  "bugs": {
-    "url": "https://github.com/davy-trading/platform/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/your-username/davy-trading-platform.git"
-  },
-  "license": "MIT",
-  "author": "DAVY Trading Team",
+  "description": "Plateforme de solutions digitales innovantes - DL Solutions",
   "scripts": {
     "build": "next build",
-    "build:clean": "rm -rf out .next && next build",
-    "build:frontend": "NEXT_PUBLIC_API_URL=https://votre-backend-api.vercel.app next build",
-    "build:backend": "next build",
-    "build:static": "NEXT_CONFIG_FILE=next.config.static.js next build",
-    "clean": "rm -rf .next node_modules && pnpm install",
-    "db:migrate": "node scripts/database-migration.js",
-    "db:seed": "node scripts/database-seed.js",
-    "deploy:netlify": "netlify deploy --prod",
-    "deploy:vercel": "vercel --prod",
-    "deploy:frontend": "pnpm run build:frontend && netlify deploy --prod --dir=.next",
-    "deploy:backend": "pnpm run build:backend && vercel --prod",
-    "deploy:static": "pnpm run build:static && netlify deploy --prod --dir=out",
     "dev": "next dev",
+    "start": "next start",
     "lint": "next lint",
-    "reset": "rm -rf .next node_modules package-lock.json pnpm-lock.yaml && pnpm install",
-    "scrape:aliexpress": "node scripts/aliexpress-scraper.js",
-    "cleanup": "node scripts/cleanup-unused-imports.js",
-    "start": "npx serve@latest out -p 3000 --single",
-    "test": "jest",
-    "test:e2e": "cypress run",
-    "test:e2e:open": "cypress open",
-    "type-check": "tsc --noEmit"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "resolutions": {
-    "@types/react": "18.2.45",
-    "@types/react-dom": "18.2.18",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "serve-static": "bash scripts/kill-ports.sh && cd out && python3 -m http.server 3000"
   },
   "dependencies": {
     "@clerk/nextjs": "6.23.2",
-    "@google-cloud/translate": "9.1.0",
     "@google/generative-ai": "0.24.1",
     "@hookform/resolvers": "^3.3.2",
-    "@next-auth/prisma-adapter": "1.0.7",
     "@prisma/client": "6.11.0",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
@@ -89,7 +21,6 @@
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-collapsible": "^1.0.3",
-    "@radix-ui/react-compose-refs": "1.1.2",
     "@radix-ui/react-context-menu": "^2.1.5",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.1.15",
@@ -112,84 +43,43 @@
     "@radix-ui/react-toggle-group": "^1.0.4",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@supabase/supabase-js": "2.50.1",
-    "@types/bcryptjs": "3.0.0",
-    "@types/node": "^20.10.5",
-    "@types/node-cron": "3.0.11",
-    "@types/react": "18.2.45",
-    "@types/react-dom": "18.2.18",
-    "@types/sanitize-html": "2.16.0",
     "autoprefixer": "^10.4.16",
     "axios": "^1.6.0",
-    "bcryptjs": "3.0.2",
-    "cheerio": "1.0.0-rc.12",
     "class-variance-authority": "^0.7.0",
-    "cloudinary": "^1.41.0",
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
     "embla-carousel-react": "8.6.0",
-    "express-rate-limit": "7.5.1",
     "framer-motion": "12.22.0",
     "input-otp": "1.4.2",
-    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.294.0",
     "next": "15.3.4",
-    "next-auth": "4.24.11",
     "next-seo": "6.8.0",
     "next-themes": "0.4.6",
-    "node-cron": "4.2.0",
-    "nodemailer": "^6.9.7",
-    "openai": "5.7.0",
     "postcss": "^8.4.32",
-    "prisma": "6.11.0",
-    "puppeteer": "24.10.2",
-    "qrcode": "1.5.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.48.2",
     "react-resizable-panels": "3.0.3",
     "recharts": "^2.8.0",
-    "sanitize-html": "2.17.0",
     "schema-dts": "1.1.5",
     "sonner": "^1.2.4",
-    "stripe": "^14.7.0",
     "tailwind-merge": "^2.2.0",
     "tailwindcss": "^3.4.0",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.3.3",
-    "uuid": "11.1.0",
     "vaul": "^0.8.0",
-    "zod": "^3.22.4",
-    "@types/jsonwebtoken": "9.0.10",
-    "@types/uuid": "10.0.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "@types/react": "18.2.45",
+    "@types/react-dom": "18.2.18",
     "eslint": "^8.56.0",
     "eslint-config-next": "15.3.4"
   },
-  "devDependencies": {
-    "@types/express-rate-limit": "6.0.2",
-    "@types/nodemailer": "6.4.17",
-    "@types/qrcode": "1.5.5",
-    "@types/twilio": "3.19.3"
-  },
-  "packageManager": "pnpm@8.0.0",
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=8.0.0"
-  },
-  "pnpm": {
-    "peerDependencyRules": {
-      "ignoreMissing": [
-        "react",
-        "react-dom"
-      ]
-    },
-    "overrides": {
-      "@types/react": "18.2.45",
-      "@types/react-dom": "18.2.18",
-      "find-up": "^5.0.0",
-      "glob": "^9.0.0",
-      "react": "18.2.0",
-      "react-dom": "18.2.0"
-    }
   }
 }

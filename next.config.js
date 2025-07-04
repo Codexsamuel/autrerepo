@@ -21,15 +21,6 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   generateEtags: false,
-  // Redirections API
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: '/api-backup/:path*',
-      },
-    ];
-  },
 };
 
 module.exports = nextConfig; 

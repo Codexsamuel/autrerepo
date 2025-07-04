@@ -1,7 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "npm install && echo 'Backend build completed'",
-  "installCommand": "npm install",
+  "buildCommand": "npm ci && echo 'Backend build completed'",
+  "installCommand": "npm ci",
+  "framework": null,
   "builds": [
     {
       "src": "api-backup/**/*.ts",

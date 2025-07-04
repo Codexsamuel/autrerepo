@@ -1,16 +1,12 @@
 {
-  "name": "dl-solutions-platform",
+  "name": "dl-solutions-backend",
   "version": "1.0.0",
-  "description": "DL Solutions - Plateforme Complète (Vercel Backend)",
+  "description": "DL Solutions Backend API - Vercel Deployment",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "vercel-build": "next build",
-    "deploy": "vercel --prod",
-    "serve-static": "bash scripts/kill-ports.sh && cd out && python3 -m http.server 3000",
-    "kill-ports": "bash scripts/kill-ports.sh",
-    "postinstall": "echo 'Using npm as package manager'"
+    "vercel-build": "next build"
   },
   "dependencies": {
     "next": "^15.0.0",

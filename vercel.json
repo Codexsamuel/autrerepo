@@ -4,6 +4,17 @@
   "buildCommand": "npm run build",
   "installCommand": "npm install --legacy-peer-deps",
   "devCommand": "npm run dev",
+  "functions": {
+    "pages/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    }
+  ],
   "env": {
     "NPM_CONFIG_PACKAGE_MANAGER": "npm",
     "NODE_ENV": "production"

@@ -21,6 +21,8 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   generateEtags: false,
+  // Pas d'export statique pour Vercel (API routes)
+  // output: 'export' - COMMENTÉ pour Vercel
 };
 
 module.exports = nextConfig; 

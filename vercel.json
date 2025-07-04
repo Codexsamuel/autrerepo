@@ -1,13 +1,27 @@
 {
   "version": 2,
-  "env": {
-    "NODE_ENV": "production",
-    "NEXT_TELEMETRY_DISABLED": "1"
-  },
+  "builds": [
+    {
+      "src": "api-backup/**/*.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api-backup/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api-backup/$1"
+    }
+  ],
   "functions": {
-    "app/api/**/*.ts": {
+    "api-backup/**/*.ts": {
       "maxDuration": 30
     }
   },
-  "regions": ["cdg1"]
+  "env": {
+    "NODE_ENV": "production"
+  }
 }

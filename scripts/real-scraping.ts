@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import { writeFileSync, readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
 interface ScrapedProduct {
@@ -212,22 +212,23 @@ async function scrapeSite(config: any, query: string, category: string): Promise
     const $ = cheerio.load(response.data);
     
     // Extraire les produits
-    $(config.selectors.products).each(async (index, element) => {
-      if (index >= 10) return; // Limiter à 10 produits par site
-      
-      const $el = $(element);
+    const productElements = $(config.selectors.products);
+    const maxProducts = Math.min(productElements.length, 10);
+    
+    for (let index = 0; index < maxProducts; index++) {
+      const element = productElements.eq(index);
       
       // Extraire les données
-      const name = $el.find(config.selectors.name).first().text().trim();
-      const priceText = $el.find(config.selectors.price).first().text().trim();
-      const imageSrc = $el.find(config.selectors.image).first().attr('src') || '';
-      const ratingText = $el.find(config.selectors.rating).first().text().trim();
-      const salesText = $el.find(config.selectors.sales).first().text().trim();
+      const name = element.find(config.selectors.name).first().text().trim();
+      const priceText = element.find(config.selectors.price).first().text().trim();
+      const imageSrc = element.find(config.selectors.image).first().attr('src') || '';
+      const ratingText = element.find(config.selectors.rating).first().text().trim();
+      const salesText = element.find(config.selectors.sales).first().text().trim();
       
-      if (!name || !priceText) return;
+      if (!name || !priceText) continue;
       
       const originalPrice = extractPrice(priceText);
-      if (originalPrice === 0) return;
+      if (originalPrice === 0) continue;
       
       const sellingPrice = calculateSellingPrice(originalPrice);
       const rating = extractRating(ratingText);
@@ -266,7 +267,7 @@ async function scrapeSite(config: any, query: string, category: string): Promise
       };
       
       products.push(product);
-    });
+    }
     
     console.log(`Found ${products.length} products on ${config.name}`);
     

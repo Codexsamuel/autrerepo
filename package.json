@@ -2,12 +2,15 @@
   "name": "dl-solutions-platform",
   "version": "1.0.0",
   "description": "DL Solutions - Plateforme Complète",
+  "packageManager": "npm@10.0.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "vercel-build": "next build",
-    "deploy": "vercel --prod"
+    "deploy": "vercel --prod",
+    "serve-static": "bash scripts/kill-ports.sh && cd out && python3 -m http.server 3000",
+    "kill-ports": "bash scripts/kill-ports.sh"
   },
   "dependencies": {
     "next": "^15.0.0",

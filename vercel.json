@@ -17,7 +17,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/api-backup/$1"
+      "dest": "/api-backup/index.ts"
     }
   ],
   "functions": {

@@ -1,6 +1,0 @@
-Images de fond à ajouter :
-- hero-bg-1.jpg (image d'univers digital avec particules)
-- hero-bg-2.jpg (image d'innovation technologique)
-- hero-bg-3.jpg (image d'excellence technologique)
-
-Ces images serviront de fallback si les vidéos ne se chargent pas. 

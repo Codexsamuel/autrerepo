@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "buildCommand": "echo 'Backend build completed'",
-  "installCommand": "npm ci",
-  "framework": null,
-  "ignoreCommand": "echo 'Skipping build'",
+  "env": {
+    "NODE_ENV": "production",
+    "NEXT_TELEMETRY_DISABLED": "1"
+  },
   "builds": [
     {
       "src": "api-backup/**/*.ts",
@@ -14,18 +14,11 @@
     {
       "src": "/api/(.*)",
       "dest": "/api-backup/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/api-backup/$1"
     }
   ],
   "functions": {
     "api-backup/**/*.ts": {
       "maxDuration": 30
     }
-  },
-  "env": {
-    "NODE_ENV": "production"
   }
-}
+} 

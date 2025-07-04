@@ -24,6 +24,10 @@ fi
 echo "📦 Configuration du package backend..."
 cp package-backend.json package.json
 
+# Supprimer pnpm-lock.yaml pour forcer npm
+echo "🔧 Suppression de pnpm-lock.yaml..."
+rm -f pnpm-lock.yaml
+
 # Déployer
 echo "🚀 Déploiement en cours..."
 vercel --prod

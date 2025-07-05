@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from "react";
-import { Plus, Trash2, Copy, Eye, Download, Share2, Lock, Unlock } from "lucide-react";
+import { Copy, Eye, Lock, Plus, Share2, Trash2, Unlock } from "lucide-react";
+import { useState } from "react";
 
 
 interface FormField {
@@ -134,26 +134,26 @@ export default function IntelligentForms() {
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-black mb-1">
                 Titre du formulaire
               </label>
               <input
                 type="text"
                 value={newForm.title}
                 onChange={(e) => setNewForm(prev => ({ ...prev, title: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black placeholder:text-black"
                 placeholder="Ex: Demande de congés"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-black mb-1">
                 Description
               </label>
               <textarea
                 value={newForm.description}
                 onChange={(e) => setNewForm(prev => ({ ...prev, description: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black placeholder:text-black"
                 rows={3}
                 placeholder="Description du formulaire..."
               />

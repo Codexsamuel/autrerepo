@@ -1,76 +1,20 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Calendar } from '@/components/ui/calendar';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { 
-  Calendar as CalendarIcon,
-  Clock,
-  User,
-  MapPin,
-  Phone,
-  Mail,
-  Camera,
-  Brain,
-  Eye,
-  Bell,
-  Plus,
-  Search,
-  Filter,
-  Settings,
-  Star,
-  AlertTriangle,
-  CheckCircle,
-  X,
-  Edit,
-  Trash2,
-  Download,
-  Upload,
-  QrCode,
-  Shield,
-  FileText,
-  Users,
-  Car,
-  Home,
-  Heart,
-  Star as StarIcon,
-  TrendingUp,
-  TrendingDown,
-  Activity,
-  BarChart3,
-  Zap,
-  Target,
-  Award,
-  Smile,
-  Frown,
-  Meh,
-  FileCheck,
-  AlertCircle,
-  CheckSquare,
-  Clock4,
-  DollarSign,
-  Receipt,
-  Building,
-  Car as CarIcon,
-  Heart as HeartIcon,
-  Shield as ShieldIcon,
-  RefreshCw,
-  Bed,
-  Stethoscope,
-  Pill,
-  Activity as ActivityIcon,
-  Thermometer,
-  Droplets,
-  Brain as BrainIcon,
-  Briefcase
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Activity as ActivityIcon,
+    AlertCircle,
+    AlertTriangle,
+    Bed,
+    Bell,
+    Brain,
+    Stethoscope,
+    Users
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface Patient {
   id: string;
@@ -171,7 +115,7 @@ function HospitalNavbar() {
           <span className="font-bold text-lg text-gray-900">Centre Hospitalier NovaCore</span>
         </div>
         <div className="flex-1 max-w-md mx-8">
-          <input type="text" placeholder="Rechercher patient, médecin, chambre..." className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-400" />
+          <input type="text" placeholder="Rechercher patient, médecin, chambre..." className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-400 text-black placeholder:text-black" />
         </div>
         <div className="flex items-center space-x-4">
           <button className="relative">

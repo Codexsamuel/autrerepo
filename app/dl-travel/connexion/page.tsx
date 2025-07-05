@@ -162,19 +162,22 @@ export default function ConnexionPage() {
 
                     <form onSubmit={handleLogin} className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1 text-black">Email</label>
-                        <input
-                          type="email"
-                          required
-                          value={loginData.email}
-                          onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          placeholder="votre@email.com"
-                        />
+                        <label className="block text-sm font-medium text-black mb-1">Email</label>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                          <input
+                            type="email"
+                            required
+                            value={loginData.email}
+                            onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
+                            className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black placeholder:text-black"
+                            placeholder="votre@email.com"
+                          />
+                        </div>
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1 text-black">Mot de passe</label>
+                        <label className="block text-sm font-medium text-black mb-1">Mot de passe</label>
                         <div className="relative">
                           <input
                             type={showPassword ? "text" : "password"}
@@ -253,62 +256,62 @@ export default function ConnexionPage() {
                     <form onSubmit={handleSignup} className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Prénom</label>
+                          <label className="block text-sm font-medium text-black mb-1">Prénom</label>
                           <input
                             type="text"
                             required
                             value={signupData.firstName}
                             onChange={(e) => setSignupData({ ...signupData, firstName: e.target.value })}
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black placeholder:text-black"
                             placeholder="Prénom"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Nom</label>
+                          <label className="block text-sm font-medium text-black mb-1">Nom</label>
                           <input
                             type="text"
                             required
                             value={signupData.lastName}
                             onChange={(e) => setSignupData({ ...signupData, lastName: e.target.value })}
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black placeholder:text-black"
                             placeholder="Nom"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <label className="block text-sm font-medium text-black mb-1">Email</label>
                         <input
                           type="email"
                           required
                           value={signupData.email}
                           onChange={(e) => setSignupData({ ...signupData, email: e.target.value })}
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black placeholder:text-black"
                           placeholder="votre@email.com"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Téléphone</label>
+                        <label className="block text-sm font-medium text-black mb-1">Téléphone</label>
                         <input
                           type="tel"
                           required
                           value={signupData.phone}
                           onChange={(e) => setSignupData({ ...signupData, phone: e.target.value })}
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black placeholder:text-black"
                           placeholder="+33 6 12 34 56 78"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Mot de passe</label>
+                        <label className="block text-sm font-medium text-black mb-1">Mot de passe</label>
                         <div className="relative">
                           <input
                             type={showPassword ? "text" : "password"}
                             required
                             value={signupData.password}
                             onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10 text-black placeholder:text-black"
                             placeholder="••••••••"
                           />
                           <button
@@ -322,7 +325,7 @@ export default function ConnexionPage() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-black mb-1">
                           Confirmer le mot de passe
                         </label>
                         <div className="relative">
@@ -331,7 +334,7 @@ export default function ConnexionPage() {
                             required
                             value={signupData.confirmPassword}
                             onChange={(e) => setSignupData({ ...signupData, confirmPassword: e.target.value })}
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10 text-black placeholder:text-black"
                             placeholder="••••••••"
                           />
                           <button

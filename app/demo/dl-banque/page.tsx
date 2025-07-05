@@ -1,71 +1,34 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Calendar } from '@/components/ui/calendar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { 
-  Calendar as CalendarIcon,
-  Clock,
-  User,
-  MapPin,
-  Phone,
-  Mail,
-  Camera,
-  Brain,
-  Eye,
-  Bell,
-  Plus,
-  Search,
-  Filter,
-  Settings,
-  Star,
-  AlertTriangle,
-  CheckCircle,
-  X,
-  Edit,
-  Trash2,
-  Download,
-  Upload,
-  QrCode,
-  Shield,
-  FileText,
-  Users,
-  Building,
-  Heart,
-  Star as StarIcon,
-  TrendingUp,
-  TrendingDown,
-  Activity,
-  BarChart3,
-  Zap,
-  Target,
-  Award,
-  Smile,
-  Frown,
-  Meh,
-  FileCheck,
-  AlertCircle,
-  CheckSquare,
-  Clock4,
-  DollarSign,
-  Receipt,
-  Car as CarIcon,
-  Heart as HeartIcon,
-  Shield as ShieldIcon,
-  RefreshCw,
-  CreditCard,
-  PiggyBank,
-  Calculator,
-  TrendingUp as TrendingUpIcon,
-  Briefcase
+import {
+    AlertCircle,
+    AlertTriangle,
+    Bell,
+    Brain,
+    Briefcase,
+    Building,
+    Calendar as CalendarIcon,
+    Car as CarIcon,
+    CheckCircle,
+    CreditCard,
+    DollarSign,
+    Edit,
+    PiggyBank,
+    Plus,
+    Shield,
+    Star,
+    TrendingUp as TrendingUpIcon,
+    User,
+    Users,
+    X
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface BankingEvent {
   id: string;
@@ -152,7 +115,7 @@ function BankingNavbar() {
           <span className="font-bold text-lg text-gray-900">DL Banque Pro</span>
         </div>
         <div className="flex-1 max-w-md mx-8">
-          <input type="text" placeholder="Rechercher client, dossier..." className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          <input type="text" placeholder="Rechercher client, dossier..." className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400 text-black placeholder:text-black" />
         </div>
         <div className="flex items-center space-x-4">
           <button className="relative">

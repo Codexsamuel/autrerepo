@@ -1,10 +1,10 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { AlertCircle, ArrowLeft, CheckCircle, Hash, Shield, Smartphone } from "lucide-react";
 import { useState } from "react";
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { ArrowLeft, Smartphone, Shield, CheckCircle, AlertCircle, Hash } from "lucide-react"
 
 
 
@@ -131,7 +131,7 @@ export default function MobileMoneyPaymentPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Opérateur Mobile Money *</label>
+                    <label className="block text-sm font-medium text-black mb-2">Opérateur Mobile Money *</label>
                     <div className="grid grid-cols-3 gap-4">
                       {Object.entries(operators).map(([key, op]) => (
                         <label
@@ -160,12 +160,12 @@ export default function MobileMoneyPaymentPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Numéro de téléphone *</label>
+                    <label className="block text-sm font-medium text-black mb-2">Numéro de téléphone *</label>
                     <Input
                       placeholder="05 XX XX XX XX"
                       value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
-                      className={`w-full text-lg ${error ? "border-red-500" : ""}`}
+                      className={`w-full text-lg text-black placeholder:text-black ${error ? "border-red-500" : ""}`}
                     />
                     {error && (
                       <p className="text-red-500 text-sm mt-1 flex items-center">

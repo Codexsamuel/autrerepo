@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight, Shield, Check, ArrowLeft } from "lucide-react"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { ArrowLeft, ArrowRight, Check, Eye, EyeOff, Lock, Mail, Phone, Shield, User } from "lucide-react";
 import type { FormEvent } from "react";
+import { useState } from "react";
 
 
 
@@ -112,7 +112,7 @@ export default function NovaCorSignUp() {
                 <form onSubmit={handleSignUp} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
+                      <label htmlFor="firstName" className="block text-sm font-medium text-black mb-1">
                         Prénom
                       </label>
                       <div className="relative">
@@ -122,14 +122,14 @@ export default function NovaCorSignUp() {
                           type="text"
                           value={formData.firstName}
                           onChange={(e) => handleInputChange("firstName", e.target.value)}
-                          placeholder="Jean"
-                          className="pl-9 h-10"
+                          placeholder="Votre prénom"
+                          className="pl-9 h-10 text-black placeholder:text-black"
                           required
                         />
                       </div>
                     </div>
                     <div>
-                      <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
+                      <label htmlFor="lastName" className="block text-sm font-medium text-black mb-1">
                         Nom
                       </label>
                       <div className="relative">
@@ -139,8 +139,8 @@ export default function NovaCorSignUp() {
                           type="text"
                           value={formData.lastName}
                           onChange={(e) => handleInputChange("lastName", e.target.value)}
-                          placeholder="Dupont"
-                          className="pl-9 h-10"
+                          placeholder="Votre nom"
+                          className="pl-9 h-10 text-black placeholder:text-black"
                           required
                         />
                       </div>
@@ -148,8 +148,8 @@ export default function NovaCorSignUp() {
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                      Adresse email
+                    <label htmlFor="email" className="block text-sm font-medium text-black mb-1">
+                      Email
                     </label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -158,15 +158,15 @@ export default function NovaCorSignUp() {
                         type="email"
                         value={formData.email}
                         onChange={(e) => handleInputChange("email", e.target.value)}
-                        placeholder="jean.dupont@email.com"
-                        className="pl-9 h-10"
+                        placeholder="votre@email.com"
+                        className="pl-9 h-10 text-black placeholder:text-black"
                         required
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="phone" className="block text-sm font-medium text-black mb-1">
                       Téléphone
                     </label>
                     <div className="relative">
@@ -176,15 +176,15 @@ export default function NovaCorSignUp() {
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => handleInputChange("phone", e.target.value)}
-                        placeholder="+33 6 12 34 56 78"
-                        className="pl-9 h-10"
+                        placeholder="+237 6XX XXX XXX"
+                        className="pl-9 h-10 text-black placeholder:text-black"
                         required
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="password" className="block text-sm font-medium text-black mb-1">
                       Mot de passe
                     </label>
                     <div className="relative">
@@ -195,7 +195,7 @@ export default function NovaCorSignUp() {
                         value={formData.password}
                         onChange={(e) => handleInputChange("password", e.target.value)}
                         placeholder="••••••••"
-                        className="pl-9 pr-9 h-10"
+                        className="pl-9 pr-9 h-10 text-black placeholder:text-black"
                         required
                       />
                       <button
@@ -209,9 +209,7 @@ export default function NovaCorSignUp() {
                   </div>
 
                   <div>
-                    <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                      Confirmer le mot de passe
-                    </label>
+                    <label htmlFor="confirmPassword" className="block text-sm font-medium text-black mb-1">Confirmer le mot de passe</label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                       <Input
@@ -220,7 +218,7 @@ export default function NovaCorSignUp() {
                         value={formData.confirmPassword}
                         onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
                         placeholder="••••••••"
-                        className="pl-9 pr-9 h-10"
+                        className="pl-9 pr-9 h-10 text-black placeholder:text-black"
                         required
                       />
                       <button

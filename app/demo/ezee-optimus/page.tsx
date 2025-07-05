@@ -1,47 +1,30 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Calendar } from '@/components/ui/calendar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { 
-  Users, 
-  Building2, 
-  Shield, 
-  TrendingUp, 
-  Calendar as CalendarIcon, 
-  CheckCircle, 
-  AlertTriangle, 
-  Clock,
-  ArrowUpRight,
-  ArrowDownRight,
-  Activity,
-  Settings,
-  BarChart3,
-  FileText,
-  Globe,
-  Bed,
-  MapPin,
-  Star,
-  DollarSign,
-  Phone,
-  Mail,
-  Wifi,
-  Car,
-  Utensils,
-  Camera,
-  Brain,
-  Eye,
-  Bell,
-  User,
-  Plus,
-  Search,
-  Filter,
-  QrCode
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    AlertTriangle,
+    BarChart3,
+    Bed,
+    Bell,
+    Brain,
+    Building2,
+    Calendar as CalendarIcon,
+    Camera,
+    DollarSign,
+    Eye,
+    Phone,
+    Settings,
+    Shield,
+    Star,
+    TrendingUp,
+    Users,
+    Utensils
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface Metric {
   title: string;
@@ -123,7 +106,7 @@ function EzeeOptimusNavbar() {
           <span className="font-bold text-lg text-gray-900">Hôtel Le Meridien Yaoundé</span>
         </div>
         <div className="flex-1 max-w-md mx-8">
-          <input type="text" placeholder="Rechercher..." className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          <input type="text" placeholder="Rechercher..." className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400 text-black placeholder:text-black" />
         </div>
         <div className="flex items-center space-x-4">
           <button className="relative">

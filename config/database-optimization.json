@@ -1,0 +1,25 @@
+{
+  "connection": {
+    "pool": {
+      "min": 2,
+      "max": 10,
+      "acquireTimeoutMillis": 30000,
+      "createTimeoutMillis": 30000,
+      "destroyTimeoutMillis": 5000,
+      "idleTimeoutMillis": 30000,
+      "reapIntervalMillis": 1000
+    }
+  },
+  "queries": {
+    "timeout": 30000,
+    "retries": 3,
+    "caching": {
+      "enabled": true,
+      "ttl": 300
+    }
+  },
+  "indexing": {
+    "auto": true,
+    "analyze": true
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "containerId": "GTM-XXXXXXX",
+  "enabled": true,
+  "dataLayer": {
+    "name": "dataLayer",
+    "events": {
+      "pageView": "page_view",
+      "userEngagement": "user_engagement",
+      "purchase": "purchase",
+      "addToCart": "add_to_cart",
+      "formSubmit": "form_submit",
+      "scroll": "scroll",
+      "click": "click"
+    }
+  },
+  "triggers": {
+    "pageView": {
+      "type": "page_view",
+      "fireOn": "all_pages"
+    },
+    "scroll": {
+      "type": "scroll",
+      "threshold": 50
+    },
+    "click": {
+      "type": "click",
+      "selectors": [
+        "button",
+        "a",
+        ".cta"
+      ]
+    }
+  },
+  "variables": {
+    "pageUrl": "{{Page URL}}",
+    "pageTitle": "{{Page Title}}",
+    "userType": "{{User Type}}",
+    "userId": "{{User ID}}"
+  }
+}

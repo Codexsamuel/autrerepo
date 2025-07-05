@@ -1,0 +1,37 @@
+{
+  "measurementId": "G-XXXXXXXXXX",
+  "enabled": true,
+  "debugMode": false,
+  "enhancedEcommerce": true,
+  "customDimensions": {
+    "userType": "cd1",
+    "pageCategory": "cd2",
+    "userRegion": "cd3",
+    "subscriptionType": "cd4"
+  },
+  "customMetrics": {
+    "scrollDepth": "cm1",
+    "timeOnPage": "cm2",
+    "engagementScore": "cm3"
+  },
+  "events": {
+    "pageView": true,
+    "userEngagement": true,
+    "scroll": true,
+    "click": true,
+    "formSubmit": true,
+    "purchase": true,
+    "addToCart": true,
+    "viewItem": true
+  },
+  "ecommerce": {
+    "currency": "EUR",
+    "enhancedEcommerce": true,
+    "productImpressions": true,
+    "productClicks": true,
+    "addToCart": true,
+    "removeFromCart": true,
+    "checkout": true,
+    "purchase": true
+  }
+}

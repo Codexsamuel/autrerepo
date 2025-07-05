@@ -1,0 +1,14 @@
+{
+  "minification": true,
+  "purging": true,
+  "criticalCSS": true,
+  "inlining": {
+    "critical": true,
+    "maxSize": 14336
+  },
+  "optimization": {
+    "removeEmpty": true,
+    "mergeRules": true,
+    "removeDuplicates": true
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "measurementId": "G-XXXXXXXXXX",
+  "enabled": true,
+  "debugMode": false,
+  "trackPageViews": true,
+  "trackEvents": true,
+  "customDimensions": {
+    "userType": "cd1",
+    "pageCategory": "cd2"
+  }
+}

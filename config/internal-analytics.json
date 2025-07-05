@@ -1,0 +1,64 @@
+{
+  "enabled": true,
+  "endpoint": "/api/analytics",
+  "events": {
+    "pageView": {
+      "track": true,
+      "properties": [
+        "url",
+        "title",
+        "referrer",
+        "userAgent"
+      ]
+    },
+    "userAction": {
+      "track": true,
+      "properties": [
+        "action",
+        "element",
+        "value",
+        "timestamp"
+      ]
+    },
+    "performance": {
+      "track": true,
+      "metrics": [
+        "FCP",
+        "LCP",
+        "CLS",
+        "FID",
+        "TTFB"
+      ]
+    },
+    "error": {
+      "track": true,
+      "properties": [
+        "message",
+        "stack",
+        "url",
+        "userAgent"
+      ]
+    }
+  },
+  "userTracking": {
+    "anonymous": true,
+    "session": true,
+    "fingerprint": false,
+    "retention": 30
+  },
+  "storage": {
+    "type": "database",
+    "retention": 90,
+    "aggregation": {
+      "daily": true,
+      "weekly": true,
+      "monthly": true
+    }
+  },
+  "dashboards": {
+    "realTime": true,
+    "daily": true,
+    "weekly": true,
+    "monthly": true
+  }
+}

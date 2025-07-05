@@ -1,0 +1,41 @@
+{
+  "headers": {
+    "X-Frame-Options": "DENY",
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://api.daveandlucesolutions.com;"
+  },
+  "rateLimiting": {
+    "enabled": true,
+    "windowMs": 900000,
+    "maxRequests": 100,
+    "message": "Trop de requêtes, veuillez réessayer plus tard"
+  },
+  "cors": {
+    "origin": [
+      "https://daveandlucesolutions.com",
+      "https://www.daveandlucesolutions.com",
+      "https://autrerepo-69ck-dave-and-luce-solutions-projects.vercel.app"
+    ],
+    "credentials": true,
+    "methods": [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE",
+      "OPTIONS"
+    ]
+  },
+  "authentication": {
+    "sessionTimeout": 86400000,
+    "refreshTokenExpiry": 604800000,
+    "passwordPolicy": {
+      "minLength": 8,
+      "requireUppercase": true,
+      "requireLowercase": true,
+      "requireNumbers": true,
+      "requireSpecialChars": true
+    }
+  }
+}

@@ -1,20 +1,42 @@
 {
-  "optimization": {
-    "minimize": true,
-    "splitChunks": {
-      "chunks": "all",
-      "cacheGroups": {
-        "vendor": {
-          "test": {},
-          "name": "vendors",
-          "chunks": "all"
-        }
-      }
+  "caching": {
+    "staticAssets": {
+      "maxAge": 31536000,
+      "immutable": true
+    },
+    "apiResponses": {
+      "maxAge": 300,
+      "staleWhileRevalidate": 60
+    },
+    "images": {
+      "maxAge": 86400,
+      "formats": [
+        "webp",
+        "avif"
+      ]
     }
   },
-  "performance": {
-    "hints": "warning",
-    "maxEntrypointSize": 512000,
-    "maxAssetSize": 512000
+  "optimization": {
+    "imageOptimization": true,
+    "minification": true,
+    "compression": true,
+    "lazyLoading": true,
+    "preloading": {
+      "critical": true,
+      "fonts": true
+    }
+  },
+  "monitoring": {
+    "enabled": true,
+    "metrics": [
+      "FCP",
+      "LCP",
+      "CLS",
+      "FID"
+    ],
+    "reporting": {
+      "endpoint": "/api/performance",
+      "sampleRate": 0.1
+    }
   }
 }

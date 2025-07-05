@@ -1,9 +1,10 @@
+import { optimizeVideoUrl } from '@/lib/cloudinary-utils';
 import { useState } from 'react';
 
 const medias = [
-  { type: 'video', src: 'https://res.cloudinary.com/dko5sommz/video/upload/v1750840734/a_l_instititu_francais_de_yaounde_flojif.mp4', title: 'Institut Français' },
+  { type: 'video', src: optimizeVideoUrl('https://res.cloudinary.com/dko5sommz/video/upload/v1750840734/a_l_instititu_francais_de_yaounde_flojif.mp4', { quality: 'auto', format: 'mp4' }), title: 'Institut Français' },
   { type: 'image', src: 'https://res.cloudinary.com/dko5sommz/image/upload/v1749401792/WhatsApp_Image_2025-06-06_at_22.54.44_hcykoe.jpg', title: 'DL Event' },
-  { type: 'video', src: 'https://res.cloudinary.com/dko5sommz/video/upload/v1750841005/WhatsApp_Video_2025-06-05_at_01.41.08_zau0s5.mp4', title: 'Reportage Agence' },
+  { type: 'video', src: optimizeVideoUrl('https://res.cloudinary.com/dko5sommz/video/upload/v1750841005/WhatsApp_Video_2025-06-05_at_01.41.08_zau0s5.mp4', { quality: 'auto', format: 'mp4' }), title: 'Reportage Agence' },
   { type: 'image', src: 'https://res.cloudinary.com/dko5sommz/image/upload/v1749401791/WhatsApp_Image_2025-06-06_at_22.54.12_mxcqen.jpg', title: 'DL Team' }
 ];
 

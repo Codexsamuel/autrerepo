@@ -1,0 +1,29 @@
+{
+  "vapidPublicKey": "YOUR_VAPID_PUBLIC_KEY",
+  "vapidPrivateKey": "YOUR_VAPID_PRIVATE_KEY",
+  "enabled": true,
+  "defaultOptions": {
+    "title": "DL Solutions",
+    "icon": "/images/icon-192x192.png",
+    "badge": "/images/badge-72x72.png",
+    "vibrate": [
+      200,
+      100,
+      200
+    ]
+  },
+  "categories": {
+    "news": {
+      "title": "Actualités",
+      "description": "Nouvelles fonctionnalités et mises à jour"
+    },
+    "trading": {
+      "title": "Trading",
+      "description": "Signaux et alertes de trading"
+    },
+    "promotions": {
+      "title": "Promotions",
+      "description": "Offres spéciales et réductions"
+    }
+  }
+}

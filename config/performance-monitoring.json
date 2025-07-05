@@ -1,0 +1,29 @@
+{
+  "metrics": {
+    "coreWebVitals": true,
+    "customMetrics": true,
+    "realUserMonitoring": true
+  },
+  "thresholds": {
+    "fcp": 1800,
+    "lcp": 2500,
+    "fid": 100,
+    "cls": 0.1
+  },
+  "reporting": {
+    "endpoint": "/api/performance",
+    "sampleRate": 0.1,
+    "batchSize": 10
+  },
+  "alerts": {
+    "enabled": true,
+    "channels": [
+      "email",
+      "slack"
+    ],
+    "thresholds": {
+      "error": 0.05,
+      "warning": 0.02
+    }
+  }
+}

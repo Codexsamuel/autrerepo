@@ -1,0 +1,29 @@
+{
+  "sitemap": {
+    "autoGenerate": true,
+    "includeImages": true,
+    "priority": {
+      "homepage": 1,
+      "category": 0.8,
+      "product": 0.6,
+      "blog": 0.7
+    }
+  },
+  "robots": {
+    "allowAll": true,
+    "sitemap": true,
+    "crawlDelay": 1
+  },
+  "structuredData": {
+    "organization": true,
+    "website": true,
+    "breadcrumbs": true,
+    "products": true
+  },
+  "meta": {
+    "autoGenerate": true,
+    "socialSharing": true,
+    "openGraph": true,
+    "twitterCards": true
+  }
+}

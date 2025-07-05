@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Play, Pause, ChevronLeft, ChevronRight, Building2, Users, Shield, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-
+import { optimizeVideoUrl } from '@/lib/cloudinary-utils';
+import { Building2, ChevronLeft, ChevronRight, Pause, Play, Shield, Users, Zap } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const DLActivitiesCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -14,7 +13,7 @@ const DLActivitiesCarousel = () => {
   const activitiesItems = [
     {
       type: "video",
-      url: "https://res.cloudinary.com/dko5sommz/video/upload/v1749401814/WhatsApp_Video_2025-06-06_at_22.54.48_fudnfd.mp4",
+      url: optimizeVideoUrl("https://res.cloudinary.com/dko5sommz/video/upload/v1749401814/WhatsApp_Video_2025-06-06_at_22.54.48_fudnfd.mp4", { quality: 'auto', format: 'mp4' }),
       thumbnail: "https://res.cloudinary.com/dko5sommz/image/upload/v1749401792/WhatsApp_Image_2025-06-06_at_22.54.44_hcykoe.jpg",
       title: "DL Solutions - Innovation & Excellence",
       description: "Découvrez nos activités de transformation digitale",
@@ -23,7 +22,7 @@ const DLActivitiesCarousel = () => {
     },
     {
       type: "video", 
-      url: "https://res.cloudinary.com/dko5sommz/video/upload/v1749401792/WhatsApp_Video_2025-06-06_at_22.54.45_drvh4l.mp4",
+      url: optimizeVideoUrl("https://res.cloudinary.com/dko5sommz/video/upload/v1749401792/WhatsApp_Video_2025-06-06_at_22.54.45_drvh4l.mp4", { quality: 'auto', format: 'mp4' }),
       thumbnail: "https://res.cloudinary.com/dko5sommz/image/upload/v1749401792/WhatsApp_Image_2025-06-06_at_23.18.58_1_wwefxu.jpg",
       title: "Équipe DL Solutions en Action",
       description: "Notre équipe dédiée à l'excellence",

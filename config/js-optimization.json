@@ -1,0 +1,29 @@
+{
+  "minification": true,
+  "treeShaking": true,
+  "codeSplitting": {
+    "chunks": "all",
+    "cacheGroups": {
+      "vendor": {
+        "test": {},
+        "name": "vendors",
+        "chunks": "all"
+      },
+      "common": {
+        "name": "common",
+        "minChunks": 2,
+        "chunks": "all",
+        "enforce": true
+      }
+    }
+  },
+  "compression": {
+    "gzip": true,
+    "brotli": true
+  },
+  "preloading": {
+    "critical": true,
+    "fonts": true,
+    "images": false
+  }
+}

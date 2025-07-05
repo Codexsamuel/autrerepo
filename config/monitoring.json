@@ -1,0 +1,32 @@
+{
+  "uptime": {
+    "enabled": true,
+    "checkInterval": 300000,
+    "endpoints": [
+      "https://daveandlucesolutions.com",
+      "https://autrerepo-69ck-dave-and-luce-solutions-projects.vercel.app/api"
+    ]
+  },
+  "errorTracking": {
+    "provider": "sentry",
+    "dsn": "YOUR_SENTRY_DSN",
+    "environment": "production",
+    "tracesSampleRate": 0.1
+  },
+  "logging": {
+    "level": "info",
+    "format": "json",
+    "destination": "file",
+    "maxSize": "10m",
+    "maxFiles": 5
+  },
+  "alerts": {
+    "email": [
+      "admin@daveandlucesolutions.com"
+    ],
+    "slack": {
+      "webhookUrl": "YOUR_SLACK_WEBHOOK_URL",
+      "channel": "#alerts"
+    }
+  }
+}

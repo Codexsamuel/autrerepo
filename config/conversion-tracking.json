@@ -1,0 +1,67 @@
+{
+  "goals": {
+    "contact": {
+      "type": "form_submit",
+      "value": 10,
+      "conditions": {
+        "form": "contact",
+        "page": "/contact"
+      }
+    },
+    "signup": {
+      "type": "registration",
+      "value": 25,
+      "conditions": {
+        "form": "signup",
+        "page": "/sign-up"
+      }
+    },
+    "purchase": {
+      "type": "purchase",
+      "value": "dynamic",
+      "conditions": {
+        "page": "/checkout/confirmation"
+      }
+    },
+    "download": {
+      "type": "download",
+      "value": 5,
+      "conditions": {
+        "fileType": [
+          "pdf",
+          "doc",
+          "zip"
+        ]
+      }
+    }
+  },
+  "funnels": {
+    "signup": [
+      "/sign-up",
+      "/sign-up/verification",
+      "/sign-up/complete"
+    ],
+    "purchase": [
+      "/products",
+      "/cart",
+      "/checkout",
+      "/checkout/confirmation"
+    ],
+    "contact": [
+      "/contact",
+      "/contact/submit",
+      "/contact/thank-you"
+    ]
+  },
+  "attribution": {
+    "model": "last_click",
+    "channels": [
+      "organic",
+      "paid",
+      "social",
+      "email",
+      "direct"
+    ],
+    "lookbackWindow": 30
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "payment": {
+    "stripe": {
+      "enabled": true,
+      "publicKey": "pk_test_...",
+      "webhookSecret": "whsec_...",
+      "currencies": [
+        "EUR",
+        "USD",
+        "XOF"
+      ]
+    },
+    "paypal": {
+      "enabled": true,
+      "clientId": "YOUR_PAYPAL_CLIENT_ID",
+      "clientSecret": "YOUR_PAYPAL_CLIENT_SECRET",
+      "environment": "sandbox"
+    }
+  },
+  "email": {
+    "provider": "sendgrid",
+    "apiKey": "YOUR_SENDGRID_API_KEY",
+    "fromEmail": "contact@daveandlucesolutions.com",
+    "templates": {
+      "welcome": "d-xxxxxxxxxxxxxxxxxxxxxxxx",
+      "resetPassword": "d-xxxxxxxxxxxxxxxxxxxxxxxx",
+      "orderConfirmation": "d-xxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+  },
+  "sms": {
+    "provider": "twilio",
+    "accountSid": "YOUR_TWILIO_ACCOUNT_SID",
+    "authToken": "YOUR_TWILIO_AUTH_TOKEN",
+    "fromNumber": "+1234567890"
+  },
+  "social": {
+    "facebook": {
+      "appId": "YOUR_FACEBOOK_APP_ID",
+      "appSecret": "YOUR_FACEBOOK_APP_SECRET"
+    },
+    "google": {
+      "clientId": "YOUR_GOOGLE_CLIENT_ID",
+      "clientSecret": "YOUR_GOOGLE_CLIENT_SECRET"
+    }
+  }
+}

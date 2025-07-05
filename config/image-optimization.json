@@ -1,0 +1,28 @@
+{
+  "formats": [
+    "webp",
+    "avif"
+  ],
+  "sizes": {
+    "thumbnail": {
+      "width": 150,
+      "height": 150
+    },
+    "small": {
+      "width": 300,
+      "height": 300
+    },
+    "medium": {
+      "width": 600,
+      "height": 600
+    },
+    "large": {
+      "width": 1200,
+      "height": 1200
+    }
+  },
+  "quality": 85,
+  "compression": "mozjpeg",
+  "lazyLoading": true,
+  "placeholder": "blur"
+}

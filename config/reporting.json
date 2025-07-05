@@ -1,0 +1,72 @@
+{
+  "automated": {
+    "daily": {
+      "enabled": true,
+      "time": "09:00",
+      "timezone": "Europe/Paris",
+      "recipients": [
+        "admin@daveandlucesolutions.com"
+      ]
+    },
+    "weekly": {
+      "enabled": true,
+      "day": "monday",
+      "time": "09:00",
+      "timezone": "Europe/Paris",
+      "recipients": [
+        "admin@daveandlucesolutions.com"
+      ]
+    },
+    "monthly": {
+      "enabled": true,
+      "day": 1,
+      "time": "09:00",
+      "timezone": "Europe/Paris",
+      "recipients": [
+        "admin@daveandlucesolutions.com"
+      ]
+    }
+  },
+  "dashboards": {
+    "overview": {
+      "metrics": [
+        "pageViews",
+        "uniqueVisitors",
+        "conversionRate",
+        "revenue"
+      ],
+      "period": "last30days",
+      "refresh": 300
+    },
+    "ecommerce": {
+      "metrics": [
+        "orders",
+        "revenue",
+        "averageOrderValue",
+        "topProducts"
+      ],
+      "period": "last30days",
+      "refresh": 600
+    },
+    "performance": {
+      "metrics": [
+        "FCP",
+        "LCP",
+        "CLS",
+        "FID",
+        "TTFB"
+      ],
+      "period": "last7days",
+      "refresh": 300
+    }
+  },
+  "exports": {
+    "formats": [
+      "pdf",
+      "csv",
+      "excel"
+    ],
+    "scheduling": true,
+    "retention": 90
+  }
+}

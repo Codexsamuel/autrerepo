@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://dlsolutions.com'),
+  metadataBase: new URL('https://daveandlucesolutions.com'),
   alternates: {
     canonical: '/',
     languages: {
@@ -45,16 +45,16 @@ export const metadata: Metadata = {
     'geo.position': '3.848033;11.502075',
     'ICBM': '3.848033, 11.502075',
     // Hreflang pour l'internationalisation
-    'hreflang-fr': 'https://dlsolutions.com/fr',
-    'hreflang-en': 'https://dlsolutions.com/en',
-    'hreflang-es': 'https://dlsolutions.com/es',
-    'hreflang-ar': 'https://dlsolutions.com/ar',
-    'hreflang-x-default': 'https://dlsolutions.com',
+    'hreflang-fr': 'https://daveandlucesolutions.com/fr',
+    'hreflang-en': 'https://daveandlucesolutions.com/en',
+    'hreflang-es': 'https://daveandlucesolutions.com/es',
+    'hreflang-ar': 'https://daveandlucesolutions.com/ar',
+    'hreflang-x-default': 'https://daveandlucesolutions.com',
   },
   openGraph: {
     type: 'website',
     locale: 'fr_FR',
-    url: 'https://dlsolutions.com',
+    url: 'https://daveandlucesolutions.com',
     siteName: 'DL Solutions',
     title: 'DL Solutions - Écosystème Digital Complet',
     description: 'CRM, ERP, boutique internationale, formations professionnelles. Livraison au Cameroun - École de Police, bureaux disponibles.',
@@ -110,8 +110,8 @@ export default function RootLayout({
             "@context": "https://schema.org",
             "@type": "Organization",
               "name": "DL Solutions",
-            "url": "https://dlsolutions.com",
-              "logo": "https://dlsolutions.com/images/logo-dl-solutions.png",
+            "url": "https://daveandlucesolutions.com",
+              "logo": "https://daveandlucesolutions.com/images/dl-logo.jpg",
               "description": "Écosystème digital complet avec CRM, ERP, boutique internationale, formations professionnelles",
               "address": {
                 "@type": "PostalAddress",
@@ -175,7 +175,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
               "name": "DL Solutions - Bureaux Cameroun",
-              "image": "https://dlsolutions.com/images/bureaux-cameroun.jpg",
+              "image": "https://daveandlucesolutions.com/images/dl-logo.jpg",
               "description": "Bureaux DL Solutions au Cameroun - École de Police, Yaoundé",
               "address": {
                 "@type": "PostalAddress",
@@ -189,12 +189,12 @@ export default function RootLayout({
                 "latitude": 3.848033,
                 "longitude": 11.502075
               },
-              "url": "https://dlsolutions.com",
+              "url": "https://daveandlucesolutions.com",
               "telephone": "+237-XXX-XXX-XXX",
               "openingHours": "Mo-Fr 08:00-18:00",
               "priceRange": "€€",
               "servesCuisine": "Services Digitaux",
-              "hasMenu": "https://dlsolutions.com/services"
+              "hasMenu": "https://daveandlucesolutions.com/services"
             })
           }}
         />
@@ -207,11 +207,11 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               "name": "DL Solutions",
-              "url": "https://dlsolutions.com",
+              "url": "https://daveandlucesolutions.com",
               "description": "Écosystème digital complet avec CRM, ERP, boutique internationale",
               "potentialAction": {
                 "@type": "SearchAction",
-                "target": "https://dlsolutions.com/search?q={search_term_string}",
+                "target": "https://daveandlucesolutions.com/search?q={search_term_string}",
                 "query-input": "required name=search_term_string"
               }
             })

@@ -1,0 +1,44 @@
+{
+  "gdpr": {
+    "enabled": true,
+    "consentBanner": true,
+    "cookieNotice": true,
+    "dataRetention": {
+      "analytics": 26,
+      "marketing": 12,
+      "necessary": 24
+    }
+  },
+  "consent": {
+    "categories": {
+      "necessary": {
+        "required": true,
+        "description": "Cookies nécessaires au fonctionnement du site"
+      },
+      "analytics": {
+        "required": false,
+        "description": "Cookies d'analyse et de performance"
+      },
+      "marketing": {
+        "required": false,
+        "description": "Cookies de marketing et publicité"
+      }
+    },
+    "vendors": {
+      "google": {
+        "category": "analytics",
+        "description": "Google Analytics et Google Tag Manager"
+      },
+      "facebook": {
+        "category": "marketing",
+        "description": "Facebook Pixel pour la publicité"
+      }
+    }
+  },
+  "dataProtection": {
+    "anonymization": true,
+    "encryption": true,
+    "accessControl": true,
+    "dataPortability": true
+  }
+}

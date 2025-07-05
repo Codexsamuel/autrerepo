@@ -1,3 +1,5 @@
+import { optimizeVideoUrl } from '@/lib/cloudinary-utils';
+
 export const mediaConfig = {
   // Images de l'équipe
   team: {
@@ -16,20 +18,20 @@ export const mediaConfig = {
     leadership3: "https://res.cloudinary.com/dko5sommz/image/upload/v1749401791/WhatsApp_Image_2025-06-06_at_22.54.12_mxcqen.jpg"
   },
 
-  // Vidéos d'événements
+  // Vidéos d'événements - URLs optimisées pour le streaming
   events: {
-    institutFrancais: "https://res.cloudinary.com/dko5sommz/video/upload/v1750840734/a_l_instititu_francais_de_yaounde_flojif.mp4",
-    reportageAgence: "https://res.cloudinary.com/dko5sommz/video/upload/v1750841005/WhatsApp_Video_2025-06-05_at_01.41.08_zau0s5.mp4",
-    evenementInstitut: "https://res.cloudinary.com/dko5sommz/video/upload/v1750840992/evenement_a_l_institu_francais_ajicak.mp4",
-    teasingUCAC: "https://res.cloudinary.com/dko5sommz/video/upload/v1750840982/teasing_UCAC_mllc2k.mp4",
-    ucac: "https://res.cloudinary.com/dko5sommz/video/upload/v1750840961/UCAC_t3lduu.mp4"
+    institutFrancais: optimizeVideoUrl("https://res.cloudinary.com/dko5sommz/video/upload/v1750840734/a_l_instititu_francais_de_yaounde_flojif.mp4", { quality: 'auto', format: 'mp4' }),
+    reportageAgence: optimizeVideoUrl("https://res.cloudinary.com/dko5sommz/video/upload/v1750841005/WhatsApp_Video_2025-06-05_at_01.41.08_zau0s5.mp4", { quality: 'auto', format: 'mp4' }),
+    evenementInstitut: optimizeVideoUrl("https://res.cloudinary.com/dko5sommz/video/upload/v1750840992/evenement_a_l_institu_francais_ajicak.mp4", { quality: 'auto', format: 'mp4' }),
+    teasingUCAC: optimizeVideoUrl("https://res.cloudinary.com/dko5sommz/video/upload/v1750840982/teasing_UCAC_mllc2k.mp4", { quality: 'auto', format: 'mp4' }),
+    ucac: optimizeVideoUrl("https://res.cloudinary.com/dko5sommz/video/upload/v1750840961/UCAC_t3lduu.mp4", { quality: 'auto', format: 'mp4' })
   },
 
-  // Vidéos de fond pour le carousel
+  // Vidéos de fond pour le carousel - URLs optimisées
   heroVideos: {
-    digitalUniverse: "https://res.cloudinary.com/dko5sommz/video/upload/v1749401814/WhatsApp_Video_2025-06-06_at_22.54.48_fudnfd.mp4",
-    innovation: "https://res.cloudinary.com/dko5sommz/video/upload/v1749401792/WhatsApp_Video_2025-06-06_at_22.54.45_drvh4l.mp4",
-    technology: "https://res.cloudinary.com/dko5sommz/video/upload/v1750840734/a_l_instititu_francais_de_yaounde_flojif.mp4"
+    digitalUniverse: optimizeVideoUrl("https://res.cloudinary.com/dko5sommz/video/upload/v1749401814/WhatsApp_Video_2025-06-06_at_22.54.48_fudnfd.mp4", { quality: 'auto', format: 'mp4' }),
+    innovation: optimizeVideoUrl("https://res.cloudinary.com/dko5sommz/video/upload/v1749401792/WhatsApp_Video_2025-06-06_at_22.54.45_drvh4l.mp4", { quality: 'auto', format: 'mp4' }),
+    technology: optimizeVideoUrl("https://res.cloudinary.com/dko5sommz/video/upload/v1750840734/a_l_instititu_francais_de_yaounde_flojif.mp4", { quality: 'auto', format: 'mp4' })
   },
 
   // Images de fond pour le carousel
@@ -39,11 +41,11 @@ export const mediaConfig = {
     technology: "https://res.cloudinary.com/dko5sommz/image/upload/v1749401791/WhatsApp_Image_2025-06-06_at_22.54.12_mxcqen.jpg"
   },
 
-  // Vidéos de drone
+  // Vidéos de drone - URLs optimisées
   drone: {
-    drone1: "https://res.cloudinary.com/dko5sommz/video/upload/v1750840734/a_l_instititu_francais_de_yaounde_flojif.mp4",
-    drone2: "https://res.cloudinary.com/dko5sommz/video/upload/v1750841005/WhatsApp_Video_2025-06-05_at_01.41.08_zau0s5.mp4",
-    drone3: "https://res.cloudinary.com/dko5sommz/video/upload/v1750840992/evenement_a_l_institu_francais_ajicak.mp4"
+    drone1: optimizeVideoUrl("https://res.cloudinary.com/dko5sommz/video/upload/v1750840734/a_l_instititu_francais_de_yaounde_flojif.mp4", { quality: 'auto', format: 'mp4' }),
+    drone2: optimizeVideoUrl("https://res.cloudinary.com/dko5sommz/video/upload/v1750841005/WhatsApp_Video_2025-06-05_at_01.41.08_zau0s5.mp4", { quality: 'auto', format: 'mp4' }),
+    drone3: optimizeVideoUrl("https://res.cloudinary.com/dko5sommz/video/upload/v1750840992/evenement_a_l_institu_francais_ajicak.mp4", { quality: 'auto', format: 'mp4' })
   },
 
   // Images de projets

@@ -1,0 +1,23 @@
+{
+  "provider": "cloudflare",
+  "domains": [
+    "daveandlucesolutions.com",
+    "www.daveandlucesolutions.com"
+  ],
+  "optimization": {
+    "images": true,
+    "minification": true,
+    "compression": true,
+    "http2": true,
+    "http3": true
+  },
+  "security": {
+    "ssl": "strict",
+    "hsts": true,
+    "csp": true
+  },
+  "caching": {
+    "browser": "1 year",
+    "cdn": "1 hour"
+  }
+}

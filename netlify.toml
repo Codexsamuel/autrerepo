@@ -19,10 +19,10 @@
   publish = ".next"
   autoLaunch = true
 
-# Configuration des fonctions Netlify désactivée temporairement
-# [functions]
-#   directory = "netlify/functions"
-#   node_bundler = "esbuild"
+# Configuration des fonctions Netlify
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
 
 [[headers]]
   for = "/*"

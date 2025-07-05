@@ -1,5 +1,3 @@
-'use client';
-
 import { ArrowLeft, Calendar, Car, Heart, Mail, MapPin, Phone, Share2, Sparkles, Star, Users, UtensilsCrossed, Waves, Wifi } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';

@@ -1,13 +1,13 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Building2, Eye, EyeOff, Lock, Mail } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Building2, Mail, Lock, Eye, EyeOff } from "lucide-react"
-import Link from "next/link"
 
 
 
@@ -34,27 +34,27 @@ export default function LoginPage() {
           <CardContent className="pt-6">
             <form className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-black">Email</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                   <Input
                     id="email"
                     type="email"
                     placeholder="votre@email.com"
-                    className="pl-10"
+                    className="pl-10 text-black placeholder:text-black"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Mot de passe</Label>
+                <Label htmlFor="password" className="text-black">Mot de passe</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
-                    className="pl-10"
+                    className="pl-10 text-black placeholder:text-black"
                   />
                   <button
                     type="button"

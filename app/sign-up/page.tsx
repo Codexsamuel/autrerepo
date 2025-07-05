@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useSession } from '@/components/providers/SessionProvider';
+import { ArrowRight, Check, Eye, EyeOff, Lock, Mail, User } from 'lucide-react';
 import Link from 'next/link';
-import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Check } from 'lucide-react';
-import { auth } from '@/lib/auth-simple';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -15,10 +15,11 @@ export default function SignUpPage() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const router = useRouter();
+  const { login } = useSession();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -29,37 +30,34 @@ export default function SignUpPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setIsLoading(true);
     setError('');
 
-    // Validation
     if (formData.password !== formData.confirmPassword) {
       setError('Les mots de passe ne correspondent pas');
-      setLoading(false);
+      setIsLoading(false);
       return;
     }
 
     if (formData.password.length < 8) {
       setError('Le mot de passe doit contenir au moins 8 caractères');
-      setLoading(false);
+      setIsLoading(false);
       return;
     }
 
     try {
-      const result = await auth.signUp(formData.name, formData.email, formData.password);
-
-      if (!result.success) {
-        throw new Error(result.error || 'Erreur lors de l\'inscription');
-      }
-
-      setSuccess(true);
-      setTimeout(() => {
-        router.push('/sign-in');
-      }, 2000);
-    } catch (error) {
-      setError(error instanceof Error ? error.message : 'Une erreur est survenue');
+      // Simulation d'inscription
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Inscription réussie, connexion automatique
+      login({ email: formData.email, name: formData.name });
+      
+      // Redirection vers l'accueil
+      window.location.href = '/';
+    } catch (err) {
+      setError('Erreur lors de l\'inscription. Veuillez réessayer.');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -112,7 +110,7 @@ export default function SignUpPage() {
 
             <div className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2 text-black">
                   Nom complet
                 </label>
                 <div className="relative">
@@ -124,14 +122,14 @@ export default function SignUpPage() {
                     required
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black placeholder:text-black"
                     placeholder="Votre nom complet"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2 text-black">
                   Email
                 </label>
                 <div className="relative">
@@ -143,14 +141,14 @@ export default function SignUpPage() {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black placeholder:text-black"
                     placeholder="votre@email.com"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2 text-black">
                   Mot de passe
                 </label>
                 <div className="relative">
@@ -162,7 +160,7 @@ export default function SignUpPage() {
                     required
                     value={formData.password}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black placeholder:text-black"
                     placeholder="••••••••"
                   />
                   <button
@@ -179,7 +177,7 @@ export default function SignUpPage() {
               </div>
 
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2 text-black">
                   Confirmer le mot de passe
                 </label>
                 <div className="relative">
@@ -191,7 +189,7 @@ export default function SignUpPage() {
                     required
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black placeholder:text-black"
                     placeholder="••••••••"
                   />
                   <button
@@ -207,10 +205,10 @@ export default function SignUpPage() {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={isLoading}
               className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? (
+              {isLoading ? (
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
               ) : (
                 <>

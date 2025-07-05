@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Eye, EyeOff, Plane, MapPin, Star, Facebook, Mail, Phone } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Eye, EyeOff, Facebook, Mail, MapPin, Phone, Plane, Star } from "lucide-react";
+import Link from "next/link";
 import type { FormEvent } from "react";
+import { useState } from "react";
 
 
 
@@ -163,7 +162,7 @@ export default function ConnexionPage() {
 
                     <form onSubmit={handleLogin} className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1 text-black">Email</label>
                         <input
                           type="email"
                           required
@@ -175,14 +174,14 @@ export default function ConnexionPage() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Mot de passe</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1 text-black">Mot de passe</label>
                         <div className="relative">
                           <input
                             type={showPassword ? "text" : "password"}
                             required
                             value={loginData.password}
                             onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10 text-black placeholder:text-black"
                             placeholder="••••••••"
                           />
                           <button

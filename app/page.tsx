@@ -1,40 +1,36 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import FAQSection from '@/components/faq-section';
-import TestimonialsSection from '@/components/testimonials-section';
-import MediaSection from '@/components/media-section';
+import { mediaConfig } from "@/app/config/media";
+import AIChatbot from '@/components/ai-chatbot';
 import AppointmentPopup from '@/components/appointment-popup';
 import CookiesBanner from '@/components/cookies-banner';
-import PrivacyMessage from '@/components/privacy-message';
-import AIChatbot from '@/components/ai-chatbot';
-import WhatsAppButton from '@/components/whatsapp-button';
-import { VideoCarousel } from "@/components/ui/video-carousel";
-import { Button } from "@/components/ui/button";
-import { 
-  ArrowRight, 
-  CheckCircle, 
-  Star, 
-  Users, 
-  TrendingUp,
-  Shield,
-  Zap,
-  Globe,
-  User,
-  LogIn,
-  UserPlus,
-  Crown,
-  Settings,
-  DollarSign,
-  BarChart3
-} from "lucide-react";
-import { mediaConfig } from "@/app/config/media";
-import ContextualHelp from '@/components/onboarding/ContextualHelp';
+import FAQSection from '@/components/faq-section';
 import ModernNavigation from '@/components/layout/ModernNavigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import MediaSection from '@/components/media-section';
+import ContextualHelp from '@/components/onboarding/ContextualHelp';
+import PrivacyMessage from '@/components/privacy-message';
+import TestimonialsSection from '@/components/testimonials-section';
+import { Button } from "@/components/ui/button";
+import WhatsAppButton from '@/components/whatsapp-button';
+import {
+    ArrowRight,
+    CheckCircle,
+    Crown,
+    Eye,
+    EyeOff,
+    Globe,
+    LogIn,
+    Settings,
+    Shield,
+    Star,
+    TrendingUp,
+    User,
+    UserPlus,
+    Users,
+    Zap
+} from "lucide-react";
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 // Types pour l'authentification
 interface User {
@@ -84,6 +80,7 @@ export default function HomePage() {
     confirmPassword: ''
   });
   const [authError, setAuthError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   // Vérifier l'authentification au chargement
   useEffect(() => {
@@ -357,7 +354,7 @@ export default function HomePage() {
             <div className="space-y-4">
               {authMode === 'register' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1 text-black">
                     Nom complet
                   </label>
                   <input
@@ -371,41 +368,51 @@ export default function HomePage() {
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1 text-black">
                   Email
                 </label>
                 <input
                   type="email"
                   value={authForm.email}
                   onChange={(e) => setAuthForm({ ...authForm, email: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black placeholder:text-black"
                   placeholder="votre@email.com"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1 text-black">
                   Mot de passe
                 </label>
-                <input
-                  type="password"
-                  value={authForm.password}
-                  onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="••••••••"
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={authForm.password}
+                    onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10 text-black placeholder:text-black"
+                    placeholder="••••••••"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  </button>
+                </div>
               </div>
 
               {authMode === 'register' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1 text-black">
                     Confirmer le mot de passe
                   </label>
                   <input
                     type="password"
                     value={authForm.confirmPassword}
                     onChange={(e) => setAuthForm({ ...authForm, confirmPassword: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black placeholder:text-black"
                     placeholder="••••••••"
                   />
                 </div>

@@ -1,11 +1,11 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Building2, Eye, EyeOff, Lock } from "lucide-react";
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Building2, Lock, Eye, EyeOff } from "lucide-react"
 
 
 
@@ -32,14 +32,14 @@ export default function ResetPasswordPage() {
           <CardContent className="pt-6">
             <form className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="password">Nouveau mot de passe</Label>
+                <Label htmlFor="password" className="text-black">Nouveau mot de passe</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
-                    className="pl-10"
+                    className="pl-10 text-black placeholder:text-black"
                   />
                   <button
                     type="button"
@@ -56,16 +56,14 @@ export default function ResetPasswordPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">
-                  Confirmer le nouveau mot de passe
-                </Label>
+                <Label htmlFor="confirmPassword" className="text-black">Confirmer le nouveau mot de passe</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                   <Input
                     id="confirmPassword"
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="••••••••"
-                    className="pl-10"
+                    className="pl-10 text-black placeholder:text-black"
                   />
                   <button
                     type="button"

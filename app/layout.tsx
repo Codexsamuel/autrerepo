@@ -2,6 +2,8 @@ import GoogleAutoAds from '@/components/ads/GoogleAutoAds'
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics'
 import TradingNavigation from '@/components/layout/TradingNavigation'
 import OnboardingProvider from '@/components/onboarding/OnboardingProvider'
+import { SessionProvider } from '@/components/providers/SessionProvider'
+import { SessionTimer } from '@/components/ui/SessionTimer'
 import { Toaster } from '@/components/ui/toaster'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
@@ -292,13 +294,16 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <GoogleAnalytics />
-        <GoogleAutoAds />
-        <OnboardingProvider>
-          <TradingNavigation />
-          {children}
-          <Toaster />
-        </OnboardingProvider>
+        <SessionProvider>
+          <SessionTimer />
+          <GoogleAnalytics />
+          <GoogleAutoAds />
+          <OnboardingProvider>
+            <TradingNavigation />
+            {children}
+            <Toaster />
+          </OnboardingProvider>
+        </SessionProvider>
       </body>
     </html>
   )

@@ -1,10 +1,10 @@
 # Configuration Netlify pour DAVY Trading Platform
-# Version: 3.1 - Configuration corrigée pour npm
+# Version: 3.2 - Configuration SSR pour Next.js
 
 [build]
   # Commande de build avec npm
   command = "npm run build"
-  publish = "out"
+  publish = ".next"
 
 [build.environment]
   NEXT_TELEMETRY_DISABLED = "1"

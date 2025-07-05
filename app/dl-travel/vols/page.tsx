@@ -1,10 +1,26 @@
-export default function Page() {
+import DevelopmentPage from '@/components/DevelopmentPage';
+
+export default function VolsPage() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-4">Page en cours de développement</h1>
-      <p className="text-gray-600">
-        Cette page est actuellement en cours de développement.
-      </p>
-    </div>
+    <DevelopmentPage
+      title="Réservation de Vols - En cours de développement"
+      description="Notre plateforme de réservation de billets d'avion avec IA et comparaison de prix est en cours de finalisation."
+      estimatedCompletion="2-3 semaines"
+      features={[
+        "Recherche de vols intelligente",
+        "Comparaison de prix en temps réel",
+        "Réservation automatisée",
+        "Notifications de prix",
+        "Intégration avec les compagnies aériennes",
+        "Gestion des bagages et sièges",
+        "Support multilingue"
+      ]}
+      relatedPages={[
+        { name: "DL Travel", href: "/dl-travel" },
+        { name: "Hôtels", href: "/dl-travel/hotels" },
+        { name: "Packages", href: "/dl-travel/packages" },
+        { name: "Mes Voyages", href: "/dl-travel/mes-voyages" }
+      ]}
+    />
   );
 }

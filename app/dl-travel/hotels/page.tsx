@@ -1,6 +1,6 @@
 'use client';
 
-import { Filter, MapPin, Parking, Pool, Restaurant, Search, Spa, Star, Wifi } from 'lucide-react';
+import { Car, Filter, MapPin, Search, Sparkles, Star, UtensilsCrossed, Waves, Wifi } from 'lucide-react';
 import { useState } from 'react';
 
 export default function HotelsPage() {
@@ -11,8 +11,8 @@ export default function HotelsPage() {
     guests: 1,
     rooms: 1,
     priceRange: [0, 500],
-    stars: [],
-    amenities: []
+    stars: [] as number[],
+    amenities: [] as string[]
   });
 
   const [sortBy, setSortBy] = useState('recommended');
@@ -100,10 +100,10 @@ export default function HotelsPage() {
 
   const amenities = [
     { id: 'wifi', label: 'WiFi gratuit', icon: Wifi },
-    { id: 'pool', label: 'Piscine', icon: Pool },
-    { id: 'parking', label: 'Parking', icon: Parking },
-    { id: 'restaurant', label: 'Restaurant', icon: Restaurant },
-    { id: 'spa', label: 'Spa', icon: Spa }
+    { id: 'pool', label: 'Piscine', icon: Waves },
+    { id: 'parking', label: 'Parking', icon: Car },
+    { id: 'restaurant', label: 'Restaurant', icon: UtensilsCrossed },
+    { id: 'spa', label: 'Spa', icon: Sparkles }
   ];
 
   const handleSearch = (e: React.FormEvent) => {

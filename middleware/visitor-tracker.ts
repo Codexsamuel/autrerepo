@@ -97,7 +97,7 @@ function extractSearchQuery(request: NextRequest): string | undefined {
 
 // Fonction pour générer un ID de visiteur basé sur l'IP et l'User-Agent
 function generateVisitorId(request: NextRequest): string {
-  const ip = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+  const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
   const userAgent = request.headers.get('user-agent') || 'unknown';
   
   // Créer un hash simple basé sur l'IP et l'User-Agent
@@ -121,7 +121,7 @@ async function trackPageView(request: NextRequest, response: NextResponse): Prom
       return;
     }
     
-    const ip = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
     const userAgent = request.headers.get('user-agent') || '';
     const referer = request.headers.get('referer');
     
@@ -184,8 +184,9 @@ export async function trackAction(
       return;
     }
     
-    const ip = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
     const userAgent = request.headers.get('user-agent') || '';
+    const referer = request.headers.get('referer');
     const location = await getLocationFromIP(ip);
     
     const session = {

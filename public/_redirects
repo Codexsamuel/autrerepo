@@ -1,3 +1,5 @@
-/* /index.html 200 
+# Redirections pour les API routes vers Vercel
+/api/*   https://autrerepo-69ck-qief51f8z-dave-and-luce-solutions-projects.vercel.app/api/:splat   200
 
-/api/*   https://votre-backend.vercel.app/api/:splat   200 
+# Redirections générales pour SPA
+/*    /index.html   200 

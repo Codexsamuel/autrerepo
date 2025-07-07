@@ -1,10 +1,24 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Configuration Supabase (à remplacer par vos vraies clés)
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Créer le client Supabase seulement si les variables sont configurées
+let supabase: any = null;
+
+if (supabaseUrl && supabaseKey && supabaseUrl !== 'https://placeholder.supabase.co' && supabaseKey !== 'placeholder-key') {
+  try {
+    supabase = createClient(supabaseUrl, supabaseKey);
+  } catch (error) {
+    console.warn('Erreur lors de l\'initialisation de Supabase:', error);
+  }
+}
+
+// Fonction helper pour vérifier si Supabase est disponible
+function isSupabaseAvailable(): boolean {
+  return supabase !== null;
+}
 
 // Interfaces pour les données des visiteurs
 export interface VisitorSession {
@@ -83,6 +97,11 @@ export interface BehaviorAnalytics {
 export class VisitorTrackingDB {
   // Enregistrer une nouvelle session de visiteur
   static async recordSession(session: Omit<VisitorSession, 'id' | 'created_at'>): Promise<void> {
+    if (!isSupabaseAvailable()) {
+      console.warn('Supabase non configuré, session non enregistrée');
+      return;
+    }
+    
     try {
       const { error } = await supabase
         .from('visitor_sessions')
@@ -115,6 +134,11 @@ export class VisitorTrackingDB {
 
   // Récupérer les sessions d'un visiteur spécifique
   static async getVisitorSessions(visitorId: string, limit: number = 50): Promise<VisitorSession[]> {
+    if (!isSupabaseAvailable()) {
+      console.warn('Supabase non configuré, retour de données vides');
+      return [];
+    }
+    
     try {
       const { data, error } = await supabase
         .from('visitor_sessions')
@@ -141,6 +165,21 @@ export class VisitorTrackingDB {
     startDate: string,
     endDate: string
   ): Promise<VisitorAnalytics> {
+    if (!isSupabaseAvailable()) {
+      console.warn('Supabase non configuré, retour de données par défaut');
+      return {
+        total_views: 0,
+        total_clicks: 0,
+        total_calls: 0,
+        total_directions: 0,
+        conversion_rate: 0,
+        average_session_duration: 0,
+        unique_visitors: 0,
+        returning_visitors: 0,
+        new_visitors: 0
+      };
+    }
+    
     try {
       const { data, error } = await supabase
         .from('visitor_sessions')
@@ -157,20 +196,20 @@ export class VisitorTrackingDB {
       const sessions = data || [];
       
       // Calculer les analytics
-      const totalViews = sessions.filter(s => s.action === 'view').length;
-      const totalClicks = sessions.filter(s => s.action === 'click').length;
-      const totalCalls = sessions.filter(s => s.action === 'call').length;
-      const totalDirections = sessions.filter(s => s.action === 'direction').length;
+      const totalViews = sessions.filter((s: any) => s.action === 'view').length;
+      const totalClicks = sessions.filter((s: any) => s.action === 'click').length;
+      const totalCalls = sessions.filter((s: any) => s.action === 'call').length;
+      const totalDirections = sessions.filter((s: any) => s.action === 'direction').length;
       
-      const uniqueVisitors = new Set(sessions.map(s => s.visitor_id)).size;
-      const returningVisitors = sessions.filter(s => s.is_returning).length;
+      const uniqueVisitors = new Set(sessions.map((s: any) => s.visitor_id)).size;
+      const returningVisitors = sessions.filter((s: any) => s.is_returning).length;
       const newVisitors = uniqueVisitors - returningVisitors;
       
       const totalActions = totalClicks + totalCalls + totalDirections;
       const conversionRate = totalViews > 0 ? (totalActions / totalViews) * 100 : 0;
       
       const avgSessionDuration = sessions.length > 0 
-        ? sessions.reduce((sum, s) => sum + s.session_duration, 0) / sessions.length 
+        ? sessions.reduce((sum: number, s: any) => sum + s.session_duration, 0) / sessions.length 
         : 0;
 
       return {
@@ -207,6 +246,11 @@ export class VisitorTrackingDB {
     endDate: string,
     limit: number = 10
   ): Promise<SearchQueryAnalytics[]> {
+    if (!isSupabaseAvailable()) {
+      console.warn('Supabase non configuré, retour de données vides');
+      return [];
+    }
+    
     try {
       const { data, error } = await supabase
         .from('visitor_sessions')
@@ -230,7 +274,7 @@ export class VisitorTrackingDB {
         uniqueVisitors: Set<string>;
       }>();
 
-      sessions.forEach(session => {
+      sessions.forEach((session: any) => {
         if (session.search_query) {
           if (!queryStats.has(session.search_query)) {
             queryStats.set(session.search_query, {
@@ -250,13 +294,13 @@ export class VisitorTrackingDB {
       // Calculer les analytics pour chaque requête
       const analytics: SearchQueryAnalytics[] = Array.from(queryStats.entries())
         .map(([query, stats]) => {
-          const conversions = stats.sessions.filter(s => 
+          const conversions = stats.sessions.filter((s: any) => 
             ['click', 'call', 'direction'].includes(s.action)
           ).length;
           
           const conversionRate = stats.count > 0 ? (conversions / stats.count) * 100 : 0;
           const avgSessionDuration = stats.sessions.length > 0 
-            ? stats.sessions.reduce((sum, s) => sum + s.session_duration, 0) / stats.sessions.length 
+            ? stats.sessions.reduce((sum: number, s: any) => sum + s.session_duration, 0) / stats.sessions.length 
             : 0;
 
           return {
@@ -283,6 +327,11 @@ export class VisitorTrackingDB {
     startDate: string,
     endDate: string
   ): Promise<LocationAnalytics[]> {
+    if (!isSupabaseAvailable()) {
+      console.warn('Supabase non configuré, retour de données vides');
+      return [];
+    }
+    
     try {
       const { data, error } = await supabase
         .from('visitor_sessions')
@@ -304,7 +353,7 @@ export class VisitorTrackingDB {
         sessions: any[];
       }>();
 
-      sessions.forEach(session => {
+      sessions.forEach((session: any) => {
         const location = `${session.location.city}, ${session.location.region}`;
         
         if (!locationStats.has(location)) {
@@ -319,7 +368,7 @@ export class VisitorTrackingDB {
         stats.sessions.push(session);
       });
 
-      const totalVisitors = new Set(sessions.map(s => s.visitor_id)).size;
+      const totalVisitors = new Set(sessions.map((s: any) => s.visitor_id)).size;
 
       // Calculer les analytics pour chaque localisation
       const analytics: LocationAnalytics[] = Array.from(locationStats.entries())
@@ -327,13 +376,13 @@ export class VisitorTrackingDB {
           const visitors = stats.visitors.size;
           const percentage = totalVisitors > 0 ? (visitors / totalVisitors) * 100 : 0;
           
-          const conversions = stats.sessions.filter(s => 
+          const conversions = stats.sessions.filter((s: any) => 
             ['click', 'call', 'direction'].includes(s.action)
           ).length;
           
           const conversionRate = stats.sessions.length > 0 ? (conversions / stats.sessions.length) * 100 : 0;
           const avgSessionDuration = stats.sessions.length > 0 
-            ? stats.sessions.reduce((sum, s) => sum + s.session_duration, 0) / stats.sessions.length 
+            ? stats.sessions.reduce((sum: number, s: any) => sum + s.session_duration, 0) / stats.sessions.length 
             : 0;
 
           return {
@@ -353,12 +402,17 @@ export class VisitorTrackingDB {
     }
   }
 
-  // Récupérer les sessions actives en temps réel
+    // Récupérer les sessions actives en temps réel
   static async getActiveSessions(businessProfileId: string): Promise<VisitorSession[]> {
+    if (!isSupabaseAvailable()) {
+      console.warn('Supabase non configuré, retour de données vides');
+      return [];
+    }
+    
     try {
       const now = new Date();
       const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000).toISOString();
-
+      
       const { data, error } = await supabase
         .from('visitor_sessions')
         .select('*')
@@ -390,6 +444,11 @@ export class VisitorTrackingDB {
 
   // Vérifier si un visiteur est retournant
   static async isReturningVisitor(visitorId: string, businessProfileId: string): Promise<boolean> {
+    if (!isSupabaseAvailable()) {
+      console.warn('Supabase non configuré, retour false');
+      return false;
+    }
+    
     try {
       const { data, error } = await supabase
         .from('visitor_sessions')
@@ -412,6 +471,11 @@ export class VisitorTrackingDB {
 
   // Mettre à jour la durée de session
   static async updateSessionDuration(sessionId: string, duration: number): Promise<void> {
+    if (!isSupabaseAvailable()) {
+      console.warn('Supabase non configuré, mise à jour ignorée');
+      return;
+    }
+    
     try {
       const { error } = await supabase
         .from('visitor_sessions')

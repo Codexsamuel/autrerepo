@@ -4,11 +4,13 @@ import { mediaConfig } from "@/app/config/media";
 import AIChatbot from '@/components/ai-chatbot';
 import AppointmentPopup from '@/components/appointment-popup';
 import CookiesBanner from '@/components/cookies-banner';
+import { EventVideoCard } from "@/components/event-video-card";
 import FAQSection from '@/components/faq-section';
 import ModernNavigation from '@/components/layout/ModernNavigation';
 import MediaSection from '@/components/media-section';
 import ContextualHelp from '@/components/onboarding/ContextualHelp';
 import PrivacyMessage from '@/components/privacy-message';
+import { AdvancedSEO } from "@/components/seo/AdvancedSEO";
 import TestimonialsSection from '@/components/testimonials-section';
 import { Button } from "@/components/ui/button";
 import WhatsAppButton from '@/components/whatsapp-button';
@@ -31,6 +33,30 @@ import {
 } from "lucide-react";
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+
+// Types pour les services premium
+interface PremiumService {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  image: string;
+  badge: string;
+  badgeColor: string;
+  features: string[];
+  benefits: string[];
+  process: Array<{
+    step: number;
+    title: string;
+    description: string;
+  }>;
+  technologies: string[];
+  pricing: {
+    starter: string;
+    professional: string;
+    enterprise: string;
+  };
+}
 
 // Types pour l'authentification
 interface User {
@@ -81,6 +107,8 @@ export default function HomePage() {
   });
   const [authError, setAuthError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [selectedService, setSelectedService] = useState<PremiumService | null>(null);
+  const [showServiceModal, setShowServiceModal] = useState(false);
 
   // Vérifier l'authentification au chargement
   useEffect(() => {
@@ -172,6 +200,235 @@ export default function HomePage() {
     setCurrentUser(null);
     setIsAuthenticated(false);
     localStorage.removeItem('currentUser');
+  };
+
+  // Données des services premium
+  const premiumServices: PremiumService[] = [
+    {
+      id: 'image-marque',
+      title: 'Gestion et Optimisation de l\'Image de Marque',
+      subtitle: 'Communication Digitale',
+      description: 'Développez une identité de marque forte et cohérente. Notre expertise en communication digitale vous permet de vous démarquer et de créer un impact durable sur votre marché.',
+      image: 'https://res.cloudinary.com/dko5sommz/image/upload/v1751930995/La-plateforme-de-marque-pourquoi-est-elle-importante-pour-votre-entreprise-_wvuuk2.webp',
+      badge: 'Communication Digitale',
+      badgeColor: 'bg-blue-600',
+      features: [
+        'Audit complet de l\'image de marque',
+        'Stratégie de communication digitale',
+        'Design d\'identité visuelle',
+        'Gestion des réseaux sociaux',
+        'Content marketing',
+        'Publicité digitale ciblée',
+        'Monitoring et analytics',
+        'Création de supports marketing'
+      ],
+      benefits: [
+        'Image de marque cohérente et professionnelle',
+        'Augmentation de la notoriété',
+        'Fidélisation de la clientèle',
+        'Différenciation concurrentielle',
+        'ROI mesurable sur les campagnes',
+        'Adaptation aux tendances du marché'
+      ],
+      process: [
+        {
+          step: 1,
+          title: 'Audit & Analyse',
+          description: 'Analyse approfondie de votre image actuelle et de votre positionnement'
+        },
+        {
+          step: 2,
+          title: 'Stratégie',
+          description: 'Définition d\'une stratégie de communication adaptée à vos objectifs'
+        },
+        {
+          step: 3,
+          title: 'Création',
+          description: 'Développement de l\'identité visuelle et des supports de communication'
+        },
+        {
+          step: 4,
+          title: 'Déploiement',
+          description: 'Mise en œuvre et suivi des actions de communication'
+        }
+      ],
+      technologies: ['Adobe Creative Suite', 'Canva Pro', 'Hootsuite', 'Buffer', 'Google Analytics', 'Facebook Ads', 'Google Ads'],
+      pricing: {
+        starter: 'Sur consultation',
+        professional: 'Sur consultation',
+        enterprise: 'Sur consultation'
+      }
+    },
+    {
+      id: 'parcours-client',
+      title: 'Gestion, Optimisation et Cartographie du Parcours Client',
+      subtitle: 'Expérience Client',
+      description: 'Analysez et optimisez chaque étape du parcours client. Notre expertise vous permet d\'améliorer l\'expérience utilisateur et d\'augmenter significativement vos taux de conversion.',
+      image: 'https://res.cloudinary.com/dko5sommz/image/upload/v1751930988/cartographie-parcours-client-930x620_vrfvgi.webp',
+      badge: 'Expérience Client',
+      badgeColor: 'bg-green-600',
+      features: [
+        'Cartographie complète du parcours client',
+        'Analyse des points de friction',
+        'Optimisation des conversions',
+        'Personnalisation de l\'expérience',
+        'A/B testing et optimisation',
+        'Intégration CRM',
+        'Automatisation des processus',
+        'Suivi des performances'
+      ],
+      benefits: [
+        'Augmentation des taux de conversion',
+        'Réduction des abandons',
+        'Amélioration de la satisfaction client',
+        'Optimisation des coûts d\'acquisition',
+        'Données précises pour la prise de décision',
+        'Processus automatisés et efficaces'
+      ],
+      process: [
+        {
+          step: 1,
+          title: 'Mapping',
+          description: 'Cartographie détaillée de tous les points de contact client'
+        },
+        {
+          step: 2,
+          title: 'Analyse',
+          description: 'Identification des points de friction et opportunités d\'amélioration'
+        },
+        {
+          step: 3,
+          title: 'Optimisation',
+          description: 'Mise en place des améliorations et automatisations'
+        },
+        {
+          step: 4,
+          title: 'Monitoring',
+          description: 'Suivi continu et optimisation des performances'
+        }
+      ],
+      technologies: ['Hotjar', 'Google Analytics', 'Mixpanel', 'HubSpot', 'Salesforce', 'Zapier', 'Segment'],
+      pricing: {
+        starter: 'Sur consultation',
+        professional: 'Sur consultation',
+        enterprise: 'Sur consultation'
+      }
+    },
+    {
+      id: 'developpement',
+      title: 'Conception et Déploiement de Logiciels et Applications Digitales sur Mesure',
+      subtitle: 'Transformation Digitale',
+      description: 'Solutions digitales personnalisées alignées sur votre vision et vos missions. Développement d\'applications, logiciels et plateformes adaptés à vos besoins spécifiques.',
+      image: 'https://res.cloudinary.com/dko5sommz/image/upload/v1751930991/banniere-developpement-applications_33099-1720_gez5lg.avif',
+      badge: 'Transformation Digitale',
+      badgeColor: 'bg-purple-600',
+      features: [
+        'Développement d\'applications sur mesure',
+        'Sites web et e-commerce',
+        'Applications mobiles (iOS/Android)',
+        'Systèmes de gestion (CRM/ERP)',
+        'Intégration API et services tiers',
+        'Maintenance et support technique',
+        'Formation des équipes',
+        'Déploiement et hébergement'
+      ],
+      benefits: [
+        'Solutions adaptées à vos besoins spécifiques',
+        'Gain de temps et d\'efficacité',
+        'Réduction des coûts opérationnels',
+        'Avantage concurrentiel',
+        'Évolutivité et scalabilité',
+        'Support technique dédié'
+      ],
+      process: [
+        {
+          step: 1,
+          title: 'Analyse des Besoins',
+          description: 'Compréhension approfondie de vos objectifs et contraintes'
+        },
+        {
+          step: 2,
+          title: 'Conception',
+          description: 'Architecture technique et design de l\'interface utilisateur'
+        },
+        {
+          step: 3,
+          title: 'Développement',
+          description: 'Codage et intégration des fonctionnalités'
+        },
+        {
+          step: 4,
+          title: 'Déploiement',
+          description: 'Mise en production et formation des utilisateurs'
+        }
+      ],
+      technologies: ['React', 'Node.js', 'Python', 'Django', 'Flutter', 'AWS', 'Docker', 'Kubernetes'],
+      pricing: {
+        starter: 'Sur consultation',
+        professional: 'Sur consultation',
+        enterprise: 'Sur consultation'
+      }
+    },
+    {
+      id: 'location-equipements',
+      title: 'Location d\'Équipements pour Événements',
+      subtitle: 'Événementiel',
+      description: 'Équipements professionnels de qualité pour tous vos événements. Matériel audiovisuel, sonorisation, éclairage et solutions techniques complètes pour des événements réussis.',
+      image: 'https://res.cloudinary.com/dko5sommz/image/upload/v1751931103/20250429141042jpg_68248e3e940248.10503265_sgwryl.jpg',
+      badge: 'Événementiel',
+      badgeColor: 'bg-orange-600',
+      features: [
+        'Matériel audiovisuel professionnel',
+        'Systèmes de sonorisation',
+        'Éclairage d\'événements',
+        'Écrans et projecteurs',
+        'Microphones et accessoires',
+        'Caméras et équipements vidéo',
+        'Installation et démontage',
+        'Support technique sur place'
+      ],
+      benefits: [
+        'Équipements de qualité professionnelle',
+        'Service complet d\'installation',
+        'Support technique dédié',
+        'Flexibilité des durées de location',
+        'Tarifs compétitifs',
+        'Assurance incluse'
+      ],
+      process: [
+        {
+          step: 1,
+          title: 'Consultation',
+          description: 'Analyse de vos besoins et recommandations d\'équipements'
+        },
+        {
+          step: 2,
+          title: 'Réservation',
+          description: 'Confirmation de la disponibilité et réservation'
+        },
+        {
+          step: 3,
+          title: 'Installation',
+          description: 'Installation et configuration sur site'
+        },
+        {
+          step: 4,
+          title: 'Support',
+          description: 'Support technique pendant l\'événement'
+        }
+      ],
+      technologies: ['Systèmes audio professionnels', 'Éclairage LED', 'Projecteurs 4K', 'Caméras HD', 'Mixeurs audio', 'Logiciels de contrôle'],
+      pricing: {
+        starter: 'Sur consultation',
+        professional: 'Sur consultation',
+        enterprise: 'Sur consultation'
+      }
+    }
+  ];
+
+  const handleServiceClick = (service: PremiumService) => {
+    setSelectedService(service);
+    setShowServiceModal(true);
   };
 
   const slides = [
@@ -450,6 +707,18 @@ export default function HomePage() {
         </div>
       )}
 
+      {/* SEO Avancé */}
+      <AdvancedSEO 
+        pageType="website"
+        pageTitle="DL Solutions - Écosystème Digital Complet | CRM, ERP, Boutique, Formations"
+        pageDescription="DL Solutions - Écosystème digital complet avec CRM, ERP, boutique internationale, formations professionnelles, et solutions sectorielles (banque, assurance, immobilier, santé, hôtellerie). Services premium avec livraison au Cameroun."
+        pageUrl="https://dlsolutions.com"
+        pageImage="https://dlsolutions.com/images/og-dl-solutions.jpg"
+        breadcrumbs={[
+          { name: "Accueil", url: "https://dlsolutions.com" }
+        ]}
+      />
+
       {/* Contenu principal avec padding-top pour la navigation */}
       <main className="pt-20">
         {/* Hero Section */}
@@ -602,6 +871,73 @@ export default function HomePage() {
                   </Link>
                 </Button>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section Nos Services Premium */}
+        <section className="py-20 bg-gradient-to-b from-white to-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Nos Services Premium
+              </h2>
+              <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+                Des solutions expertes pour propulser votre entreprise vers l'excellence
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+              {premiumServices.map((service, index) => (
+                <div key={service.id} className="group bg-white rounded-2xl shadow-xl border border-gray-100 p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                  <div className="relative w-full h-64 mb-6 rounded-xl overflow-hidden">
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute bottom-4 left-4">
+                      <span className={`${service.badgeColor} text-white px-3 py-1 rounded-full text-sm font-semibold`}>
+                        {service.badge}
+                      </span>
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    {service.title}
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed mb-6">
+                    {service.description}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <Button 
+                      onClick={() => handleServiceClick(service)}
+                      className={`bg-gradient-to-r ${
+                        index === 0 ? 'from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700' :
+                        index === 1 ? 'from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700' :
+                        index === 2 ? 'from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700' :
+                        'from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700'
+                      } text-white`}
+                    >
+                      Découvrir
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                    <div className="flex items-center text-sm text-gray-500">
+                      <Star className="h-4 w-4 text-yellow-500 mr-1" />
+                      <span>Service Premium</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 shadow-lg font-semibold" asChild>
+                <Link href="/services">
+                  Découvrir tous nos services
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
             </div>
           </div>
         </section>
@@ -940,21 +1276,12 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {eventVideos.map((event, index) => (
-              <div key={index} className="group bg-gradient-to-br from-purple-500/20 to-pink-600/20 p-6 rounded-2xl border border-white/20 hover:border-white/40 transition-all duration-500 transform hover:scale-105 backdrop-blur-sm shadow-xl">
-                <div className="relative w-full h-48 rounded-xl overflow-hidden mb-4 shadow-lg">
-                  <video
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                    muted
-                    loop
-                    playsInline
-                  >
-                    <source src={event.video} type="video/mp4" />
-                  </video>
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                </div>
-                <h3 className="text-lg font-semibold text-white mb-2 drop-shadow-md">{event.title}</h3>
-                <p className="text-white/90 text-sm drop-shadow-sm">Couverture professionnelle avec drone et équipements HD</p>
-              </div>
+              <EventVideoCard
+                key={index}
+                title={event.title}
+                video={event.video}
+                description="Couverture professionnelle avec drone et équipements HD"
+              />
             ))}
           </div>
         </div>
@@ -1074,6 +1401,148 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      {/* Modale détaillée des services premium */}
+      {showServiceModal && selectedService && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Header de la modale */}
+            <div className="relative">
+              <div className="relative h-64 rounded-t-2xl overflow-hidden">
+                <img
+                  src={selectedService.image}
+                  alt={selectedService.title}
+                  className="object-cover w-full h-full"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <span className={`${selectedService.badgeColor} text-white px-3 py-1 rounded-full text-sm font-semibold inline-block mb-2`}>
+                    {selectedService.badge}
+                  </span>
+                  <h2 className="text-3xl font-bold text-white mb-2">{selectedService.title}</h2>
+                  <p className="text-white/90">{selectedService.description}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowServiceModal(false)}
+                className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Contenu de la modale */}
+            <div className="p-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Colonne gauche */}
+                <div>
+                  {/* Fonctionnalités */}
+                  <div className="mb-8">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">Fonctionnalités</h3>
+                    <ul className="space-y-3">
+                      {selectedService.features.map((feature, index) => (
+                        <li key={index} className="flex items-start">
+                          <CheckCircle className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                          <span className="text-gray-700">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Avantages */}
+                  <div className="mb-8">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">Avantages</h3>
+                    <ul className="space-y-3">
+                      {selectedService.benefits.map((benefit, index) => (
+                        <li key={index} className="flex items-start">
+                          <Star className="h-5 w-5 text-yellow-500 mr-3 mt-0.5 flex-shrink-0" />
+                          <span className="text-gray-700">{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Colonne droite */}
+                <div>
+                  {/* Processus */}
+                  <div className="mb-8">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">Notre Processus</h3>
+                    <div className="space-y-4">
+                      {selectedService.process.map((step) => (
+                        <div key={step.step} className="flex items-start">
+                          <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm mr-4 flex-shrink-0">
+                            {step.step}
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-gray-900 mb-1">{step.title}</h4>
+                            <p className="text-gray-600 text-sm">{step.description}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Technologies */}
+                  <div className="mb-8">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">Technologies Utilisées</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedService.technologies.map((tech, index) => (
+                        <span key={index} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Tarifs */}
+                  <div className="mb-8">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">Tarifs</h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                        <span className="font-medium text-gray-900">Starter</span>
+                        <span className="text-gray-700">{selectedService.pricing.starter}</span>
+                      </div>
+                      <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                        <span className="font-medium text-gray-900">Professional</span>
+                        <span className="text-gray-700">{selectedService.pricing.professional}</span>
+                      </div>
+                      <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                        <span className="font-medium text-gray-900">Enterprise</span>
+                        <span className="text-gray-700">{selectedService.pricing.enterprise}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
+                <Button 
+                  size="lg" 
+                  className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                  onClick={() => {
+                    setShowServiceModal(false);
+                    // Rediriger vers la page de contact
+                    window.location.href = '/contact';
+                  }}
+                >
+                  Demander un Devis
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  onClick={() => setShowServiceModal(false)}
+                  className="flex-1"
+                >
+                  Fermer
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

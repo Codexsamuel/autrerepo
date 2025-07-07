@@ -1,5 +1,86 @@
+# Robots.txt optimisé pour DL Solutions
+# Permet l'indexation complète tout en protégeant les ressources sensibles
+
 User-agent: *
 Allow: /
+
+# Autoriser l'accès aux ressources importantes pour SEO
+Allow: /favicon.ico
+Allow: /manifest.json
+Allow: /images/
+Allow: /logos/
+Allow: /sitemap.xml
+Allow: /robots.txt
+
+# Autoriser l'accès aux pages principales
+Allow: /services
+Allow: /formations
+Allow: /contact
+Allow: /portfolio
+Allow: /devis
+Allow: /a-propos
+Allow: /solutions
+Allow: /novacore
+Allow: /dl-style
+Allow: /trading
+Allow: /rendez-vous
+Allow: /intranet
+
+# Autoriser l'accès aux pages de démonstration publiques
+Allow: /demo
+Allow: /demo/video-events
+
+# Bloquer l'accès aux ressources sensibles
+Disallow: /api/
+Disallow: /admin/
+Disallow: /intranet/admin/
+Disallow: /intranet/rh/
+Disallow: /novacore/dashboard/
+Disallow: /novacore/analytics/
+Disallow: /novacore/crm-integrations/
+Disallow: /novacore/settings/
+Disallow: /novacore/users/
+Disallow: /novacore/security/
+Disallow: /novacore/workflows/
+Disallow: /novacore/video-editor/
+Disallow: /novacore/pricing/
+
+# Bloquer l'accès aux fichiers de configuration
+Disallow: /config/
+Disallow: /lib/
+Disallow: /hooks/
+Disallow: /types/
+Disallow: /migrations/
+Disallow: /scripts/
+Disallow: /workflows/
+Disallow: /templates/
+Disallow: /docs/
+Disallow: /database/
+Disallow: /prisma/
+Disallow: /netlify/
+Disallow: /src/
+Disallow: /styles/
+Disallow: /components.json
+Disallow: /correction-finale.js
+Disallow: /CHECKLIST-*.md
+
+# Bloquer l'accès aux fichiers de données sensibles
+Disallow: /data/
+Disallow: /*.json
+Disallow: /*.sql
+Disallow: /*.md
+Disallow: /*.js
+Disallow: /*.ts
+Disallow: /*.tsx
+
+# Bloquer l'accès aux fichiers de développement
+Disallow: /.env*
+Disallow: /.git/
+Disallow: /node_modules/
+Disallow: /.next/
+Disallow: /out/
+Disallow: /build/
+Disallow: /dist/
 
 # Sitemap
 Sitemap: https://dlsolutions.com/sitemap.xml
@@ -44,7 +125,7 @@ Disallow: /uploads/
 Disallow: /backups/
 
 # Fichiers à éviter
-Disallow: /*.json$
+# Disallow: /*.json$   <-- À NE PAS ACTIVER pour le SEO
 Disallow: /*.xml$
 Disallow: /*.txt$
 Disallow: /*.log$

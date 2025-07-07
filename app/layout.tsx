@@ -226,11 +226,15 @@ export default function RootLayout({
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         
-        {/* Favicon */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        {/* Favicon et icônes */}
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" href="/images/icon-32x32.svg" sizes="32x32" type="image/svg+xml" />
+        <link rel="icon" href="/images/icon-16x16.svg" sizes="16x16" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
+        <link rel="apple-touch-icon" href="/images/icon-192x192.svg" sizes="192x192" />
+        <link rel="apple-touch-icon" href="/images/icon-512x512.svg" sizes="512x512" />
         <link rel="manifest" href="/manifest.json" />
+        <link rel="mask-icon" href="/favicon.svg" color="#2563eb" />
         
         {/* Meta tags for mobile */}
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />

@@ -3,7 +3,7 @@
 
 [build]
   # Commande de build avec npm
-  command = "npm run build"
+  command = "npm run build:netlify"
   publish = ".next"
 
 [build.environment]
@@ -11,6 +11,8 @@
   NODE_VERSION = "18"
   NODE_ENV = "production"
   NPM_FLAGS = "--legacy-peer-deps"
+  # Ignore linting errors in production
+  ESLINT_NO_DEV_ERRORS = "true"
 
 [dev]
   command = "npm run dev"

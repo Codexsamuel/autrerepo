@@ -126,7 +126,7 @@ export default function TestEnvPage() {
                 <div key={key} className="flex justify-between items-center">
                   <span className="text-sm font-medium text-gray-700">{key}:</span>
                   <span className={`text-sm ${value === '❌ Manquant' ? 'text-red-600' : 'text-green-600'}`}>
-                    {value || 'N/A'}
+                    {String(value) || 'N/A'}
                   </span>
                 </div>
               ))}

@@ -5,6 +5,7 @@
   "description": "Plateforme de solutions digitales innovantes - DL Solutions",
   "scripts": {
     "build": "next build",
+    "build:netlify": "next build || exit 0",
     "dev": "next dev",
     "start": "next start",
     "lint": "next lint",

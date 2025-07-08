@@ -13,6 +13,9 @@
   NPM_FLAGS = "--legacy-peer-deps"
   # Ignore linting errors in production
   ESLINT_NO_DEV_ERRORS = "true"
+  # Optimisation des variables d'environnement
+  NETLIFY_FUNCTIONS_TIMEOUT = "10"
+  NETLIFY_FUNCTIONS_MAX_SIZE = "50"
 
 [dev]
   command = "npm run dev"

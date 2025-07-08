@@ -8,7 +8,7 @@
 
 [build.environment]
   NEXT_TELEMETRY_DISABLED = "1"
-  NODE_VERSION = "18.20.0"
+  NODE_VERSION = "18"
   NODE_ENV = "production"
   NPM_FLAGS = "--legacy-peer-deps"
 
@@ -56,4 +56,26 @@
 [[redirects]]
   from = "/api/trading/*"
   to = "/.netlify/functions/trading-api/:splat"
-  status = 200 
+  status = 200
+
+# Configuration du domaine personnalisé
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Redirection HTTPS
+[[redirects]]
+  from = "http://daveandlucesolutions.com/*"
+  to = "https://daveandlucesolutions.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.daveandlucesolutions.com/*"
+  to = "https://www.daveandlucesolutions.com/:splat"
+  status = 301
+  force = true 

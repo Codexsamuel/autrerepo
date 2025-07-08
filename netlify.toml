@@ -67,6 +67,11 @@
   to = "/.netlify/functions/trading-api/:splat"
   status = 200
 
+[[redirects]]
+  from = "/api/international/*"
+  to = "/.netlify/functions/scraping-api/:splat"
+  status = 200
+
 # Configuration du domaine personnalisé
 [[headers]]
   for = "/*"

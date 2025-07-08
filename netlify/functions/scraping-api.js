@@ -1,3 +1,9 @@
+const { scrapeAliExpress } = require('../../lib/scraper/aliexpress');
+const { scrapeChineseStores, getScrapingStats, getCategories, getSources, getCountries } = require('../../lib/scraper/chinese-stores');
+const { scrapeDubaiStores } = require('../../lib/scraper/dubai-stores');
+const { scrapeTurkeyStores } = require('../../lib/scraper/turkey-stores');
+const { scrapeCameroonStores } = require('../../lib/scraper/cameroon-stores');
+
 exports.handler = async (event, context) => {
   // Configuration CORS
   const headers = {
@@ -30,6 +36,7 @@ exports.handler = async (event, context) => {
         NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? '✅ Configuré' : '❌ Manquant',
         OPENAI_API_KEY: process.env.OPENAI_API_KEY ? '✅ Configuré' : '❌ Manquant',
         STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY ? '✅ Configuré' : '❌ Manquant',
+        RAPIDAPI_KEY: process.env.RAPIDAPI_KEY ? '✅ Configuré' : '❌ Manquant',
         timestamp: new Date().toISOString(),
         environment: process.env.NODE_ENV || 'unknown'
       };
@@ -46,48 +53,182 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Route pour les produits (simulée)
+    // Route pour les produits AliExpress (réels)
     if (path === '/products' || path === '') {
-      const query = queryStringParameters?.q || queryStringParameters?.query || 'phone';
-      
-      // Données simulées pour éviter les dépendances
-      const mockProducts = [
-        {
-          id: 1,
-          name: `${query} - Produit Premium`,
-          description: `Description du produit ${query}`,
-          price: 99.99,
-          currency: "EUR",
-          country: "🇨🇳 Chine",
-          category: "Électronique",
-          rating: 4.5,
-          reviews: 123,
-          stock: 50,
-          image: "/images/products/product1.jpg"
-        },
-        {
-          id: 2,
-          name: `${query} - Version Pro`,
-          description: `Version professionnelle de ${query}`,
-          price: 149.99,
-          currency: "EUR",
-          country: "🇨🇳 Chine",
-          category: "Électronique",
-          rating: 4.8,
-          reviews: 89,
-          stock: 25,
-          image: "/images/products/product2.jpg"
+      const query = queryStringParameters?.q || queryStringParameters?.query || '';
+      const limit = parseInt(queryStringParameters?.limit || '20');
+      const source = queryStringParameters?.source || 'aliexpress';
+
+      if (!query) {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({
+            success: false,
+            error: 'Paramètre de recherche requis'
+          })
+        };
+      }
+
+      let products = [];
+
+      try {
+        switch (source) {
+          case 'aliexpress':
+            products = await scrapeAliExpress(query);
+            break;
+          case 'chinese':
+            const chineseResult = await scrapeChineseStores(query);
+            products = chineseResult.products;
+            break;
+          case 'dubai':
+            products = await scrapeDubaiStores(query);
+            break;
+          case 'turkey':
+            products = await scrapeTurkeyStores(query);
+            break;
+          case 'cameroon':
+            products = await scrapeCameroonStores(query);
+            break;
+          default:
+            // Par défaut, essayer AliExpress
+            products = await scrapeAliExpress(query);
         }
-      ];
+
+        const limitedProducts = products.slice(0, limit);
+
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({
+            success: true,
+            data: limitedProducts,
+            total: limitedProducts.length,
+            query: query,
+            source: source,
+            timestamp: new Date().toISOString()
+          })
+        };
+      } catch (scrapingError) {
+        console.error('Erreur de scraping:', scrapingError);
+        return {
+          statusCode: 500,
+          headers,
+          body: JSON.stringify({
+            success: false,
+            error: 'Erreur lors du scraping',
+            details: scrapingError.message,
+            source: source,
+            timestamp: new Date().toISOString()
+          })
+        };
+      }
+    }
+
+    // Route pour les magasins chinois
+    if (path === '/chinese-stores') {
+      const action = queryStringParameters?.action;
+      const query = queryStringParameters?.query || '';
+      const category = queryStringParameters?.category || '';
+      const country = queryStringParameters?.country || '';
+
+      // Actions spéciales
+      if (action === 'stats') {
+        const stats = getScrapingStats();
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({ success: true, data: stats })
+        };
+      }
+
+      if (action === 'categories') {
+        const categories = getCategories();
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({ success: true, data: categories })
+        };
+      }
+
+      if (action === 'sources') {
+        const sources = getSources();
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({ success: true, data: sources })
+        };
+      }
+
+      if (action === 'countries') {
+        const countries = getCountries();
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({ success: true, data: countries })
+        };
+      }
+
+      // Récupération des produits avec filtres
+      const result = await scrapeChineseStores(query, category, country);
+      const products = result.products;
 
       return {
         statusCode: 200,
         headers,
         body: JSON.stringify({
           success: true,
-          data: mockProducts,
-          total: mockProducts.length,
+          data: products,
+          total: products.length
+        })
+      };
+    }
+
+    // Route pour les marchés internationaux
+    if (path === '/international') {
+      const query = queryStringParameters?.q || queryStringParameters?.query || '';
+      const markets = queryStringParameters?.markets || 'dubai,turkey,cameroon';
+
+      if (!query) {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({
+            success: false,
+            error: 'Paramètre de recherche requis'
+          })
+        };
+      }
+
+      const marketList = markets.split(',');
+      const results = {};
+
+      for (const market of marketList) {
+        try {
+          switch (market.trim()) {
+            case 'dubai':
+              results.dubai = await scrapeDubaiStores(query);
+              break;
+            case 'turkey':
+              results.turkey = await scrapeTurkeyStores(query);
+              break;
+            case 'cameroon':
+              results.cameroon = await scrapeCameroonStores(query);
+              break;
+          }
+        } catch (error) {
+          results[market] = { error: error.message };
+        }
+      }
+
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          success: true,
+          data: results,
           query: query,
+          markets: marketList,
           timestamp: new Date().toISOString()
         })
       };
@@ -100,7 +241,7 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({
         success: false,
         error: 'Route non trouvée',
-        availableRoutes: ['/products', '/debug/env']
+        availableRoutes: ['/products', '/chinese-stores', '/international', '/debug/env']
       })
     };
 

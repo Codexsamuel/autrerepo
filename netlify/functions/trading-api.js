@@ -1,78 +1,61 @@
 exports.handler = async (event, context) => {
-  const { httpMethod, path, queryStringParameters } = event;
-  
-  // Gestion des requêtes OPTIONS pour CORS
-  if (httpMethod === 'OPTIONS') {
-    return {
-      statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
-      },
-      body: ''
-    };
-  }
-
-  // Simulation de données de trading
-  const mockTradingData = {
-    symbols: [
-      { symbol: 'BTC/USD', price: 45000, change: 2.5 },
-      { symbol: 'ETH/USD', price: 3200, change: -1.2 },
-      { symbol: 'EUR/USD', price: 1.0850, change: 0.3 },
-      { symbol: 'GBP/USD', price: 1.2650, change: -0.8 }
-    ],
-    portfolio: {
-      totalValue: 125000,
-      dailyChange: 1250,
-      positions: [
-        { symbol: 'BTC/USD', quantity: 0.5, value: 22500 },
-        { symbol: 'ETH/USD', quantity: 5, value: 16000 }
-      ]
-    }
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Content-Type': 'application/json'
   };
 
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 200, headers, body: '' };
+  }
+
   try {
-    let response;
-    
-    switch (path) {
-      case '/.netlify/functions/trading-api/symbols':
-        response = mockTradingData.symbols;
-        break;
-      case '/.netlify/functions/trading-api/portfolio':
-        response = mockTradingData.portfolio;
-        break;
-      default:
-        response = {
-          message: 'Trading API is working!',
-          availableEndpoints: [
-            '/api/trading/symbols',
-            '/api/trading/portfolio'
-          ],
-          timestamp: new Date().toISOString()
-        };
+    const { queryStringParameters } = event;
+    const path = event.path.replace('/.netlify/functions/trading-api', '');
+
+    // Route pour les données de trading simulées
+    if (path === '/data' || path === '') {
+      const mockTradingData = {
+        symbols: [
+          { symbol: 'EURUSD', price: 1.0850, change: '+0.0023', changePercent: '+0.21%' },
+          { symbol: 'GBPUSD', price: 1.2650, change: '-0.0015', changePercent: '-0.12%' },
+          { symbol: 'USDJPY', price: 148.50, change: '+0.75', changePercent: '+0.51%' },
+          { symbol: 'BTCUSD', price: 43250, change: '+1250', changePercent: '+2.98%' }
+        ],
+        timestamp: new Date().toISOString(),
+        status: 'success'
+      };
+
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify(mockTradingData)
+      };
     }
 
+    // Route non trouvée
     return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
-      },
-      body: JSON.stringify(response)
+      statusCode: 404,
+      headers,
+      body: JSON.stringify({
+        success: false,
+        error: 'Route non trouvée',
+        availableRoutes: ['/data']
+      })
     };
+
   } catch (error) {
+    console.error('Erreur dans la fonction trading-api:', error);
+    
     return {
       statusCode: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
+      headers,
       body: JSON.stringify({
-        error: 'Internal server error',
-        message: error.message
+        success: false,
+        error: 'Erreur interne du serveur',
+        details: error.message,
+        timestamp: new Date().toISOString()
       })
     };
   }

@@ -16,6 +16,10 @@
   # Optimisation des variables d'environnement
   NETLIFY_FUNCTIONS_TIMEOUT = "10"
   NETLIFY_FUNCTIONS_MAX_SIZE = "50"
+  # Variables essentielles seulement pour les fonctions
+  NEXT_PUBLIC_APP_URL = "https://daveandlucesolutions.com"
+  NEXT_PUBLIC_SUPABASE_URL = "https://your-project.supabase.co"
+  NEXT_PUBLIC_SUPABASE_ANON_KEY = "your-anon-key"
 
 [dev]
   command = "npm run dev"

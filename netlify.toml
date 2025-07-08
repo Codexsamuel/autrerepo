@@ -42,18 +42,18 @@
   [headers.values]
   Cache-Control = "public, max-age=31536000, immutable"
 
-# Redirections pour les fonctions Netlify désactivées temporairement
-# [[redirects]]
-#   from = "/api/test"
-#   to = "/.netlify/functions/hello"
-#   status = 200
+# Redirections pour les fonctions Netlify
+[[redirects]]
+  from = "/api/scraping/*"
+  to = "/.netlify/functions/scraping-api/:splat"
+  status = 200
 
-# [[redirects]]
-#   from = "/api/hello"
-#   to = "/.netlify/functions/hello"
-#   status = 200
+[[redirects]]
+  from = "/api/debug/*"
+  to = "/.netlify/functions/scraping-api/:splat"
+  status = 200
 
-# [[redirects]]
-#   from = "/api/trading/*"
-#   to = "/.netlify/functions/trading-api/:splat"
-#   status = 200 
+[[redirects]]
+  from = "/api/trading/*"
+  to = "/.netlify/functions/trading-api/:splat"
+  status = 200 

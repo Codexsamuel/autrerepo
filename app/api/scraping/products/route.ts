@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const products = await scrapeAliExpress(query);
+    const products = await scrapeAliExpress({ query });
     const limitedProducts = products.slice(0, limit);
 
     return NextResponse.json({

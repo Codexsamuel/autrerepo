@@ -377,9 +377,12 @@ export default function DLStylePage() {
             {categories.map((category, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer">
                 <CardContent className="p-4 text-center">
-                  <div className="text-3xl mb-2">{category.icon}</div>
-                  <h3 className="font-semibold text-gray-900 mb-1">{category.name}</h3>
-                  <p className="text-sm text-gray-600">{category.count} produits</p>
+                  <div className="text-3xl mb-2">
+                    {/* Icône générique ou selon l'index */}
+                    <Grid className="inline-block" />
+                  </div>
+                  <h3 className="font-semibold text-gray-900 mb-1">{category}</h3>
+                  {/* Optionnel : afficher le nombre de produits par catégorie si besoin */}
                 </CardContent>
               </Card>
             ))}

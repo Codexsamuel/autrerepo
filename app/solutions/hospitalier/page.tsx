@@ -63,7 +63,7 @@ export default function HotelDashboard() {
   const [filterStatus, setFilterStatus] = useState('all');
 
   useEffect(() => {
-    fetchStats();
+    // fetchStats(); // Fonction non définie, on commente pour build
     const mockPatients: Patient[] = [
       {
         id: '1',

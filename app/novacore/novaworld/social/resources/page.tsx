@@ -1,14 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FileText, Upload, Search, Filter, Download, Eye, Sparkles, Bot, TrendingUp, Star, Users, MoreHorizontal } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
+import { Bot, Download, Eye, FileText, Filter, MoreHorizontal, Sparkles, Upload, Users } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface Resource {
   id: string;
@@ -84,9 +83,9 @@ export default function ResourcesPage() {
 
   // Suggestions IA (mock)
   const aiSuggestions = [
-    'Téléchargez le Guide IA pour booster vos projets',
-    'Utilisez le Pitch Deck pour vos présentations',
-    'La Checklist Onboarding facilite l'intégration des nouveaux'
+    "Téléchargez le Guide IA pour booster vos projets",
+    "Utilisez le Pitch Deck pour vos présentations",
+    "La Checklist Onboarding facilite l'intégration des nouveaux"
   ];
 
   // Statistiques ressources (mock)

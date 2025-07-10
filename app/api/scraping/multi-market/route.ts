@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Multi-market scraping error:', error);
     return NextResponse.json(
-      { error: 'Scraping failed', details: error.message },
+      { error: 'Scraping failed', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }
@@ -190,7 +190,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Multi-market scraping error:', error);
     return NextResponse.json(
-      { error: 'Scraping failed', details: error.message },
+      { error: 'Scraping failed', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }

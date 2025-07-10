@@ -21,14 +21,14 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function NovaWorldPage() {
-  const [stats, setStats] = useState({
-    totalUsers: 15420,
-    activeConnections: 892,
-    jobOpportunities: 1247,
-    eventsThisWeek: 45,
-    learningModules: 156,
-    successStories: 234
-  });
+  const stats = [
+    { label: "Utilisateurs", value: 15420, icon: Users },
+    { label: "Connexions actives", value: 892, icon: Network },
+    { label: "Offres d'emploi", value: 1247, icon: Briefcase },
+    { label: "Événements cette semaine", value: 45, icon: Video },
+    { label: "Modules de formation", value: 156, icon: FileText },
+    { label: "Success stories", value: 234, icon: Star }
+  ];
 
   const [recentPosts, setRecentPosts] = useState([
     {

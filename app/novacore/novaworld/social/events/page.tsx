@@ -1,14 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Calendar, Users, Plus, Search, TrendingUp, Clock, MapPin, Star, Sparkles, Bot, CheckCircle, XCircle, MoreHorizontal, Download, Bell, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { Bell, Bot, Calendar, CheckCircle, ChevronLeft, ChevronRight, Clock, Filter, MapPin, Plus, Sparkles, Star, TrendingUp, Users, XCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface Event {
   id: string;
@@ -54,8 +53,8 @@ export default function EventsPage() {
       },
       {
         id: '2',
-        title: 'Workshop IA & Machine Learning',
-        description: 'Atelier pratique pour découvrir les dernières avancées en IA et ML. Cas d'usage, démos, networking.',
+        title: "Workshop IA & Machine Learning",
+        description: "Atelier pratique pour découvrir les dernières avancées en IA et ML. Cas d'usage, démos, networking.",
         date: '2024-03-20',
         time: '14:00',
         location: 'En ligne',
@@ -103,7 +102,7 @@ export default function EventsPage() {
       {
         id: '5',
         title: 'Afterwork Networking',
-        description: 'Rencontre informelle pour échanger, réseauter et partager autour d'un verre.',
+        description: 'Rencontre informelle pour échanger, réseauter et partager autour d\'un verre.',
         date: '2024-02-28',
         time: '18:30',
         location: 'Marseille, Le Cube',
@@ -169,7 +168,7 @@ export default function EventsPage() {
   const aiSuggestions = [
     'Participez au Hackathon pour booster votre réseau',
     'Inscrivez-vous au Workshop IA pour découvrir les dernières tendances',
-    'Ne manquez pas l'Afterwork Networking pour élargir vos contacts'
+    'Ne manquez pas l\'Afterwork Networking pour élargir vos contacts'
   ];
 
   // Statistiques avancées (mock)

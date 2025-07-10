@@ -1,14 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Search, Filter, UserPlus, Sparkles, Bot, TrendingUp, Star, Briefcase, Globe, MoreHorizontal } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
+import { Bot, Briefcase, Filter, MoreHorizontal, Sparkles, Star, TrendingUp, UserPlus, Users } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface Member {
   id: string;
@@ -43,7 +42,7 @@ export default function NetworkPage() {
         isOnline: true,
         isConnected: true,
         skills: ['React', 'Node.js', 'AI'],
-        bio: 'Passionnée par l'IA et le développement web.',
+        bio: "Passionnée par l'IA et le développement web.",
         connections: 156,
         endorsements: 23
       },
@@ -115,7 +114,7 @@ export default function NetworkPage() {
   const aiSuggestions = [
     'Connectez-vous avec Sarah pour des projets IA',
     'Alex peut vous aider sur le SEO',
-    'Marie a des compétences en management d'équipe'
+    'Marie a des compétences en management d\'équipe'
   ];
 
   // Statistiques réseau (mock)

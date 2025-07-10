@@ -42,7 +42,7 @@ export default function ResourcesPage() {
         downloads: 56,
         views: 123,
         tags: ['IA', 'Guide', 'Tech'],
-        description: 'Un guide complet sur l'intelligence artificielle et ses applications.'
+        description: "Un guide complet sur l'intelligence artificielle et ses applications."
       },
       {
         id: '2',

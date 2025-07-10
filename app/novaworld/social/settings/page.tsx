@@ -10,7 +10,7 @@ export default function SocialSettingsPage() {
         keywords="paramètres, sécurité, notifications, RGPD, NovaWorld, DL Solutions"
         image="/images/social-settings.jpg"
         url="https://dlsolutions.com/novaworld/social/settings"
-        type="settings"
+        type="website"
         organization={{
           name: 'DL Solutions',
           logo: 'https://dlsolutions.com/images/logo.png',

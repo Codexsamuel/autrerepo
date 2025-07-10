@@ -10,7 +10,7 @@ export default function SocialDashboardPage() {
         keywords="dashboard, social, analytics, IA, NovaWorld, DL Solutions"
         image="/images/social-dashboard.jpg"
         url="https://dlsolutions.com/novaworld/social/dashboard"
-        type="dashboard"
+        type="website"
         organization={{
           name: 'DL Solutions',
           logo: 'https://dlsolutions.com/images/logo.png',

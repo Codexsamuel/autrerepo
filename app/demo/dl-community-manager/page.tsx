@@ -392,7 +392,7 @@ export default function DLCommunityManagerPage() {
                   <p className="text-pink-100">Posts Totaux</p>
                   <p className="text-3xl font-bold">{aiInsights?.totalPosts}</p>
                 </div>
-                <Image className="h-8 w-8 text-pink-200" alt="Total Posts" />
+                <Image className="h-8 w-8 text-pink-200" />
               </div>
             </CardContent>
           </Card>
@@ -404,7 +404,7 @@ export default function DLCommunityManagerPage() {
                   <p className="text-blue-100">Posts Programmés</p>
                   <p className="text-3xl font-bold">{aiInsights?.scheduledPosts}</p>
                 </div>
-                <Clock className="h-8 w-8 text-blue-200" alt="Scheduled Posts" />
+                <Clock className="h-8 w-8 text-blue-200" />
               </div>
             </CardContent>
           </Card>
@@ -416,7 +416,7 @@ export default function DLCommunityManagerPage() {
                   <p className="text-green-100">Engagement Moyen</p>
                   <p className="text-3xl font-bold">{aiInsights?.averageEngagement}%</p>
                 </div>
-                <TrendingUp className="h-8 w-8 text-green-200" alt="Average Engagement" />
+                <TrendingUp className="h-8 w-8 text-green-200" />
               </div>
             </CardContent>
           </Card>
@@ -428,7 +428,7 @@ export default function DLCommunityManagerPage() {
                   <p className="text-purple-100">Portée Totale</p>
                   <p className="text-3xl font-bold">{(aiInsights?.totalReach / 1000).toFixed(0)}k</p>
                 </div>
-                <Users className="h-8 w-8 text-purple-200" alt="Total Reach" />
+                <Users className="h-8 w-8 text-purple-200" />
               </div>
             </CardContent>
           </Card>

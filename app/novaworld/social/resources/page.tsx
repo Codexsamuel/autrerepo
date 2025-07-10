@@ -10,7 +10,7 @@ export default function SocialResourcesPage() {
         keywords="ressources, bibliothèque, IA, NovaWorld, DL Solutions"
         image="/images/social-resources.jpg"
         url="https://dlsolutions.com/novaworld/social/resources"
-        type="resources"
+        type="article"
         organization={{
           name: 'DL Solutions',
           logo: 'https://dlsolutions.com/images/logo.png',

@@ -465,7 +465,7 @@ export default function FormationSEO({
         } else if (tag.property) {
           newElement.setAttribute('property', tag.property);
           newElement.setAttribute('content', content);
-        } else {
+        } else if (tag.name) {
           newElement.setAttribute('name', tag.name);
           newElement.setAttribute('content', content);
         }

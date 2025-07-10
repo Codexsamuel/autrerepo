@@ -402,7 +402,7 @@ export class VisitorTrackingDB {
     }
   }
 
-    // Récupérer les sessions actives en temps réel
+  // Récupérer les sessions actives en temps réel
   static async getActiveSessions(businessProfileId: string): Promise<VisitorSession[]> {
     if (!isSupabaseAvailable()) {
       console.warn('Supabase non configuré, retour de données vides');
@@ -412,7 +412,7 @@ export class VisitorTrackingDB {
     try {
       const now = new Date();
       const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000).toISOString();
-      
+
       const { data, error } = await supabase
         .from('visitor_sessions')
         .select('*')

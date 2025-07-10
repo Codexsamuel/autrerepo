@@ -1,25 +1,27 @@
 "use client";
 
-import { Header } from '@/components/layout/header';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import AdvancedSEO from '@/components/AdvancedSEO';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { 
-  Brain, 
-  Users, 
-  ShoppingCart, 
-  Camera, 
-  MessageSquare, 
-  Target,
-  Star,
-  Clock,
-  Users as UsersIcon,
-  CheckCircle,
-  ArrowRight
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { getAllFormations } from '@/lib/data/formations';
+import {
+    ArrowRight,
+    Award,
+    Brain,
+    Camera,
+    CheckCircle,
+    Clock,
+    MapPin,
+    MessageSquare,
+    Play,
+    ShoppingCart,
+    Star,
+    Target,
+    Users,
+    Users as UsersIcon
 } from 'lucide-react';
 import Link from 'next/link';
-import { getAllFormations } from '@/lib/data/formations';
-import Image from 'next/image';
 
 export default function FormationsPage() {
   const formations = getAllFormations();
@@ -37,156 +39,152 @@ export default function FormationsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header title="Formations" description="Développez vos compétences avec nos formations spécialisées" />
+    <>
+      <AdvancedSEO
+        title="Formations Professionnelles - DL Solutions"
+        description="Formations certifiantes en télévente, marketing digital, e-commerce, IA, CRM. Développez vos compétences avec nos experts."
+        keywords="formations, télévente, marketing digital, e-commerce, IA, CRM, certification, DL Solutions"
+        image="https://dlsolutions.com/images/formations-og.jpg"
+        url="https://dlsolutions.com/formations"
+        type="website"
+        organization={{
+          name: 'DL Solutions',
+          logo: 'https://dlsolutions.com/images/logo.png',
+          url: 'https://dlsolutions.com',
+          description: 'Solutions digitales innovantes pour entreprises'
+        }}
+        breadcrumbs={[
+          { name: 'Accueil', url: 'https://dlsolutions.com' },
+          { name: 'Formations', url: 'https://dlsolutions.com/formations' }
+        ]}
+        faq={[
+          {
+            question: "Les formations sont-elles certifiantes ?",
+            answer: "Oui, toutes nos formations délivrent une certification reconnue par l'industrie."
+          },
+          {
+            question: "Peut-on suivre les formations à distance ?",
+            answer: "Oui, nous proposons des formations en présentiel et en ligne selon vos préférences."
+          },
+          {
+            question: "Y a-t-il un support post-formation ?",
+            answer: "Oui, nous offrons un support personnalisé pendant 3 mois après la formation."
+          }
+        ]}
+        course={{
+          name: 'Catalogue Formations DL Solutions',
+          description: 'Formations professionnelles certifiantes dans tous les domaines du digital',
+          provider: 'DL Solutions',
+          instructor: 'Experts certifiés',
+          duration: '18-40 heures',
+          price: '299-699',
+          currency: 'EUR'
+        }}
+      />
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Hero Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Nos Formations Professionnelles
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Développez vos compétences avec nos formations spécialisées en technologies 
-            et stratégies digitales. Formations pratiques et certifiantes.
-          </p>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-          <div className="bg-white rounded-lg shadow-sm p-6 border text-center">
-            <div className="text-3xl font-bold text-blue-600 mb-2">
-              {formations.reduce((acc, f) => acc + f.students, 0)}
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="text-5xl font-bold mb-6">Formations Professionnelles</h1>
+              <p className="text-xl opacity-90 mb-8">
+                Développez vos compétences avec nos formations certifiantes animées par des experts
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="flex items-center justify-center">
+                  <Award className="w-6 h-6 mr-2" />
+                  <span>Certifications reconnues</span>
+                </div>
+                <div className="flex items-center justify-center">
+                  <Users className="w-6 h-6 mr-2" />
+                  <span>+300 participants</span>
+                </div>
+                <div className="flex items-center justify-center">
+                  <Star className="w-6 h-6 mr-2" />
+                  <span>4.8/5 satisfaction</span>
+                </div>
+                <div className="flex items-center justify-center">
+                  <MapPin className="w-6 h-6 mr-2" />
+                  <span>Paris & En ligne</span>
+                </div>
+              </div>
             </div>
-            <div className="text-gray-600">Étudiants formés</div>
-          </div>
-          <div className="bg-white rounded-lg shadow-sm p-6 border text-center">
-            <div className="text-3xl font-bold text-green-600 mb-2">{formations.length}</div>
-            <div className="text-gray-600">Formations disponibles</div>
-          </div>
-          <div className="bg-white rounded-lg shadow-sm p-6 border text-center">
-            <div className="text-3xl font-bold text-purple-600 mb-2">
-              {(formations.reduce((acc, f) => acc + f.rating, 0) / formations.length).toFixed(1)}
-            </div>
-            <div className="text-gray-600">Note moyenne</div>
-          </div>
-          <div className="bg-white rounded-lg shadow-sm p-6 border text-center">
-            <div className="text-3xl font-bold text-orange-600 mb-2">95%</div>
-            <div className="text-gray-600">Taux de satisfaction</div>
           </div>
         </div>
 
         {/* Formations Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {formations.map((formation, index) => {
-            const IconComponent = getIconComponent(formation.icon);
-            return (
-              <Card key={formation.slug} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
-                {/* Image de la formation */}
-                <div className="relative h-48 overflow-hidden">
-                  <Image
-                    src={formation.image}
-                    alt={formation.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <Badge variant={formation.status === 'active' ? 'default' : 'secondary'} className="mb-2">
+        <div className="container mx-auto px-4 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {formations.map((formation) => (
+              <Card key={formation.slug} className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
+                <CardHeader className="relative">
+                  <div className="flex items-start justify-between mb-4">
+                    <Badge className={`${formation.color} text-white`}>
                       {formation.status === 'active' ? 'Disponible' : 'Bientôt'}
                     </Badge>
-                    <h3 className="text-white font-semibold text-lg">{formation.title}</h3>
-                  </div>
-                </div>
-
-                <CardContent className="p-6">
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">{formation.description}</p>
-                  
-                  {/* Rating and Students */}
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center">
-                      <Star className="h-4 w-4 text-yellow-500 mr-1" />
-                      <span className="text-sm font-medium">{formation.rating}</span>
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <UsersIcon className="h-4 w-4 mr-1" />
-                      {formation.students} étudiants
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-green-600">€{formation.price}</div>
+                      {formation.originalPrice > formation.price && (
+                        <div className="text-sm text-gray-500 line-through">€{formation.originalPrice}</div>
+                      )}
                     </div>
                   </div>
-
-                  {/* Duration and Level */}
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Clock className="h-4 w-4 mr-1" />
-                      {formation.duration}
+                  <CardTitle className="text-xl mb-2 group-hover:text-blue-600 transition-colors">
+                    {formation.title}
+                  </CardTitle>
+                  <CardDescription className="text-gray-600 mb-4">
+                    {formation.description}
+                  </CardDescription>
+                </CardHeader>
+                
+                <CardContent>
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Clock className="w-4 h-4 mr-2" />
+                      <span>{formation.duration}</span>
                     </div>
-                    <Badge variant="outline" className="text-xs">
-                      {formation.level}
-                    </Badge>
+                    <div className="flex items-center text-sm text-gray-600">
+                      <UsersIcon className="w-4 h-4 mr-2" />
+                      <span>{formation.students} étudiants</span>
+                    </div>
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Star className="w-4 h-4 mr-2 text-yellow-400" />
+                      <span>{formation.rating}/5</span>
+                    </div>
                   </div>
 
-                  {/* Features */}
-                  <div className="mb-4">
-                    <div className="flex flex-wrap gap-1">
-                      {formation.features.slice(0, 3).map((feature, idx) => (
-                        <Badge key={idx} variant="secondary" className="text-xs">
+                  <div className="mb-6">
+                    <h4 className="font-semibold text-gray-900 mb-3">Ce qui est inclus :</h4>
+                    <ul className="space-y-2">
+                      {formation.features.slice(0, 3).map((feature, index) => (
+                        <li key={index} className="flex items-center text-sm text-gray-600">
+                          <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
                           {feature}
-                        </Badge>
+                        </li>
                       ))}
                       {formation.features.length > 3 && (
-                        <Badge variant="secondary" className="text-xs">
+                        <li className="flex items-center text-sm text-gray-600">
+                          <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
                           +{formation.features.length - 3} autres
-                        </Badge>
+                        </li>
                       )}
-                    </div>
+                    </ul>
                   </div>
 
-                  {/* Price */}
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <span className="text-2xl font-bold text-gray-900">€{formation.price}</span>
-                      {formation.originalPrice > formation.price && (
-                        <span className="text-sm text-gray-500 line-through ml-2">€{formation.originalPrice}</span>
-                      )}
-                    </div>
-                    <div className={`p-2 rounded-lg bg-gradient-to-r ${formation.color}`}>
-                      <IconComponent className="h-5 w-5 text-white" />
-                    </div>
-                  </div>
-
-                  {/* Action Button */}
                   <Link href={`/formations/${formation.slug}`}>
-                    <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                      Voir les détails
-                      <ArrowRight className="h-4 w-4 ml-2" />
+                    <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white group">
+                      <Play className="w-4 h-4 mr-2" />
+                      Voir la formation
+                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
                 </CardContent>
               </Card>
-            );
-          })}
-        </div>
-
-        {/* Call to Action */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-center text-white">
-          <h2 className="text-3xl font-bold mb-4">Prêt à développer vos compétences ?</h2>
-          <p className="text-xl mb-6 opacity-90">
-            Rejoignez nos formations et transformez votre carrière professionnelle
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/contact">
-              <Button variant="secondary" size="lg">
-                Nous contacter
-              </Button>
-            </Link>
-            <Link href="/devis">
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-blue-600">
-                Demander un devis
-              </Button>
-            </Link>
+            ))}
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </>
   );
 }

@@ -146,15 +146,16 @@ export default function TeleventeProspectionPage() {
   ];
 
   const handleEnrollment = () => {
-    console.log('Inscription à la formation Télévente & Prospection');
+    // Utiliser le composant ButtonConnector pour l'inscription
+    window.location.href = '/formations/televente-prospection/inscription';
   };
 
   return (
     <>
       <AdvancedSEO
         title="Formation Télévente & Prospection - DL Solutions"
-        description="Maîtrisez la télévente et la prospection commerciale avec notre formation certifiante. Techniques, outils, simulations, et accompagnement expert."
-        keywords="télévente, prospection, formation, vente à distance, CRM, closing, qualification, DL Solutions"
+        description="Formation certifiante pour maîtriser la télévente et la prospection commerciale. Techniques, outils, simulations, accompagnement expert. Certification reconnue."
+        keywords="télévente, prospection, formation, vente à distance, CRM, closing, qualification, DL Solutions, formation commerciale, certification, B2B, B2C, pipeline, script de vente, objection, closing, Paris, en ligne"
         image="https://dlsolutions.com/images/instructors/marc-dubois.jpg"
         url="https://dlsolutions.com/formations/televente-prospection"
         type="course"

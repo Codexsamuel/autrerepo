@@ -1,440 +1,477 @@
 'use client';
 
-import { ArrowRight, Award, Check, Clock, Play, Star, Users } from 'lucide-react';
-import Link from 'next/link';
+import AdvancedSEO from '@/components/AdvancedSEO';
+import { Award, BarChart3, Calendar, CheckCircle, Clock, Download, Facebook, Instagram, MapPin, MessageSquare, Phone, Play, Star, Target, TrendingUp, Users } from 'lucide-react';
 import { useState } from 'react';
 
-interface Module {
-  id: string;
-  title: string;
-  duration: string;
-  description: string;
-  topics: string[];
-  completed: boolean;
-}
-
-interface Instructor {
-  id: string;
-  name: string;
-  title: string;
-  avatar: string;
-  rating: number;
-  students: number;
-  experience: string;
-  bio: string;
-}
-
-const modules: Module[] = [
-  {
-    id: '1',
-    title: 'Fondamentaux du Marketing Digital',
-    duration: '4h 30min',
-    description: 'Comprendre les bases du marketing digital et les nouvelles tendances',
-    topics: [
-      'Introduction au marketing digital',
-      'Évolution du marketing traditionnel vers le digital',
-      'Les canaux de communication digitaux',
-      'Stratégie marketing omnicanale'
-    ],
-    completed: false
-  },
-  {
-    id: '2',
-    title: 'SEO et Référencement Naturel',
-    duration: '6h 15min',
-    description: 'Maîtriser les techniques de référencement pour améliorer votre visibilité',
-    topics: [
-      'Optimisation on-page et off-page',
-      'Recherche de mots-clés',
-      'Optimisation technique',
-      'Mesure des performances SEO'
-    ],
-    completed: false
-  },
-  {
-    id: '3',
-    title: 'Publicité en Ligne (Google Ads, Facebook Ads)',
-    duration: '5h 45min',
-    description: 'Créer et optimiser des campagnes publicitaires performantes',
-    topics: [
-      'Google Ads : Search et Display',
-      'Facebook et Instagram Ads',
-      'Création de campagnes ciblées',
-      'Optimisation des performances'
-    ],
-    completed: false
-  },
-  {
-    id: '4',
-    title: 'Marketing de Contenu et Social Media',
-    duration: '4h 20min',
-    description: 'Développer une stratégie de contenu engageante',
-    topics: [
-      'Stratégie de contenu',
-      'Gestion des réseaux sociaux',
-      'Content marketing',
-      'Influence marketing'
-    ],
-    completed: false
-  },
-  {
-    id: '5',
-    title: 'Email Marketing et Automatisation',
-    duration: '3h 50min',
-    description: 'Automatiser vos processus marketing pour plus d\'efficacité',
-    topics: [
-      'Stratégies d\'email marketing',
-      'Automatisation des campagnes',
-      'Segmentation des audiences',
-      'Mesure des performances'
-    ],
-    completed: false
-  },
-  {
-    id: '6',
-    title: 'Analytics et Mesure des Performances',
-    duration: '4h 10min',
-    description: 'Mesurer et analyser les performances de vos campagnes',
-    topics: [
-      'Google Analytics 4',
-      'Tableaux de bord marketing',
-      'ROI et KPIs',
-      'Optimisation continue'
-    ],
-    completed: false
-  }
-];
-
-const instructors: Instructor[] = [
-  {
-    id: '1',
-    name: 'Marie Dubois',
-    title: 'Experte Marketing Digital',
-    avatar: '/images/instructors/marie-dubois.jpg',
-    rating: 4.9,
-    students: 1247,
-    experience: '8 ans d\'expérience',
-    bio: 'Marie est une experte reconnue du marketing digital avec plus de 8 ans d\'expérience. Elle a accompagné plus de 200 entreprises dans leur transformation digitale et formé plus de 1000 professionnels.'
-  },
-  {
-    id: '2',
-    name: 'Thomas Martin',
-    title: 'Spécialiste SEO & Analytics',
-    avatar: '/images/instructors/thomas-martin.jpg',
-    rating: 4.8,
-    students: 892,
-    experience: '6 ans d\'expérience',
-    bio: 'Thomas est spécialisé dans le SEO et l\'analytics. Il a optimisé plus de 150 sites web et formé des équipes marketing dans des entreprises de toutes tailles.'
-  }
-];
-
-const testimonials = [
-  {
-    id: '1',
-    name: 'Sophie Laurent',
-    company: 'Startup Tech',
-    rating: 5,
-    comment: 'Cette formation a complètement transformé notre approche marketing. Nous avons augmenté nos conversions de 40% en 3 mois !'
-  },
-  {
-    id: '2',
-    name: 'Pierre Moreau',
-    company: 'Agence Web',
-    rating: 5,
-    comment: 'Excellente formation, très pratique et applicable immédiatement. Les instructeurs sont vraiment experts dans leur domaine.'
-  },
-  {
-    id: '3',
-    name: 'Julie Bernard',
-    company: 'E-commerce',
-    rating: 5,
-    comment: 'Formation complète et à jour avec les dernières tendances. Je recommande vivement pour tous les professionnels du marketing.'
-  }
-];
-
 export default function MarketingDigitalPage() {
-  const [selectedModule, setSelectedModule] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState('programme');
 
-  const totalDuration = modules.reduce((total, module) => {
-    const [hours, minutes] = module.duration.split('h ').map(Number);
-    return total + hours * 60 + minutes;
-  }, 0);
+  const courseData = {
+    title: 'Marketing Digital Avancé',
+    subtitle: 'Maîtrisez les stratégies digitales modernes et boostez votre présence en ligne',
+    duration: '40 heures',
+    level: 'Intermédiaire à Avancé',
+    price: 799,
+    originalPrice: 950,
+    students: 67,
+    rating: 4.9,
+    reviews: 23,
+    instructor: 'Sarah Johnson',
+    instructorTitle: 'Experte en Marketing Digital & Growth Hacking',
+    instructorImage: '/images/instructors/sarah-johnson.jpg',
+    startDate: '2024-03-15',
+    location: 'Paris & En ligne',
+    maxStudents: 20
+  };
 
-  const totalHours = Math.floor(totalDuration / 60);
-  const totalMinutes = totalDuration % 60;
+  const modules = [
+    {
+      id: 1,
+      title: 'Stratégie Marketing Digital',
+      duration: '8h',
+      lessons: [
+        'Analyse de marché et personas',
+        'Positionnement de marque',
+        'Plan marketing digital',
+        'Objectifs SMART et KPIs',
+        'Budget et ROI',
+        'Intervenant : Sarah Johnson'
+      ]
+    },
+    {
+      id: 2,
+      title: 'SEO & Content Marketing',
+      duration: '8h',
+      lessons: [
+        'Optimisation SEO technique',
+        'Content strategy et calendrier',
+        'Rédaction web optimisée',
+        'Link building et backlinks',
+        'Analytics et reporting',
+        'Intervenant : Expert SEO'
+      ]
+    },
+    {
+      id: 3,
+      title: 'Réseaux Sociaux',
+      duration: '8h',
+      lessons: [
+        'Stratégie réseaux sociaux',
+        'Facebook & Instagram Ads',
+        'LinkedIn B2B',
+        'TikTok et nouvelles plateformes',
+        'Community management',
+        'Intervenant : Social Media Manager'
+      ]
+    },
+    {
+      id: 4,
+      title: 'Google Ads & PPC',
+      duration: '6h',
+      lessons: [
+        'Google Search Ads',
+        'Google Display Network',
+        'Remarketing et audiences',
+        'Optimisation des campagnes',
+        'Google Analytics 4',
+        'Intervenant : PPC Specialist'
+      ]
+    },
+    {
+      id: 5,
+      title: 'Email Marketing & Automation',
+      duration: '6h',
+      lessons: [
+        'Stratégie email marketing',
+        'Segmentation et personnalisation',
+        'Automatisation des emails',
+        'A/B testing et optimisation',
+        'Conformité RGPD',
+        'Intervenant : Email Marketing Expert'
+      ]
+    },
+    {
+      id: 6,
+      title: 'Growth Hacking',
+      duration: '4h',
+      lessons: [
+        'Méthodologie Growth Hacking',
+        'Acquisition, activation, rétention',
+        'Outils et technologies',
+        'Expérimentation et tests',
+        'Intervenant : Sarah Johnson'
+      ]
+    }
+  ];
+
+  const benefits = [
+    'Certification reconnue par l\'industrie',
+    'Accès à vie au contenu',
+    'Support personnalisé',
+    'Réseau de professionnels',
+    'Outils et templates inclus',
+    'Suivi post-formation',
+    'Projet pratique certifiant'
+  ];
+
+  const testimonials = [
+    {
+      id: 1,
+      name: 'Alexandre Dubois',
+      company: 'Marketing Manager, StartupTech',
+      rating: 5,
+      comment: 'Formation complète et à jour avec les dernières tendances. J\'ai pu implémenter immédiatement les stratégies apprises.'
+    },
+    {
+      id: 2,
+      name: 'Marie Laurent',
+      company: 'Freelance Marketing Digital',
+      rating: 5,
+      comment: 'Excellente formation, instructrice très compétente. Les outils fournis sont directement utilisables.'
+    },
+    {
+      id: 3,
+      name: 'Thomas Moreau',
+      company: 'Directeur Marketing, E-commerce Plus',
+      rating: 4,
+      comment: 'Contenu riche et pratique, j\'ai appris beaucoup sur le growth hacking et l\'optimisation des campagnes.'
+    }
+  ];
+
+  const stats = [
+    { label: 'Augmentation trafic moyen', value: '+150%', icon: TrendingUp },
+    { label: 'Amélioration conversion', value: '+45%', icon: Target },
+    { label: 'ROI formation', value: '400%', icon: BarChart3 },
+    { label: 'Taux de satisfaction', value: '98%', icon: Star }
+  ];
+
+  const tools = [
+    { name: 'Google Analytics 4', icon: BarChart3, description: 'Analyse des performances' },
+    { name: 'Facebook Ads Manager', icon: Facebook, description: 'Publicité sociale' },
+    { name: 'Google Ads', icon: Target, description: 'Publicité payante' },
+    { name: 'Mailchimp', icon: MessageSquare, description: 'Email marketing' },
+    { name: 'Canva Pro', icon: Instagram, description: 'Design graphique' },
+    { name: 'Semrush', icon: TrendingUp, description: 'SEO & Analytics' }
+  ];
+
+  const handleEnrollment = () => {
+    window.location.href = '/formations/marketing-digital/inscription';
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                  Formation Certifiante
-                </span>
-                <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                  Niveau Intermédiaire
-                </span>
+    <>
+      <AdvancedSEO
+        title="Formation Marketing Digital Avancé - DL Solutions"
+        description="Maîtrisez le marketing digital avec notre formation complète. SEO, réseaux sociaux, Google Ads, email marketing et growth hacking."
+        keywords="marketing digital, formation, SEO, réseaux sociaux, Google Ads, email marketing, growth hacking, DL Solutions"
+        image="https://dlsolutions.com/images/instructors/sarah-johnson.jpg"
+        url="https://dlsolutions.com/formations/marketing-digital"
+        type="course"
+        organization={{
+          name: 'DL Solutions',
+          logo: 'https://dlsolutions.com/images/logo.png',
+          url: 'https://dlsolutions.com',
+          description: 'Solutions digitales innovantes pour entreprises'
+        }}
+        breadcrumbs={[
+          { name: 'Accueil', url: 'https://dlsolutions.com' },
+          { name: 'Formations', url: 'https://dlsolutions.com/formations' },
+          { name: 'Marketing Digital', url: 'https://dlsolutions.com/formations/marketing-digital' }
+        ]}
+        course={{
+          name: 'Marketing Digital Avancé',
+          description: 'Maîtrisez les stratégies digitales modernes et boostez votre présence en ligne',
+          provider: 'DL Solutions',
+          instructor: 'Sarah Johnson',
+          duration: '40 heures',
+          price: '799',
+          currency: 'EUR'
+        }}
+      />
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex items-center mb-4">
+                <TrendingUp className="w-8 h-8 mr-3" />
+                <span className="text-lg font-medium">Formation Certifiante</span>
               </div>
+              <h1 className="text-5xl font-bold mb-6">{courseData.title}</h1>
+              <p className="text-xl opacity-90 mb-8">{courseData.subtitle}</p>
               
-              <h1 className="text-4xl lg:text-5xl font-bold mb-6">
-                Marketing Digital
-              </h1>
-              
-              <p className="text-xl mb-8 text-blue-100">
-                Maîtrisez les stratégies marketing digital modernes et boostez votre carrière avec cette formation complète et pratique.
-              </p>
-
-              <div className="flex items-center space-x-8 mb-8">
-                <div className="flex items-center space-x-2">
-                  <Clock className="h-5 w-5" />
-                  <span>{totalHours}h {totalMinutes}min</span>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="flex items-center">
+                  <Clock className="w-5 h-5 mr-2" />
+                  <span>{courseData.duration}</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Users className="h-5 w-5" />
-                  <span>1,247 étudiants inscrits</span>
+                <div className="flex items-center">
+                  <Users className="w-5 h-5 mr-2" />
+                  <span>{courseData.students} participants</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <span>4.9/5 (156 avis)</span>
+                <div className="flex items-center">
+                  <Star className="w-5 h-5 mr-2" />
+                  <span>{courseData.rating}/5 ({courseData.reviews} avis)</span>
+                </div>
+                <div className="flex items-center">
+                  <Award className="w-5 h-5 mr-2" />
+                  <span>Certification incluse</span>
                 </div>
               </div>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/formations/marketing-digital/inscription"
-                  className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-center"
-                >
-                  S'inscrire maintenant
-                </Link>
-                <button className="border border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
-                  <Play className="h-5 w-5 inline mr-2" />
-                  Voir la démo
-                </button>
-              </div>
-            </div>
-
-            <div className="relative">
-              <img
-                src="/images/courses/marketing-digital-hero.jpg"
-                alt="Marketing Digital"
-                className="rounded-lg shadow-2xl"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {/* Main Content */}
-          <div className="lg:col-span-2">
-            {/* What You'll Learn */}
-            <div className="bg-white rounded-lg shadow-sm p-8 mb-8">
-              <h2 className="text-2xl font-bold mb-6">Ce que vous allez apprendre</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {[
-                  'Maîtriser les fondamentaux du marketing digital',
-                  'Créer des campagnes publicitaires performantes',
-                  'Optimiser votre référencement naturel (SEO)',
-                  'Développer une stratégie de contenu engageante',
-                  'Automatiser vos processus marketing',
-                  'Mesurer et analyser vos performances',
-                  'Gérer vos réseaux sociaux efficacement',
-                  'Comprendre les nouvelles tendances du digital'
-                ].map((item, index) => (
-                  <div key={index} className="flex items-start space-x-3">
-                    <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700">{item}</span>
-                  </div>
-                ))}
+        <div className="container mx-auto px-4 py-16">
+          {/* Statistiques */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
+            {stats.map((stat, index) => (
+              <div key={index} className="bg-white rounded-2xl shadow-lg p-6 text-center">
+                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <stat.icon className="w-6 h-6 text-purple-600" />
+                </div>
+                <div className="text-2xl font-bold text-purple-600 mb-2">{stat.value}</div>
+                <div className="text-gray-600 text-sm">{stat.label}</div>
               </div>
-            </div>
-
-            {/* Course Content */}
-            <div className="bg-white rounded-lg shadow-sm p-8 mb-8">
-              <h2 className="text-2xl font-bold mb-6">Programme de la formation</h2>
-              
-              <div className="space-y-4">
-                {modules.map((module, index) => (
-                  <div
-                    key={module.id}
-                    className={`border rounded-lg p-6 cursor-pointer transition-colors ${
-                      selectedModule === module.id
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                    onClick={() => setSelectedModule(selectedModule === module.id ? null : module.id)}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-semibold">
-                          {index + 1}
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-gray-900">{module.title}</h3>
-                          <p className="text-sm text-gray-600">{module.description}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-4">
-                        <span className="text-sm text-gray-500">{module.duration}</span>
-                        <ArrowRight className={`h-4 w-4 transition-transform ${
-                          selectedModule === module.id ? 'rotate-90' : ''
-                        }`} />
-                      </div>
-                    </div>
-                    
-                    {selectedModule === module.id && (
-                      <div className="mt-4 pt-4 border-t border-gray-200">
-                        <h4 className="font-medium text-gray-900 mb-2">Contenu du module :</h4>
-                        <ul className="space-y-2">
-                          {module.topics.map((topic, topicIndex) => (
-                            <li key={topicIndex} className="flex items-center space-x-2 text-sm text-gray-600">
-                              <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
-                              <span>{topic}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Instructors */}
-            <div className="bg-white rounded-lg shadow-sm p-8 mb-8">
-              <h2 className="text-2xl font-bold mb-6">Vos instructeurs</h2>
-              
-              <div className="space-y-6">
-                {instructors.map(instructor => (
-                  <div key={instructor.id} className="flex items-start space-x-6">
-                    <img
-                      src={instructor.avatar}
-                      alt={instructor.name}
-                      className="w-20 h-20 rounded-full object-cover"
-                    />
-                    <div className="flex-1">
-                      <h3 className="text-xl font-semibold text-gray-900">{instructor.name}</h3>
-                      <p className="text-blue-600 font-medium mb-2">{instructor.title}</p>
-                      <p className="text-gray-600 mb-3">{instructor.bio}</p>
-                      
-                      <div className="flex items-center space-x-6 text-sm text-gray-500">
-                        <div className="flex items-center space-x-1">
-                          <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                          <span>{instructor.rating}</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <Users className="h-4 w-4" />
-                          <span>{instructor.students} étudiants</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <Award className="h-4 w-4" />
-                          <span>{instructor.experience}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Testimonials */}
-            <div className="bg-white rounded-lg shadow-sm p-8">
-              <h2 className="text-2xl font-bold mb-6">Avis des étudiants</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {testimonials.map(testimonial => (
-                  <div key={testimonial.id} className="border border-gray-200 rounded-lg p-6">
-                    <div className="flex items-center mb-4">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                    <p className="text-gray-600 mb-4">"{testimonial.comment}"</p>
-                    <div>
-                      <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                      <p className="text-sm text-gray-500">{testimonial.company}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
 
-          {/* Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-8">
-              {/* Course Card */}
-              <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-                <div className="text-center mb-6">
-                  <div className="text-3xl font-bold text-gray-900 mb-2">€497</div>
-                  <div className="text-sm text-gray-500 line-through">€697</div>
-                  <div className="text-green-600 font-medium">Économisez €200</div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            {/* Contenu principal */}
+            <div className="lg:col-span-2">
+              {/* Tabs */}
+              <div className="bg-white rounded-2xl shadow-lg mb-8">
+                <div className="border-b border-gray-200">
+                  <nav className="flex space-x-8 px-6">
+                    <button
+                      onClick={() => setActiveTab('programme')}
+                      className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                        activeTab === 'programme'
+                          ? 'border-purple-500 text-purple-600'
+                          : 'border-transparent text-gray-500 hover:text-gray-700'
+                      }`}
+                    >
+                      Programme
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('instructeur')}
+                      className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                        activeTab === 'instructeur'
+                          ? 'border-purple-500 text-purple-600'
+                          : 'border-transparent text-gray-500 hover:text-gray-700'
+                      }`}
+                    >
+                      Instructeur
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('avis')}
+                      className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                        activeTab === 'avis'
+                          ? 'border-purple-500 text-purple-600'
+                          : 'border-transparent text-gray-500 hover:text-gray-700'
+                      }`}
+                    >
+                      Avis
+                    </button>
+                  </nav>
                 </div>
 
-                <div className="space-y-4 mb-6">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Durée</span>
-                    <span className="font-medium">{totalHours}h {totalMinutes}min</span>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Niveau</span>
-                    <span className="font-medium">Intermédiaire</span>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Format</span>
-                    <span className="font-medium">Vidéo + Exercices</span>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Certification</span>
-                    <span className="font-medium text-green-600">Incluse</span>
-                  </div>
-                </div>
+                <div className="p-6">
+                  {activeTab === 'programme' && (
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-6">Programme de la formation</h3>
+                      <div className="space-y-6">
+                        {modules.map(module => (
+                          <div key={module.id} className="border border-gray-200 rounded-lg p-6">
+                            <div className="flex items-center justify-between mb-4">
+                              <h4 className="text-lg font-semibold text-gray-900">
+                                Module {module.id} : {module.title}
+                              </h4>
+                              <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                                {module.duration}
+                              </span>
+                            </div>
+                            <ul className="space-y-2">
+                              {module.lessons.map((lesson, index) => (
+                                <li key={index} className="flex items-center text-gray-600">
+                                  <Play className="w-4 h-4 mr-3 text-purple-500" />
+                                  {lesson}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
-                <Link
-                  href="/formations/marketing-digital/inscription"
-                  className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-center block mb-4"
-                >
-                  S'inscrire maintenant
-                </Link>
+                  {activeTab === 'instructeur' && (
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-6">Votre formatrice principale</h3>
+                      <div className="flex items-start space-x-6">
+                        <div className="w-24 h-24 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center">
+                          <span className="text-white text-2xl font-bold">
+                            {courseData.instructor.split(' ').map(n => n[0]).join('')}
+                          </span>
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-bold text-gray-900 mb-2">{courseData.instructor}</h4>
+                          <p className="text-purple-600 font-medium mb-4">{courseData.instructorTitle}</p>
+                          <p className="text-gray-600 mb-4">
+                            Experte en marketing digital avec plus de 10 ans d'expérience dans le growth hacking et l'optimisation des performances marketing. Sarah a accompagné plus de 200 entreprises dans leur transformation digitale.
+                          </p>
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <span className="font-medium text-gray-900">Expertise :</span>
+                              <p className="text-gray-600">Growth Hacking, SEO, PPC, Social Media</p>
+                            </div>
+                            <div>
+                              <span className="font-medium text-gray-900">Intervenants :</span>
+                              <p className="text-gray-600">Experts spécialisés par module</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
-                <div className="text-center">
-                  <p className="text-sm text-gray-500">
-                    Accès à vie • Garantie 30 jours
-                  </p>
+                  {activeTab === 'avis' && (
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-6">Avis des participants</h3>
+                      <div className="space-y-6">
+                        {testimonials.map(testimonial => (
+                          <div key={testimonial.id} className="border border-gray-200 rounded-lg p-6">
+                            <div className="flex items-center justify-between mb-4">
+                              <div>
+                                <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>
+                                <p className="text-sm text-gray-600">{testimonial.company}</p>
+                              </div>
+                              <div className="flex items-center">
+                                {[...Array(testimonial.rating)].map((_, i) => (
+                                  <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                                ))}
+                              </div>
+                            </div>
+                            <p className="text-gray-600 italic">"{testimonial.comment}"</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              {/* Course Features */}
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <h3 className="font-semibold mb-4">Ce qui est inclus</h3>
-                
-                <div className="space-y-3">
-                  {[
-                    'Accès à vie au contenu',
-                    'Certificat de formation',
-                    'Support technique',
-                    'Exercices pratiques',
-                    'Ressources téléchargeables',
-                    'Communauté d\'étudiants',
-                    'Mises à jour gratuites'
-                  ].map((feature, index) => (
-                    <div key={index} className="flex items-center space-x-3">
-                      <Check className="h-4 w-4 text-green-500" />
-                      <span className="text-sm text-gray-700">{feature}</span>
+              {/* Avantages */}
+              <div className="bg-white rounded-2xl shadow-lg p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Ce qui est inclus</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {benefits.map((benefit, index) => (
+                    <div key={index} className="flex items-center">
+                      <CheckCircle className="w-5 h-5 text-purple-500 mr-3" />
+                      <span className="text-gray-700">{benefit}</span>
                     </div>
                   ))}
                 </div>
               </div>
+
+              {/* Outils inclus */}
+              <div className="bg-white rounded-2xl shadow-lg p-8 mt-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Outils et plateformes inclus</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {tools.map((tool, index) => (
+                    <div key={index} className="text-center p-4 bg-gray-50 rounded-lg">
+                      <tool.icon className="w-8 h-8 text-purple-600 mx-auto mb-3" />
+                      <h4 className="font-semibold text-gray-900 mb-2">{tool.name}</h4>
+                      <p className="text-sm text-gray-600">{tool.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Projet pratique */}
+              <div className="bg-white rounded-2xl shadow-lg p-8 mt-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Projet pratique certifiant</h3>
+                <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-6">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-4">Développez votre stratégie marketing digital</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <span className="font-medium text-gray-900">Objectifs :</span>
+                      <ul className="text-gray-600 mt-2 space-y-1">
+                        <li>• Analyse de marché complète</li>
+                        <li>• Stratégie multi-canal</li>
+                        <li>• Plan d'action détaillé</li>
+                        <li>• KPIs et métriques</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-900">Livrables :</span>
+                      <ul className="text-gray-600 mt-2 space-y-1">
+                        <li>• Document stratégique</li>
+                        <li>• Plan de campagne</li>
+                        <li>• Présentation finale</li>
+                        <li>• Certification</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Sidebar */}
+            <div className="lg:col-span-1">
+              <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-8">
+                <div className="text-center mb-6">
+                  <div className="text-4xl font-bold text-purple-600 mb-2">{courseData.price}€</div>
+                  <div className="text-gray-400 line-through">{courseData.originalPrice}€</div>
+                  <div className="text-sm text-gray-600">Économisez {courseData.originalPrice - courseData.price}€</div>
+                </div>
+
+                <div className="space-y-4 mb-6">
+                  <div className="flex items-center text-gray-600">
+                    <Calendar className="w-4 h-4 mr-3" />
+                    <span>Début : {new Date(courseData.startDate).toLocaleDateString('fr-FR')}</span>
+                  </div>
+                  <div className="flex items-center text-gray-600">
+                    <MapPin className="w-4 h-4 mr-3" />
+                    <span>{courseData.location}</span>
+                  </div>
+                  <div className="flex items-center text-gray-600">
+                    <Users className="w-4 h-4 mr-3" />
+                    <span>Max {courseData.maxStudents} participants</span>
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleEnrollment}
+                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl mb-4"
+                >
+                  S'inscrire maintenant
+                </button>
+
+                <button className="w-full bg-gray-100 text-gray-700 py-3 px-6 rounded-lg font-medium hover:bg-gray-200 transition-colors flex items-center justify-center">
+                  <Download className="w-4 h-4 mr-2" />
+                  Télécharger le programme
+                </button>
+
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <h4 className="font-medium text-gray-900 mb-3">Besoin d'aide ?</h4>
+                  <div className="space-y-2">
+                    <div className="flex items-center text-gray-600">
+                      <Phone className="w-4 h-4 mr-2" />
+                      <span>+33 1 23 45 67 89</span>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <MessageSquare className="w-4 h-4 mr-2" />
+                      <span>formations@dlsolutions.com</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

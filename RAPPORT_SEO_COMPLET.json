@@ -1,0 +1,430 @@
+{
+  "pages": {
+    "Accueil": {
+      "url": "http://localhost:3000/",
+      "tests": {
+        "title": {
+          "passed": false,
+          "value": "DL Solutions - Écosystème Digital Complet | CRM, ERP, Boutique, Formations",
+          "maxLength": 60,
+          "actualLength": 74
+        },
+        "description": {
+          "passed": false,
+          "value": "DL Solutions - Écosystème digital complet avec CRM, ERP, boutique internationale, formations professionnelles, et solutions sectorielles (banque, assurance, immobilier, santé, hôtellerie). Services premium avec livraison au Cameroun.",
+          "maxLength": 160,
+          "actualLength": 233
+        },
+        "keywords": {
+          "passed": true,
+          "value": "DL Solutions,CRM,ERP,boutique internationale,formations professionnelles,solutions bancaires,assurance,immobilier,santé,hôtellerie,Cameroun,livraison Cameroun,école de police,bureaux Cameroun,e-commerce,gestion client,trading,paris sportifs,community management"
+        },
+        "openGraph": {
+          "passed": true,
+          "title": "DL Solutions - Écosystème Digital Complet",
+          "description": "CRM, ERP, boutique internationale, formations professionnelles. Livraison au Cameroun - École de Police, bureaux disponibles.",
+          "image": "https://daveandlucesolutions.com/images/og-dl-solutions.jpg"
+        },
+        "twitterCards": {
+          "passed": true,
+          "card": "summary_large_image",
+          "title": "DL Solutions - Écosystème Digital Complet"
+        },
+        "canonical": {
+          "passed": true,
+          "value": "https://daveandlucesolutions.com/"
+        },
+        "structuredData": {
+          "passed": true,
+          "count": 3,
+          "types": [
+            "Organization",
+            "LocalBusiness",
+            "WebSite"
+          ]
+        },
+        "images": {
+          "passed": true,
+          "total": 21,
+          "withAlt": 21,
+          "withoutAlt": 0
+        },
+        "headings": {
+          "passed": true,
+          "h1": 1,
+          "h2": 12,
+          "h3": 38
+        },
+        "performance": {
+          "passed": true,
+          "preloads": 16,
+          "prefetches": 0,
+          "dnsPrefetch": 0,
+          "preconnect": 4
+        }
+      },
+      "score": 80,
+      "totalTests": 10
+    },
+    "Formations": {
+      "url": "http://localhost:3000/formations",
+      "tests": {
+        "title": {
+          "passed": false,
+          "value": "Formations Professionnelles DL Solutions | CRM, IA, Marketing, E-commerce | DL Solutions",
+          "maxLength": 60,
+          "actualLength": 88
+        },
+        "description": {
+          "passed": false,
+          "value": "Formations professionnelles certifiantes en CRM, Intelligence Artificielle, Marketing Digital, E-commerce, Création Visuelle, Télévente. Formations en ligne avec certificats reconnus. DL Solutions Cameroun.",
+          "maxLength": 160,
+          "actualLength": 206
+        },
+        "keywords": {
+          "passed": true,
+          "value": "formations professionnelles,CRM formation,intelligence artificielle formation,marketing digital formation,e-commerce formation,création visuelle formation,télévente formation,certification en ligne,DL Solutions formations,formations Cameroun,formation gestion client,formation IA entreprises"
+        },
+        "openGraph": {
+          "passed": true,
+          "title": "Formations Professionnelles DL Solutions",
+          "description": "Formations certifiantes en CRM, IA, Marketing Digital, E-commerce. Certificats reconnus.",
+          "image": "https://daveandlucesolutions.com/images/formations-dl-solutions.jpg"
+        },
+        "twitterCards": {
+          "passed": true,
+          "card": "summary_large_image",
+          "title": "Formations Professionnelles DL Solutions"
+        },
+        "canonical": {
+          "passed": true,
+          "value": "https://daveandlucesolutions.com/formations"
+        },
+        "structuredData": {
+          "passed": true,
+          "count": 4,
+          "types": [
+            "Organization",
+            "LocalBusiness",
+            "WebSite",
+            "EducationalOrganization"
+          ]
+        },
+        "images": {
+          "passed": true,
+          "total": 0,
+          "withAlt": 0,
+          "withoutAlt": 0
+        },
+        "headings": {
+          "passed": true,
+          "h1": 1,
+          "h2": 0,
+          "h3": 6
+        },
+        "performance": {
+          "passed": true,
+          "preloads": 3,
+          "prefetches": 0,
+          "dnsPrefetch": 0,
+          "preconnect": 4
+        }
+      },
+      "score": 80,
+      "totalTests": 10
+    },
+    "Formation Télévente": {
+      "url": "http://localhost:3000/formations/televente-prospection",
+      "tests": {
+        "title": {
+          "passed": false,
+          "value": "Formations Professionnelles DL Solutions | CRM, IA, Marketing, E-commerce | DL Solutions",
+          "maxLength": 60,
+          "actualLength": 88
+        },
+        "description": {
+          "passed": false,
+          "value": "Formations professionnelles certifiantes en CRM, Intelligence Artificielle, Marketing Digital, E-commerce, Création Visuelle, Télévente. Formations en ligne avec certificats reconnus. DL Solutions Cameroun.",
+          "maxLength": 160,
+          "actualLength": 206
+        },
+        "keywords": {
+          "passed": true,
+          "value": "formations professionnelles,CRM formation,intelligence artificielle formation,marketing digital formation,e-commerce formation,création visuelle formation,télévente formation,certification en ligne,DL Solutions formations,formations Cameroun,formation gestion client,formation IA entreprises"
+        },
+        "openGraph": {
+          "passed": true,
+          "title": "Formations Professionnelles DL Solutions",
+          "description": "Formations certifiantes en CRM, IA, Marketing Digital, E-commerce. Certificats reconnus.",
+          "image": "https://daveandlucesolutions.com/images/formations-dl-solutions.jpg"
+        },
+        "twitterCards": {
+          "passed": true,
+          "card": "summary_large_image",
+          "title": "Formations Professionnelles DL Solutions"
+        },
+        "canonical": {
+          "passed": true,
+          "value": "https://daveandlucesolutions.com/formations"
+        },
+        "structuredData": {
+          "passed": true,
+          "count": 4,
+          "types": [
+            "Organization",
+            "LocalBusiness",
+            "WebSite",
+            "EducationalOrganization"
+          ]
+        },
+        "images": {
+          "passed": true,
+          "total": 0,
+          "withAlt": 0,
+          "withoutAlt": 0
+        },
+        "headings": {
+          "passed": true,
+          "h1": 1,
+          "h2": 0,
+          "h3": 3
+        },
+        "performance": {
+          "passed": true,
+          "preloads": 3,
+          "prefetches": 0,
+          "dnsPrefetch": 0,
+          "preconnect": 4
+        }
+      },
+      "score": 80,
+      "totalTests": 10
+    },
+    "NovaWorld": {
+      "url": "http://localhost:3000/novaworld",
+      "tests": {
+        "title": {
+          "passed": false,
+          "value": "DL Solutions - Écosystème Digital Complet | CRM, ERP, Boutique, Formations",
+          "maxLength": 60,
+          "actualLength": 74
+        },
+        "description": {
+          "passed": false,
+          "value": "DL Solutions - Écosystème digital complet avec CRM, ERP, boutique internationale, formations professionnelles, et solutions sectorielles (banque, assurance, immobilier, santé, hôtellerie). Services premium avec livraison au Cameroun.",
+          "maxLength": 160,
+          "actualLength": 233
+        },
+        "keywords": {
+          "passed": true,
+          "value": "DL Solutions,CRM,ERP,boutique internationale,formations professionnelles,solutions bancaires,assurance,immobilier,santé,hôtellerie,Cameroun,livraison Cameroun,école de police,bureaux Cameroun,e-commerce,gestion client,trading,paris sportifs,community management"
+        },
+        "openGraph": {
+          "passed": true,
+          "title": "DL Solutions - Écosystème Digital Complet",
+          "description": "CRM, ERP, boutique internationale, formations professionnelles. Livraison au Cameroun - École de Police, bureaux disponibles.",
+          "image": "https://daveandlucesolutions.com/images/og-dl-solutions.jpg"
+        },
+        "twitterCards": {
+          "passed": true,
+          "card": "summary_large_image",
+          "title": "DL Solutions - Écosystème Digital Complet"
+        },
+        "canonical": {
+          "passed": true,
+          "value": "https://daveandlucesolutions.com/"
+        },
+        "structuredData": {
+          "passed": true,
+          "count": 3,
+          "types": [
+            "Organization",
+            "LocalBusiness",
+            "WebSite"
+          ]
+        },
+        "images": {
+          "passed": true,
+          "total": 0,
+          "withAlt": 0,
+          "withoutAlt": 0
+        },
+        "headings": {
+          "passed": false,
+          "h1": 0,
+          "h2": 0,
+          "h3": 0
+        },
+        "performance": {
+          "passed": true,
+          "preloads": 3,
+          "prefetches": 0,
+          "dnsPrefetch": 0,
+          "preconnect": 4
+        }
+      },
+      "score": 70,
+      "totalTests": 10
+    },
+    "DL-Style": {
+      "url": "http://localhost:3000/dl-style",
+      "tests": {
+        "title": {
+          "passed": false,
+          "value": "DL Solutions - Écosystème Digital Complet | CRM, ERP, Boutique, Formations",
+          "maxLength": 60,
+          "actualLength": 74
+        },
+        "description": {
+          "passed": false,
+          "value": "DL Solutions - Écosystème digital complet avec CRM, ERP, boutique internationale, formations professionnelles, et solutions sectorielles (banque, assurance, immobilier, santé, hôtellerie). Services premium avec livraison au Cameroun.",
+          "maxLength": 160,
+          "actualLength": 233
+        },
+        "keywords": {
+          "passed": true,
+          "value": "DL Solutions,CRM,ERP,boutique internationale,formations professionnelles,solutions bancaires,assurance,immobilier,santé,hôtellerie,Cameroun,livraison Cameroun,école de police,bureaux Cameroun,e-commerce,gestion client,trading,paris sportifs,community management"
+        },
+        "openGraph": {
+          "passed": true,
+          "title": "DL Solutions - Écosystème Digital Complet",
+          "description": "CRM, ERP, boutique internationale, formations professionnelles. Livraison au Cameroun - École de Police, bureaux disponibles.",
+          "image": "https://daveandlucesolutions.com/images/og-dl-solutions.jpg"
+        },
+        "twitterCards": {
+          "passed": true,
+          "card": "summary_large_image",
+          "title": "DL Solutions - Écosystème Digital Complet"
+        },
+        "canonical": {
+          "passed": true,
+          "value": "https://daveandlucesolutions.com/"
+        },
+        "structuredData": {
+          "passed": true,
+          "count": 3,
+          "types": [
+            "Organization",
+            "LocalBusiness",
+            "WebSite"
+          ]
+        },
+        "images": {
+          "passed": true,
+          "total": 6,
+          "withAlt": 6,
+          "withoutAlt": 0
+        },
+        "headings": {
+          "passed": true,
+          "h1": 1,
+          "h2": 3,
+          "h3": 17
+        },
+        "performance": {
+          "passed": true,
+          "preloads": 3,
+          "prefetches": 0,
+          "dnsPrefetch": 0,
+          "preconnect": 4
+        }
+      },
+      "score": 80,
+      "totalTests": 10
+    },
+    "Scraping Multi-Market": {
+      "url": "http://localhost:3000/scraping-multi-market",
+      "tests": {
+        "title": {
+          "passed": false,
+          "value": "DL Solutions - Écosystème Digital Complet | CRM, ERP, Boutique, Formations",
+          "maxLength": 60,
+          "actualLength": 74
+        },
+        "description": {
+          "passed": false,
+          "value": "DL Solutions - Écosystème digital complet avec CRM, ERP, boutique internationale, formations professionnelles, et solutions sectorielles (banque, assurance, immobilier, santé, hôtellerie). Services premium avec livraison au Cameroun.",
+          "maxLength": 160,
+          "actualLength": 233
+        },
+        "keywords": {
+          "passed": true,
+          "value": "DL Solutions,CRM,ERP,boutique internationale,formations professionnelles,solutions bancaires,assurance,immobilier,santé,hôtellerie,Cameroun,livraison Cameroun,école de police,bureaux Cameroun,e-commerce,gestion client,trading,paris sportifs,community management"
+        },
+        "openGraph": {
+          "passed": true,
+          "title": "DL Solutions - Écosystème Digital Complet",
+          "description": "CRM, ERP, boutique internationale, formations professionnelles. Livraison au Cameroun - École de Police, bureaux disponibles.",
+          "image": "https://daveandlucesolutions.com/images/og-dl-solutions.jpg"
+        },
+        "twitterCards": {
+          "passed": true,
+          "card": "summary_large_image",
+          "title": "DL Solutions - Écosystème Digital Complet"
+        },
+        "canonical": {
+          "passed": true,
+          "value": "https://daveandlucesolutions.com/"
+        },
+        "structuredData": {
+          "passed": true,
+          "count": 3,
+          "types": [
+            "Organization",
+            "LocalBusiness",
+            "WebSite"
+          ]
+        },
+        "images": {
+          "passed": true,
+          "total": 0,
+          "withAlt": 0,
+          "withoutAlt": 0
+        },
+        "headings": {
+          "passed": false,
+          "h1": 0,
+          "h2": 0,
+          "h3": 0
+        },
+        "performance": {
+          "passed": true,
+          "preloads": 3,
+          "prefetches": 0,
+          "dnsPrefetch": 0,
+          "preconnect": 4
+        }
+      },
+      "score": 70,
+      "totalTests": 10
+    }
+  },
+  "summary": {
+    "total": 6,
+    "passed": 4,
+    "failed": 2,
+    "score": 77
+  },
+  "sitemap": {
+    "passed": false,
+    "hasXMLDeclaration": false,
+    "hasURLSet": true,
+    "hasURLs": true,
+    "content": "<html xmlns=\"http://www.w3.org/1999/xhtml\"><head><style id=\"xml-viewer-style\">/* Copyright 2014 The Chromium Authors\n * Use of this source code is governed by a BSD-style license that can be\n * found in the LICENSE file.\n */\n\n:root {\n  color-scheme: light dark;\n}\n\ndiv.header {\n    border-bottom: 2px solid black;\n    padding-bottom: 5px;\n    margin: 10px;\n}\n\n@media (prefers-color-scheme: dark) {\n  div.header {\n    border-bottom: 2px solid white;\n  }\n}\n\ndiv.folder &gt; div.hidden {\n    display:non..."
+  },
+  "robots": {
+    "passed": false,
+    "hasUserAgent": false,
+    "hasAllow": true,
+    "hasDisallow": true,
+    "hasSitemap": true,
+    "content": "<html><head><meta name=\"color-scheme\" content=\"light dark\"></head><body><pre style=\"word-wrap: break-word; white-space: pre-wrap;\">User-Agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin/\nDisallow: /_next/\nDisallow: /private/\nDisallow: /temp/\nDisallow: *.json\nDisallow: *.xml\n\nUser-Agent: Googlebot\nAllow: /\nDisallow: /api/\nDisallow: /admin/\nDisallow: /private/\n\nUser-Agent: Bingbot\nAllow: /\nDisallow: /api/\nDisallow: /admin/\nDisallow: /private/\n\nHost: https://dlsolutions.com\nSitemap: https://dlsolu..."
+  },
+  "manifest": {
+    "passed": true,
+    "hasName": true,
+    "hasShortName": true,
+    "hasStartUrl": true,
+    "content": "<html><head><meta name=\"color-scheme\" content=\"light dark\"><meta charset=\"utf-8\"></head><body><pre>{\n  \"name\": \"DL Solutions - Solutions Digitales Innovantes\",\n  \"short_name\": \"DL Solutions\",\n  \"description\": \"Solutions digitales innovantes pour entreprises : développement web, applications mobiles, e-commerce, formation, et conseil en transformation numérique.\",\n  \"start_url\": \"/\",\n  \"display\": \"standalone\",\n  \"background_color\": \"#ffffff\",\n  \"theme_color\": \"#10B981\",\n  \"orientation\": \"portrait..."
+  }
+}

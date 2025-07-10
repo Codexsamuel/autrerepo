@@ -28,120 +28,288 @@ export interface Product {
   lastUpdated: Date;
 }
 
-// Mock data for AliExpress products
-const MOCK_ALIEXPRESS_PRODUCTS: Product[] = [
-  {
-    id: 'aliexpress-001',
-    name: 'Smartphone Android 6.5" 128GB - Noir',
-    price: 89.99,
-    originalPrice: 129.99,
-    currency: '$',
-    image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop',
-    url: 'https://www.aliexpress.com/item/1005001234567890.html',
-    rating: 4.7,
-    reviews: 2341,
-    sales: 15678,
-    source: 'AliExpress',
-    category: 'Electronics',
-    description: 'Smartphone Android avec écran 6.5 pouces, 128GB de stockage, appareil photo 48MP',
-    features: ['Écran 6.5" HD', '128GB Stockage', 'Appareil photo 48MP', 'Batterie 5000mAh'],
-    specifications: {
-      'Écran': '6.5" HD',
-      'Stockage': '128GB',
-      'RAM': '4GB',
-      'Appareil photo': '48MP + 8MP + 2MP',
-      'Batterie': '5000mAh'
-    },
-    shipping: 'Livraison gratuite',
-    delivery: '15-30 jours',
-    stock: 500,
-    isNew: true,
-    isHot: true,
-    isOnSale: true,
-    discount: 31,
-    tags: ['Smartphone', 'Android', 'Electronics', 'Mobile'],
-    lastUpdated: new Date()
-  },
-  {
-    id: 'aliexpress-002',
-    name: 'Montre connectée Fitness Tracker - Rose',
-    price: 24.99,
-    originalPrice: 39.99,
-    currency: '$',
-    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop',
-    url: 'https://www.aliexpress.com/item/1005001234567891.html',
-    rating: 4.5,
-    reviews: 1892,
-    sales: 8923,
-    source: 'AliExpress',
-    category: 'Wearables',
-    description: 'Montre connectée avec suivi fitness, moniteur cardiaque, notifications smartphone',
-    features: ['Écran tactile 1.4"', 'Suivi fitness', 'Moniteur cardiaque', 'Notifications'],
-    specifications: {
-      'Écran': '1.4" LCD',
-      'Batterie': '7 jours',
-      'Résistance': 'IP68',
-      'Compatibilité': 'iOS/Android'
-    },
-    shipping: 'Livraison gratuite',
-    delivery: '15-30 jours',
-    stock: 1200,
-    isNew: false,
-    isHot: true,
-    isOnSale: true,
-    discount: 38,
-    tags: ['Montre', 'Fitness', 'Connectée', 'Santé'],
-    lastUpdated: new Date()
-  },
-  {
-    id: 'aliexpress-003',
-    name: 'Casque Bluetooth sans fil - Blanc',
-    price: 19.99,
-    originalPrice: 29.99,
-    currency: '$',
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop',
-    url: 'https://www.aliexpress.com/item/1005001234567892.html',
-    rating: 4.3,
-    reviews: 3456,
-    sales: 23456,
-    source: 'AliExpress',
-    category: 'Audio',
-    description: 'Casque Bluetooth avec réduction de bruit, micro intégré, autonomie 20h',
-    features: ['Bluetooth 5.0', 'Réduction de bruit', 'Micro intégré', 'Autonomie 20h'],
-    specifications: {
-      'Connectivité': 'Bluetooth 5.0',
-      'Autonomie': '20 heures',
-      'Charge': '2 heures',
-      'Poids': '180g'
-    },
-    shipping: 'Livraison gratuite',
-    delivery: '15-30 jours',
-    stock: 800,
-    isNew: false,
-    isHot: false,
-    isOnSale: true,
-    discount: 33,
-    tags: ['Casque', 'Bluetooth', 'Audio', 'Sans fil'],
-    lastUpdated: new Date()
-  }
-];
+interface ScrapingOptions {
+  category: string;
+  query?: string;
+  limit?: number;
+  minPrice?: number;
+  maxPrice?: number;
+  sortBy?: string;
+}
 
-// Stub function to scrape AliExpress
-export async function scrapeAliExpress(keyword: string): Promise<Product[]> {
-  console.log(`AliExpress Scraper: Mock scraping for keyword: ${keyword}`);
+interface AliExpressProduct {
+  id: string;
+  title: string;
+  price: number;
+  originalPrice?: number;
+  currency: string;
+  image: string;
+  images: string[];
+  description: string;
+  brand?: string;
+  category: string;
+  subcategory?: string;
+  rating?: number;
+  reviews?: number;
+  seller: string;
+  sellerRating?: number;
+  availability: string;
+  delivery: string;
+  warranty: string;
+  specifications: Record<string, string>;
+  tags: string[];
+  url: string;
+  platform: 'aliexpress';
+  scrapedAt: string;
+}
+
+// Mock data for AliExpress products
+const aliexpressProducts: Record<string, AliExpressProduct[]> = {
+  'women-clothing': [
+    {
+      id: 'aliexpress_women_001',
+      title: 'Robe d\'été élégante avec imprimé floral',
+      price: 18.99,
+      originalPrice: 35.99,
+      currency: 'USD',
+      image: '/products/aliexpress/floral-dress.jpg',
+      images: [
+        '/products/aliexpress/floral-dress-1.jpg',
+        '/products/aliexpress/floral-dress-2.jpg',
+        '/products/aliexpress/floral-dress-3.jpg'
+      ],
+      description: 'Robe d\'été élégante avec imprimé floral, coupe ajustée et confortable',
+      brand: 'FashionStyle',
+      category: 'women-clothing',
+      subcategory: 'dresses',
+      rating: 4.4,
+      reviews: 2156,
+      seller: 'FashionStyle Store',
+      sellerRating: 4.7,
+      availability: 'En stock',
+      delivery: 'Livraison gratuite 15-30 jours',
+      warranty: 'Garantie 30 jours',
+      specifications: {
+        'Matériau': 'Polyester 95%, Élasthanne 5%',
+        'Style': 'Casual',
+        'Longueur': 'Mi-longueur',
+        'Manches': 'Sans manches',
+        'Fermeture': 'Zip latéral'
+      },
+      tags: ['robe', 'été', 'floral', 'élégante', 'ajustée'],
+      url: 'https://www.aliexpress.com/item/floral-summer-dress',
+      platform: 'aliexpress',
+      scrapedAt: new Date().toISOString()
+    },
+    {
+      id: 'aliexpress_women_002',
+      title: 'Blouse en soie avec col chemise',
+      price: 25.99,
+      originalPrice: 45.99,
+      currency: 'USD',
+      image: '/products/aliexpress/silk-blouse.jpg',
+      images: [
+        '/products/aliexpress/silk-blouse-1.jpg',
+        '/products/aliexpress/silk-blouse-2.jpg'
+      ],
+      description: 'Blouse en soie naturelle avec col chemise, parfaite pour le bureau',
+      brand: 'SilkElegance',
+      category: 'women-clothing',
+      subcategory: 'blouses',
+      rating: 4.6,
+      reviews: 892,
+      seller: 'SilkElegance Store',
+      sellerRating: 4.8,
+      availability: 'En stock',
+      delivery: 'Livraison gratuite 15-30 jours',
+      warranty: 'Garantie 30 jours',
+      specifications: {
+        'Matériau': 'Soie 100%',
+        'Style': 'Professionnel',
+        'Col': 'Chemise',
+        'Manches': 'Longues',
+        'Entretien': 'Lavage à la main'
+      },
+      tags: ['blouse', 'soie', 'professionnelle', 'col chemise'],
+      url: 'https://www.aliexpress.com/item/silk-blouse-collar',
+      platform: 'aliexpress',
+      scrapedAt: new Date().toISOString()
+    }
+  ],
+  'men-clothing': [
+    {
+      id: 'aliexpress_men_001',
+      title: 'Chemise en coton Oxford avec poches',
+      price: 22.99,
+      originalPrice: 38.99,
+      currency: 'USD',
+      image: '/products/aliexpress/oxford-shirt.jpg',
+      images: [
+        '/products/aliexpress/oxford-shirt-1.jpg',
+        '/products/aliexpress/oxford-shirt-2.jpg'
+      ],
+      description: 'Chemise en coton Oxford avec poches, style casual et confortable',
+      brand: 'CasualStyle',
+      category: 'men-clothing',
+      subcategory: 'shirts',
+      rating: 4.3,
+      reviews: 1247,
+      seller: 'CasualStyle Store',
+      sellerRating: 4.6,
+      availability: 'En stock',
+      delivery: 'Livraison gratuite 15-30 jours',
+      warranty: 'Garantie 30 jours',
+      specifications: {
+        'Matériau': 'Coton Oxford 100%',
+        'Style': 'Casual',
+        'Col': 'Classique',
+        'Manches': 'Longues',
+        'Poches': '2 poches poitrine'
+      },
+      tags: ['chemise', 'coton oxford', 'casual', 'poches'],
+      url: 'https://www.aliexpress.com/item/oxford-cotton-shirt',
+      platform: 'aliexpress',
+      scrapedAt: new Date().toISOString()
+    }
+  ],
+  'electronics': [
+    {
+      id: 'aliexpress_elec_001',
+      title: 'Smartphone Android 6.5" 128GB - Noir',
+      price: 89.99,
+      originalPrice: 129.99,
+      currency: 'USD',
+      image: '/products/aliexpress/android-smartphone.jpg',
+      images: [
+        '/products/aliexpress/android-smartphone-1.jpg',
+        '/products/aliexpress/android-smartphone-2.jpg',
+        '/products/aliexpress/android-smartphone-3.jpg'
+      ],
+      description: 'Smartphone Android avec écran 6.5 pouces, 128GB de stockage, appareil photo 48MP',
+      brand: 'TechPro',
+      category: 'electronics',
+      subcategory: 'smartphones',
+      rating: 4.7,
+      reviews: 2341,
+      seller: 'TechPro Store',
+      sellerRating: 4.8,
+      availability: 'En stock',
+      delivery: 'Livraison gratuite 15-30 jours',
+      warranty: 'Garantie 1 an',
+      specifications: {
+        'Écran': '6.5" HD',
+        'Stockage': '128GB',
+        'RAM': '4GB',
+        'Appareil photo': '48MP + 8MP + 2MP',
+        'Batterie': '5000mAh'
+      },
+      tags: ['smartphone', 'android', '6.5"', '128gb', '48mp'],
+      url: 'https://www.aliexpress.com/item/android-smartphone-6.5',
+      platform: 'aliexpress',
+      scrapedAt: new Date().toISOString()
+    }
+  ],
+  'furniture': [
+    {
+      id: 'aliexpress_furn_001',
+      title: 'Table de chevet moderne en bois',
+      price: 45.99,
+      originalPrice: 65.99,
+      currency: 'USD',
+      image: '/products/aliexpress/modern-nightstand.jpg',
+      images: [
+        '/products/aliexpress/modern-nightstand-1.jpg',
+        '/products/aliexpress/modern-nightstand-2.jpg'
+      ],
+      description: 'Table de chevet moderne en bois massif avec tiroir et étagère',
+      brand: 'WoodCraft',
+      category: 'furniture',
+      subcategory: 'nightstands',
+      rating: 4.5,
+      reviews: 567,
+      seller: 'WoodCraft Store',
+      sellerRating: 4.7,
+      availability: 'En stock',
+      delivery: 'Livraison 20-35 jours',
+      warranty: 'Garantie 2 ans',
+      specifications: {
+        'Matériau': 'Bois massif',
+        'Dimensions': '40x35x55cm',
+        'Couleur': 'Naturel',
+        'Style': 'Moderne',
+        'Assemblage': 'Pré-assemblé'
+      },
+      tags: ['table de chevet', 'bois', 'moderne', 'tiroir'],
+      url: 'https://www.aliexpress.com/item/modern-wood-nightstand',
+      platform: 'aliexpress',
+      scrapedAt: new Date().toISOString()
+    }
+  ],
+  'vehicles': [
+    {
+      id: 'aliexpress_veh_001',
+      title: 'Scooter électrique pliable 10 pouces',
+      price: 299.99,
+      originalPrice: 399.99,
+      currency: 'USD',
+      image: '/products/aliexpress/foldable-scooter.jpg',
+      images: [
+        '/products/aliexpress/foldable-scooter-1.jpg',
+        '/products/aliexpress/foldable-scooter-2.jpg'
+      ],
+      description: 'Scooter électrique pliable avec roues 10 pouces, autonomie 40km',
+      brand: 'EcoRide',
+      category: 'vehicles',
+      subcategory: 'electric-scooters',
+      rating: 4.4,
+      reviews: 1234,
+      seller: 'EcoRide Store',
+      sellerRating: 4.6,
+      availability: 'En stock',
+      delivery: 'Livraison 20-35 jours',
+      warranty: 'Garantie 1 an',
+      specifications: {
+        'Autonomie': '40km',
+        'Vitesse max': '25km/h',
+        'Roues': '10 pouces',
+        'Poids': '15kg',
+        'Temps de charge': '4h'
+      },
+      tags: ['scooter', 'électrique', 'pliable', '10 pouces'],
+      url: 'https://www.aliexpress.com/item/foldable-electric-scooter',
+      platform: 'aliexpress',
+      scrapedAt: new Date().toISOString()
+    }
+  ]
+};
+
+export async function scrapeAliExpress(options: ScrapingOptions): Promise<AliExpressProduct[]> {
+  const { category, limit = 20, minPrice, maxPrice } = options;
   
-  // Simulate delay
-  await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 1000));
   
-  // Filter mock products based on keyword
-  const filteredProducts = MOCK_ALIEXPRESS_PRODUCTS.filter(product =>
-    product.name.toLowerCase().includes(keyword.toLowerCase()) ||
-    product.category.toLowerCase().includes(keyword.toLowerCase()) ||
-    product.tags.some(tag => tag.toLowerCase().includes(keyword.toLowerCase()))
-  );
+  let products = aliexpressProducts[category] || [];
   
-  // If no matches, return all products
-  return filteredProducts.length > 0 ? filteredProducts : MOCK_ALIEXPRESS_PRODUCTS;
+  // Apply price filters if specified
+  if (minPrice !== undefined) {
+    products = products.filter(product => product.price >= minPrice);
+  }
+  
+  if (maxPrice !== undefined) {
+    products = products.filter(product => product.price <= maxPrice);
+  }
+  
+  // Add some randomization to prices for realism
+  products = products.map(product => ({
+    ...product,
+    price: product.price * (0.9 + Math.random() * 0.2), // ±10% variation
+    rating: (product.rating || 4.0) * (0.95 + Math.random() * 0.1), // ±5% variation
+    reviews: Math.floor((product.reviews || 1000) * (0.8 + Math.random() * 0.4)) // ±20% variation
+  }));
+  
+  // Limit results
+  return products.slice(0, limit);
 }
 
 // Stub function to start periodic scraping
@@ -151,7 +319,7 @@ export async function startPeriodicScraping(keyword: string, intervalMinutes: nu
   // In a real implementation, this would set up a cron job or interval
   setInterval(async () => {
     console.log(`AliExpress Scraper: Mock periodic scraping running for keyword: ${keyword}`);
-    await scrapeAliExpress(keyword);
+    await scrapeAliExpress({ category: keyword });
   }, intervalMinutes * 60 * 1000);
 }
 
@@ -173,8 +341,33 @@ export class AliExpressScraper {
   async scrapeProducts(keyword: string, limit: number = 20): Promise<Product[]> {
     console.log(`AliExpress Scraper: Mock scraping ${limit} products for keyword: ${keyword}`);
     
-    const products = await scrapeAliExpress(keyword);
-    return products.slice(0, limit);
+    const products = await scrapeAliExpress({ category: keyword });
+    return products.map(product => ({
+      id: product.id,
+      name: product.title,
+      price: product.price,
+      originalPrice: product.originalPrice,
+      currency: product.currency,
+      image: product.image,
+      url: product.url,
+      rating: product.rating,
+      reviews: product.reviews,
+      sales: Math.floor(Math.random() * 10000),
+      source: 'AliExpress',
+      category: product.category,
+      description: product.description,
+      features: [],
+      specifications: product.specifications,
+      shipping: product.delivery,
+      delivery: product.delivery,
+      stock: Math.floor(Math.random() * 1000) + 100,
+      isNew: Math.random() > 0.7,
+      isHot: Math.random() > 0.8,
+      isOnSale: Math.random() > 0.6,
+      discount: Math.random() > 0.6 ? Math.floor(Math.random() * 40) + 10 : undefined,
+      tags: product.tags,
+      lastUpdated: new Date()
+    }));
   }
 
   async scrapeProductDetails(url: string): Promise<Product | null> {

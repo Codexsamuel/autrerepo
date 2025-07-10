@@ -11,7 +11,7 @@ export default function SocialEventsPage() {
         keywords="événements, social, IA, NovaWorld, DL Solutions"
         image="/images/social-events.jpg"
         url="https://dlsolutions.com/novaworld/social/events"
-        type="events"
+        type="event"
         organization={{
           name: 'DL Solutions',
           logo: 'https://dlsolutions.com/images/logo.png',

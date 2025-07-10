@@ -11,7 +11,7 @@ export default function SocialGroupsPage() {
         keywords="groupes, social, IA, NovaWorld, DL Solutions"
         image="/images/social-groups.jpg"
         url="https://dlsolutions.com/novaworld/social/groups"
-        type="groups"
+        type="organization"
         organization={{
           name: 'DL Solutions',
           logo: 'https://dlsolutions.com/images/logo.png',

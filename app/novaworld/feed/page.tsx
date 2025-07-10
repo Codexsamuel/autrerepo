@@ -310,7 +310,7 @@ export default function FeedPage() {
                     <div className="mb-4">
                       <img 
                         src={post.image} 
-                        alt="Post content" 
+                        alt={`Image du post de ${post.author.name}`} 
                         className="w-full h-64 object-cover rounded-lg"
                       />
                     </div>

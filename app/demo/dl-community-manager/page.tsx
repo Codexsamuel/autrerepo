@@ -1,79 +1,34 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { 
-  Calendar as CalendarIcon,
-  Clock,
-  User,
-  MapPin,
-  Phone,
-  Mail,
-  Camera,
-  Brain,
-  Eye,
-  Bell,
-  Plus,
-  Search,
-  Filter,
-  Settings,
-  Star,
-  AlertTriangle,
-  CheckCircle,
-  X,
-  Edit,
-  Trash2,
-  Download,
-  Upload,
-  QrCode,
-  Shield,
-  FileText,
-  Users,
-  Building,
-  Heart,
-  Star as StarIcon,
-  TrendingUp,
-  TrendingDown,
-  Activity,
-  BarChart3,
-  Zap,
-  Target,
-  Award,
-  Smile,
-  Frown,
-  Meh,
-  FileCheck,
-  AlertCircle,
-  CheckSquare,
-  Clock4,
-  DollarSign,
-  Receipt,
-  Car as CarIcon,
-  Heart as HeartIcon,
-  Shield as ShieldIcon,
-  RefreshCw,
-  Instagram,
-  Facebook,
-  Twitter,
-  Linkedin,
-  Youtube,
-  MessageCircle,
-  Image,
-  Video,
-  Hash,
-  AtSign,
-  ChevronRight,
-  ChevronLeft,
-  Megaphone
+import {
+    BarChart3,
+    Brain,
+    Calendar as CalendarIcon,
+    Camera,
+    Clock,
+    Edit,
+    Facebook,
+    Image,
+    Instagram,
+    Linkedin,
+    Megaphone,
+    MessageCircle,
+    Plus,
+    Settings,
+    TrendingUp,
+    Twitter,
+    Users,
+    Video,
+    X,
+    Youtube,
+    Zap
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 // Dashboard Community Management premium NovaCore - Inspiré Sprout Social/Hootsuite
 // Modules : Navbar, Alertes IA, KPI, Pipeline, Influenceurs, Recos IA, Footer
@@ -437,7 +392,7 @@ export default function DLCommunityManagerPage() {
                   <p className="text-pink-100">Posts Totaux</p>
                   <p className="text-3xl font-bold">{aiInsights?.totalPosts}</p>
                 </div>
-                <Image className="h-8 w-8 text-pink-200" />
+                <Image className="h-8 w-8 text-pink-200" alt="Total Posts" />
               </div>
             </CardContent>
           </Card>
@@ -449,7 +404,7 @@ export default function DLCommunityManagerPage() {
                   <p className="text-blue-100">Posts Programmés</p>
                   <p className="text-3xl font-bold">{aiInsights?.scheduledPosts}</p>
                 </div>
-                <Clock className="h-8 w-8 text-blue-200" />
+                <Clock className="h-8 w-8 text-blue-200" alt="Scheduled Posts" />
               </div>
             </CardContent>
           </Card>
@@ -461,7 +416,7 @@ export default function DLCommunityManagerPage() {
                   <p className="text-green-100">Engagement Moyen</p>
                   <p className="text-3xl font-bold">{aiInsights?.averageEngagement}%</p>
                 </div>
-                <TrendingUp className="h-8 w-8 text-green-200" />
+                <TrendingUp className="h-8 w-8 text-green-200" alt="Average Engagement" />
               </div>
             </CardContent>
           </Card>
@@ -473,7 +428,7 @@ export default function DLCommunityManagerPage() {
                   <p className="text-purple-100">Portée Totale</p>
                   <p className="text-3xl font-bold">{(aiInsights?.totalReach / 1000).toFixed(0)}k</p>
                 </div>
-                <Users className="h-8 w-8 text-purple-200" />
+                <Users className="h-8 w-8 text-purple-200" alt="Total Reach" />
               </div>
             </CardContent>
           </Card>

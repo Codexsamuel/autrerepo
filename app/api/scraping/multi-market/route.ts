@@ -31,32 +31,32 @@ export async function POST(request: NextRequest) {
 
     switch (platform.toLowerCase()) {
       case 'alibaba':
-        results = await scrapeAlibaba({ category, query, limit, minPrice, maxPrice, sortBy });
+        results = await scrapeAlibaba({ category: category ?? undefined, query: query ?? undefined, limit, minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined });
         break;
       case 'shein':
-        results = await scrapeShein({ category, query, limit, minPrice, maxPrice, sortBy });
+        results = await scrapeShein({ category: category ?? undefined, query: query ?? undefined, limit, minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined });
         break;
       case 'cdiscount':
-        results = await scrapeCdiscount({ category, query, limit, minPrice, maxPrice, sortBy, country });
+        results = await scrapeCdiscount({ category: category ?? undefined, query: query ?? undefined, limit, minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined, country });
         break;
       case 'amazon':
-        results = await scrapeAmazon({ category, query, limit, minPrice, maxPrice, sortBy, country });
+        results = await scrapeAmazon({ category: category ?? undefined, query: query ?? undefined, limit, minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined, country });
         break;
       case 'ebay':
-        results = await scrapeEbay({ category, query, limit, minPrice, maxPrice, sortBy, country });
+        results = await scrapeEbay({ category: category ?? undefined, query: query ?? undefined, limit, minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined, country });
         break;
       case 'aliexpress':
-        results = await scrapeAliExpress({ category, query, limit, minPrice, maxPrice, sortBy });
+        results = await scrapeAliExpress({ category: category ?? undefined, query: query ?? undefined, limit, minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined });
         break;
       case 'all':
         // Scrape from all platforms
         const [alibabaResults, sheinResults, cdiscountResults, amazonResults, ebayResults, aliexpressResults] = await Promise.allSettled([
-          scrapeAlibaba({ category, query, limit: Math.ceil(limit/6), minPrice, maxPrice, sortBy }),
-          scrapeShein({ category, query, limit: Math.ceil(limit/6), minPrice, maxPrice, sortBy }),
-          scrapeCdiscount({ category, query, limit: Math.ceil(limit/6), minPrice, maxPrice, sortBy, country }),
-          scrapeAmazon({ category, query, limit: Math.ceil(limit/6), minPrice, maxPrice, sortBy, country }),
-          scrapeEbay({ category, query, limit: Math.ceil(limit/6), minPrice, maxPrice, sortBy, country }),
-          scrapeAliExpress({ category, query, limit: Math.ceil(limit/6), minPrice, maxPrice, sortBy })
+          scrapeAlibaba({ category: category ?? undefined, query: query ?? undefined, limit: Math.ceil(limit/6), minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined }),
+          scrapeShein({ category: category ?? undefined, query: query ?? undefined, limit: Math.ceil(limit/6), minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined }),
+          scrapeCdiscount({ category: category ?? undefined, query: query ?? undefined, limit: Math.ceil(limit/6), minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined, country }),
+          scrapeAmazon({ category: category ?? undefined, query: query ?? undefined, limit: Math.ceil(limit/6), minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined, country }),
+          scrapeEbay({ category: category ?? undefined, query: query ?? undefined, limit: Math.ceil(limit/6), minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined, country }),
+          scrapeAliExpress({ category: category ?? undefined, query: query ?? undefined, limit: Math.ceil(limit/6), minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined })
         ]);
 
         results = [
@@ -126,31 +126,31 @@ export async function GET(request: NextRequest) {
 
     switch (platform.toLowerCase()) {
       case 'alibaba':
-        results = await scrapeAlibaba({ category, query, limit, minPrice, maxPrice, sortBy });
+        results = await scrapeAlibaba({ category: category ?? undefined, query: query ?? undefined, limit, minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined });
         break;
       case 'shein':
-        results = await scrapeShein({ category, query, limit, minPrice, maxPrice, sortBy });
+        results = await scrapeShein({ category: category ?? undefined, query: query ?? undefined, limit, minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined });
         break;
       case 'cdiscount':
-        results = await scrapeCdiscount({ category, query, limit, minPrice, maxPrice, sortBy, country });
+        results = await scrapeCdiscount({ category: category ?? undefined, query: query ?? undefined, limit, minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined, country });
         break;
       case 'amazon':
-        results = await scrapeAmazon({ category, query, limit, minPrice, maxPrice, sortBy, country });
+        results = await scrapeAmazon({ category: category ?? undefined, query: query ?? undefined, limit, minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined, country });
         break;
       case 'ebay':
-        results = await scrapeEbay({ category, query, limit, minPrice, maxPrice, sortBy, country });
+        results = await scrapeEbay({ category: category ?? undefined, query: query ?? undefined, limit, minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined, country });
         break;
       case 'aliexpress':
-        results = await scrapeAliExpress({ category, query, limit, minPrice, maxPrice, sortBy });
+        results = await scrapeAliExpress({ category: category ?? undefined, query: query ?? undefined, limit, minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined });
         break;
       case 'all':
         const [alibabaResults, sheinResults, cdiscountResults, amazonResults, ebayResults, aliexpressResults] = await Promise.allSettled([
-          scrapeAlibaba({ category, query, limit: Math.ceil(limit/6), minPrice, maxPrice, sortBy }),
-          scrapeShein({ category, query, limit: Math.ceil(limit/6), minPrice, maxPrice, sortBy }),
-          scrapeCdiscount({ category, query, limit: Math.ceil(limit/6), minPrice, maxPrice, sortBy, country }),
-          scrapeAmazon({ category, query, limit: Math.ceil(limit/6), minPrice, maxPrice, sortBy, country }),
-          scrapeEbay({ category, query, limit: Math.ceil(limit/6), minPrice, maxPrice, sortBy, country }),
-          scrapeAliExpress({ category, query, limit: Math.ceil(limit/6), minPrice, maxPrice, sortBy })
+          scrapeAlibaba({ category: category ?? undefined, query: query ?? undefined, limit: Math.ceil(limit/6), minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined }),
+          scrapeShein({ category: category ?? undefined, query: query ?? undefined, limit: Math.ceil(limit/6), minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined }),
+          scrapeCdiscount({ category: category ?? undefined, query: query ?? undefined, limit: Math.ceil(limit/6), minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined, country }),
+          scrapeAmazon({ category: category ?? undefined, query: query ?? undefined, limit: Math.ceil(limit/6), minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined, country }),
+          scrapeEbay({ category: category ?? undefined, query: query ?? undefined, limit: Math.ceil(limit/6), minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined, country }),
+          scrapeAliExpress({ category: category ?? undefined, query: query ?? undefined, limit: Math.ceil(limit/6), minPrice: minPrice ? Number(minPrice) : undefined, maxPrice: maxPrice ? Number(maxPrice) : undefined, sortBy: sortBy ?? undefined })
         ]);
 
         results = [

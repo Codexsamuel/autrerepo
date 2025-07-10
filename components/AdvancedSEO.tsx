@@ -670,11 +670,11 @@ export default function AdvancedSEO({
         } else if (tag['http-equiv']) {
           newElement.setAttribute('http-equiv', tag['http-equiv']);
           newElement.setAttribute('content', content);
-        } else {
+        } else if (tag.name) {
           newElement.setAttribute('name', tag.name);
           newElement.setAttribute('content', content);
+          document.head.appendChild(newElement);
         }
-        document.head.appendChild(newElement);
       }
     });
 

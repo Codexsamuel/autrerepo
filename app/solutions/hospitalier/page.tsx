@@ -160,22 +160,22 @@ export default function HotelDashboard() {
   }, []);
 
   useEffect(() => {
-    async function fetchStats() {
-      try {
-        const { data: rooms } = await supabase.from("hotel_rooms").select();
-        const { data: clients } = await supabase.from("hotel_clients").select();
-        const { data: reservations } = await supabase.from("hotel_reservations").select();
-        const { data: bills } = await supabase.from("hotel_billing").select();
-        setStats({
-          totalRooms: rooms?.length || 0,
-          totalClients: clients?.length || 0,
-          totalReservations: reservations?.length || 0,
-          totalRevenue: bills?.reduce((sum: number, b: any) => sum + (b.amount || 0), 0) || 0,
-        });
-      } finally {
-        setLoading(false);
-      }
+  async function fetchStats() {
+    try {
+      const { data: rooms } = await supabase.from("hotel_rooms").select();
+      const { data: clients } = await supabase.from("hotel_clients").select();
+      const { data: reservations } = await supabase.from("hotel_reservations").select();
+      const { data: bills } = await supabase.from("hotel_billing").select();
+      setStats({
+        totalRooms: rooms?.length || 0,
+        totalClients: clients?.length || 0,
+        totalReservations: reservations?.length || 0,
+        totalRevenue: bills?.reduce((sum: number, b: any) => sum + (b.amount || 0), 0) || 0,
+      });
+    } finally {
+      setLoading(false);
     }
+  }
 
     fetchStats();
   }, []);
@@ -640,7 +640,7 @@ export default function HotelDashboard() {
               </TabsContent>
             </Tabs>
           </div>
-        </div>
+      </div>
       </div>
     </div>
   );

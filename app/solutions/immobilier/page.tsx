@@ -156,7 +156,7 @@ export default function ImmobilierPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8">
         {/* Statistiques */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           {stats.map((stat, idx) => (

@@ -13,6 +13,7 @@ import ContextualHelp from '@/components/onboarding/ContextualHelp';
 import PrivacyMessage from '@/components/privacy-message';
 import TestimonialsSection from '@/components/testimonials-section';
 import { Button } from "@/components/ui/button";
+import MarqueeBanner from '@/components/ui/MarqueeBanner';
 import WhatsAppButton from '@/components/whatsapp-button';
 import {
     ArrowRight,
@@ -546,6 +547,8 @@ export default function HomePage() {
         preconnect={['https://fonts.googleapis.com', 'https://cdn.jsdelivr.net']}
       />
       
+      <MarqueeBanner />
+
       <div className="min-h-screen bg-black text-white overflow-hidden">
         {/* Navigation moderne avec authentification */}
         <ModernNavigation />

@@ -587,18 +587,18 @@ export default function HomePage() {
                       Accédez à nos solutions premium
                     </span>
                     <Button
-                      size="sm"
+                      size="lg"
                       onClick={() => handleAuth('login')}
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-6 py-3 rounded-full shadow-lg text-base"
                     >
                       <LogIn className="w-4 h-4 mr-1" />
                       Connexion
                     </Button>
                     <Button
-                      size="sm"
+                      size="lg"
                       variant="outline"
                       onClick={() => handleAuth('register')}
-                      className="border-white text-white hover:bg-white hover:text-blue-900"
+                      className="border-white text-white hover:bg-white hover:text-blue-900 font-bold px-6 py-3 rounded-full shadow-lg text-base"
                     >
                       <UserPlus className="w-4 h-4 mr-1" />
                       Inscription

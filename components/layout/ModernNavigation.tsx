@@ -1,14 +1,14 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
-import { Search, Menu, X, ChevronDown, Globe, User, Settings, Briefcase, Home, Info, Building, TrendingUp, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import LanguageSelector from '@/components/ui/language-selector';
 import { useLanguage } from '@/hooks/useLanguage';
 import { getTranslation } from '@/lib/i18n/translations';
+import { Briefcase, Building, ChevronDown, Home, Info, Menu, Phone, Search, Settings, TrendingUp, X } from 'lucide-react';
+import Link from 'next/link';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface ModernNavigationProps {
   className?: string;
@@ -78,10 +78,10 @@ export default function ModernNavigation({ className = '' }: ModernNavigationPro
 
           {/* Barre de recherche centrale */}
           <div className="hidden md:flex flex-1 max-w-lg mx-4 lg:mx-8" ref={searchRef}>
-            <form onSubmit={handleSearch} className="relative w-full">
+            <form onSubmit={handleSearch} className="relative w-full flex">
               <div className={`relative transition-all duration-300 ${
                 isSearchFocused ? 'scale-105' : 'scale-100'
-              }`}>
+              } flex-1`}>
                 <Input
                   type="text"
                   placeholder={t.search.placeholder}
@@ -101,6 +101,13 @@ export default function ModernNavigation({ className = '' }: ModernNavigationPro
                   </button>
                 )}
               </div>
+              <Button
+                type="submit"
+                className="ml-2 bg-gradient-to-r from-green-600 to-blue-600 text-white font-semibold px-6 py-2 rounded-full shadow-lg hover:from-green-700 hover:to-blue-700 transition-all duration-300 text-base"
+                disabled={!searchQuery.trim()}
+              >
+                {t.search.search || 'Rechercher'}
+              </Button>
             </form>
           </div>
 
@@ -138,6 +145,18 @@ export default function ModernNavigation({ className = '' }: ModernNavigationPro
             <Link href="/solutions/selection">
               <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
                 {t.navigation.solutions}
+              </Button>
+            </Link>
+
+            {/* Ajout des boutons Connexion/Inscription visibles à droite si l'utilisateur n'est pas connecté */}
+            <Link href="/sign-in">
+              <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-6 py-3 rounded-full shadow-lg text-base">
+                Connexion
+              </Button>
+            </Link>
+            <Link href="/sign-up">
+              <Button className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold px-6 py-3 rounded-full shadow-lg text-base">
+                Créer un compte
               </Button>
             </Link>
           </div>

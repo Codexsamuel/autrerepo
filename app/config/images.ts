@@ -1,5 +1,5 @@
 export const defaultImages = {
-  logo: '/images/logo.png',
+  logo: '/images/logos/logo-dl.png',
   avatar: '/images/avatar.png',
   background: '/images/background.jpg',
   crmBanque: '/images/crm-banque.jpg',

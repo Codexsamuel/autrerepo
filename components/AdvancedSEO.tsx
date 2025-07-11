@@ -144,7 +144,7 @@ export default function AdvancedSEO({
   type = 'website',
   organization = {
     name: 'DL Solutions',
-    logo: '/logos/logo-dl.png',
+    logo: '/images/logos/logo-dl.png',
     url: 'https://dlsolutions.com',
     description: 'Solutions digitales innovantes pour entreprises'
   },

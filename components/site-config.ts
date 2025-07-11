@@ -4,7 +4,7 @@ export const siteConfig = {
   description:
     "DL Solutions SARL - Solutions CRM, Intelligence Artificielle, formations et créations visuelles. Basé à Yaoundé, Cameroun.",
   url: "https://www.daveandlucesolutions.com",
-  ogImage: "https://www.daveandlucesolutions.com/images/dl-logo.jpg",
+  ogImage: "/images/logos/logo-dl.png",
   links: {
     twitter: "https://twitter.com/daveandlucesolutions",
     github: "https://github.com/daveandlucesolutions",

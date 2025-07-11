@@ -113,7 +113,7 @@ export default function RootLayout({
             "@type": "Organization",
               "name": "DL Solutions",
             "url": "https://daveandlucesolutions.com",
-              "logo": "https://daveandlucesolutions.com/images/dl-logo.jpg",
+              "logo": "https://dlsolutions.com/images/logo.png",
               "description": "Écosystème digital complet avec CRM, ERP, boutique internationale, formations professionnelles",
               "address": {
                 "@type": "PostalAddress",
@@ -177,7 +177,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
               "name": "DL Solutions - Bureaux Cameroun",
-              "image": "https://daveandlucesolutions.com/images/dl-logo.jpg",
+              "image": "https://dlsolutions.com/images/logo.png",
               "description": "Bureaux DL Solutions au Cameroun - École de Police, Yaoundé",
               "address": {
                 "@type": "PostalAddress",

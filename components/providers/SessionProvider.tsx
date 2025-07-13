@@ -57,7 +57,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 
   // Démarrer le timer de session
   useEffect(() => {
-    if (!isAuthenticated && !EXEMPT_PATHS.includes(pathname)) {
+    if (!isAuthenticated && pathname && !EXEMPT_PATHS.includes(pathname)) {
       const startTime = Date.now();
       setSessionStartTime(startTime);
       localStorage.setItem('sessionStartTime', startTime.toString());
@@ -66,7 +66,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 
   // Vérifier le timeout de session
   useEffect(() => {
-    if (!isAuthenticated && sessionStartTime && !EXEMPT_PATHS.includes(pathname)) {
+    if (!isAuthenticated && sessionStartTime && pathname && !EXEMPT_PATHS.includes(pathname)) {
       const checkTimeout = () => {
         const currentTime = Date.now();
         const elapsed = currentTime - sessionStartTime;

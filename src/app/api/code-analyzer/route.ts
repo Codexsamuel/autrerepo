@@ -1,5 +1,5 @@
-import { AdvancedCodeAnalyzerService } from '@/services/code-analyzer-service';
 import { NextRequest, NextResponse } from 'next/server';
+import { AdvancedCodeAnalyzerService } from '../../../services/code-analyzer-service';
 
 const codeAnalyzer = new AdvancedCodeAnalyzerService();
 

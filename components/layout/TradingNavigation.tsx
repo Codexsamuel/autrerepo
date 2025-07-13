@@ -1,19 +1,19 @@
 "use client";
 
-import React from 'react';
+import {
+    Activity,
+    BarChart3,
+    Bell,
+    DollarSign,
+    Globe,
+    Home,
+    Settings,
+    TrendingUp,
+    User
+} from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  Home, 
-  TrendingUp, 
-  BarChart3, 
-  DollarSign, 
-  Settings, 
-  User,
-  Activity,
-  Globe,
-  Bell
-} from 'lucide-react';
+import React from 'react';
 
 const Navigation: React.FC = () => {
   const pathname = usePathname();
@@ -62,7 +62,7 @@ const Navigation: React.FC = () => {
   ];
 
   return (
-    <nav className="bg-white border-b border-gray-200">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">

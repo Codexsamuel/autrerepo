@@ -1075,4 +1075,14 @@ print("Capacités illimitées activées")`,
     // Amélioration de l'apprentissage
     return { learningEnhanced: true };
   }
+
+  getConnectionStatus() {
+    return {
+      isSimulationMode: this.isSimulationMode,
+      openaiKeyDetected: !!process.env.OPENAI_API_KEY,
+      geminiKeyDetected: !!process.env.GEMINI_API_KEY,
+      mode: this.isSimulationMode ? 'simulation' : 'real',
+      provider: this.openai ? 'openai' : (this.gemini ? 'gemini' : 'simulation')
+    };
+  }
 } 

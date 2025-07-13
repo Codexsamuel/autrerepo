@@ -128,6 +128,13 @@ export async function GET(request: NextRequest) {
           data: status
         });
 
+      case 'connection-status':
+        const connectionStatus = ultraAIService.getConnectionStatus();
+        return NextResponse.json({
+          success: true,
+          data: connectionStatus
+        });
+
       default:
         return NextResponse.json({
           success: true,

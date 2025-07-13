@@ -272,10 +272,10 @@ export class IndustrialTechScraper {
     const specs: Record<string, string> = {};
     
     const specSelector = this.config.searchSelectors.specifications || '.spec-item';
-    $el.find(specSelector).each((index, specEl) => {
-      const $spec = $el.constructor(specEl);
-      const key = $spec.find('.spec-key').text().trim();
-      const value = $spec.find('.spec-value').text().trim();
+    $el.find(specSelector).each((index: number, specEl: cheerio.Element) => {
+      const $spec = cheerio.load(specEl);
+      const key = $spec('.spec-key').text().trim();
+      const value = $spec('.spec-value').text().trim();
       
       if (key && value) {
         specs[key] = value;

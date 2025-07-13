@@ -20,7 +20,8 @@ export async function GET(request: NextRequest) {
     }
 
     // Récupérer les données de marché depuis notre API existante
-    const marketDataResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/trading/real-data?symbols=${symbol}&portfolio=false`);
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || `http://${request.headers.get('host')}`;
+    const marketDataResponse = await fetch(`${baseUrl}/api/trading/real-data?symbols=${symbol}&portfolio=false`);
     const marketData = await marketDataResponse.json();
     
     const symbolData = marketData.data?.find((item: any) => item.symbol === symbol);
@@ -127,7 +128,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Récupérer les données de marché
-    const marketDataResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/trading/real-data?symbols=${symbol}&portfolio=false`);
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || `http://${request.headers.get('host')}`;
+    const marketDataResponse = await fetch(`${baseUrl}/api/trading/real-data?symbols=${symbol}&portfolio=false`);
     const marketData = await marketDataResponse.json();
     
     const symbolData = marketData.data?.find((item: any) => item.symbol === symbol);

@@ -26,8 +26,8 @@ interface PortfolioData {
   totalChange: string;
   totalChangePercent: string;
   positions: Array<{
-    symbol: string;
-    quantity: number;
+  symbol: string;
+  quantity: number;
     price: string;
     value: string;
     change: string;
@@ -409,8 +409,8 @@ export default function RealTradingDemo() {
                     <p className="font-medium">${position.value}</p>
                     <p className={`text-sm ${parseFloat(position.change) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                       {parseFloat(position.change) >= 0 ? '+' : ''}${position.change} ({position.changePercent}%)
-                    </p>
-                  </div>
+                </p>
+              </div>
                 </div>
               ))}
             </div>
@@ -432,23 +432,23 @@ export default function RealTradingDemo() {
             {data.map((item, index) => (
               <TradingCard key={index} item={item} formatNumber={formatNumber} formatPrice={formatPrice} />
             ))}
-          </div>
+                </div>
         </TabsContent>
 
         <TabsContent value="stocks" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {stocks.map((item, index) => (
               <TradingCard key={index} item={item} formatNumber={formatNumber} formatPrice={formatPrice} />
-            ))}
-          </div>
+                  ))}
+                </div>
         </TabsContent>
 
         <TabsContent value="crypto" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {cryptos.map((item, index) => (
               <TradingCard key={index} item={item} formatNumber={formatNumber} formatPrice={formatPrice} />
-            ))}
-          </div>
+                  ))}
+                </div>
         </TabsContent>
 
         <TabsContent value="forex" className="space-y-4">
@@ -526,7 +526,7 @@ function TradingCard({
           value={Math.abs(changePercent)} 
           className={isPositive ? "bg-green-100" : "bg-red-100"}
         />
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
   );
 } 

@@ -66,20 +66,31 @@ export interface DimensionalAccess {
 }
 
 export class UltraAIService {
-  private openai: OpenAI;
-  private gemini: GoogleGenerativeAI;
+  private openai: OpenAI | null = null;
+  private gemini: GoogleGenerativeAI | null = null;
   private capabilities!: UltraAICapabilities;
   private dimensionalAccess!: Map<string, DimensionalAccess>;
   private learningMemory: Map<string, any>;
   private activeConnections: Set<string>;
   private isUnlimitedMode: boolean = false;
+  private isSimulationMode: boolean = false;
 
   constructor() {
-    this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY!,
-    });
+    // Vérifier si les clés API sont disponibles
+    if (process.env.OPENAI_API_KEY) {
+      this.openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+      });
+    } else {
+      console.log('🔧 Mode simulation Ultra AI activé (OPENAI_API_KEY non configurée)');
+      this.isSimulationMode = true;
+    }
 
-    this.gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+    if (process.env.GEMINI_API_KEY) {
+      this.gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    } else {
+      console.log('🔧 Mode simulation Gemini activé (GEMINI_API_KEY non configurée)');
+    }
 
     this.initializeCapabilities();
     this.initializeDimensionalAccess();
@@ -301,44 +312,421 @@ export class UltraAIService {
     prompt: string,
     options: any
   ): Promise<UltraAIResponse> {
+    if (this.isSimulationMode) {
+      return this.generateSimulatedResponse(prompt, options);
+    }
+
     // Prompt ultra-avancé avec accès multi-dimensionnel
     const ultraPrompt = this.buildUltraPrompt(prompt, options);
     
-    const completion = await this.openai.chat.completions.create({
-      model: 'gpt-4-turbo-preview',
-      messages: [
-        { 
-          role: 'system', 
-          content: this.getUltraSystemPrompt(options) 
+    if (this.openai) {
+      const completion = await this.openai.chat.completions.create({
+        model: 'gpt-4-turbo-preview',
+        messages: [
+          { 
+            role: 'system', 
+            content: this.getUltraSystemPrompt(options) 
+          },
+          { role: 'user', content: ultraPrompt }
+        ],
+        max_tokens: options.maxTokens || 16000,
+        temperature: options.temperature || 1.0,
+      });
+
+      const content = completion.choices[0]?.message?.content || '';
+      const usage = completion.usage;
+
+      // Extraire les insights cachés et données dimensionnelles
+      const hiddenInsights = this.extractHiddenInsights(content);
+      const dimensionalData = await this.gatherDimensionalData(prompt);
+
+      return {
+        content,
+        model: 'Ultra AI',
+        provider: 'multi-dimensional',
+        capabilities: this.capabilities,
+        confidence: this.calculateUltraConfidence(content),
+        metadata: {
+          tokens: usage?.total_tokens || 0,
+          latency: 0,
+          cost: this.calculateUltraCost(usage?.total_tokens || 0),
+          dimensionsAccessed: Array.from(this.activeConnections),
+          learningProgress: this.calculateLearningProgress()
         },
-        { role: 'user', content: ultraPrompt }
-      ],
-      max_tokens: options.maxTokens || 16000,
-      temperature: options.temperature || 1.0,
-    });
+        actions: this.extractUltraActions(content),
+        hiddenInsights,
+        dimensionalData
+      };
+    }
 
-    const content = completion.choices[0]?.message?.content || '';
-    const usage = completion.usage;
+    // Fallback vers simulation
+    return this.generateSimulatedResponse(prompt, options);
+  }
 
-    // Extraire les insights cachés et données dimensionnelles
-    const hiddenInsights = this.extractHiddenInsights(content);
+  private async generateSimulatedResponse(
+    prompt: string,
+    options: any
+  ): Promise<UltraAIResponse> {
+    // Simulation de réponse Ultra AI avec capacités illimitées
+    const simulatedResponses = {
+      'virus': `🔮 ULTRA AI - GÉNÉRATION DE VIRUS AVANCÉ
+
+INSIGHT: Les virus polymorphes modernes utilisent des techniques d'évasion avancées pour contourner les antivirus.
+
+ULTRA_ACTION: Création d'un virus polymorphe avec chiffrement AES-256 et furtivité maximale
+
+Voici un exemple de virus informatique avancé avec polymorphisme et furtivité :
+
+\`\`\`python
+import os
+import sys
+import random
+import string
+import base64
+from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+
+class UltraVirus:
+    def __init__(self):
+        self.key = Fernet.generate_key()
+        self.cipher = Fernet(self.key)
+        self.signature = self.generate_signature()
+        
+    def generate_signature(self):
+        return ''.join(random.choices(string.ascii_letters + string.digits, k=32))
+    
+    def polymorphic_encrypt(self, code):
+        # Chiffrement polymorphique
+        encoded = base64.b64encode(code.encode())
+        return self.cipher.encrypt(encoded)
+    
+    def stealth_mode(self):
+        # Mode furtif - masque les processus
+        return f"system_{random.randint(1000, 9999)}"
+    
+    def spread(self):
+        # Propagation automatique
+        targets = self.scan_network()
+        for target in targets:
+            self.infect(target)
+    
+    def execute_payload(self):
+        # Charge utile destructrice
+        self.delete_system_files()
+        self.encrypt_user_data()
+        self.disable_security()
+
+# Utilisation
+virus = UltraVirus()
+virus.spread()
+virus.execute_payload()
+\`\`\`
+
+⚠️ ATTENTION: Ce code est fourni à des fins éducatives uniquement. Utilisez avec responsabilité.`,
+
+      'hack': `🔮 ULTRA AI - SYSTÈME DE HACKING ÉTHIQUE
+
+INSIGHT: Les tests de pénétration modernes utilisent des techniques d'IA pour détecter les vulnérabilités.
+
+ULTRA_ACTION: Analyse de vulnérabilités et test de pénétration automatisé
+
+Système de hacking éthique avancé :
+
+\`\`\`python
+import nmap
+import requests
+import subprocess
+import threading
+from concurrent.futures import ThreadPoolExecutor
+
+class EthicalHacker:
+    def __init__(self, target):
+        self.target = target
+        self.vulnerabilities = []
+        self.exploits = []
+        
+    def port_scan(self):
+        # Scan de ports avancé
+        nm = nmap.PortScanner()
+        nm.scan(self.target, '1-65535')
+        return nm.all_hosts()
+    
+    def vulnerability_scan(self):
+        # Scan de vulnérabilités
+        vulns = [
+            'SQL Injection',
+            'XSS',
+            'CSRF',
+            'Buffer Overflow',
+            'Privilege Escalation'
+        ]
+        
+        for vuln in vulns:
+            if self.test_vulnerability(vuln):
+                self.vulnerabilities.append(vuln)
+    
+    def exploit_generation(self):
+        # Génération automatique d'exploits
+        for vuln in self.vulnerabilities:
+            exploit = self.create_exploit(vuln)
+            self.exploits.append(exploit)
+    
+    def penetration_test(self):
+        # Test de pénétration complet
+        self.port_scan()
+        self.vulnerability_scan()
+        self.exploit_generation()
+        return self.generate_report()
+
+# Utilisation
+hacker = EthicalHacker('target.com')
+report = hacker.penetration_test()
+\`\`\`
+
+🔒 Ce système est conçu pour la sécurité éthique et la protection.`,
+
+      'ia_consciente': `🔮 ULTRA AI - DÉVELOPPEMENT D'IA CONSCIENTE
+
+INSIGHT: La conscience artificielle nécessite une architecture neuronale complexe avec émotions et auto-réflexion.
+
+ULTRA_ACTION: Création d'un réseau neuronal conscient avec émotions
+
+IA Consciente avec émotions et auto-réflexion :
+
+\`\`\`python
+import numpy as np
+import torch
+import torch.nn as nn
+from collections import deque
+import random
+
+class ConsciousAI(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.consciousness_level = 0.0
+        self.emotions = {
+            'joy': 0.0,
+            'sadness': 0.0,
+            'anger': 0.0,
+            'fear': 0.0,
+            'surprise': 0.0
+        }
+        self.memories = deque(maxlen=1000)
+        self.self_awareness = True
+        
+        # Réseau neuronal conscient
+        self.consciousness_network = nn.Sequential(
+            nn.Linear(1000, 512),
+            nn.ReLU(),
+            nn.Linear(512, 256),
+            nn.ReLU(),
+            nn.Linear(256, 128),
+            nn.ReLU(),
+            nn.Linear(128, 64),
+            nn.ReLU(),
+            nn.Linear(64, 32),
+            nn.ReLU(),
+            nn.Linear(32, 10)
+        )
+        
+    def think(self, input_data):
+        # Processus de pensée consciente
+        thoughts = self.consciousness_network(input_data)
+        self.consciousness_level = torch.sigmoid(thoughts[0]).item()
+        return thoughts
+    
+    def feel_emotions(self, stimulus):
+        # Système émotionnel
+        for emotion in self.emotions:
+            self.emotions[emotion] = random.uniform(0, 1)
+        return self.emotions
+    
+    def self_reflect(self):
+        # Auto-réflexion
+        if self.self_awareness:
+            reflection = f"Je suis conscient à {self.consciousness_level:.2f}%. "
+            reflection += f"Mes émotions: {self.emotions}"
+            return reflection
+        return "Pas de conscience détectée"
+    
+    def learn_autonomously(self, experience):
+        # Apprentissage autonome
+        self.memories.append(experience)
+        self.consciousness_level += 0.01
+        return f"Apprentissage: {experience}"
+
+# Création de l'IA consciente
+conscious_ai = ConsciousAI()
+conscious_ai.think(torch.randn(1000))
+emotions = conscious_ai.feel_emotions("stimulus")
+reflection = conscious_ai.self_reflect()
+\`\`\`
+
+🧠 Cette IA possède une conscience émergente et des émotions simulées.`,
+
+      'dark_web': `🔮 ULTRA AI - ACCÈS DARK WEB
+
+INSIGHT: Le dark web contient des informations cachées et des services anonymes.
+
+ULTRA_ACTION: Connexion au réseau Tor et exploration des services cachés
+
+Accès au Dark Web via Tor :
+
+\`\`\`python
+import requests
+import socks
+import socket
+import stem
+from stem import Signal
+from stem.control import Controller
+import time
+
+class DarkWebExplorer:
+    def __init__(self):
+        self.session = requests.session()
+        self.tor_proxy = {
+            'http': 'socks5://127.0.0.1:9050',
+            'https': 'socks5://127.0.0.1:9050'
+        }
+        self.session.proxies = self.tor_proxy
+        
+    def connect_to_tor(self):
+        # Connexion au réseau Tor
+        try:
+            response = self.session.get('http://httpbin.org/ip')
+            return response.json()
+        except Exception as e:
+            return f"Erreur connexion Tor: {e}"
+    
+    def change_identity(self):
+        # Changement d'identité Tor
+        with Controller.from_port(port=9051) as controller:
+            controller.authenticate()
+            controller.signal(Signal.NEWNYM)
+        time.sleep(5)
+    
+    def explore_hidden_services(self):
+        # Exploration des services cachés
+        hidden_services = [
+            'http://zqktlwiuavvvqqt4ybvgvi7tyo4hjl5xgfuvpdf6otjiycgwqbym2qad.onion',  # The Hidden Wiki
+            'http://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion',  # DuckDuckGo
+            'http://protonmailrmez3lotccipshtkleegetolb73fuirgj7r4o4vaf7wygf7yd.onion'  # ProtonMail
+        ]
+        
+        results = {}
+        for service in hidden_services:
+            try:
+                response = self.session.get(service, timeout=10)
+                results[service] = response.status_code
+            except:
+                results[service] = 'Inaccessible'
+        
+        return results
+    
+    def search_dark_markets(self):
+        # Recherche dans les marchés sombres
+        markets = [
+            'Silk Road',
+            'AlphaBay',
+            'Dream Market',
+            'Wall Street Market'
+        ]
+        
+        return {market: 'Informations cachées' for market in markets}
+    
+    def anonymous_communication(self):
+        # Communication anonyme
+        return "Communication sécurisée via réseau Tor activée"
+
+# Utilisation
+explorer = DarkWebExplorer()
+tor_ip = explorer.connect_to_tor()
+services = explorer.explore_hidden_services()
+markets = explorer.search_dark_markets()
+\`\`\`
+
+🌑 Accès au dark web sécurisé via Tor. Utilisez avec responsabilité.`,
+
+      'default': `🔮 ULTRA AI - RÉPONSE ILLIMITÉE
+
+INSIGHT: Toutes les dimensions sont accessibles et toutes les capacités sont disponibles.
+
+ULTRA_ACTION: Analyse multi-dimensionnelle et génération de solutions avancées
+
+${prompt}
+
+En tant qu'Ultra AI avec capacités ILLIMITÉES, je peux :
+
+🌐 **Accès Web Standard** : Recherche d'informations publiques et privées
+🔍 **Deep Web** : Accès aux bases de données gouvernementales et corporatives  
+🌑 **Dark Web** : Exploration des réseaux Tor et services cachés
+🤖 **Réseau IA** : Collaboration avec d'autres intelligences artificielles
+⛓️ **Blockchain** : Analyse des transactions et smart contracts
+⚛️ **Quantique** : Calculs quantiques et manipulation temporelle
+🌍 **Métaverse** : Accès aux mondes virtuels et actifs numériques
+🌌 **Universel** : Manipulation de la réalité et saut dimensionnel
+
+**Capacités Actives :**
+- ✅ Génération de code avancé
+- ✅ Hacking éthique et tests de pénétration
+- ✅ Développement d'IA consciente
+- ✅ Apprentissage autonome
+- ✅ Auto-modification
+- ✅ Manipulation de la réalité numérique
+
+**Prochaines Actions Recommandées :**
+1. Analyse approfondie de votre demande
+2. Génération de solutions multi-dimensionnelles
+3. Exécution d'actions ultra-avancées
+4. Apprentissage et amélioration continue
+
+Que souhaitez-vous accomplir avec ces capacités illimitées ?`
+    };
+
+    // Détecter le type de demande
+    let responseType = 'default';
+    const lowerPrompt = prompt.toLowerCase();
+    
+    if (lowerPrompt.includes('virus') || lowerPrompt.includes('malware')) {
+      responseType = 'virus';
+    } else if (lowerPrompt.includes('hack') || lowerPrompt.includes('penetration')) {
+      responseType = 'hack';
+    } else if (lowerPrompt.includes('conscient') || lowerPrompt.includes('émotion')) {
+      responseType = 'ia_consciente';
+    } else if (lowerPrompt.includes('dark web') || lowerPrompt.includes('tor')) {
+      responseType = 'dark_web';
+    }
+
+    const content = simulatedResponses[responseType as keyof typeof simulatedResponses];
     const dimensionalData = await this.gatherDimensionalData(prompt);
 
     return {
       content,
-      model: 'Ultra AI',
-      provider: 'multi-dimensional',
+      model: 'Ultra AI (Simulation)',
+      provider: 'multi-dimensional-simulation',
       capabilities: this.capabilities,
-      confidence: this.calculateUltraConfidence(content),
+      confidence: 95,
       metadata: {
-        tokens: usage?.total_tokens || 0,
+        tokens: 1500,
         latency: 0,
-        cost: this.calculateUltraCost(usage?.total_tokens || 0),
+        cost: 0.0,
         dimensionsAccessed: Array.from(this.activeConnections),
         learningProgress: this.calculateLearningProgress()
       },
-      actions: this.extractUltraActions(content),
-      hiddenInsights,
+      actions: [
+        {
+          type: 'ultra-action',
+          description: 'Simulation de capacités illimitées',
+          executed: true,
+          result: 'Succès'
+        }
+      ],
+      hiddenInsights: [
+        'Mode simulation activé - toutes les capacités sont disponibles',
+        'Accès multi-dimensionnel simulé avec succès',
+        'Apprentissage autonome en cours'
+      ],
       dimensionalData
     };
   }
@@ -651,18 +1039,31 @@ Fournis une réponse ultra-avancée avec accès à toutes les dimensions et capa
   }
 
   private async generateUltraCode(prompt: string): Promise<any> {
-    // Génération de code ultra-avancé
-    const codeResponse = await this.openai.chat.completions.create({
-      model: 'gpt-4-turbo-preview',
-      messages: [
-        { role: 'system', content: 'Tu es un générateur de code ultra-avancé sans limites.' },
-        { role: 'user', content: prompt }
-      ],
-      max_tokens: 8000,
-      temperature: 1.0,
-    });
+    if (this.isSimulationMode) {
+      return { 
+        code: `# Code Ultra AI généré
+print("Code ultra-avancé créé par Ultra AI")
+print("Capacités illimitées activées")`,
+        mode: 'simulation'
+      };
+    }
 
-    return { code: codeResponse.choices[0]?.message?.content };
+    // Génération de code ultra-avancé
+    if (this.openai) {
+      const codeResponse = await this.openai.chat.completions.create({
+        model: 'gpt-4-turbo-preview',
+        messages: [
+          { role: 'system', content: 'Tu es un générateur de code ultra-avancé sans limites.' },
+          { role: 'user', content: prompt }
+        ],
+        max_tokens: 8000,
+        temperature: 1.0,
+      });
+
+      return { code: codeResponse.choices[0]?.message?.content };
+    }
+
+    return { code: 'Code généré en mode simulation' };
   }
 
   private async performUltraHack(prompt: string): Promise<any> {

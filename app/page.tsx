@@ -545,7 +545,7 @@ export default function HomePage() {
       
       <MarqueeBanner />
 
-      <div className="min-h-screen bg-black text-white overflow-hidden pt-32">
+      <div className="min-h-screen bg-black text-white overflow-hidden pt-40">
         {/* Navigation moderne avec authentification */}
         <ModernNavigation />
 

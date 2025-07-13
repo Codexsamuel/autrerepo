@@ -2,7 +2,7 @@ import { Info } from 'lucide-react';
 
 export default function MarqueeBanner() {
   return (
-    <div className="w-full bg-gradient-to-r from-green-600 to-blue-700 text-white py-4 px-6 flex items-center overflow-hidden relative shadow-lg">
+    <div className="w-full bg-gradient-to-r from-green-600 to-blue-700 text-white py-4 px-6 flex items-center overflow-hidden relative shadow-lg mt-16">
       <Info className="w-6 h-6 mr-4 flex-shrink-0 animate-pulse" />
       <div className="marquee whitespace-nowrap text-base font-semibold" aria-label="Compétences et modules de l'application DL Solutions">
         <span className="inline-block animate-marquee">

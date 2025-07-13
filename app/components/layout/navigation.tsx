@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 
 
@@ -16,6 +16,11 @@ const navigation = [
     name: "DL Style", 
     href: "/novacore/dl-style",
     logo: "https://res.cloudinary.com/dko5sommz/image/upload/v1748454498/Logo_DL_Style_2_usdvqk.svg"
+  },
+  {
+    name: "DL Bot Avancé",
+    href: "/dl-bot-advanced",
+    logo: "https://res.cloudinary.com/dko5sommz/image/upload/v1748454501/Logo_NovaCore_mrqlfs.svg"
   }
 ]
 

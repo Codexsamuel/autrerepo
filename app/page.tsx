@@ -18,17 +18,13 @@ import WhatsAppButton from '@/components/whatsapp-button';
 import {
     ArrowRight,
     CheckCircle,
-    Crown,
     Eye,
     EyeOff,
     Globe,
-    LogIn,
-    Settings,
     Shield,
     Star,
     TrendingUp,
     User,
-    UserPlus,
     Users,
     Zap
 } from "lucide-react";
@@ -549,80 +545,9 @@ export default function HomePage() {
       
       <MarqueeBanner />
 
-      <div className="min-h-screen bg-black text-white overflow-hidden">
+      <div className="min-h-screen bg-black text-white overflow-hidden pt-32">
         {/* Navigation moderne avec authentification */}
         <ModernNavigation />
-
-        {/* Barre d'authentification */}
-        <div className="bg-gradient-to-r from-blue-900 to-purple-900 border-b border-blue-700">
-          <div className="container mx-auto px-4 py-2">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                {isAuthenticated ? (
-                  <>
-                    <div className="flex items-center space-x-2">
-                      {currentUser?.role === 'super_admin' ? (
-                        <Crown className="w-4 h-4 text-yellow-400" />
-                      ) : (
-                        <User className="w-4 h-4 text-blue-300" />
-                      )}
-                      <span className="text-sm text-white">
-                        {currentUser?.name || currentUser?.email}
-                      </span>
-                      {currentUser?.role === 'super_admin' && (
-                        <span className="text-xs bg-yellow-600 text-white px-2 py-1 rounded-full">
-                          Super Admin
-                        </span>
-                      )}
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleLogout}
-                      className="text-white border-white hover:bg-white hover:text-blue-900"
-                    >
-                      Déconnexion
-                    </Button>
-                  </>
-                ) : (
-                  <div className="flex items-center space-x-3">
-                    <span className="text-sm text-blue-200">
-                      Accédez à nos solutions premium
-                    </span>
-                    <Button
-                      size="lg"
-                      onClick={() => handleAuth('login')}
-                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-6 py-3 rounded-full shadow-lg text-base"
-                    >
-                      <LogIn className="w-4 h-4 mr-1" />
-                      Connexion
-                    </Button>
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      onClick={() => handleAuth('register')}
-                      className="border-white text-white hover:bg-white hover:text-blue-900 font-bold px-6 py-3 rounded-full shadow-lg text-base"
-                    >
-                      <UserPlus className="w-4 h-4 mr-1" />
-                      Inscription
-                    </Button>
-                  </div>
-                )}
-              </div>
-              
-              {isAuthenticated && (
-                <div className="flex items-center space-x-2">
-                  <Link href="/novacore">
-                    <Button size="sm" className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700">
-                      <Settings className="w-4 h-4 mr-1" />
-                      Dashboard
-                    </Button>
-                  </Link>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
 
         {/* Modal d'authentification */}
         {showAuthModal && (

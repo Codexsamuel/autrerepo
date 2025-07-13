@@ -471,7 +471,7 @@ export default function EcommerceVentePage() {
             </div>
           </div>
         </div>
-      </div>
+    </div>
     </>
   );
 }

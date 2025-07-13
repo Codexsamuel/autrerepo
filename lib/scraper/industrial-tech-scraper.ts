@@ -268,11 +268,11 @@ export class IndustrialTechScraper {
     return originMap[market] || 'china';
   }
 
-  private extractSpecifications($el: cheerio.Cheerio): Record<string, string> {
+  private extractSpecifications($el: any): Record<string, string> {
     const specs: Record<string, string> = {};
     
     const specSelector = this.config.searchSelectors.specifications || '.spec-item';
-    $el.find(specSelector).each((index: number, specEl: cheerio.Element) => {
+    $el.find(specSelector).each((index: number, specEl: any) => {
       const $spec = cheerio.load(specEl);
       const key = $spec('.spec-key').text().trim();
       const value = $spec('.spec-value').text().trim();
@@ -285,13 +285,13 @@ export class IndustrialTechScraper {
     return specs;
   }
 
-  private extractMinimumOrder($el: cheerio.Cheerio): number {
+  private extractMinimumOrder($el: any): number {
     const moqText = $el.find('.moq, .minimum-order').text();
     const match = moqText.match(/(\d+)/);
     return match ? parseInt(match[1]) : 1;
   }
 
-  private extractLeadTime($el: cheerio.Cheerio): string {
+  private extractLeadTime($el: any): string {
     return $el.find('.lead-time, .delivery-time').text().trim() || '7-15 days';
   }
 

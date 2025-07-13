@@ -1,544 +1,310 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// Types pour les données de trading
-interface StockData {
-  symbol: string;
-  price: number;
-  change: number;
-  changePercent: number;
-  volume: number;
-  marketCap?: number;
-  high: number;
-  low: number;
-  open: number;
-  previousClose: number;
+// Cache intelligent avec TTL
+interface CacheEntry {
+  data: any;
+  timestamp: number;
+  ttl: number;
 }
 
-interface CryptoData {
-  symbol: string;
-  price: number;
-  change: number;
-  changePercent: number;
-  volume: number;
-  marketCap: number;
-  high: number;
-  low: number;
-  open: number;
-  previousClose: number;
+class TradingCache {
+  private cache = new Map<string, CacheEntry>();
+  
+  // TTL différents selon le type de données
+  private readonly TTL = {
+    STOCKS: 5 * 60 * 1000, // 5 minutes pour les actions
+    CRYPTO: 30 * 1000,     // 30 secondes pour les cryptos
+    FOREX: 60 * 1000,      // 1 minute pour le forex
+    PORTFOLIO: 2 * 60 * 1000 // 2 minutes pour le portfolio
+  };
+
+  set(key: string, data: any, type: 'STOCKS' | 'CRYPTO' | 'FOREX' | 'PORTFOLIO') {
+    this.cache.set(key, {
+      data,
+      timestamp: Date.now(),
+      ttl: this.TTL[type]
+    });
+  }
+
+  get(key: string): any | null {
+    const entry = this.cache.get(key);
+    if (!entry) return null;
+    
+    if (Date.now() - entry.timestamp > entry.ttl) {
+      this.cache.delete(key);
+      return null;
+    }
+    
+    return entry.data;
+  }
+
+  clear() {
+    this.cache.clear();
+  }
 }
 
-interface ForexData {
-  symbol: string;
-  price: number;
-  change: number;
-  changePercent: number;
-  high: number;
-  low: number;
-  open: number;
-  previousClose: number;
+const tradingCache = new TradingCache();
+
+// Regroupement des requêtes par type
+interface BatchRequest {
+  stocks: string[];
+  cryptos: string[];
+  forex: string[];
 }
 
-interface PortfolioData {
-  totalValue: number;
-  totalChange: number;
-  totalChangePercent: number;
-  positions: Array<{
-    symbol: string;
-    quantity: number;
-    avgPrice: number;
-    currentPrice: number;
-    marketValue: number;
-    unrealizedPnL: number;
-    unrealizedPnLPercent: number;
-  }>;
+function parseSymbols(symbols: string): BatchRequest {
+  const stockSymbols = ['AAPL', 'TSLA', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'NFLX'];
+  const cryptoSymbols = ['bitcoin', 'ethereum', 'cardano', 'solana', 'binancecoin', 'ripple'];
+  const forexSymbols = ['EUR/USD', 'GBP/USD', 'USD/JPY', 'USD/CHF', 'AUD/USD', 'USD/CAD'];
+  
+  const symbolList = symbols.split(',').map(s => s.trim());
+  
+  return {
+    stocks: symbolList.filter(s => stockSymbols.includes(s.toUpperCase())),
+    cryptos: symbolList.filter(s => cryptoSymbols.includes(s.toLowerCase())),
+    forex: symbolList.filter(s => forexSymbols.includes(s.toUpperCase()))
+  };
 }
 
-// Configuration Alpha Vantage
-const ALPHA_VANTAGE_API_KEY = process.env.ALPHA_VANTAGE_API_KEY;
-const ALPHA_VANTAGE_BASE_URL = 'https://www.alphavantage.co/query';
+// Fonction optimisée pour récupérer les données d'actions
+async function getStockData(symbols: string[]) {
+  const cacheKey = `stocks_${symbols.join(',')}`;
+  const cached = tradingCache.get(cacheKey);
+  if (cached) return cached;
 
-// Configuration CoinGecko (Gratuit - 50 appels/minute)
-const COINGECKO_BASE_URL = 'https://api.coingecko.com/api/v3';
-
-// Configuration Exchange Rate (Gratuit - 1000 appels/mois)
-const EXCHANGE_RATE_BASE_URL = 'https://api.exchangerate-api.com/v4/latest';
-
-// Fonction pour récupérer les données d'actions depuis Alpha Vantage
-async function fetchStockData(symbol: string): Promise<StockData | null> {
-  if (!ALPHA_VANTAGE_API_KEY) {
-    console.warn('ALPHA_VANTAGE_API_KEY non configurée, utilisation des données simulées');
-    return null;
+  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY;
+  
+  if (!alphaVantageKey) {
+    console.log('ALPHA_VANTAGE_API_KEY non configurée, utilisation des données simulées');
+    const simulatedData = symbols.map(symbol => ({
+      symbol,
+      price: (Math.random() * 1000 + 50).toFixed(2),
+      change: (Math.random() * 20 - 10).toFixed(2),
+      changePercent: (Math.random() * 4 - 2).toFixed(2),
+      volume: Math.floor(Math.random() * 10000000),
+      marketCap: Math.floor(Math.random() * 1000000000000),
+      type: 'stock'
+    }));
+    
+    tradingCache.set(cacheKey, simulatedData, 'STOCKS');
+    return simulatedData;
   }
 
   try {
-    const url = `${ALPHA_VANTAGE_BASE_URL}?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`;
-    const response = await fetch(url);
+    // Récupération en parallèle pour optimiser les performances
+    const promises = symbols.map(async (symbol) => {
+      const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${alphaVantageKey}`;
+      const response = await fetch(url, { next: { revalidate: 300 } });
+      const data = await response.json();
+      
+      if (data['Global Quote']) {
+        const quote = data['Global Quote'];
+        return {
+          symbol,
+          price: parseFloat(quote['05. price']).toFixed(2),
+          change: parseFloat(quote['09. change']).toFixed(2),
+          changePercent: quote['10. change percent'].replace('%', ''),
+          volume: parseInt(quote['06. volume']),
+          marketCap: Math.floor(Math.random() * 1000000000000), // Simulé car pas dans l'API gratuite
+          type: 'stock'
+        };
+      }
+      return null;
+    });
+
+    const results = await Promise.all(promises);
+    const validResults = results.filter(result => result !== null);
     
-    if (!response.ok) {
-      console.error(`Erreur Alpha Vantage pour ${symbol}:`, response.status);
-      return null;
-    }
-
-    const data = await response.json();
-    
-    if (data['Error Message'] || data['Note']) {
-      console.error(`Erreur Alpha Vantage pour ${symbol}:`, data['Error Message'] || data['Note']);
-      return null;
-    }
-
-    const quote = data['Global Quote'];
-    if (!quote || !quote['05. price']) {
-      console.error(`Données invalides pour ${symbol}:`, data);
-      return null;
-    }
-
-    const price = parseFloat(quote['05. price']);
-    const change = parseFloat(quote['09. change']);
-    const changePercent = parseFloat(quote['10. change percent'].replace('%', ''));
-    const volume = parseInt(quote['06. volume']);
-    const previousClose = parseFloat(quote['08. previous close']);
-
-    return {
-      symbol: symbol,
-      price: price,
-      change: change,
-      changePercent: changePercent,
-      volume: volume,
-      high: price + Math.random() * 2, // Simulation pour les données non disponibles
-      low: price - Math.random() * 2,
-      open: previousClose + (Math.random() - 0.5) * 1,
-      previousClose: previousClose
-    };
-
+    tradingCache.set(cacheKey, validResults, 'STOCKS');
+    return validResults;
   } catch (error) {
-    console.error(`Erreur lors de la récupération des données pour ${symbol}:`, error);
-    return null;
+    console.error('Erreur lors de la récupération des données d\'actions:', error);
+    return [];
   }
 }
 
-// Fonction pour récupérer les données de cryptos depuis CoinGecko
-async function fetchCryptoData(symbol: string): Promise<CryptoData | null> {
+// Fonction optimisée pour récupérer les données crypto
+async function getCryptoData(symbols: string[]) {
+  const cacheKey = `crypto_${symbols.join(',')}`;
+  const cached = tradingCache.get(cacheKey);
+  if (cached) return cached;
+
   try {
-    // Mapping des symboles vers les IDs CoinGecko
-    const coinMapping: Record<string, string> = {
-      'bitcoin': 'bitcoin',
-      'ethereum': 'ethereum',
-      'cardano': 'cardano',
-      'solana': 'solana',
-      'bnb': 'binancecoin',
-      'xrp': 'ripple',
-      'doge': 'dogecoin',
-      'ada': 'cardano',
-      'dot': 'polkadot',
-      'matic': 'matic-network'
-    };
-
-    const coinId = coinMapping[symbol.toLowerCase()];
-    if (!coinId) {
-      console.warn(`Symbole crypto non supporté: ${symbol}`);
-      return null;
-    }
-
-    const url = `${COINGECKO_BASE_URL}/simple/price?ids=${coinId}&vs_currencies=usd&include_24hr_change=true&include_24hr_vol=true&include_market_cap=true`;
-    const response = await fetch(url);
+    const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=' + 
+      symbols.join(',') + '&vs_currencies=usd&include_24hr_change=true&include_24hr_vol=true&include_market_cap=true', 
+      { next: { revalidate: 30 } }
+    );
     
-    if (!response.ok) {
-      console.error(`Erreur CoinGecko pour ${symbol}:`, response.status);
-      return null;
-    }
-
+    if (!response.ok) throw new Error('Erreur API CoinGecko');
+    
     const data = await response.json();
-    
-    if (!data[coinId]) {
-      console.error(`Données invalides pour ${symbol}:`, data);
+    const results = symbols.map(symbol => {
+      const coinData = data[symbol];
+      if (coinData) {
+        return {
+          symbol,
+          price: coinData.usd.toFixed(2),
+          change: (coinData.usd_24h_change || 0).toFixed(2),
+          changePercent: (coinData.usd_24h_change || 0).toFixed(2),
+          volume: coinData.usd_24h_vol || 0,
+          marketCap: coinData.usd_market_cap || 0,
+          type: 'crypto'
+        };
+      }
       return null;
-    }
+    }).filter(result => result !== null);
 
-    const coinData = data[coinId];
-    const price = coinData.usd;
-    const changePercent = coinData.usd_24h_change || 0;
-    const volume = coinData.usd_24h_vol || 0;
-    const marketCap = coinData.usd_market_cap || 0;
-    const change = price * (changePercent / 100);
-
-    return {
-      symbol: symbol,
-      price: price,
-      change: change,
-      changePercent: changePercent,
-      volume: volume,
-      marketCap: marketCap,
-      high: price * (1 + Math.abs(changePercent) / 100), // Estimation
-      low: price * (1 - Math.abs(changePercent) / 100),
-      open: price - change,
-      previousClose: price - change
-    };
-
+    tradingCache.set(cacheKey, results, 'CRYPTO');
+    return results;
   } catch (error) {
-    console.error(`Erreur lors de la récupération des données crypto pour ${symbol}:`, error);
-    return null;
+    console.error('Erreur lors de la récupération des données crypto:', error);
+    return [];
   }
 }
 
-// Fonction pour récupérer les données de devises depuis Exchange Rate API
-async function fetchForexData(symbol: string): Promise<ForexData | null> {
+// Fonction optimisée pour récupérer les données forex
+async function getForexData(symbols: string[]) {
+  const cacheKey = `forex_${symbols.join(',')}`;
+  const cached = tradingCache.get(cacheKey);
+  if (cached) return cached;
+
   try {
-    // Extraction de la devise de base et de la devise cible
-    const [base, target] = symbol.split('/');
-    if (!base || !target) {
-      console.warn(`Format de devise invalide: ${symbol}`);
-      return null;
-    }
-
-    const url = `${EXCHANGE_RATE_BASE_URL}/${base.toUpperCase()}`;
-    const response = await fetch(url);
+    const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD', 
+      { next: { revalidate: 60 } }
+    );
     
-    if (!response.ok) {
-      console.error(`Erreur Exchange Rate pour ${symbol}:`, response.status);
-      return null;
-    }
-
+    if (!response.ok) throw new Error('Erreur API Exchange Rate');
+    
     const data = await response.json();
-    
-    if (!data.rates || !data.rates[target.toUpperCase()]) {
-      console.error(`Données invalides pour ${symbol}:`, data);
+    const results = symbols.map(symbol => {
+      const [base, quote] = symbol.split('/');
+      if (base === 'USD') {
+        const rate = data.rates[quote];
+        if (rate) {
+          return {
+            symbol,
+            price: rate.toFixed(4),
+            change: (Math.random() * 0.02 - 0.01).toFixed(4),
+            changePercent: (Math.random() * 2 - 1).toFixed(2),
+            volume: Math.floor(Math.random() * 1000000000),
+            marketCap: 0,
+            type: 'forex'
+          };
+        }
+      }
       return null;
-    }
+    }).filter(result => result !== null);
 
-    const price = data.rates[target.toUpperCase()];
-    // Simulation des variations pour les devises (Exchange Rate API ne fournit que le taux actuel)
-    const changePercent = (Math.random() - 0.5) * 2; // Variation aléatoire entre -1% et +1%
-    const change = price * (changePercent / 100);
-
-    return {
-      symbol: symbol,
-      price: price,
-      change: change,
-      changePercent: changePercent,
-      high: price * 1.001, // Estimation
-      low: price * 0.999,
-      open: price - change,
-      previousClose: price - change
-    };
-
+    tradingCache.set(cacheKey, results, 'FOREX');
+    return results;
   } catch (error) {
-    console.error(`Erreur lors de la récupération des données forex pour ${symbol}:`, error);
-    return null;
+    console.error('Erreur lors de la récupération des données forex:', error);
+    return [];
   }
 }
 
-// Données simulées de fallback pour les actions
-const fallbackStockData: Record<string, StockData> = {
-  AAPL: {
-    symbol: 'AAPL',
-    price: 185.92,
-    change: 2.45,
-    changePercent: 1.33,
-    volume: 45678900,
-    marketCap: 2900000000000,
-    high: 187.50,
-    low: 183.20,
-    open: 184.10,
-    previousClose: 183.47
-  },
-  TSLA: {
-    symbol: 'TSLA',
-    price: 245.67,
-    change: -3.21,
-    changePercent: -1.29,
-    volume: 23456700,
-    marketCap: 780000000000,
-    high: 248.90,
-    low: 243.10,
-    open: 247.20,
-    previousClose: 248.88
-  },
-  MSFT: {
-    symbol: 'MSFT',
-    price: 378.45,
-    change: 4.67,
-    changePercent: 1.25,
-    volume: 34567800,
-    marketCap: 2810000000000,
-    high: 380.20,
-    low: 375.80,
-    open: 376.10,
-    previousClose: 373.78
-  },
-  GOOGL: {
-    symbol: 'GOOGL',
-    price: 142.56,
-    change: 1.23,
-    changePercent: 0.87,
-    volume: 23456700,
-    marketCap: 1790000000000,
-    high: 143.80,
-    low: 141.90,
-    open: 142.20,
-    previousClose: 141.33
-  },
-  AMZN: {
-    symbol: 'AMZN',
-    price: 145.24,
-    change: 2.89,
-    changePercent: 2.03,
-    volume: 45678900,
-    marketCap: 1510000000000,
-    high: 146.50,
-    low: 143.80,
-    open: 144.10,
-    previousClose: 142.35
-  },
-  NVDA: {
-    symbol: 'NVDA',
-    price: 485.09,
-    change: 8.76,
-    changePercent: 1.84,
-    volume: 56789000,
-    marketCap: 1190000000000,
-    high: 488.20,
-    low: 480.50,
-    open: 481.20,
-    previousClose: 476.33
-  },
-  META: {
-    symbol: 'META',
-    price: 334.67,
-    change: 3.45,
-    changePercent: 1.04,
-    volume: 34567800,
-    marketCap: 850000000000,
-    high: 336.80,
-    low: 332.10,
-    open: 333.20,
-    previousClose: 331.22
-  },
-  NFLX: {
-    symbol: 'NFLX',
-    price: 567.89,
-    change: -5.67,
-    changePercent: -0.99,
-    volume: 12345600,
-    marketCap: 245000000000,
-    high: 572.40,
-    low: 565.20,
-    open: 568.90,
-    previousClose: 573.56
-  }
-};
+// Fonction pour générer des données de portfolio optimisées
+function generatePortfolioData(allData: any[]) {
+  const cacheKey = 'portfolio_data';
+  const cached = tradingCache.get(cacheKey);
+  if (cached) return cached;
 
-// Données simulées de fallback pour les cryptos
-const fallbackCryptoData: Record<string, CryptoData> = {
-  bitcoin: {
-    symbol: 'bitcoin',
-    price: 43250.67,
-    change: 1250.34,
-    changePercent: 2.98,
-    volume: 23456789000,
-    marketCap: 845000000000,
-    high: 43500.20,
-    low: 42800.50,
-    open: 42900.10,
-    previousClose: 42000.33
-  },
-  ethereum: {
-    symbol: 'ethereum',
-    price: 2650.45,
-    change: 45.67,
-    changePercent: 1.75,
-    volume: 12345678000,
-    marketCap: 318000000000,
-    high: 2670.80,
-    low: 2630.20,
-    open: 2640.30,
-    previousClose: 2604.78
-  },
-  cardano: {
-    symbol: 'cardano',
-    price: 0.4567,
-    change: 0.0123,
-    changePercent: 2.77,
-    volume: 2345678000,
-    marketCap: 16000000000,
-    high: 0.4620,
-    low: 0.4510,
-    open: 0.4530,
-    previousClose: 0.4444
-  },
-  solana: {
-    symbol: 'solana',
-    price: 98.76,
-    change: 2.34,
-    changePercent: 2.43,
-    volume: 3456789000,
-    marketCap: 42000000000,
-    high: 99.80,
-    low: 97.20,
-    open: 97.80,
-    previousClose: 96.42
-  }
-};
+  const portfolio = {
+    totalValue: 0,
+    totalChange: 0,
+    totalChangePercent: 0,
+    positions: allData.map(item => {
+      const quantity = Math.floor(Math.random() * 100) + 1;
+      const value = parseFloat(item.price) * quantity;
+      const change = parseFloat(item.change) * quantity;
+      
+      return {
+        symbol: item.symbol,
+        quantity,
+        price: item.price,
+        value: value.toFixed(2),
+        change: change.toFixed(2),
+        changePercent: item.changePercent,
+        type: item.type
+      };
+    })
+  };
 
-// Données simulées de fallback pour les devises
-const fallbackForexData: Record<string, ForexData> = {
-  'EUR/USD': {
-    symbol: 'EUR/USD',
-    price: 1.0876,
-    change: 0.0023,
-    changePercent: 0.21,
-    high: 1.0890,
-    low: 1.0860,
-    open: 1.0870,
-    previousClose: 1.0853
-  },
-  'GBP/USD': {
-    symbol: 'GBP/USD',
-    price: 1.2654,
-    change: -0.0012,
-    changePercent: -0.09,
-    high: 1.2670,
-    low: 1.2640,
-    open: 1.2650,
-    previousClose: 1.2666
-  },
-  'USD/JPY': {
-    symbol: 'USD/JPY',
-    price: 148.23,
-    change: 0.45,
-    changePercent: 0.30,
-    high: 148.50,
-    low: 147.90,
-    open: 148.00,
-    previousClose: 147.78
-  }
-};
+  portfolio.totalValue = portfolio.positions.reduce((sum, pos) => sum + parseFloat(pos.value), 0);
+  portfolio.totalChange = portfolio.positions.reduce((sum, pos) => sum + parseFloat(pos.change), 0);
+  portfolio.totalChangePercent = ((portfolio.totalChange / portfolio.totalValue) * 100);
 
-// Données simulées pour le portfolio
-const portfolioData: PortfolioData = {
-  totalValue: 125000.00,
-  totalChange: 2345.67,
-  totalChangePercent: 1.91,
-  positions: [
-    {
-      symbol: 'AAPL',
-      quantity: 50,
-      avgPrice: 175.20,
-      currentPrice: 185.92,
-      marketValue: 9296.00,
-      unrealizedPnL: 536.00,
-      unrealizedPnLPercent: 6.12
-    },
-    {
-      symbol: 'TSLA',
-      quantity: 30,
-      avgPrice: 220.50,
-      currentPrice: 245.67,
-      marketValue: 7370.10,
-      unrealizedPnL: 755.10,
-      unrealizedPnLPercent: 11.41
-    },
-    {
-      symbol: 'bitcoin',
-      quantity: 0.5,
-      avgPrice: 42000.00,
-      currentPrice: 43250.67,
-      marketValue: 21625.34,
-      unrealizedPnL: 625.34,
-      unrealizedPnLPercent: 2.98
-    },
-    {
-      symbol: 'MSFT',
-      quantity: 25,
-      avgPrice: 350.00,
-      currentPrice: 378.45,
-      marketValue: 9461.25,
-      unrealizedPnL: 711.25,
-      unrealizedPnLPercent: 8.13
-    }
-  ]
-};
+  const result = {
+    ...portfolio,
+    totalValue: portfolio.totalValue.toFixed(2),
+    totalChange: portfolio.totalChange.toFixed(2),
+    totalChangePercent: portfolio.totalChangePercent.toFixed(2)
+  };
+
+  tradingCache.set(cacheKey, result, 'PORTFOLIO');
+  return result;
+}
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const symbolsParam = searchParams.get('symbols');
-    const portfolioParam = searchParams.get('portfolio');
+    const symbols = searchParams.get('symbols') || 'AAPL,TSLA,bitcoin,ethereum,EUR/USD';
+    const includePortfolio = searchParams.get('portfolio') === 'true';
 
-    if (!symbolsParam) {
-      return NextResponse.json(
-        { error: 'Le paramètre symbols est requis' },
-        { status: 400 }
-      );
+    // Parse et regroupe les symboles
+    const batchRequest = parseSymbols(symbols);
+    
+    // Récupération parallèle des données
+    const [stockData, cryptoData, forexData] = await Promise.all([
+      batchRequest.stocks.length > 0 ? getStockData(batchRequest.stocks) : [],
+      batchRequest.cryptos.length > 0 ? getCryptoData(batchRequest.cryptos) : [],
+      batchRequest.forex.length > 0 ? getForexData(batchRequest.forex) : []
+    ]);
+
+    // Combinaison des données
+    const allData = [...stockData, ...cryptoData, ...forexData];
+
+    // Génération du portfolio si demandé
+    let portfolio = null;
+    if (includePortfolio && allData.length > 0) {
+      portfolio = generatePortfolioData(allData);
     }
 
-    const symbols = symbolsParam.split(',').map(s => s.trim());
-    const includePortfolio = portfolioParam === 'true';
-
-    const result: {
-      stocks?: StockData[];
-      cryptos?: CryptoData[];
-      forex?: ForexData[];
-      portfolio?: PortfolioData;
-      timestamp: string;
-      dataSource: string;
-    } = {
+    const response = {
+      success: true,
+      data: allData,
+      portfolio,
       timestamp: new Date().toISOString(),
-      dataSource: 'Alpha Vantage (Actions) + CoinGecko (Crypto) + Exchange Rate (Forex)'
+      cacheInfo: {
+        stocks: batchRequest.stocks.length,
+        cryptos: batchRequest.cryptos.length,
+        forex: batchRequest.forex.length,
+        total: allData.length
+      }
     };
 
-    // Filtrer les données selon les symboles demandés
-    const stocks: StockData[] = [];
-    const cryptos: CryptoData[] = [];
-    const forex: ForexData[] = [];
-
-    // Traitement des symboles en parallèle
-    const promises = symbols.map(async (symbol) => {
-      const upperSymbol = symbol.toUpperCase();
-      
-      if (fallbackStockData[upperSymbol]) {
-        // Essayer d'abord Alpha Vantage pour les actions
-        const realData = await fetchStockData(upperSymbol);
-        if (realData) {
-          stocks.push(realData);
-        } else {
-          // Fallback vers les données simulées
-          stocks.push(fallbackStockData[upperSymbol]);
-        }
-      } else if (fallbackCryptoData[symbol.toLowerCase()]) {
-        // Essayer d'abord CoinGecko pour les cryptos
-        const realData = await fetchCryptoData(symbol);
-        if (realData) {
-          cryptos.push(realData);
-        } else {
-          // Fallback vers les données simulées
-          cryptos.push(fallbackCryptoData[symbol.toLowerCase()]);
-        }
-      } else if (fallbackForexData[symbol]) {
-        // Essayer d'abord Exchange Rate pour les devises
-        const realData = await fetchForexData(symbol);
-        if (realData) {
-          forex.push(realData);
-        } else {
-          // Fallback vers les données simulées
-          forex.push(fallbackForexData[symbol]);
-        }
+    return NextResponse.json(response, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=60',
+        'X-Cache-Status': 'HIT'
       }
     });
 
-    await Promise.all(promises);
-
-    if (stocks.length > 0) result.stocks = stocks;
-    if (cryptos.length > 0) result.cryptos = cryptos;
-    if (forex.length > 0) result.forex = forex;
-    if (includePortfolio) result.portfolio = portfolioData;
-
-    return NextResponse.json(result);
-
   } catch (error) {
-    console.error('Erreur API trading:', error);
+    console.error('Erreur dans l\'API trading:', error);
     return NextResponse.json(
-      { error: 'Erreur interne du serveur' },
+      { 
+        success: false, 
+        error: 'Erreur lors de la récupération des données',
+        timestamp: new Date().toISOString()
+      },
       { status: 500 }
     );
   }
+}
+
+// Endpoint pour nettoyer le cache (utile pour les tests)
+export async function DELETE() {
+  tradingCache.clear();
+  return NextResponse.json({ success: true, message: 'Cache nettoyé' });
 } 

@@ -92,16 +92,16 @@ export default function WhatsAppButton() {
             {/* Informations de contact */}
             <div className="p-4 bg-gray-50 border-b">
               <div className="space-y-2 text-sm">
-                <div className="flex items-center space-x-2 text-gray-600">
-                  <Phone className="w-4 h-4" />
+                <div className="flex items-center space-x-2 text-gray-800 font-medium">
+                  <Phone className="w-4 h-4 text-green-600" />
                   <span>+237 694 341 586</span>
                 </div>
-                <div className="flex items-center space-x-2 text-gray-600">
-                  <Mail className="w-4 h-4" />
+                <div className="flex items-center space-x-2 text-gray-800 font-medium">
+                  <Mail className="w-4 h-4 text-green-600" />
                   <span>contact@dlsolutions.com</span>
                 </div>
-                <div className="flex items-center space-x-2 text-gray-600">
-                  <Clock className="w-4 h-4" />
+                <div className="flex items-center space-x-2 text-gray-800 font-medium">
+                  <Clock className="w-4 h-4 text-green-600" />
                   <span>Lun-Ven: 8h-18h</span>
                 </div>
               </div>
@@ -110,13 +110,13 @@ export default function WhatsAppButton() {
             {/* Zone de message */}
             <div className="p-4">
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
                   Votre message
                 </label>
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 font-medium"
                   rows={4}
                   placeholder="Tapez votre message ici..."
                 />
@@ -126,7 +126,7 @@ export default function WhatsAppButton() {
               <button
                 onClick={handleSendMessage}
                 disabled={isSending || !message.trim()}
-                className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-4 rounded-lg font-medium hover:from-green-600 hover:to-green-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
               >
                 {isSending ? (
                   <>
@@ -142,7 +142,7 @@ export default function WhatsAppButton() {
               </button>
 
               {/* Message d'info */}
-              <p className="text-xs text-gray-500 mt-3 text-center">
+              <p className="text-xs text-gray-600 mt-3 text-center font-medium">
                 En cliquant sur "Envoyer", vous serez redirigé vers WhatsApp
               </p>
             </div>

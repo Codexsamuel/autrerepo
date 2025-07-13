@@ -3,6 +3,7 @@ import GoogleAnalytics from '@/components/analytics/GoogleAnalytics'
 import TradingNavigation from '@/components/layout/TradingNavigation'
 import OnboardingProvider from '@/components/onboarding/OnboardingProvider'
 import { SessionProvider } from '@/components/providers/SessionProvider'
+import AdvancedCapabilitiesBanner from '@/components/ui/AdvancedCapabilitiesBanner'
 import { SessionTimer } from '@/components/ui/SessionTimer'
 import { Toaster } from '@/components/ui/toaster'
 import type { Metadata } from 'next'
@@ -303,6 +304,7 @@ export default function RootLayout({
           <GoogleAnalytics />
           <GoogleAutoAds />
           <OnboardingProvider>
+            <AdvancedCapabilitiesBanner />
             <TradingNavigation />
             {children}
             <Toaster />

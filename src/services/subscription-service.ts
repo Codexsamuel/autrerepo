@@ -76,6 +76,53 @@ export class SubscriptionService {
   ];
 
   /**
+   * Crée un nouvel utilisateur avec 3 crédits gratuits
+   */
+  static async createUser(userId: string, email: string = ''): Promise<UserCredits> {
+    const { data: existingUser, error: checkError } = await supabase
+      .from('user_credits')
+      .select('*')
+      .eq('user_id', userId)
+      .single();
+
+    if (existingUser) {
+      // L'utilisateur existe déjà, retourner ses crédits
+      return {
+        userId: existingUser.user_id,
+        freeCreditsRemaining: existingUser.free_credits_remaining,
+        paidCreditsRemaining: existingUser.paid_credits_remaining,
+        subscriptionPlan: existingUser.subscription_plan,
+        subscriptionEndDate: existingUser.subscription_end_date ? new Date(existingUser.subscription_end_date) : undefined,
+        lastResetDate: new Date(existingUser.last_reset_date)
+      };
+    }
+
+    // Créer un nouvel utilisateur avec 3 crédits gratuits
+    const { data: newUser, error: createError } = await supabase
+      .from('user_credits')
+      .insert([{
+        user_id: userId,
+        email: email,
+        free_credits_remaining: this.FREE_CREDITS_PER_MONTH,
+        paid_credits_remaining: 0,
+        last_reset_date: new Date().toISOString()
+      }])
+      .select()
+      .single();
+
+    if (createError) throw createError;
+
+    return {
+      userId: newUser.user_id,
+      freeCreditsRemaining: newUser.free_credits_remaining,
+      paidCreditsRemaining: newUser.paid_credits_remaining,
+      subscriptionPlan: newUser.subscription_plan,
+      subscriptionEndDate: newUser.subscription_end_date ? new Date(newUser.subscription_end_date) : undefined,
+      lastResetDate: new Date(newUser.last_reset_date)
+    };
+  }
+
+  /**
    * Vérifie les crédits disponibles pour un utilisateur
    */
   static async checkUserCredits(userId: string): Promise<UserCredits> {

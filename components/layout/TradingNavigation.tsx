@@ -8,6 +8,7 @@ import {
     Globe,
     Home,
     Settings,
+    Sparkles,
     TrendingUp,
     User
 } from 'lucide-react';
@@ -23,6 +24,11 @@ const Navigation: React.FC = () => {
       name: 'Accueil',
       href: '/',
       icon: Home
+    },
+    {
+      name: 'Capacités',
+      href: '/capacites-techniques',
+      icon: Sparkles
     },
     {
       name: 'Trading',

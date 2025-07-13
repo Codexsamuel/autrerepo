@@ -6,12 +6,17 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const action = searchParams.get('action');
     const userId = searchParams.get('userId');
+    const email = searchParams.get('email');
 
     if (!userId) {
       return NextResponse.json({ error: 'User ID requis' }, { status: 400 });
     }
 
     switch (action) {
+      case 'create-user':
+        const newUser = await SubscriptionService.createUser(userId, email || '');
+        return NextResponse.json({ success: true, data: newUser });
+
       case 'credits':
         const credits = await SubscriptionService.checkUserCredits(userId);
         return NextResponse.json({ success: true, data: credits });

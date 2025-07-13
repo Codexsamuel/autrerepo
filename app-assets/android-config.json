@@ -1,0 +1,18 @@
+{
+  "applicationId": "com.dlsolutions.app",
+  "versionCode": 1,
+  "versionName": "1.0.0",
+  "minSdkVersion": 21,
+  "targetSdkVersion": 33,
+  "permissions": [
+    "android.permission.INTERNET",
+    "android.permission.ACCESS_NETWORK_STATE",
+    "android.permission.VIBRATE",
+    "android.permission.WAKE_LOCK",
+    "android.permission.RECEIVE_BOOT_COMPLETED"
+  ],
+  "features": [
+    "android.hardware.touchscreen",
+    "android.hardware.wifi"
+  ]
+}

@@ -804,7 +804,7 @@ const ADDITIONAL_PRODUCTS: ScrapedProduct[] = [
 ];
 
 // Combiner toutes les données
-const ALL_PRODUCTS = [...COMPLETE_PRODUCTS_DATABASE, ...ADDITIONAL_PRODUCTS];
+const ALL_PRODUCTS = [...COMPLETE_PRODUCTS_DATABASE];
 
 export async function scrapeChineseStores(
   query: string = '',
@@ -819,9 +819,20 @@ export async function scrapeChineseStores(
   
   // Filtrer par catégorie
   if (category && category !== 'all') {
-    filteredProducts = filteredProducts.filter(product => 
-      product.category.toLowerCase() === category.toLowerCase()
-    );
+    console.log(`Scraping avec paramètres:`, { query, category, country });
+    console.log(`Total produits avant filtrage:`, filteredProducts.length);
+    console.log(`Filtrage par catégorie:`, category);
+    
+    filteredProducts = filteredProducts.filter(product => {
+      // Normaliser les caractères spéciaux pour la comparaison
+      const normalizedProductCategory = product.category.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      const normalizedSearchCategory = category.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      const categoryMatch = normalizedProductCategory.toLowerCase() === normalizedSearchCategory.toLowerCase();
+      console.log(`Produit ${product.name}: catégorie "${product.category}" vs "${category}" -> ${categoryMatch}`);
+      return categoryMatch;
+    });
+    
+    console.log(`Produits après filtrage catégorie:`, filteredProducts.length);
   }
   
   // Filtrer par pays
@@ -838,6 +849,8 @@ export async function scrapeChineseStores(
       product.description.toLowerCase().includes(query.toLowerCase())
     );
   }
+  
+  console.log(`Produits finaux:`, filteredProducts.length);
   
   // Statistiques
   const stats = {

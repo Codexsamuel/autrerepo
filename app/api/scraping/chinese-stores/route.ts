@@ -50,6 +50,9 @@ export async function GET(request: NextRequest) {
     const query = decodeURIComponent(searchParams.get('query') || '');
     const category = decodeURIComponent(searchParams.get('category') || '');
     const country = decodeURIComponent(searchParams.get('country') || '');
+    
+    // Debug des paramètres
+    console.log('Paramètres reçus:', { query, category, country });
 
     // Actions spéciales
     if (action === 'stats') {

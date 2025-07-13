@@ -1,51 +1,23 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  ShoppingBag, 
-  Star, 
-  TrendingUp, 
-  Plus, 
-  Search, 
-  Filter, 
-  Heart, 
-  ShoppingCart,
-  Eye,
-  Share2,
-  Truck,
-  Shield,
-  RefreshCw,
-  Zap,
-  Tag,
-  MapPin,
-  Clock,
-  ExternalLink,
-  Download,
-  Globe,
-  BarChart3,
-  Package,
-  DollarSign,
-  Flag,
-  ShoppingBasket,
-  Target,
-  Percent,
-  Wifi,
-  WifiOff,
-  AlertCircle,
-  CheckCircle,
-  Euro,
-  Coins
+import {
+    CheckCircle,
+    Globe,
+    MapPin,
+    Package,
+    Shield,
+    ShoppingBag,
+    ShoppingCart,
+    Truck,
+    Zap
 } from 'lucide-react';
 import Link from 'next/link';
-import { ScrapedProduct } from '@/lib/scraper/chinese-stores';
-import { useCart, CartItem } from './cart-context';
-import { Suspense } from 'react';
+import { useState } from 'react';
 import ChineseStoresClient from './ChineseStoresClient';
+import { useCart } from './cart-context';
 
 // Types de devises
 type Currency = 'EUR' | 'USD' | 'FCFA';
@@ -60,7 +32,7 @@ const EXCHANGE_RATES = {
 export default function DLStyleClient() {
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>('EUR');
   const [isLoading, setIsLoading] = useState(false);
-  const { items } = useCart();
+  const { items, isLoaded } = useCart();
 
   const convertPrice = (priceUSD: number, currency: Currency): number => {
     const priceEUR = priceUSD / EXCHANGE_RATES.USD;
@@ -138,7 +110,7 @@ export default function DLStyleClient() {
                 <Button variant="outline" className="relative">
                   <ShoppingCart className="h-4 w-4 mr-2" />
                   Panier
-                  {items.length > 0 && (
+                  {isLoaded && items.length > 0 && (
                     <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs">
                       {items.length}
                     </Badge>
@@ -212,20 +184,7 @@ export default function DLStyleClient() {
               </p>
             </div>
             
-            <Suspense fallback={
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[...Array(6)].map((_, i) => (
-                  <Card key={i} className="animate-pulse">
-                    <div className="h-48 bg-gray-200 rounded-t-lg"></div>
-                    <CardContent className="p-4">
-                      <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                      <div className="h-3 bg-gray-200 rounded mb-4"></div>
-                      <div className="h-6 bg-gray-200 rounded"></div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            }>
+            <div key="vehicles-content">
               <ChineseStoresClient 
                 category="Véhicules" 
                 selectedCurrency={selectedCurrency}
@@ -233,7 +192,7 @@ export default function DLStyleClient() {
                 formatPrice={formatPrice}
                 getCurrencySymbol={getCurrencySymbol}
               />
-            </Suspense>
+            </div>
           </TabsContent>
 
           {/* Electronics Tab */}
@@ -248,20 +207,7 @@ export default function DLStyleClient() {
               </p>
             </div>
             
-            <Suspense fallback={
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[...Array(6)].map((_, i) => (
-                  <Card key={i} className="animate-pulse">
-                    <div className="h-48 bg-gray-200 rounded-t-lg"></div>
-                    <CardContent className="p-4">
-                      <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                      <div className="h-3 bg-gray-200 rounded mb-4"></div>
-                      <div className="h-6 bg-gray-200 rounded"></div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            }>
+            <div key="electronics-content">
               <ChineseStoresClient 
                 category="Électronique" 
                 selectedCurrency={selectedCurrency}
@@ -269,7 +215,7 @@ export default function DLStyleClient() {
                 formatPrice={formatPrice}
                 getCurrencySymbol={getCurrencySymbol}
               />
-            </Suspense>
+            </div>
           </TabsContent>
 
           {/* Fashion Tab */}
@@ -284,20 +230,7 @@ export default function DLStyleClient() {
               </p>
             </div>
             
-            <Suspense fallback={
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[...Array(6)].map((_, i) => (
-                  <Card key={i} className="animate-pulse">
-                    <div className="h-48 bg-gray-200 rounded-t-lg"></div>
-                    <CardContent className="p-4">
-                      <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                      <div className="h-3 bg-gray-200 rounded mb-4"></div>
-                      <div className="h-6 bg-gray-200 rounded"></div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            }>
+            <div key="fashion-content">
               <ChineseStoresClient 
                 category="Mode" 
                 selectedCurrency={selectedCurrency}
@@ -305,7 +238,7 @@ export default function DLStyleClient() {
                 formatPrice={formatPrice}
                 getCurrencySymbol={getCurrencySymbol}
               />
-            </Suspense>
+            </div>
           </TabsContent>
 
           {/* Accessories Tab */}
@@ -320,20 +253,7 @@ export default function DLStyleClient() {
               </p>
             </div>
             
-            <Suspense fallback={
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[...Array(6)].map((_, i) => (
-                  <Card key={i} className="animate-pulse">
-                    <div className="h-48 bg-gray-200 rounded-t-lg"></div>
-                    <CardContent className="p-4">
-                      <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                      <div className="h-3 bg-gray-200 rounded mb-4"></div>
-                      <div className="h-6 bg-gray-200 rounded"></div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            }>
+            <div key="accessories-content">
               <ChineseStoresClient 
                 category="Accessoires" 
                 selectedCurrency={selectedCurrency}
@@ -341,7 +261,7 @@ export default function DLStyleClient() {
                 formatPrice={formatPrice}
                 getCurrencySymbol={getCurrencySymbol}
               />
-            </Suspense>
+            </div>
           </TabsContent>
         </Tabs>
 

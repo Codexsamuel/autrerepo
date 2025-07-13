@@ -1,39 +1,24 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { 
-  ShoppingCart, 
-  Star, 
-  Heart, 
-  Eye,
-  Share2,
-  Truck,
-  Shield,
-  MapPin,
-  ExternalLink,
-  Filter,
-  Search,
-  Globe,
-  Package,
-  DollarSign,
-  Flag,
-  ShoppingBasket,
-  Target,
-  Percent,
-  AlertCircle,
-  CheckCircle,
-  Euro,
-  Coins,
-  RefreshCw,
-  TrendingUp
-} from 'lucide-react';
-import { useCart } from './cart-context';
 import { Product } from '@/lib/scraper/multi-markets';
+import {
+    AlertCircle,
+    Eye,
+    Heart,
+    Package,
+    RefreshCw,
+    Search,
+    ShoppingCart,
+    Star,
+    Truck
+} from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { useCart } from './cart-context';
 
 interface ChineseStoresClientProps {
   category: string;
@@ -58,8 +43,8 @@ export default function ChineseStoresClient({
   getCurrencySymbol
 }: ChineseStoresClientProps) {
   const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMarket, setSelectedMarket] = useState('all');
   const { addToCart } = useCart();
@@ -68,9 +53,32 @@ export default function ChineseStoresClient({
   const [sources, setSources] = useState<string[]>([]);
   const [countries, setCountries] = useState<string[]>([]);
 
+  // Utiliser useMemo pour filtrer les produits de manière optimisée
+  const filteredProducts = useMemo(() => {
+    if (!Array.isArray(products)) return [];
+    
+    let filtered = products;
+
+    // Filtre par recherche
+    if (searchQuery) {
+      filtered = filtered.filter(product =>
+        product.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.description?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Filtre par marché
+    if (selectedMarket !== 'all') {
+      filtered = filtered.filter(product => product.market === selectedMarket);
+    }
+
+    return filtered;
+  }, [products, searchQuery, selectedMarket]);
+
   // Fonction pour charger les produits depuis l'API
   const loadProducts = async () => {
     setLoading(true);
+    setError(null);
     try {
       const params = new URLSearchParams({
         query: searchQuery,
@@ -86,18 +94,18 @@ export default function ChineseStoresClient({
       
       const data = await response.json();
       
-      if (data.success) {
+      if (data.success && Array.isArray(data.data)) {
         setProducts(data.data);
-        setFilteredProducts(data.data);
       } else {
-        // Fallback vers un tableau vide si l'API ne retourne rien
         setProducts([]);
-        setFilteredProducts([]);
+        if (data.error) {
+          setError(data.error);
+        }
       }
     } catch (error) {
       console.error('Erreur lors du chargement des produits:', error);
       setProducts([]);
-      setFilteredProducts([]);
+      setError('Erreur de connexion au serveur');
     } finally {
       setLoading(false);
     }
@@ -114,19 +122,19 @@ export default function ChineseStoresClient({
       const categoriesResponse = await fetch('/api/scraping/chinese-stores?action=categories');
       const categoriesData = await categoriesResponse.json();
       if (categoriesData.success) {
-        setCategories(categoriesData.data);
+        setCategories(categoriesData.data || []);
       }
 
       const sourcesResponse = await fetch('/api/scraping/chinese-stores?action=sources');
       const sourcesData = await sourcesResponse.json();
       if (sourcesData.success) {
-        setSources(sourcesData.data);
+        setSources(sourcesData.data || []);
       }
 
       const countriesResponse = await fetch('/api/scraping/chinese-stores?action=countries');
       const countriesData = await countriesResponse.json();
       if (countriesData.success) {
-        setCountries(countriesData.data);
+        setCountries(countriesData.data || []);
       }
     } catch (error) {
       console.error('Erreur lors du chargement des statistiques:', error);
@@ -135,31 +143,19 @@ export default function ChineseStoresClient({
 
   useEffect(() => {
     loadStats();
-    loadProducts();
   }, []);
 
   useEffect(() => {
-    let filtered = products;
-
-    // Filtre par recherche
-    if (searchQuery) {
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    // Filtre par marché
-    if (selectedMarket !== 'all') {
-      filtered = filtered.filter(product => product.market === selectedMarket);
-    }
-
-    setFilteredProducts(filtered);
-  }, [products, searchQuery, selectedMarket]);
+    loadProducts();
+  }, [category, searchQuery, selectedMarket]);
 
   // Fonction pour ajouter un produit au panier
   const handleAddToCart = (product: Product) => {
-    addToCart(product);
+    try {
+      addToCart(product);
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout au panier:', error);
+    }
   };
 
   const getMarketName = (market: string) => {
@@ -216,7 +212,7 @@ export default function ChineseStoresClient({
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(6)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
+            <Card key={`loading-${i}`} className="animate-pulse">
               <div className="h-48 bg-gray-200 rounded-t-lg"></div>
               <CardContent className="p-4">
                 <div className="h-4 bg-gray-200 rounded mb-2"></div>
@@ -226,6 +222,22 @@ export default function ChineseStoresClient({
             </Card>
           ))}
         </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <AlertCircle className="h-12 w-12 text-red-400 mx-auto mb-4" />
+        <h3 className="text-lg font-medium text-gray-900 mb-2">
+          Erreur de chargement
+        </h3>
+        <p className="text-gray-600 mb-4">{error}</p>
+        <Button onClick={loadProducts} variant="outline">
+          <RefreshCw className="h-4 w-4 mr-2" />
+          Réessayer
+        </Button>
       </div>
     );
   }
@@ -332,12 +344,12 @@ export default function ChineseStoresClient({
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.map((product) => (
-              <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+              <Card key={`product-${product.id}-${product.market}`} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="aspect-square bg-gray-200 relative">
-                  {product.images[0] ? (
+                  {product.images && product.images[0] ? (
                     <img
                       src={product.images[0]}
-                      alt={product.name}
+                      alt={product.name || 'Produit'}
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -362,19 +374,19 @@ export default function ChineseStoresClient({
                 
                 <CardContent className="p-4">
                   <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-                    {product.name}
+                    {product.name || 'Nom non disponible'}
                   </h3>
                   
                   <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                    {product.description}
+                    {product.description || 'Description non disponible'}
                   </p>
                   
                   <div className="flex items-center space-x-2 mb-3">
                     <div className="flex items-center">
                       <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                      <span className="text-sm text-gray-600 ml-1">{product.rating}</span>
+                      <span className="text-sm text-gray-600 ml-1">{product.rating || 0}</span>
                     </div>
-                    <span className="text-sm text-gray-500">({product.reviews})</span>
+                    <span className="text-sm text-gray-500">({product.reviews || 0})</span>
                   </div>
                   
                   <div className="flex items-center justify-between mb-3">
@@ -390,7 +402,7 @@ export default function ChineseStoresClient({
                     </div>
                     
                     <Badge variant="outline" className="text-xs">
-                      Stock: {product.stock}
+                      Stock: {product.stock || 0}
                     </Badge>
                   </div>
                   

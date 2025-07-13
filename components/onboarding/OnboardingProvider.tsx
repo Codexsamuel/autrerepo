@@ -1,37 +1,38 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
 import { HelpCircle } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import OnboardingGuide from './OnboardingGuide';
 
 export default function OnboardingProvider({ children }: { children: React.ReactNode }) {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [canRelaunch, setCanRelaunch] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Pour les tests, afficher l'onboarding par défaut
-      // localStorage.removeItem('dl_onboarding_seen'); // Décommenter pour forcer l'affichage
-      const seen = localStorage.getItem('dl_onboarding_seen');
-      
-      // Temporairement afficher l'onboarding pour tous les utilisateurs
-      setShowOnboarding(true);
-      setCanRelaunch(true);
-      
-      // Logique normale (commentée pour les tests)
-      // if (!seen) {
-      //   setShowOnboarding(true);
-      //   setCanRelaunch(true);
-      // } else {
-      //   setCanRelaunch(true);
-      // }
-    }
+    setMounted(true);
+    
+    // Pour les tests, afficher l'onboarding par défaut
+    // localStorage.removeItem('dl_onboarding_seen'); // Décommenter pour forcer l'affichage
+    const seen = localStorage.getItem('dl_onboarding_seen');
+    
+    // Temporairement afficher l'onboarding pour tous les utilisateurs
+    setShowOnboarding(true);
+    setCanRelaunch(true);
+    
+    // Logique normale (commentée pour les tests)
+    // if (!seen) {
+    //   setShowOnboarding(true);
+    //   setCanRelaunch(true);
+    // } else {
+    //   setCanRelaunch(true);
+    // }
   }, []);
 
   const handleOnboardingComplete = () => {
     setShowOnboarding(false);
     setCanRelaunch(true);
-    if (typeof window !== 'undefined') {
+    if (mounted) {
       localStorage.setItem('dl_onboarding_seen', '1');
     }
   };
@@ -39,7 +40,7 @@ export default function OnboardingProvider({ children }: { children: React.React
   const handleOnboardingSkip = () => {
     setShowOnboarding(false);
     setCanRelaunch(true);
-    if (typeof window !== 'undefined') {
+    if (mounted) {
       localStorage.setItem('dl_onboarding_seen', '1');
     }
   };
@@ -47,6 +48,11 @@ export default function OnboardingProvider({ children }: { children: React.React
   const handleRelaunchOnboarding = () => {
     setShowOnboarding(true);
   };
+
+  // Ne pas rendre les éléments interactifs tant que le composant n'est pas monté
+  if (!mounted) {
+    return <>{children}</>;
+  }
 
   return (
     <>

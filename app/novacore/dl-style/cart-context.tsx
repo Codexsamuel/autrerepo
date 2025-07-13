@@ -1,7 +1,7 @@
 "use client";
 
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { Product } from '@/lib/scraper/multi-markets';
+import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
 
 export interface CartItem {
   product: Product;
@@ -99,6 +99,7 @@ interface CartContextType {
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
   getItemQuantity: (productId: string) => number;
+  isLoaded: boolean;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -108,6 +109,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     items: [],
     total: 0
   });
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Charger le panier depuis localStorage au montage
   useEffect(() => {
@@ -120,12 +122,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         console.error('Erreur lors du chargement du panier:', error);
       }
     }
+    setIsLoaded(true);
   }, []);
 
   // Sauvegarder le panier dans localStorage à chaque modification
   useEffect(() => {
-    localStorage.setItem('dl-style-cart', JSON.stringify(state.items));
-  }, [state.items]);
+    if (isLoaded) {
+      localStorage.setItem('dl-style-cart', JSON.stringify(state.items));
+    }
+  }, [state.items, isLoaded]);
 
   const addToCart = (product: Product) => {
     dispatch({ type: 'ADD_ITEM', payload: product });
@@ -160,7 +165,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       removeFromCart,
       updateQuantity,
       clearCart,
-      getItemQuantity
+      getItemQuantity,
+      isLoaded
     }}>
       {children}
     </CartContext.Provider>

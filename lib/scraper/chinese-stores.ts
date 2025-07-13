@@ -820,14 +820,14 @@ export async function scrapeChineseStores(
   // Filtrer par catégorie
   if (category && category !== 'all') {
     filteredProducts = filteredProducts.filter(product => 
-      product.category.toLowerCase().includes(category.toLowerCase())
+      product.category.toLowerCase() === category.toLowerCase()
     );
   }
   
   // Filtrer par pays
   if (country && country !== 'all') {
     filteredProducts = filteredProducts.filter(product => 
-      product.country.toLowerCase().includes(country.toLowerCase())
+      product.country.toLowerCase() === country.toLowerCase()
     );
   }
   

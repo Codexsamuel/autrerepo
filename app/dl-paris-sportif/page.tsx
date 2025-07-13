@@ -1,10 +1,10 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Brain, Calendar, DollarSign, Play, Target, TrendingDown, TrendingUp, Trophy } from "lucide-react";
 import { useState } from "react";
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { TrendingUp, TrendingDown, Trophy, Target, Brain, DollarSign, Calendar, Play } from "lucide-react"
 
 
 
@@ -102,7 +102,7 @@ export default function DLParisSportifPage() {
           <div className="flex items-center justify-between h-20">
             <div className="flex items-center space-x-4">
               <div className="h-16 w-16 rounded-full overflow-hidden border-2 border-green-200 flex items-center justify-center bg-white shadow-md">
-                <img src="/images/dl-logo.jpg" alt="DL Paris Sportif Logo" className="h-14 w-14 object-contain" />
+                <img src="/images/dl-logo.jpg" alt="DL Paris Sportif Logo" className="h-14 w-14 object-contain rounded-full" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">

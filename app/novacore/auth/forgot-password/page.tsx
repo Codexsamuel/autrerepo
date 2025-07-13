@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Mail, ArrowRight, Shield, ArrowLeft, CheckCircle } from "lucide-react"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { ArrowLeft, ArrowRight, CheckCircle, Mail, Shield } from "lucide-react";
 import type { FormEvent } from "react";
+import { useState } from "react";
 
 
 
@@ -70,10 +70,8 @@ export default function ForgotPassword() {
                   </a>
                 </Button>
 
-                <div className="flex items-center justify-center mb-6">
-                  <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-indigo-200 flex items-center justify-center bg-white shadow-md">
-                    <img src="/images/dl-logo.jpg" alt="DL Solutions Logo" className="h-8 w-8 object-contain" />
-                  </div>
+                <div className="flex items-center justify-center mb-8">
+                  <img src="/images/dl-logo.jpg" alt="DL Solutions Logo" className="h-8 w-8 object-contain rounded-full" />
                 </div>
 
                 <Badge className="mb-4 bg-orange-100 text-orange-700">

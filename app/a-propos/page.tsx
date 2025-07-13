@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Users, Target, Eye, Heart, Award, Lightbulb, Shield, Star } from "lucide-react"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowRight, Award, Eye, Heart, Lightbulb, Shield, Star, Target, Users } from "lucide-react";
 
 
 
@@ -41,7 +41,7 @@ export default function AboutPage() {
           <div className="flex items-center justify-between h-20">
             <div className="flex items-center space-x-3">
               <div className="h-16 w-16 rounded-full overflow-hidden border-2 border-teal-200 flex items-center justify-center bg-white shadow-md">
-                <img src="/images/dl-logo.jpg" alt="DL Solutions Logo" className="h-14 w-14 object-contain" />
+                <img src="/images/dl-logo.jpg" alt="DL Solutions Logo" className="h-14 w-14 object-contain rounded-full" />
               </div>
             </div>
             <nav className="hidden lg:flex items-center space-x-8">

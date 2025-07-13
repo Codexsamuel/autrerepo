@@ -64,7 +64,7 @@ export default function ModernNavigation({ className = '' }: ModernNavigationPro
             <img 
               src="/images/dl-logo.jpg" 
               alt="DL Solutions Logo" 
-              className="h-12 w-12 lg:h-16 lg:w-16 object-contain" 
+              className="h-12 w-12 lg:h-16 lg:w-16 object-contain rounded-full" 
             />
             <div className="hidden sm:flex flex-col">
               <span className="text-lg lg:text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent leading-tight">

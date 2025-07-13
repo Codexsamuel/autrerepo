@@ -62,14 +62,8 @@ export default function NovaCorSignUp() {
               </a>
             </Button>
 
-            <div className="flex items-center justify-center lg:justify-start mb-8">
-              <div className="h-16 w-16 rounded-full overflow-hidden border-2 border-white/20 flex items-center justify-center bg-white/10 backdrop-blur-xl mr-4">
-                <img src="/images/dl-logo.jpg" alt="DL Solutions Logo" className="h-12 w-12 object-contain" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-white">NovaCore</h1>
-                <p className="text-indigo-200">Rejoignez l'écosystème</p>
-              </div>
+            <div className="flex items-center justify-center mb-8">
+              <img src="/images/dl-logo.jpg" alt="DL Solutions Logo" className="h-12 w-12 object-contain rounded-full" />
             </div>
 
             <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">

@@ -1,8 +1,7 @@
 "use client";
 
-import Link from 'next/link';
 import Image from 'next/image';
-import { cn } from "@/lib/utils";
+import Link from 'next/link';
 
 interface HeaderProps {
   title: string;
@@ -31,7 +30,7 @@ export function Header({
                 alt="DL Solutions Logo"
                 width={50}
                 height={50}
-                className="w-12 h-12 object-contain"
+                className="w-12 h-12 object-contain rounded-full"
               />
               <div className="flex flex-col">
                 <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">

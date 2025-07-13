@@ -53,107 +53,64 @@ interface PortfolioData {
   }>;
 }
 
-// Données simulées pour les actions
-const stockData: Record<string, StockData> = {
-  AAPL: {
-    symbol: 'AAPL',
-    price: 185.92,
-    change: 2.45,
-    changePercent: 1.33,
-    volume: 45678900,
-    marketCap: 2900000000000,
-    high: 187.50,
-    low: 183.20,
-    open: 184.10,
-    previousClose: 183.47
-  },
-  TSLA: {
-    symbol: 'TSLA',
-    price: 245.67,
-    change: -3.21,
-    changePercent: -1.29,
-    volume: 23456700,
-    marketCap: 780000000000,
-    high: 248.90,
-    low: 243.10,
-    open: 247.20,
-    previousClose: 248.88
-  },
-  MSFT: {
-    symbol: 'MSFT',
-    price: 378.45,
-    change: 4.67,
-    changePercent: 1.25,
-    volume: 34567800,
-    marketCap: 2810000000000,
-    high: 380.20,
-    low: 375.80,
-    open: 376.10,
-    previousClose: 373.78
-  },
-  GOOGL: {
-    symbol: 'GOOGL',
-    price: 142.56,
-    change: 1.23,
-    changePercent: 0.87,
-    volume: 23456700,
-    marketCap: 1790000000000,
-    high: 143.80,
-    low: 141.90,
-    open: 142.20,
-    previousClose: 141.33
-  },
-  AMZN: {
-    symbol: 'AMZN',
-    price: 145.24,
-    change: 2.89,
-    changePercent: 2.03,
-    volume: 45678900,
-    marketCap: 1510000000000,
-    high: 146.50,
-    low: 143.80,
-    open: 144.10,
-    previousClose: 142.35
-  },
-  NVDA: {
-    symbol: 'NVDA',
-    price: 485.09,
-    change: 8.76,
-    changePercent: 1.84,
-    volume: 56789000,
-    marketCap: 1190000000000,
-    high: 488.20,
-    low: 480.50,
-    open: 481.20,
-    previousClose: 476.33
-  },
-  META: {
-    symbol: 'META',
-    price: 334.67,
-    change: 3.45,
-    changePercent: 1.04,
-    volume: 34567800,
-    marketCap: 850000000000,
-    high: 336.80,
-    low: 332.10,
-    open: 333.20,
-    previousClose: 331.22
-  },
-  NFLX: {
-    symbol: 'NFLX',
-    price: 567.89,
-    change: -5.67,
-    changePercent: -0.99,
-    volume: 12345600,
-    marketCap: 245000000000,
-    high: 572.40,
-    low: 565.20,
-    open: 568.90,
-    previousClose: 573.56
-  }
-};
+// Configuration Alpha Vantage
+const ALPHA_VANTAGE_API_KEY = process.env.ALPHA_VANTAGE_API_KEY;
+const ALPHA_VANTAGE_BASE_URL = 'https://www.alphavantage.co/query';
 
-// Données simulées pour les cryptos
+// Fonction pour récupérer les données d'actions depuis Alpha Vantage
+async function fetchStockData(symbol: string): Promise<StockData | null> {
+  if (!ALPHA_VANTAGE_API_KEY) {
+    console.warn('ALPHA_VANTAGE_API_KEY non configurée, utilisation des données simulées');
+    return null;
+  }
+
+  try {
+    const url = `${ALPHA_VANTAGE_BASE_URL}?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`;
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      console.error(`Erreur Alpha Vantage pour ${symbol}:`, response.status);
+      return null;
+    }
+
+    const data = await response.json();
+    
+    if (data['Error Message'] || data['Note']) {
+      console.error(`Erreur Alpha Vantage pour ${symbol}:`, data['Error Message'] || data['Note']);
+      return null;
+    }
+
+    const quote = data['Global Quote'];
+    if (!quote || !quote['05. price']) {
+      console.error(`Données invalides pour ${symbol}:`, data);
+      return null;
+    }
+
+    const price = parseFloat(quote['05. price']);
+    const change = parseFloat(quote['09. change']);
+    const changePercent = parseFloat(quote['10. change percent'].replace('%', ''));
+    const volume = parseInt(quote['06. volume']);
+    const previousClose = parseFloat(quote['08. previous close']);
+
+    return {
+      symbol: symbol,
+      price: price,
+      change: change,
+      changePercent: changePercent,
+      volume: volume,
+      high: price + Math.random() * 2, // Simulation pour les données non disponibles
+      low: price - Math.random() * 2,
+      open: previousClose + (Math.random() - 0.5) * 1,
+      previousClose: previousClose
+    };
+
+  } catch (error) {
+    console.error(`Erreur lors de la récupération des données pour ${symbol}:`, error);
+    return null;
+  }
+}
+
+// Données simulées pour les cryptos (en attendant une vraie API)
 const cryptoData: Record<string, CryptoData> = {
   bitcoin: {
     symbol: 'bitcoin',
@@ -284,6 +241,106 @@ const portfolioData: PortfolioData = {
   ]
 };
 
+// Données simulées de fallback pour les actions
+const fallbackStockData: Record<string, StockData> = {
+  AAPL: {
+    symbol: 'AAPL',
+    price: 185.92,
+    change: 2.45,
+    changePercent: 1.33,
+    volume: 45678900,
+    marketCap: 2900000000000,
+    high: 187.50,
+    low: 183.20,
+    open: 184.10,
+    previousClose: 183.47
+  },
+  TSLA: {
+    symbol: 'TSLA',
+    price: 245.67,
+    change: -3.21,
+    changePercent: -1.29,
+    volume: 23456700,
+    marketCap: 780000000000,
+    high: 248.90,
+    low: 243.10,
+    open: 247.20,
+    previousClose: 248.88
+  },
+  MSFT: {
+    symbol: 'MSFT',
+    price: 378.45,
+    change: 4.67,
+    changePercent: 1.25,
+    volume: 34567800,
+    marketCap: 2810000000000,
+    high: 380.20,
+    low: 375.80,
+    open: 376.10,
+    previousClose: 373.78
+  },
+  GOOGL: {
+    symbol: 'GOOGL',
+    price: 142.56,
+    change: 1.23,
+    changePercent: 0.87,
+    volume: 23456700,
+    marketCap: 1790000000000,
+    high: 143.80,
+    low: 141.90,
+    open: 142.20,
+    previousClose: 141.33
+  },
+  AMZN: {
+    symbol: 'AMZN',
+    price: 145.24,
+    change: 2.89,
+    changePercent: 2.03,
+    volume: 45678900,
+    marketCap: 1510000000000,
+    high: 146.50,
+    low: 143.80,
+    open: 144.10,
+    previousClose: 142.35
+  },
+  NVDA: {
+    symbol: 'NVDA',
+    price: 485.09,
+    change: 8.76,
+    changePercent: 1.84,
+    volume: 56789000,
+    marketCap: 1190000000000,
+    high: 488.20,
+    low: 480.50,
+    open: 481.20,
+    previousClose: 476.33
+  },
+  META: {
+    symbol: 'META',
+    price: 334.67,
+    change: 3.45,
+    changePercent: 1.04,
+    volume: 34567800,
+    marketCap: 850000000000,
+    high: 336.80,
+    low: 332.10,
+    open: 333.20,
+    previousClose: 331.22
+  },
+  NFLX: {
+    symbol: 'NFLX',
+    price: 567.89,
+    change: -5.67,
+    changePercent: -0.99,
+    volume: 12345600,
+    marketCap: 245000000000,
+    high: 572.40,
+    low: 565.20,
+    open: 568.90,
+    previousClose: 573.56
+  }
+};
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -306,8 +363,10 @@ export async function GET(request: NextRequest) {
       forex?: ForexData[];
       portfolio?: PortfolioData;
       timestamp: string;
+      dataSource: string;
     } = {
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      dataSource: ALPHA_VANTAGE_API_KEY ? 'Alpha Vantage (Actions) + Simulé (Crypto/Forex)' : 'Simulé'
     };
 
     // Filtrer les données selon les symboles demandés
@@ -315,17 +374,27 @@ export async function GET(request: NextRequest) {
     const cryptos: CryptoData[] = [];
     const forex: ForexData[] = [];
 
-    symbols.forEach(symbol => {
+    // Traitement des symboles en parallèle
+    const stockPromises = symbols.map(async (symbol) => {
       const upperSymbol = symbol.toUpperCase();
       
-      if (stockData[upperSymbol]) {
-        stocks.push(stockData[upperSymbol]);
+      if (fallbackStockData[upperSymbol]) {
+        // Essayer d'abord Alpha Vantage
+        const realData = await fetchStockData(upperSymbol);
+        if (realData) {
+          stocks.push(realData);
+        } else {
+          // Fallback vers les données simulées
+          stocks.push(fallbackStockData[upperSymbol]);
+        }
       } else if (cryptoData[symbol.toLowerCase()]) {
         cryptos.push(cryptoData[symbol.toLowerCase()]);
       } else if (forexData[symbol]) {
         forex.push(forexData[symbol]);
       }
     });
+
+    await Promise.all(stockPromises);
 
     if (stocks.length > 0) result.stocks = stocks;
     if (cryptos.length > 0) result.cryptos = cryptos;

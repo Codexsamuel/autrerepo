@@ -38,6 +38,7 @@ interface Product {
 }
 
 const products: Product[] = [
+  // Smartphones et Ordinateurs
   {
     id: '1',
     name: 'iPhone 15 Pro Max - 256GB - Titane Naturel',
@@ -80,6 +81,242 @@ const products: Product[] = [
     fastDelivery: false,
     discount: 12
   },
+  
+  // Drones et Composants
+  {
+    id: '7',
+    name: 'DJI Mavic 3 Pro - Drone Professionnel 4K',
+    price: 2499,
+    originalPrice: 2799,
+    rating: 4.9,
+    reviews: 234,
+    image: '/images/products/dji-mavic-3.jpg',
+    category: 'Drones',
+    brand: 'DJI',
+    inStock: true,
+    fastDelivery: true,
+    discount: 11
+  },
+  {
+    id: '8',
+    name: 'Moteur Brushless 2212 1000KV pour Drone',
+    price: 45,
+    originalPrice: 55,
+    rating: 4.6,
+    reviews: 89,
+    image: '/images/products/drone-motor.jpg',
+    category: 'Composants Drone',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 18
+  },
+  {
+    id: '9',
+    name: 'Contrôleur de Vol F4 pour Drone Racing',
+    price: 89,
+    originalPrice: 109,
+    rating: 4.7,
+    reviews: 156,
+    image: '/images/products/flight-controller.jpg',
+    category: 'Composants Drone',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 18
+  },
+  {
+    id: '10',
+    name: 'Hélices Carbon Fiber 5" pour Drone',
+    price: 25,
+    originalPrice: 35,
+    rating: 4.5,
+    reviews: 67,
+    image: '/images/products/drone-props.jpg',
+    category: 'Composants Drone',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 29
+  },
+  
+  // Imprimantes 3D
+  {
+    id: '11',
+    name: 'Creality Ender 3 V3 SE - Imprimante 3D',
+    price: 299,
+    originalPrice: 399,
+    rating: 4.8,
+    reviews: 445,
+    image: '/images/products/ender-3.jpg',
+    category: 'Imprimantes 3D',
+    brand: 'Creality',
+    inStock: true,
+    fastDelivery: true,
+    discount: 25
+  },
+  {
+    id: '12',
+    name: 'Filament PLA 1.75mm - 1kg - Multi-couleurs',
+    price: 35,
+    originalPrice: 45,
+    rating: 4.6,
+    reviews: 234,
+    image: '/images/products/pla-filament.jpg',
+    category: 'Consommables 3D',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 22
+  },
+  {
+    id: '13',
+    name: 'Buse d\'impression 0.4mm - Acier trempé',
+    price: 15,
+    originalPrice: 20,
+    rating: 4.7,
+    reviews: 89,
+    image: '/images/products/nozzle.jpg',
+    category: 'Pièces 3D',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 25
+  },
+  
+  // Pièces détachées véhicules
+  {
+    id: '14',
+    name: 'Plaquettes de frein avant - Toyota Corolla',
+    price: 45,
+    originalPrice: 65,
+    rating: 4.5,
+    reviews: 123,
+    image: '/images/products/brake-pads.jpg',
+    category: 'Pièces Véhicules',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 31
+  },
+  {
+    id: '15',
+    name: 'Filtre à air moteur - Honda Civic',
+    price: 25,
+    originalPrice: 35,
+    rating: 4.4,
+    reviews: 78,
+    image: '/images/products/air-filter.jpg',
+    category: 'Pièces Véhicules',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 29
+  },
+  {
+    id: '16',
+    name: 'Batterie 12V 60Ah - Véhicules légers',
+    price: 89,
+    originalPrice: 129,
+    rating: 4.6,
+    reviews: 156,
+    image: '/images/products/car-battery.jpg',
+    category: 'Pièces Véhicules',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 31
+  },
+  
+  // Caméras et équipements photo
+  {
+    id: '17',
+    name: 'Canon EOS R6 Mark II - Boîtier Hybride',
+    price: 2499,
+    originalPrice: 2799,
+    rating: 4.9,
+    reviews: 234,
+    image: '/images/products/canon-r6.jpg',
+    category: 'Caméras',
+    brand: 'Canon',
+    inStock: true,
+    fastDelivery: true,
+    discount: 11
+  },
+  {
+    id: '18',
+    name: 'Objectif 24-70mm f/2.8 - Canon RF',
+    price: 1899,
+    originalPrice: 2099,
+    rating: 4.8,
+    reviews: 167,
+    image: '/images/products/canon-lens.jpg',
+    category: 'Objectifs',
+    brand: 'Canon',
+    inStock: true,
+    fastDelivery: true,
+    discount: 10
+  },
+  {
+    id: '19',
+    name: 'Trépied Manfrotto MT055 - Professionnel',
+    price: 299,
+    originalPrice: 399,
+    rating: 4.7,
+    reviews: 89,
+    image: '/images/products/tripod.jpg',
+    category: 'Accessoires Photo',
+    brand: 'Manfrotto',
+    inStock: true,
+    fastDelivery: true,
+    discount: 25
+  },
+  
+  // Technologies rares et spécialisées
+  {
+    id: '20',
+    name: 'Oscilloscope numérique 100MHz - 4 canaux',
+    price: 599,
+    originalPrice: 799,
+    rating: 4.8,
+    reviews: 45,
+    image: '/images/products/oscilloscope.jpg',
+    category: 'Équipements Électroniques',
+    brand: 'Rigol',
+    inStock: true,
+    fastDelivery: true,
+    discount: 25
+  },
+  {
+    id: '21',
+    name: 'Multimètre Fluke 117 - Professionnel',
+    price: 199,
+    originalPrice: 249,
+    rating: 4.9,
+    reviews: 123,
+    image: '/images/products/multimeter.jpg',
+    category: 'Équipements Électroniques',
+    brand: 'Fluke',
+    inStock: true,
+    fastDelivery: true,
+    discount: 20
+  },
+  {
+    id: '22',
+    name: 'Station de soudage Weller WES51 - 50W',
+    price: 149,
+    originalPrice: 199,
+    rating: 4.7,
+    reviews: 67,
+    image: '/images/products/soldering-station.jpg',
+    category: 'Équipements Électroniques',
+    brand: 'Weller',
+    inStock: true,
+    fastDelivery: true,
+    discount: 25
+  },
+  
+  // Audio et Accessoires
   {
     id: '4',
     name: 'AirPods Pro 2ème génération',
@@ -121,6 +358,196 @@ const products: Product[] = [
     inStock: true,
     fastDelivery: true,
     discount: 12
+  },
+  
+  // Engins rares et équipements industriels
+  {
+    id: '23',
+    name: 'Générateur Diesel 10KVA - Silencieux',
+    price: 2499,
+    originalPrice: 2999,
+    rating: 4.7,
+    reviews: 34,
+    image: '/images/products/diesel-generator.jpg',
+    category: 'Équipements Industriels',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 17
+  },
+  {
+    id: '24',
+    name: 'Compresseur d\'air 100L - 2.2HP',
+    price: 399,
+    originalPrice: 499,
+    rating: 4.6,
+    reviews: 67,
+    image: '/images/products/air-compressor.jpg',
+    category: 'Équipements Industriels',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 20
+  },
+  {
+    id: '25',
+    name: 'Scie circulaire Bosch GKS 190 - 1900W',
+    price: 299,
+    originalPrice: 399,
+    rating: 4.8,
+    reviews: 89,
+    image: '/images/products/circular-saw.jpg',
+    category: 'Outils Électriques',
+    brand: 'Bosch',
+    inStock: true,
+    fastDelivery: true,
+    discount: 25
+  },
+  {
+    id: '26',
+    name: 'Perceuse à percussion DeWalt D25133K',
+    price: 199,
+    originalPrice: 249,
+    rating: 4.7,
+    reviews: 123,
+    image: '/images/products/hammer-drill.jpg',
+    category: 'Outils Électriques',
+    brand: 'DeWalt',
+    inStock: true,
+    fastDelivery: true,
+    discount: 20
+  },
+  
+  // Technologies rares et spécialisées
+  {
+    id: '27',
+    name: 'Microscope numérique USB - 1000x',
+    price: 149,
+    originalPrice: 199,
+    rating: 4.5,
+    reviews: 45,
+    image: '/images/products/digital-microscope.jpg',
+    category: 'Équipements Scientifiques',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 25
+  },
+  {
+    id: '28',
+    name: 'Thermomètre infrarouge -50°C à +500°C',
+    price: 89,
+    originalPrice: 129,
+    rating: 4.6,
+    reviews: 78,
+    image: '/images/products/infrared-thermometer.jpg',
+    category: 'Équipements Scientifiques',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 31
+  },
+  {
+    id: '29',
+    name: 'Anémomètre numérique - Mesure vent',
+    price: 75,
+    originalPrice: 99,
+    rating: 4.4,
+    reviews: 34,
+    image: '/images/products/anemometer.jpg',
+    category: 'Équipements Scientifiques',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 24
+  },
+  
+  // Pièces détachées spécialisées
+  {
+    id: '30',
+    name: 'Roulement à billes 6205 - 25x52x15mm',
+    price: 12,
+    originalPrice: 18,
+    rating: 4.3,
+    reviews: 156,
+    image: '/images/products/bearing.jpg',
+    category: 'Pièces Mécaniques',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 33
+  },
+  {
+    id: '31',
+    name: 'Courroie trapézoïdale A-55 - 1400mm',
+    price: 8,
+    originalPrice: 12,
+    rating: 4.2,
+    reviews: 89,
+    image: '/images/products/v-belt.jpg',
+    category: 'Pièces Mécaniques',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 33
+  },
+  {
+    id: '32',
+    name: 'Ressort de compression - 20x100mm',
+    price: 15,
+    originalPrice: 22,
+    rating: 4.4,
+    reviews: 67,
+    image: '/images/products/compression-spring.jpg',
+    category: 'Pièces Mécaniques',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 32
+  },
+  
+  // Équipements de sécurité
+  {
+    id: '33',
+    name: 'Casque de chantier - ABS - Orange',
+    price: 25,
+    originalPrice: 35,
+    rating: 4.5,
+    reviews: 234,
+    image: '/images/products/hard-hat.jpg',
+    category: 'Équipements de Sécurité',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 29
+  },
+  {
+    id: '34',
+    name: 'Gants de travail - Cuir - Taille L',
+    price: 18,
+    originalPrice: 25,
+    rating: 4.6,
+    reviews: 189,
+    image: '/images/products/work-gloves.jpg',
+    category: 'Équipements de Sécurité',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 28
+  },
+  {
+    id: '35',
+    name: 'Lunettes de protection - Anti-rayures',
+    price: 12,
+    originalPrice: 18,
+    rating: 4.4,
+    reviews: 145,
+    image: '/images/products/safety-glasses.jpg',
+    category: 'Équipements de Sécurité',
+    brand: 'Generic',
+    inStock: true,
+    fastDelivery: true,
+    discount: 33
   }
 ];
 
@@ -130,6 +557,21 @@ const categories = [
   'Ordinateurs',
   'Audio',
   'Tablettes',
+  'Drones',
+  'Composants Drone',
+  'Imprimantes 3D',
+  'Consommables 3D',
+  'Pièces 3D',
+  'Pièces Véhicules',
+  'Caméras',
+  'Objectifs',
+  'Accessoires Photo',
+  'Équipements Électroniques',
+  'Équipements Industriels',
+  'Outils Électriques',
+  'Équipements Scientifiques',
+  'Pièces Mécaniques',
+  'Équipements de Sécurité',
   'Montres',
   'Accessoires'
 ];
@@ -138,10 +580,20 @@ const brands = [
   'Apple',
   'Samsung',
   'Sony',
+  'Canon',
+  'DJI',
+  'Creality',
+  'Manfrotto',
+  'Fluke',
+  'Weller',
+  'Rigol',
+  'Bosch',
+  'DeWalt',
   'Bose',
   'Microsoft',
   'Google',
-  'Huawei'
+  'Huawei',
+  'Generic'
 ];
 
 export default function DLStylePage() {

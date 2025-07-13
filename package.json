@@ -9,7 +9,9 @@
     "dev": "next dev",
     "start": "next start",
     "lint": "next lint",
-    "clean-ports": "bash scripts/kill-ports.sh"
+    "clean-ports": "bash scripts/kill-ports.sh",
+    "scrape:industrial": "ts-node scripts/scrape-industrial-products.ts",
+    "scrape:all": "npm run scrape:industrial"
   },
   "dependencies": {
     "@clerk/nextjs": "6.23.2",

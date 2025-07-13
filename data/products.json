@@ -1,0 +1,233 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "iPhone 15 Pro Max - 256GB - Titane Naturel",
+      "price": 1299,
+      "originalPrice": 1499,
+      "rating": 4.8,
+      "reviews": 1247,
+      "image": "/images/products/iphone-15-pro.jpg",
+      "category": "Smartphones",
+      "brand": "Apple",
+      "inStock": true,
+      "fastDelivery": true,
+      "discount": 13,
+      "description": "Le dernier iPhone avec puce A17 Pro, caméra triple 48MP et design en titane"
+    },
+    {
+      "id": "2",
+      "name": "MacBook Air M3 - 13\" - 8GB RAM - 256GB SSD",
+      "price": 1199,
+      "originalPrice": 1299,
+      "rating": 4.9,
+      "reviews": 892,
+      "image": "/images/products/macbook-air.jpg",
+      "category": "Ordinateurs",
+      "brand": "Apple",
+      "inStock": true,
+      "fastDelivery": true,
+      "discount": 8,
+      "description": "Ordinateur portable ultra-léger avec puce M3 pour des performances exceptionnelles"
+    },
+    {
+      "id": "7",
+      "name": "DJI Mavic 3 Pro - Drone Professionnel 4K",
+      "price": 2499,
+      "originalPrice": 2799,
+      "rating": 4.9,
+      "reviews": 234,
+      "image": "/images/products/dji-mavic-3.jpg",
+      "category": "Drones",
+      "brand": "DJI",
+      "inStock": true,
+      "fastDelivery": true,
+      "discount": 11,
+      "description": "Drone professionnel avec caméra triple et autonomie de 43 minutes"
+    },
+    {
+      "id": "11",
+      "name": "Creality Ender 3 V3 SE - Imprimante 3D",
+      "price": 299,
+      "originalPrice": 399,
+      "rating": 4.8,
+      "reviews": 445,
+      "image": "/images/products/ender-3.jpg",
+      "category": "Imprimantes 3D",
+      "brand": "Creality",
+      "inStock": true,
+      "fastDelivery": true,
+      "discount": 25,
+      "description": "Imprimante 3D FDM avec lit chauffant et niveau automatique"
+    },
+    {
+      "id": "17",
+      "name": "Canon EOS R6 Mark II - Boîtier Hybride",
+      "price": 2499,
+      "originalPrice": 2799,
+      "rating": 4.9,
+      "reviews": 234,
+      "image": "/images/products/canon-r6.jpg",
+      "category": "Caméras",
+      "brand": "Canon",
+      "inStock": true,
+      "fastDelivery": true,
+      "discount": 11,
+      "description": "Boîtier hybride professionnel avec stabilisation 5 axes et 4K 60p"
+    },
+    {
+      "id": "20",
+      "name": "Oscilloscope numérique 100MHz - 4 canaux",
+      "price": 599,
+      "originalPrice": 799,
+      "rating": 4.8,
+      "reviews": 45,
+      "image": "/images/products/oscilloscope.jpg",
+      "category": "Équipements Électroniques",
+      "brand": "Rigol",
+      "inStock": true,
+      "fastDelivery": true,
+      "discount": 25,
+      "description": "Oscilloscope professionnel pour diagnostic électronique avancé"
+    },
+    {
+      "id": "23",
+      "name": "Générateur Diesel 10KVA - Silencieux",
+      "price": 2499,
+      "originalPrice": 2999,
+      "rating": 4.7,
+      "reviews": 34,
+      "image": "/images/products/diesel-generator.jpg",
+      "category": "Équipements Industriels",
+      "brand": "Generic",
+      "inStock": true,
+      "fastDelivery": true,
+      "discount": 17,
+      "description": "Groupe électrogène silencieux pour usage professionnel et résidentiel"
+    },
+    {
+      "id": "27",
+      "name": "Microscope numérique USB - 1000x",
+      "price": 149,
+      "originalPrice": 199,
+      "rating": 4.5,
+      "reviews": 45,
+      "image": "/images/products/digital-microscope.jpg",
+      "category": "Équipements Scientifiques",
+      "brand": "Generic",
+      "inStock": true,
+      "fastDelivery": true,
+      "discount": 25,
+      "description": "Microscope connecté USB pour observation et documentation"
+    }
+  ],
+  "categories": [
+    {
+      "name": "Smartphones",
+      "icon": "📱",
+      "description": "Téléphones intelligents et accessoires"
+    },
+    {
+      "name": "Ordinateurs",
+      "icon": "💻",
+      "description": "Ordinateurs portables et de bureau"
+    },
+    {
+      "name": "Drones",
+      "icon": "🚁",
+      "description": "Drones professionnels et loisirs"
+    },
+    {
+      "name": "Composants Drone",
+      "icon": "⚙️",
+      "description": "Pièces détachées pour drones"
+    },
+    {
+      "name": "Imprimantes 3D",
+      "icon": "🖨️",
+      "description": "Imprimantes 3D et accessoires"
+    },
+    {
+      "name": "Pièces Véhicules",
+      "icon": "🚗",
+      "description": "Pièces détachées automobiles"
+    },
+    {
+      "name": "Caméras",
+      "icon": "📷",
+      "description": "Caméras et équipements photo"
+    },
+    {
+      "name": "Équipements Électroniques",
+      "icon": "🔌",
+      "description": "Outils de diagnostic électronique"
+    },
+    {
+      "name": "Équipements Industriels",
+      "icon": "🏭",
+      "description": "Machines et équipements industriels"
+    },
+    {
+      "name": "Outils Électriques",
+      "icon": "🔨",
+      "description": "Outils électriques professionnels"
+    },
+    {
+      "name": "Équipements Scientifiques",
+      "icon": "🔬",
+      "description": "Instruments de mesure et laboratoire"
+    },
+    {
+      "name": "Pièces Mécaniques",
+      "icon": "🔧",
+      "description": "Roulements, courroies et pièces mécaniques"
+    },
+    {
+      "name": "Équipements de Sécurité",
+      "icon": "🛡️",
+      "description": "Équipements de protection individuelle"
+    }
+  ],
+  "brands": [
+    {
+      "name": "Apple",
+      "logo": "/images/brands/apple.png",
+      "description": "Technologies innovantes"
+    },
+    {
+      "name": "DJI",
+      "logo": "/images/brands/dji.png",
+      "description": "Leader des drones"
+    },
+    {
+      "name": "Canon",
+      "logo": "/images/brands/canon.png",
+      "description": "Excellence photographique"
+    },
+    {
+      "name": "Creality",
+      "logo": "/images/brands/creality.png",
+      "description": "Impression 3D accessible"
+    },
+    {
+      "name": "Bosch",
+      "logo": "/images/brands/bosch.png",
+      "description": "Outils professionnels"
+    },
+    {
+      "name": "DeWalt",
+      "logo": "/images/brands/dewalt.png",
+      "description": "Outils de construction"
+    },
+    {
+      "name": "Fluke",
+      "logo": "/images/brands/fluke.png",
+      "description": "Mesures précises"
+    },
+    {
+      "name": "Generic",
+      "logo": "/images/brands/generic.png",
+      "description": "Qualité accessible"
+    }
+  ]
+}

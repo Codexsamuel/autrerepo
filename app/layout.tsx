@@ -1,4 +1,5 @@
 import GoogleAutoAds from '@/components/ads/GoogleAutoAds'
+import ChatInterface from '@/components/ai/ChatInterface'
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics'
 import TradingNavigation from '@/components/layout/TradingNavigation'
 import OnboardingProvider from '@/components/onboarding/OnboardingProvider'
@@ -307,6 +308,7 @@ export default function RootLayout({
             <AdvancedCapabilitiesBanner />
             <TradingNavigation />
             {children}
+            <ChatInterface />
             <Toaster />
           </OnboardingProvider>
         </SessionProvider>

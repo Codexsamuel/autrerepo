@@ -152,13 +152,13 @@ export class AdvancedCodeAnalyzerService {
       // Extraire le HTML
       const html = $.html();
       
-      // Extraire le CSS
-      const css: string[] = [];
-      $('style').each((_, el) => css.push($(el).html() || ''));
-      $('link[rel="stylesheet"]').each((_, el) => {
-        const href = $(el).attr('href');
-        if (href) css.push(href);
-      });
+          // Extraire le CSS
+    const css: string[] = [];
+    $('style').each((_, el) => { css.push($(el).html() || ''); });
+    $('link[rel="stylesheet"]').each((_, el) => {
+      const href = $(el).attr('href');
+      if (href) { css.push(href); }
+    });
       
       // Extraire le JavaScript
       const javascript: string[] = [];

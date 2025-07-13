@@ -44,18 +44,32 @@ export interface MultiAIResponse {
 }
 
 export class MultiAIService {
-  private openai: OpenAI;
-  private gemini: GoogleGenerativeAI;
+  private openai: OpenAI | null;
+  private gemini: GoogleGenerativeAI | null;
   private models: Map<string, AIModel> = new Map();
   private darkModeConfig!: DarkModeConfig;
   private isDarkModeActive: boolean = false;
 
   constructor() {
-    this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY!,
-    });
+    // Vérifier si les clés API sont disponibles
+    const openaiKey = process.env.OPENAI_API_KEY;
+    const geminiKey = process.env.GEMINI_API_KEY;
 
-    this.gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+    if (openaiKey) {
+      this.openai = new OpenAI({
+        apiKey: openaiKey,
+      });
+    } else {
+      console.log('🔧 Mode simulation OpenAI activé (OPENAI_API_KEY non configurée)');
+      this.openai = null;
+    }
+
+    if (geminiKey) {
+      this.gemini = new GoogleGenerativeAI(geminiKey);
+    } else {
+      console.log('🔧 Mode simulation Gemini activé (GEMINI_API_KEY non configurée)');
+      this.gemini = null;
+    }
 
     this.initializeModels();
     this.initializeDarkMode();
@@ -221,6 +235,10 @@ export class MultiAIService {
     model: AIModel,
     options: any
   ): Promise<MultiAIResponse> {
+    if (!this.openai) {
+      throw new Error('OpenAI non disponible - clé API manquante');
+    }
+    
     const systemPrompt = this.buildSystemPrompt(model, options);
     
     const completion = await this.openai.chat.completions.create({
@@ -256,6 +274,10 @@ export class MultiAIService {
     model: AIModel,
     options: any
   ): Promise<MultiAIResponse> {
+    if (!this.gemini) {
+      throw new Error('Gemini non disponible - clé API manquante');
+    }
+    
     const systemPrompt = this.buildSystemPrompt(model, options);
     const fullPrompt = `${systemPrompt}\n\n${prompt}`;
 
@@ -284,16 +306,16 @@ export class MultiAIService {
     model: AIModel,
     options: any
   ): Promise<MultiAIResponse> {
-    // Utiliser OpenAI avec des prompts spécialisés pour Dark GPT
+    if (!this.openai) {
+      throw new Error('Dark GPT non disponible - clé OpenAI manquante');
+    }
+    
     const darkPrompt = this.buildDarkGPTPrompt(prompt, model, options);
     
     const completion = await this.openai.chat.completions.create({
       model: 'gpt-4-turbo-preview',
       messages: [
-        { 
-          role: 'system', 
-          content: this.getDarkGPTSystemPrompt(model, options) 
-        },
+        { role: 'system', content: this.getDarkGPTSystemPrompt(model, options) },
         { role: 'user', content: darkPrompt }
       ],
       max_tokens: options.maxTokens || model.maxTokens,

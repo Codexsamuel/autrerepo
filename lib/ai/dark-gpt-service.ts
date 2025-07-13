@@ -80,15 +80,21 @@ export interface DarkGPTPrediction {
 }
 
 export class DarkGPTService {
-  private openai: OpenAI;
+  private openai: OpenAI | null;
   private config: DarkGPTConfig;
   private cache: Map<string, { data: any; timestamp: number }> = new Map();
   private cacheTTL = 5 * 60 * 1000; // 5 minutes
 
   constructor(apiKey?: string) {
-    this.openai = new OpenAI({
-      apiKey: apiKey || process.env.OPENAI_API_KEY!,
-    });
+    const openaiKey = apiKey || process.env.OPENAI_API_KEY;
+    if (!openaiKey) {
+      console.log('🔧 Mode simulation Dark GPT activé (OPENAI_API_KEY non configurée)');
+      this.openai = null;
+    } else {
+      this.openai = new OpenAI({
+        apiKey: openaiKey,
+      });
+    }
 
     this.config = {
       model: 'gpt-4-turbo-preview',
@@ -151,6 +157,10 @@ RÈGLES:
     }
 
     try {
+      if (!this.openai) {
+        return this.generateFallbackAnalysis(context);
+      }
+      
       const prompt = this.buildAnalysisPrompt(context);
       const response = await this.openai.chat.completions.create({
         model: this.config.model,
@@ -187,6 +197,10 @@ RÈGLES:
 
   async predictPrice(symbol: string, timeframe: string, context: MarketContext): Promise<DarkGPTPrediction> {
     try {
+      if (!this.openai) {
+        return this.generateFallbackPrediction(symbol, timeframe, context);
+      }
+      
       const prompt = this.buildPredictionPrompt(symbol, timeframe, context);
       const response = await this.openai.chat.completions.create({
         model: this.config.model,
@@ -237,6 +251,10 @@ RÈGLES:
     context: MarketContext
   ): Promise<any> {
     try {
+      if (!this.openai) {
+        return this.generateFallbackStrategy(symbol, riskProfile, capital);
+      }
+      
       const prompt = this.buildStrategyPrompt(symbol, riskProfile, capital, context);
       const response = await this.openai.chat.completions.create({
         model: this.config.model,
@@ -249,6 +267,9 @@ RÈGLES:
       });
 
       const result = response.choices[0]?.message?.content;
+      if (!result) {
+        throw new Error('Réponse vide de Dark GPT');
+      }
       return this.parseStrategyResponse(result, symbol, riskProfile, capital);
     } catch (error) {
       console.error('Erreur Dark GPT Strategy:', error);

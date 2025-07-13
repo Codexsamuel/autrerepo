@@ -191,6 +191,20 @@ async function getForexData(symbols: string[]) {
             type: 'forex'
           };
         }
+      } else if (quote === 'USD') {
+        // Inverser le taux pour EUR/USD, GBP/USD, etc.
+        const rate = data.rates[base];
+        if (rate) {
+          return {
+            symbol,
+            price: (1 / rate).toFixed(4),
+            change: (Math.random() * 0.02 - 0.01).toFixed(4),
+            changePercent: (Math.random() * 2 - 1).toFixed(2),
+            volume: Math.floor(Math.random() * 1000000000),
+            marketCap: 0,
+            type: 'forex'
+          };
+        }
       }
       return null;
     }).filter(result => result !== null);

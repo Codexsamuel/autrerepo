@@ -55,7 +55,7 @@ export default function DLSolutionsHub() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {dashboards.map((d) => (
             <Link key={d.name} href={d.path} className="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 flex items-center space-x-4 border border-gray-100">
-              <img src={d.logo} alt={d.name + ' logo'} className="w-14 h-14 rounded" />
+              <img src={d.logo} alt={d.name + ' logo'} className="w-14 h-14 rounded-full" />
               <div>
                 <div className="font-semibold text-lg">{d.name}</div>
                 <div className="text-gray-500 text-sm mb-2">{d.desc}</div>

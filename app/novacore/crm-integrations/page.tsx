@@ -1,38 +1,28 @@
 "use client";
 
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
-import { 
-  Database, 
-  Plus, 
-  Trash2, 
-  Eye, 
-  Settings, 
-  Zap, 
-  Users, 
-  TrendingUp, 
-  MessageSquare, 
-  Mail, 
-  Phone, 
-  Calendar,
-  CheckCircle,
-  AlertCircle,
-  Clock,
-  BarChart3,
-  Target,
-  DollarSign,
-  Activity,
-  RefreshCw,
-  ExternalLink,
-  Shield,
-  Globe,
-  Smartphone,
-  Cloud
+import {
+    Activity,
+    BarChart3,
+    Cloud,
+    DollarSign,
+    Eye,
+    Globe,
+    Plus,
+    RefreshCw,
+    Settings,
+    Shield,
+    Smartphone,
+    Target,
+    Trash2,
+    Users,
+    Zap
 } from 'lucide-react';
+import { useState } from 'react';
 
 // Données CRM réalistes et commercialement utilisables
 const crmIntegrations = [
@@ -323,7 +313,7 @@ export default function CRMIntegrationsPage() {
             <div className="grid grid-cols-2 gap-3">
               {availableIntegrations.map((integration, index) => (
                 <div key={index} className="flex items-center p-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
-                  <img src={integration.logo} alt={integration.name} className="w-6 h-6 mr-2" />
+                  <img src={integration.logo} alt={integration.name} className="w-6 h-6 mr-2 rounded-full" />
                   <div>
                     <p className="text-xs font-medium">{integration.name}</p>
                     <p className="text-xs text-gray-500">{integration.category}</p>
@@ -366,7 +356,7 @@ export default function CRMIntegrationsPage() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <img src={integration.logo} alt={integration.name} className="w-12 h-12 rounded-lg object-contain" />
+                  <img src={integration.logo} alt={integration.name} className="w-12 h-12 rounded-full object-contain" />
                   <div>
                     <CardTitle className="text-lg">{integration.name}</CardTitle>
                     <p className="text-sm text-gray-500">{integration.details}</p>

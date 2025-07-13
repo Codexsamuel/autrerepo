@@ -6,6 +6,7 @@ import Script from 'next/script';
 // Configuration Google AdSense Auto Ads
 const ADSENSE_CLIENT_ID = getAdSenseClientId();
 
+// Composant principal pour l'initialisation des Auto Ads (une seule fois par page)
 export default function GoogleAutoAds() {
   // Ne pas afficher les pubs si AdSense n'est pas configuré
   if (!isAdSenseConfigured()) {
@@ -24,7 +25,7 @@ export default function GoogleAutoAds() {
         async
       />
       
-      {/* Configuration Auto Ads */}
+      {/* Configuration Auto Ads avec enable_page_level_ads (UNE SEULE FOIS) */}
       <Script
         id="google-auto-ads-config"
         strategy="afterInteractive"
@@ -51,7 +52,7 @@ export default function GoogleAutoAds() {
   );
 }
 
-// Composant pour les publicités manuelles (si nécessaire)
+// Composant pour les publicités manuelles (sans enable_page_level_ads)
 export function GoogleManualAd({ 
   slot, 
   format = "auto", 
@@ -82,7 +83,7 @@ export function GoogleManualAd({
   );
 }
 
-// Composant pour les publicités dans le contenu
+// Composant pour les publicités dans le contenu (sans enable_page_level_ads)
 export function GoogleInContentAd() {
   return (
     <div className="ad-container my-8 text-center">
@@ -105,7 +106,7 @@ export function GoogleInContentAd() {
   );
 }
 
-// Composant pour les publicités sidebar
+// Composant pour les publicités sidebar (sans enable_page_level_ads)
 export function GoogleSidebarAd() {
   return (
     <div className="ad-container sticky top-4">

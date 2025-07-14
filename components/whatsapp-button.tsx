@@ -15,7 +15,7 @@ export default function WhatsAppButton() {
 
   const handleSendMessage = () => {
     setIsSending(true);
-    const phoneNumber = '694341586';
+    const phoneNumber = '237694341586';
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     
     // Simuler un délai pour l'effet visuel

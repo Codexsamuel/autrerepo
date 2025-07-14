@@ -34,11 +34,11 @@ export default function AppointmentPopup() {
               <div className="text-center text-green-600 font-semibold py-8">Merci, nous vous recontacterons rapidement !</div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <input name="name" type="text" required placeholder="Nom complet" value={form.name} onChange={handleChange} className="w-full border rounded px-4 py-2" />
-                <input name="email" type="email" required placeholder="Email" value={form.email} onChange={handleChange} className="w-full border rounded px-4 py-2" />
-                <input name="phone" type="tel" required placeholder="Téléphone" value={form.phone} onChange={handleChange} className="w-full border rounded px-4 py-2" />
-                <input name="date" type="date" required value={form.date} onChange={handleChange} className="w-full border rounded px-4 py-2" />
-                <textarea name="reason" required placeholder="Motif du rendez-vous" value={form.reason} onChange={handleChange} className="w-full border rounded px-4 py-2" />
+                <input name="name" type="text" required placeholder="Nom complet" value={form.name} onChange={handleChange} className="w-full border rounded px-4 py-2 text-gray-900 placeholder:text-gray-500" />
+                <input name="email" type="email" required placeholder="Email" value={form.email} onChange={handleChange} className="w-full border rounded px-4 py-2 text-gray-900 placeholder:text-gray-500" />
+                <input name="phone" type="tel" required placeholder="Téléphone" value={form.phone} onChange={handleChange} className="w-full border rounded px-4 py-2 text-gray-900 placeholder:text-gray-500" />
+                <input name="date" type="date" required value={form.date} onChange={handleChange} className="w-full border rounded px-4 py-2 text-gray-900" />
+                <textarea name="reason" required placeholder="Motif du rendez-vous" value={form.reason} onChange={handleChange} className="w-full border rounded px-4 py-2 text-gray-900 placeholder:text-gray-500" />
                 <button type="submit" className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-2 rounded font-semibold">Envoyer</button>
               </form>
             )}

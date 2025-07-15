@@ -1,7 +1,7 @@
 'use client';
 
 import { Clock, Mail, Phone, Send, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function WhatsAppButton() {
   const [isHovered, setIsHovered] = useState(false);
@@ -9,6 +9,24 @@ export default function WhatsAppButton() {
   const [message, setMessage] = useState('Bonjour ! Je souhaite en savoir plus sur vos services DL Solutions.');
   const [isSending, setIsSending] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Vérifier si les cookies sont acceptés et si c'est la première visite
+    const cookiesAccepted = localStorage.getItem('cookiesAccepted');
+    const featuresEnabled = localStorage.getItem('dl_features_enabled');
+    const firstVisit = localStorage.getItem('dl_first_visit');
+    
+    // Ne pas afficher automatiquement si les cookies ne sont pas acceptés
+    if (cookiesAccepted !== 'true' || featuresEnabled !== 'true') {
+      setIsVisible(false);
+      return;
+    }
+    
+    // Pour la première visite, ne pas afficher automatiquement
+    if (firstVisit) {
+      setIsVisible(false);
+    }
+  }, []);
 
   const handleWhatsAppClick = () => {
     setIsOpen(true);

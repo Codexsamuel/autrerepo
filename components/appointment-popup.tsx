@@ -1,12 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function AppointmentPopup() {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', phone: '', reason: '', date: '' });
   const [submitted, setSubmitted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Vérifier si les cookies sont acceptés
+    const cookiesAccepted = localStorage.getItem('cookiesAccepted');
+    const featuresEnabled = localStorage.getItem('dl_features_enabled');
+    
+    // Ne pas afficher si les cookies ne sont pas acceptés
+    if (cookiesAccepted !== 'true' || featuresEnabled !== 'true') {
+      setIsVisible(false);
+      return;
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });

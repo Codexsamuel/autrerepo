@@ -27,11 +27,22 @@ const ContextualHelp: React.FC = () => {
   }));
 
   useEffect(() => {
-    // L'aide contextuelle ne s'affiche plus automatiquement
-    // Elle ne s'active que sur demande de l'utilisateur
+    // Vérifier si les cookies sont acceptés
+    const cookiesAccepted = localStorage.getItem('cookiesAccepted');
+    const featuresEnabled = localStorage.getItem('dl_features_enabled');
     const hasSeenHelp = localStorage.getItem('dl_contextual_help_seen');
+    
+    // Ne pas afficher si les cookies ne sont pas acceptés
+    if (cookiesAccepted !== 'true' || featuresEnabled !== 'true') {
+      setIsVisible(false);
+      setIsActivated(false);
+      return;
+    }
+    
+    // Si l'utilisateur a déjà vu l'aide, ne pas afficher
     if (hasSeenHelp) {
       setIsVisible(false);
+      setIsActivated(false);
     }
   }, []);
 

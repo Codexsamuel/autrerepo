@@ -1,14 +1,28 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function CookiesBanner() {
   const [visible, setVisible] = useState(false);
   const [accepted, setAccepted] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem('cookiesAccepted')) {
+    // Vérifier si les cookies ont déjà été acceptés
+    const cookiesAccepted = localStorage.getItem('cookiesAccepted');
+    const firstVisit = localStorage.getItem('dl_first_visit');
+    
+    if (!cookiesAccepted) {
       setVisible(true);
+    }
+    
+    // Marquer la première visite si ce n'est pas déjà fait
+    if (!firstVisit) {
+      localStorage.setItem('dl_first_visit', new Date().toISOString());
+      localStorage.setItem('dl_visit_count', '1');
+    } else {
+      // Incrémenter le compteur de visites
+      const visitCount = parseInt(localStorage.getItem('dl_visit_count') || '0') + 1;
+      localStorage.setItem('dl_visit_count', visitCount.toString());
     }
   }, []);
 
@@ -16,11 +30,20 @@ export default function CookiesBanner() {
     setAccepted(true);
     setVisible(false);
     localStorage.setItem('cookiesAccepted', 'true');
+    localStorage.setItem('dl_cookies_accepted_at', new Date().toISOString());
+    
+    // Activer les fonctionnalités après acceptation des cookies
+    localStorage.setItem('dl_features_enabled', 'true');
   };
+  
   const handleRefuse = () => {
     setAccepted(false);
     setVisible(false);
     localStorage.setItem('cookiesAccepted', 'false');
+    localStorage.setItem('dl_cookies_refused_at', new Date().toISOString());
+    
+    // Désactiver les fonctionnalités après refus des cookies
+    localStorage.setItem('dl_features_enabled', 'false');
   };
 
   if (!visible) return null;

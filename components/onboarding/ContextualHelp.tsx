@@ -1,14 +1,15 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { HelpCircle, X, Lightbulb, BookOpen, Users, Settings, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useLanguage } from '@/hooks/useLanguage';
 import { getTranslation } from '@/lib/i18n/translations';
+import { BookOpen, HelpCircle, Lightbulb, Settings, Users, X, Zap } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
 const ContextualHelp: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isActivated, setIsActivated] = useState(false);
   const [currentTip, setCurrentTip] = useState(0);
   const { language } = useLanguage();
   const t = getTranslation(language);
@@ -26,20 +27,23 @@ const ContextualHelp: React.FC = () => {
   }));
 
   useEffect(() => {
-    // Affiche l'aide contextuelle après 30 secondes sur la page
-    const timer = setTimeout(() => {
-      const hasSeenHelp = localStorage.getItem('dl_contextual_help_seen');
-      if (!hasSeenHelp) {
-        setIsVisible(true);
-      }
-    }, 30000);
-
-    return () => clearTimeout(timer);
+    // L'aide contextuelle ne s'affiche plus automatiquement
+    // Elle ne s'active que sur demande de l'utilisateur
+    const hasSeenHelp = localStorage.getItem('dl_contextual_help_seen');
+    if (hasSeenHelp) {
+      setIsVisible(false);
+    }
   }, []);
 
   const handleClose = () => {
     setIsVisible(false);
+    setIsActivated(false);
     localStorage.setItem('dl_contextual_help_seen', '1');
+  };
+
+  const handleActivate = () => {
+    setIsActivated(true);
+    setIsVisible(true);
   };
 
   const handleNext = () => {
@@ -52,13 +56,30 @@ const ContextualHelp: React.FC = () => {
 
   const currentTipData = helpTips[currentTip];
 
-  if (!isVisible) return null;
-
   return (
-    <div 
-      className="fixed bottom-24 right-6 z-40"
-      dir={language === 'ar' ? 'rtl' : 'ltr'}
-    >
+    <>
+      {/* Bouton d'activation de l'aide contextuelle */}
+      {!isActivated && (
+        <div 
+          className="fixed bottom-24 right-6 z-40"
+          dir={language === 'ar' ? 'rtl' : 'ltr'}
+        >
+          <Button
+            onClick={handleActivate}
+            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-3 rounded-full shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 hover:scale-110 border-2 border-blue-400/30"
+            aria-label="Activer l'aide contextuelle"
+          >
+            <HelpCircle className="w-6 h-6" />
+          </Button>
+        </div>
+      )}
+
+      {/* Aide contextuelle */}
+      {isVisible && (
+        <div 
+          className="fixed bottom-24 right-6 z-40"
+          dir={language === 'ar' ? 'rtl' : 'ltr'}
+        >
       <Card className="w-80 bg-white shadow-2xl border border-gray-200">
         <CardContent className="p-6">
           {/* Header */}
@@ -126,7 +147,9 @@ const ContextualHelp: React.FC = () => {
           </div>
         </CardContent>
       </Card>
-    </div>
+        </div>
+      )}
+    </>
   );
 };
 

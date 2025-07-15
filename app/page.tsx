@@ -2,7 +2,6 @@
 
 import { mediaConfig } from "@/app/config/media";
 import AdvancedSEO from "@/components/AdvancedSEO";
-import AIChatbot from '@/components/ai-chatbot';
 import AppointmentPopup from '@/components/appointment-popup';
 import CookiesBanner from '@/components/cookies-banner';
 import { EventVideoCard } from "@/components/event-video-card";
@@ -1179,7 +1178,7 @@ export default function HomePage() {
 
         {/* Composants flottants et RGPD */}
         <AppointmentPopup />
-        <AIChatbot />
+        {/* AIChatbot désactivé par défaut - s'active uniquement sur demande */}
         <ContextualHelp />
         <WhatsAppButton />
         <CookiesBanner />

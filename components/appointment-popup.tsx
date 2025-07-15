@@ -6,6 +6,7 @@ export default function AppointmentPopup() {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', phone: '', reason: '', date: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -19,12 +20,25 @@ export default function AppointmentPopup() {
 
   return (
     <>
-      <button
-        onClick={() => setOpen(true)}
-        className="fixed bottom-24 right-6 z-40 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-full shadow-2xl hover:scale-105 transition-all"
-      >
-        Prendre rendez-vous
-      </button>
+      {/* Bouton d'activation du popup de rendez-vous */}
+      {!isVisible && (
+        <button
+          onClick={() => setIsVisible(true)}
+          className="fixed bottom-24 right-6 z-40 bg-gradient-to-r from-gray-600 to-gray-700 text-white px-4 py-2 rounded-full shadow-2xl hover:scale-105 transition-all text-sm"
+        >
+          Assistance
+        </button>
+      )}
+
+      {/* Bouton de rendez-vous */}
+      {isVisible && (
+        <button
+          onClick={() => setOpen(true)}
+          className="fixed bottom-24 right-6 z-40 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-full shadow-2xl hover:scale-105 transition-all"
+        >
+          Prendre rendez-vous
+        </button>
+      )}
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md relative">

@@ -1,8 +1,8 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { useState } from "react";
-import { Button } from "@/components/ui/button"
-import { Phone, Mail, MessageCircle, MapPin, Clock } from "lucide-react"
 
 
 
@@ -27,7 +27,7 @@ export function ContactButtons() {
       icon: MessageCircle,
       label: "WhatsApp",
       value: "Chat direct",
-      action: () => window.open("https://wa.me/237694341586"),
+      action: () => window.open("https://wa.me/00237694341586"),
       color: "from-green-400 to-green-600",
     },
     {

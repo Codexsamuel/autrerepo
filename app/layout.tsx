@@ -228,12 +228,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://res.cloudinary.com" />
         
         {/* Favicon et icônes */}
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="icon" href="/images/icon-32x32.svg" sizes="32x32" type="image/svg+xml" />
-        <link rel="icon" href="/images/icon-16x16.svg" sizes="16x16" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
-        <link rel="apple-touch-icon" href="/images/icon-192x192.svg" sizes="192x192" />
-        <link rel="apple-touch-icon" href="/images/icon-512x512.svg" sizes="512x512" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="mask-icon" href="/favicon.svg" color="#2563eb" />
         

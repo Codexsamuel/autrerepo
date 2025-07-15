@@ -1,0 +1,140 @@
+# Robots.txt optimisé pour DL Solutions - Davy & Lucie Solutions
+# https://dlsolutions.com
+
+User-agent: *
+Allow: /
+
+# Sitemap principal
+Sitemap: https://dlsolutions.com/sitemap.xml
+
+# Pages importantes à indexer en priorité
+Allow: /$
+Allow: /dl-style
+Allow: /novaworld
+Allow: /novacore
+Allow: /formations
+Allow: /services
+Allow: /trading
+Allow: /advanced-intelligence
+Allow: /ultra-ai
+Allow: /quantum-intelligence
+Allow: /metaverse-blockchain
+Allow: /contact
+Allow: /a-propos
+
+# Pages de formations
+Allow: /formations/marketing-digital
+Allow: /formations/ia-entreprises
+Allow: /formations/creation-visuelle
+Allow: /formations/sav-excellence
+
+# Pages NovaCore
+Allow: /novacore/dl-style
+Allow: /novacore/crm
+Allow: /novacore/erp
+Allow: /novacore/ecommerce
+
+# Pages NovaWorld
+Allow: /novaworld/social
+Allow: /novaworld/business
+Allow: /novaworld/jobs
+Allow: /novaworld/events
+
+# Pages de démonstrations
+Allow: /demo/ezee-optimus
+Allow: /demo/real-trading
+Allow: /demo/trading-advisor
+
+# Pages de solutions sectorielles
+Allow: /solutions/agriculture
+Allow: /solutions/banque
+Allow: /solutions/assurance
+Allow: /solutions/immobilier
+Allow: /solutions/restaurant
+Allow: /solutions/mining
+Allow: /solutions/hospitalier
+Allow: /solutions/community-manager
+Allow: /solutions/travel
+Allow: /solutions/commerce
+Allow: /solutions/business
+
+# Pages utilitaires
+Allow: /devis
+Allow: /rendez-vous
+Allow: /capacites-techniques
+Allow: /portfolio
+Allow: /price-alerts
+Allow: /trading-charts
+Allow: /scraping-demo
+Allow: /scraping-multi-market
+Allow: /industrial-products
+
+# Pages à ne pas indexer (privées/administratives)
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /sign-in
+Disallow: /sign-up
+Disallow: /api/
+Disallow: /_next/
+Disallow: /test-env/
+Disallow: /api-test/
+Disallow: /intranet/
+
+# Fichiers à ne pas indexer
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /*.txt$
+Disallow: /*.log$
+Disallow: /*.sql$
+
+# Images et ressources statiques
+Allow: /images/
+Allow: /public/
+Allow: /css/
+Allow: /js/
+Allow: /fonts/
+
+# Crawl-delay pour éviter de surcharger le serveur
+Crawl-delay: 1
+
+# Instructions spécifiques pour Google
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0.5
+
+# Instructions spécifiques pour Bing
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Instructions spécifiques pour les autres moteurs
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+# Blocage des bots malveillants
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+# Informations sur le site
+# Site: DL Solutions - Solutions Digitales Innovantes
+# Fondateurs: Davy & Lucie
+# Localisation: Yaoundé, Cameroun
+# Contact: contact@dlsolutions.com
+# Téléphone: +237-694-341-586 

@@ -1,7 +1,7 @@
 "use client";
 
 import { mediaConfig } from "@/app/config/media";
-import AdvancedSEO from "@/components/AdvancedSEO";
+import SEOOptimized from "@/components/SEOOptimized";
 import AppointmentPopup from '@/components/appointment-popup';
 import CookiesBanner from '@/components/cookies-banner';
 import { EventVideoCard } from "@/components/event-video-card";
@@ -11,8 +11,8 @@ import MediaSection from '@/components/media-section';
 import ContextualHelp from '@/components/onboarding/ContextualHelp';
 import PrivacyMessage from '@/components/privacy-message';
 import TestimonialsSection from '@/components/testimonials-section';
-import { Button } from "@/components/ui/button";
 import MarqueeBanner from '@/components/ui/MarqueeBanner';
+import { Button } from "@/components/ui/button";
 import WhatsAppButton from '@/components/whatsapp-button';
 import {
     ArrowRight,
@@ -506,22 +506,8 @@ export default function HomePage() {
 
   return (
     <>
-      <AdvancedSEO
-        title="DL Solutions - Solutions Digitales Innovantes"
-        description="Solutions digitales innovantes : développement web, e-commerce, formation, conseil. Transformez votre entreprise."
-        keywords="solutions digitales, développement web, e-commerce, formation, conseil, transformation numérique, DL Solutions"
-        image="https://dlsolutions.com/images/og-image.jpg"
-        url="https://dlsolutions.com"
-        type="website"
-        organization={{
-          name: 'DL Solutions',
-          logo: 'https://dlsolutions.com/images/logo.png',
-          url: 'https://dlsolutions.com',
-          description: 'Solutions digitales innovantes pour entreprises'
-        }}
-        breadcrumbs={[
-          { name: 'Accueil', url: 'https://dlsolutions.com' }
-        ]}
+      <SEOOptimized
+        pageKey="home"
         faq={[
           {
             question: "Quels services propose DL Solutions ?",
@@ -536,10 +522,6 @@ export default function HomePage() {
             answer: "Oui, nous proposons des formations professionnelles certifiantes dans divers domaines du digital."
           }
         ]}
-        preload={['/css/globals.css']}
-        prefetch={['/formations', '/novaworld', '/dl-style']}
-        dnsPrefetch={['//fonts.googleapis.com', '//cdn.jsdelivr.net']}
-        preconnect={['https://fonts.googleapis.com', 'https://cdn.jsdelivr.net']}
       />
       
       <MarqueeBanner />

@@ -1,6 +1,6 @@
 'use client';
 
-import AdvancedSEO from '@/components/AdvancedSEO';
+import SEOOptimized from '@/components/SEOOptimized';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -748,23 +748,17 @@ export default function DLStylePage() {
 
   return (
     <>
-      <AdvancedSEO
-        title="DL-Style - Boutique en Ligne Premium"
-        description="Boutique en ligne premium : électronique, mode, maison. Livraison gratuite, garantie 2 ans, paiement sécurisé."
-        keywords="boutique en ligne, e-commerce, électronique, mode, maison, livraison gratuite, DL-Style"
-        image="https://dlsolutions.com/images/dl-style-og.jpg"
-        url="https://dlsolutions.com/dl-style"
-        type="website"
-        organization={{
-          name: 'DL Solutions',
-          logo: 'https://dlsolutions.com/images/logo.png',
-          url: 'https://dlsolutions.com',
-          description: 'Solutions digitales innovantes pour entreprises'
+      <SEOOptimized
+        pageKey="dl-style"
+        product={{
+          name: 'Catalogue DL-Style',
+          description: 'Boutique en ligne premium avec produits de qualité',
+          price: '49-1499',
+          currency: 'EUR',
+          availability: 'InStock',
+          brand: 'DL-Style',
+          category: 'E-commerce'
         }}
-        breadcrumbs={[
-          { name: 'Accueil', url: 'https://dlsolutions.com' },
-          { name: 'DL-Style', url: 'https://dlsolutions.com/dl-style' }
-        ]}
         faq={[
           {
             question: "DL-Style propose-t-il la livraison gratuite ?",
@@ -779,15 +773,6 @@ export default function DLStylePage() {
             answer: "Oui, nous proposons le paiement en 3 ou 4 fois sans frais."
           }
         ]}
-        product={{
-          name: 'Catalogue DL-Style',
-          description: 'Boutique en ligne premium avec produits de qualité',
-          price: '49-1499',
-          currency: 'EUR',
-          availability: 'InStock',
-          brand: 'DL-Style',
-          category: 'E-commerce'
-        }}
       />
       
       <div className="min-h-screen bg-gray-50">

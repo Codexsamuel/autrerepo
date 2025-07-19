@@ -1,85 +1,106 @@
+#!/usr/bin/env node
+
+/**
+ * Script de génération des favicons pour DL Solutions
+ * Génère les différentes tailles de favicon à partir du SVG circulaire
+ */
+
 const fs = require('fs');
 const path = require('path');
 
-// Configuration des icônes à générer
-const iconSizes = [16, 32, 48, 72, 96, 128, 144, 152, 192, 384, 512];
+// Configuration des tailles de favicon
+const FAVICON_SIZES = [
+  { size: 16, name: 'favicon-16x16.png' },
+  { size: 32, name: 'favicon-32x32.png' },
+  { size: 180, name: 'apple-touch-icon.png' },
+  { size: 192, name: 'android-chrome-192x192.png' },
+  { size: 512, name: 'android-chrome-512x512.png' }
+];
 
-// SVG template pour DL Solutions
-const svgTemplate = `
-<svg width="{size}" height="{size}" viewBox="0 0 {size} {size}" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
-    </linearGradient>
-  </defs>
-  
-  <!-- Background circle -->
-  <circle cx="{center}" cy="{center}" r="{radius}" fill="url(#grad1)"/>
-  
-  <!-- DL Letters -->
-  <text x="{center}" y="{textY}" font-family="Arial, sans-serif" font-size="{fontSize}" font-weight="bold" text-anchor="middle" fill="white">DL</text>
-  
-  <!-- Digital elements -->
-  <circle cx="{small}" cy="{small}" r="{dotSize}" fill="white" opacity="0.8"/>
-  <circle cx="{large}" cy="{small}" r="{dotSize}" fill="white" opacity="0.6"/>
-  <circle cx="{small}" cy="{large}" r="{dotSize}" fill="white" opacity="0.6"/>
-  <circle cx="{large}" cy="{large}" r="{dotSize}" fill="white" opacity="0.8"/>
-</svg>
-`;
+// Contenu du manifeste PWA
+const WEB_MANIFEST = {
+  name: 'DL Solutions - Davy & Lucie Solutions',
+  short_name: 'DL Solutions',
+  description: 'Écosystème digital complet par Davy et Lucie',
+  start_url: '/',
+  display: 'standalone',
+  background_color: '#1e40af',
+  theme_color: '#2563eb',
+  icons: [
+    {
+      src: '/android-chrome-192x192.png',
+      sizes: '192x192',
+      type: 'image/png'
+    },
+    {
+      src: '/android-chrome-512x512.png',
+      sizes: '512x512',
+      type: 'image/png'
+    }
+  ]
+};
 
-function generateSVG(size) {
-  const center = size / 2;
-  const radius = size / 2;
-  const small = size * 0.25;
-  const large = size * 0.75;
-  const fontSize = Math.max(8, size * 0.4);
-  const textY = center + fontSize * 0.3;
-  const dotSize = Math.max(1, size * 0.03);
-  
-  return svgTemplate
-    .replace(/{size}/g, size)
-    .replace(/{center}/g, center)
-    .replace(/{radius}/g, radius)
-    .replace(/{small}/g, small)
-    .replace(/{large}/g, large)
-    .replace(/{fontSize}/g, fontSize)
-    .replace(/{textY}/g, textY)
-    .replace(/{dotSize}/g, dotSize);
+// Contenu du fichier browserconfig.xml pour Windows
+const BROWSER_CONFIG = `<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+    <msapplication>
+        <tile>
+            <square150x150logo src="/mstile-150x150.png"/>
+            <TileColor>#2563eb</TileColor>
+        </tile>
+    </msapplication>
+</browserconfig>`;
+
+console.log('🎨 Génération des favicons pour DL Solutions...');
+
+// Créer le manifeste PWA
+try {
+  fs.writeFileSync(
+    path.join(__dirname, '../public/site.webmanifest'),
+    JSON.stringify(WEB_MANIFEST, null, 2)
+  );
+  console.log('✅ Manifeste PWA généré: /public/site.webmanifest');
+} catch (error) {
+  console.error('❌ Erreur lors de la génération du manifeste:', error.message);
 }
 
-// Générer les icônes SVG
-function generateIcons() {
-  console.log('🎨 Génération des icônes DL Solutions...');
-  
-  // Créer le dossier images s'il n'existe pas
-  const imagesDir = path.join(__dirname, '../public/images');
-  if (!fs.existsSync(imagesDir)) {
-    fs.mkdirSync(imagesDir, { recursive: true });
-  }
-  
-  // Générer les icônes SVG
-  iconSizes.forEach(size => {
-    const svg = generateSVG(size);
-    const filename = `icon-${size}x${size}.svg`;
-    const filepath = path.join(imagesDir, filename);
-    
-    fs.writeFileSync(filepath, svg);
-    console.log(`✅ Généré: ${filename}`);
-  });
-  
-  // Créer un favicon.ico basique (SVG)
-  const faviconSvg = generateSVG(32);
-  fs.writeFileSync(path.join(__dirname, '../public/favicon.svg'), faviconSvg);
-  console.log('✅ Généré: favicon.svg');
-  
-  // Créer apple-touch-icon.svg
-  const appleIconSvg = generateSVG(180);
-  fs.writeFileSync(path.join(__dirname, '../public/apple-touch-icon.svg'), appleIconSvg);
-  console.log('✅ Généré: apple-touch-icon.svg');
-  
-  console.log('🎉 Toutes les icônes ont été générées avec succès!');
+// Créer le fichier browserconfig.xml
+try {
+  fs.writeFileSync(
+    path.join(__dirname, '../public/browserconfig.xml'),
+    BROWSER_CONFIG
+  );
+  console.log('✅ Browser config généré: /public/browserconfig.xml');
+} catch (error) {
+  console.error('❌ Erreur lors de la génération du browser config:', error.message);
 }
 
-// Exécuter la génération
-generateIcons(); 
+// Vérifier que le favicon SVG existe
+const svgPath = path.join(__dirname, '../public/favicon-circular.svg');
+if (!fs.existsSync(svgPath)) {
+  console.error('❌ Le fichier favicon-circular.svg n\'existe pas');
+  process.exit(1);
+}
+
+console.log('📋 Instructions pour générer les PNG:');
+console.log('');
+console.log('1. Ouvrez le fichier /public/favicon-circular.svg dans un navigateur');
+console.log('2. Utilisez un outil en ligne pour convertir le SVG en PNG:');
+console.log('   - https://convertio.co/svg-png/');
+console.log('   - https://cloudconvert.com/svg-to-png');
+console.log('');
+console.log('3. Générez les tailles suivantes:');
+FAVICON_SIZES.forEach(({ size, name }) => {
+  console.log(`   - ${name} (${size}x${size}px)`);
+});
+console.log('');
+console.log('4. Placez les fichiers PNG dans le dossier /public/');
+console.log('');
+console.log('🎯 Le logo circulaire sera visible dans:');
+console.log('   - Onglets de navigateur');
+console.log('   - Favoris');
+console.log('   - Résultats de recherche Google');
+console.log('   - Applications mobiles (PWA)');
+console.log('   - Réseaux sociaux');
+console.log('');
+console.log('✨ Optimisation SEO complète pour DL Solutions!'); 

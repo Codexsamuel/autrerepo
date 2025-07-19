@@ -62,15 +62,22 @@ export default function SEOOptimized({
       'max-video-preview:-1'
     ].join(', ');
 
-    // Meta tags ultra-optimisés pour DL Solutions
-    const metaTags = [
-      // Meta tags de base
-      { name: 'description', content: config.description },
-      { name: 'keywords', content: config.keywords },
-      { name: 'author', content: 'DL Solutions - Davy & Lucie' },
-      { name: 'robots', content: robotsContent },
-      { name: 'googlebot', content: robotsContent },
-      { name: 'bingbot', content: robotsContent },
+          // Meta tags ultra-optimisés pour DL Solutions
+      const metaTags = [
+        // Meta tags de base
+        { name: 'description', content: config.description },
+        { name: 'keywords', content: config.keywords },
+        { name: 'author', content: 'DL Solutions - Davy & Lucie' },
+        { name: 'robots', content: robotsContent },
+        { name: 'googlebot', content: robotsContent },
+        { name: 'bingbot', content: robotsContent },
+        
+        // Favicon et logo circulaire
+        { rel: 'icon', type: 'image/svg+xml', href: config.favicon || '/favicon-circular.svg' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+        { rel: 'manifest', href: '/site.webmanifest' },
       
       // Open Graph avancé
       { property: 'og:title', content: config.title },
@@ -141,9 +148,9 @@ export default function SEOOptimized({
       url: 'https://dlsolutions.com',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://dlsolutions.com/images/logo.png',
-        width: 192,
-        height: 192
+        url: config.logo ? `https://dlsolutions.com${config.logo}` : 'https://dlsolutions.com/favicon-circular.svg',
+        width: 512,
+        height: 512
       },
       description: 'Solutions digitales innovantes par Davy et Lucie au Cameroun',
       foundingDate: '2024',

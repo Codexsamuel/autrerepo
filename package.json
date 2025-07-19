@@ -11,7 +11,9 @@
     "lint": "next lint",
     "clean-ports": "bash scripts/kill-ports.sh",
     "scrape:industrial": "ts-node scripts/scrape-industrial-products.ts",
-    "scrape:all": "npm run scrape:industrial"
+    "scrape:all": "npm run scrape:industrial",
+    "generate-favicons": "node scripts/generate-favicons.js",
+    "generate-og-images": "node scripts/generate-og-images.js"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.24.0",
@@ -100,7 +102,8 @@
   },
   "devDependencies": {
     "eslint": "^8.57.1",
-    "eslint-config-next": "15.3.4"
+    "eslint-config-next": "15.3.4",
+    "sharp": "^0.34.3"
   },
   "engines": {
     "node": ">=18.0.0",

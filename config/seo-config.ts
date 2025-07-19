@@ -12,6 +12,8 @@ export interface SEOConfig {
   faq?: Array<{ question: string; answer: string }>;
   priority?: number;
   changeFreq?: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
+  favicon?: string;
+  logo?: string;
 }
 
 // Mots-clés principaux pour DL Solutions
@@ -53,7 +55,9 @@ export const SEO_CONFIGS: Record<string, SEOConfig> = {
     type: 'website',
     breadcrumbs: [{ name: 'Accueil', url: 'https://dlsolutions.com' }],
     priority: 1.0,
-    changeFreq: 'daily'
+    changeFreq: 'daily',
+    favicon: '/favicon-circular.svg',
+    logo: '/favicon-circular.svg'
   },
 
   // DL Style - Boutique

@@ -1,5 +1,5 @@
-# Configuration Netlify pour DAVY Trading Platform
-# Version: 3.2 - Configuration SSR pour Next.js
+# Configuration Netlify pour DL Solutions Platform
+# Version: 3.3 - Configuration optimisée pour Next.js
 
 [build]
   # Commande de build avec npm
@@ -17,7 +17,7 @@
   NETLIFY_FUNCTIONS_TIMEOUT = "10"
   NETLIFY_FUNCTIONS_MAX_SIZE = "50"
   # Variables essentielles seulement pour les fonctions
-  NEXT_PUBLIC_APP_URL = "https://daveandlucesolutions.com"
+  NEXT_PUBLIC_APP_URL = "https://daveandlucesolutions-clean.netlify.app"
   NEXT_PUBLIC_SUPABASE_URL = "https://your-project.supabase.co"
   NEXT_PUBLIC_SUPABASE_ANON_KEY = "your-anon-key"
 
@@ -83,13 +83,7 @@
 
 # Redirection HTTPS
 [[redirects]]
-  from = "http://daveandlucesolutions.com/*"
-  to = "https://daveandlucesolutions.com/:splat"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "http://www.daveandlucesolutions.com/*"
-  to = "https://www.daveandlucesolutions.com/:splat"
+  from = "http://daveandlucesolutions-clean.netlify.app/*"
+  to = "https://daveandlucesolutions-clean.netlify.app/:splat"
   status = 301
   force = true 

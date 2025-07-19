@@ -1,31 +1,33 @@
 {
   "version": 2,
-  "buildCommand": "echo 'Backend build completed'",
-  "installCommand": "npm ci",
-  "framework": null,
-  "ignoreCommand": "echo 'Skipping build'",
   "builds": [
     {
-      "src": "api-backup/**/*.ts",
-      "use": "@vercel/node"
+      "src": "package.json",
+      "use": "@vercel/next"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api-backup/$1"
+      "src": "/api/scraping/production/(.*)",
+      "dest": "/api/scraping/production/$1",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization"
+      }
     },
     {
-      "src": "/(.*)",
-      "dest": "/api-backup/$1"
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
     }
   ],
+  "env": {
+    "NODE_ENV": "production",
+    "NEXT_TELEMETRY_DISABLED": "1"
+  },
   "functions": {
-    "api-backup/**/*.ts": {
+    "app/api/scraping/production/route.ts": {
       "maxDuration": 30
     }
-  },
-  "env": {
-    "NODE_ENV": "production"
   }
 }

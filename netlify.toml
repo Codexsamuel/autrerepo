@@ -1,5 +1,5 @@
 # Configuration Netlify pour DL Solutions Platform
-# Version: 3.4 - Configuration optimisée pour Next.js API Routes
+# Version: 3.5 - Configuration optimisée pour Next.js API Routes
 
 [build]
   # Commande de build avec npm
@@ -27,11 +27,6 @@
   targetPort = 3000
   publish = ".next"
   autoLaunch = true
-
-# Configuration des fonctions Netlify (si nécessaire)
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
 
 [[headers]]
   for = "/*"

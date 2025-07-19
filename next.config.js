@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Configuration pour Netlify
-  output: 'standalone',
-  
   // Optimisations pour les API routes
   experimental: {
     serverComponentsExternalPackages: [],

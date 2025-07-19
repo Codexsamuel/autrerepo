@@ -1,11 +1,11 @@
 "use client";
 
+import SEOOptimized from '@/components/SEOOptimized';
+import { FormValidation } from "@/components/form-validation";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Building, FileText, Layers, MessageSquare, User } from "lucide-react";
 import { useState } from "react";
-import { FormValidation } from "@/components/form-validation"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Building, FileText, Layers, MessageSquare, User } from "lucide-react"
-
 
 
 export default function DevisPage() {
@@ -177,113 +177,123 @@ export default function DevisPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold tracking-tight mb-2">Demande de devis</h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Obtenez un devis personnalisé pour votre projet en quelques étapes simples.
-          </p>
+    <>
+      <SEOOptimized
+        pageKey="devis"
+        customConfig={{
+          title: "Devis Gratuit | DL Solutions - Estimation IA & Solutions Digitales",
+          description: "Obtenez un devis gratuit personnalisé pour vos projets digitaux : sites web, applications, CRM, e-commerce, IA. Estimation rapide et précise par DL Solutions.",
+          url: "https://www.dl-solutions.com/devis"
+        }}
+      />
+      <div className="container mx-auto px-4 py-12">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-12">
+            <h1 className="text-3xl font-bold tracking-tight mb-2">Demande de devis</h1>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Obtenez un devis personnalisé pour votre projet en quelques étapes simples.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+              <CardHeader className="pb-2">
+                <div className="w-12 h-12 rounded-full bg-blue-200 flex items-center justify-center mb-2">
+                  <FileText className="h-6 w-6 text-blue-700" />
+                </div>
+                <CardTitle className="text-lg">Devis détaillé</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-blue-900">
+                  Recevez une proposition complète adaptée à vos besoins spécifiques.
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+              <CardHeader className="pb-2">
+                <div className="w-12 h-12 rounded-full bg-blue-200 flex items-center justify-center mb-2">
+                  <Layers className="h-6 w-6 text-blue-700" />
+                </div>
+                <CardTitle className="text-lg">Solutions sur mesure</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-blue-900">
+                  Des solutions personnalisées selon vos objectifs et votre budget.
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+              <CardHeader className="pb-2">
+                <div className="w-12 h-12 rounded-full bg-blue-200 flex items-center justify-center mb-2">
+                  <MessageSquare className="h-6 w-6 text-blue-700" />
+                </div>
+                <CardTitle className="text-lg">Accompagnement</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-blue-900">
+                  Un conseiller dédié pour vous guider tout au long de votre projet.
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Formulaire de demande de devis</CardTitle>
+              <CardDescription>
+                Complétez les informations ci-dessous pour recevoir un devis personnalisé.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="grid w-full grid-cols-3 mb-8">
+                  <TabsTrigger value="client" disabled={activeTab !== "client"}>
+                    <User className="h-4 w-4 mr-2" />
+                    1. Vos informations
+                  </TabsTrigger>
+                  <TabsTrigger value="company" disabled={activeTab !== "company" && activeTab !== "project"}>
+                    <Building className="h-4 w-4 mr-2" />
+                    2. Votre entreprise
+                  </TabsTrigger>
+                  <TabsTrigger value="project" disabled={activeTab !== "project"}>
+                    <FileText className="h-4 w-4 mr-2" />
+                    3. Votre projet
+                  </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="client">
+                  <FormValidation
+                    fields={clientInfoFields}
+                    onSubmit={handleSubmitClientInfo}
+                    submitLabel="Continuer"
+                    successMessage=""
+                  />
+                </TabsContent>
+
+                <TabsContent value="company">
+                  <FormValidation
+                    fields={companyInfoFields}
+                    onSubmit={handleSubmitCompanyInfo}
+                    submitLabel="Continuer"
+                    successMessage=""
+                  />
+                </TabsContent>
+
+                <TabsContent value="project">
+                  <FormValidation
+                    fields={projectInfoFields}
+                    onSubmit={handleSubmitProjectInfo}
+                    submitLabel="Demander un devis"
+                    successMessage="Votre demande de devis a été envoyée avec succès. Un conseiller vous contactera dans les 24 heures ouvrables pour discuter de votre projet."
+                  />
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
-            <CardHeader className="pb-2">
-              <div className="w-12 h-12 rounded-full bg-blue-200 flex items-center justify-center mb-2">
-                <FileText className="h-6 w-6 text-blue-700" />
-              </div>
-              <CardTitle className="text-lg">Devis détaillé</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="text-blue-900">
-                Recevez une proposition complète adaptée à vos besoins spécifiques.
-              </CardDescription>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
-            <CardHeader className="pb-2">
-              <div className="w-12 h-12 rounded-full bg-blue-200 flex items-center justify-center mb-2">
-                <Layers className="h-6 w-6 text-blue-700" />
-              </div>
-              <CardTitle className="text-lg">Solutions sur mesure</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="text-blue-900">
-                Des solutions personnalisées selon vos objectifs et votre budget.
-              </CardDescription>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
-            <CardHeader className="pb-2">
-              <div className="w-12 h-12 rounded-full bg-blue-200 flex items-center justify-center mb-2">
-                <MessageSquare className="h-6 w-6 text-blue-700" />
-              </div>
-              <CardTitle className="text-lg">Accompagnement</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="text-blue-900">
-                Un conseiller dédié pour vous guider tout au long de votre projet.
-              </CardDescription>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Formulaire de demande de devis</CardTitle>
-            <CardDescription>
-              Complétez les informations ci-dessous pour recevoir un devis personnalisé.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-3 mb-8">
-                <TabsTrigger value="client" disabled={activeTab !== "client"}>
-                  <User className="h-4 w-4 mr-2" />
-                  1. Vos informations
-                </TabsTrigger>
-                <TabsTrigger value="company" disabled={activeTab !== "company" && activeTab !== "project"}>
-                  <Building className="h-4 w-4 mr-2" />
-                  2. Votre entreprise
-                </TabsTrigger>
-                <TabsTrigger value="project" disabled={activeTab !== "project"}>
-                  <FileText className="h-4 w-4 mr-2" />
-                  3. Votre projet
-                </TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="client">
-                <FormValidation
-                  fields={clientInfoFields}
-                  onSubmit={handleSubmitClientInfo}
-                  submitLabel="Continuer"
-                  successMessage=""
-                />
-              </TabsContent>
-
-              <TabsContent value="company">
-                <FormValidation
-                  fields={companyInfoFields}
-                  onSubmit={handleSubmitCompanyInfo}
-                  submitLabel="Continuer"
-                  successMessage=""
-                />
-              </TabsContent>
-
-              <TabsContent value="project">
-                <FormValidation
-                  fields={projectInfoFields}
-                  onSubmit={handleSubmitProjectInfo}
-                  submitLabel="Demander un devis"
-                  successMessage="Votre demande de devis a été envoyée avec succès. Un conseiller vous contactera dans les 24 heures ouvrables pour discuter de votre projet."
-                />
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
       </div>
-    </div>
+    </>
   )
 }

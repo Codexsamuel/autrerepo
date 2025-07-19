@@ -1,5 +1,5 @@
 "use client";
-import AdvancedSEO from '@/components/AdvancedSEO';
+import SEOOptimized from '@/components/SEOOptimized';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -191,37 +191,13 @@ export default function NovaWorldPage() {
 
   return (
     <>
-      <AdvancedSEO
-        title="NovaWorld - Réseau Social Professionnel & Gestion d'Entreprise"
-        description="Réseau social professionnel, gestion d'entreprise, emplois, collaboration. Rejoignez NovaWorld pour booster votre carrière et votre entreprise."
-        keywords="réseau social professionnel, gestion entreprise, emploi, collaboration, NovaWorld, DL Solutions, networking, business, carrière, RH, recrutement, événements, formation, social hub, analytics"
-        image="https://dlsolutions.com/images/novaworld-og.jpg"
-        url="https://dlsolutions.com/novaworld"
-        type="website"
-        organization={{
-          name: 'DL Solutions',
-          logo: 'https://dlsolutions.com/images/logo.png',
-          url: 'https://dlsolutions.com',
-          description: 'Solutions digitales innovantes pour entreprises'
+      <SEOOptimized
+        pageKey="novaworld-main"
+        customConfig={{
+          title: "NovaWorld | Réseau social professionnel & business – DL Solutions",
+          description: "NovaWorld, le réseau social de DL Solutions pour connecter, collaborer et développer votre business. Rejoignez des milliers de professionnels et d'entreprises innovantes.",
+          url: "https://www.dl-solutions.com/novaworld"
         }}
-        breadcrumbs={[
-          { name: 'Accueil', url: 'https://dlsolutions.com' },
-          { name: 'NovaWorld', url: 'https://dlsolutions.com/novaworld' }
-        ]}
-        faq={[
-          {
-            question: "Qu'est-ce que NovaWorld ?",
-            answer: "NovaWorld est un réseau social professionnel complet avec gestion d'entreprise, emplois et collaboration."
-          },
-          {
-            question: "NovaWorld est-il gratuit ?",
-            answer: "NovaWorld propose des fonctionnalités gratuites et des options premium pour les entreprises."
-          },
-          {
-            question: "Comment rejoindre NovaWorld ?",
-            answer: "Créez votre compte gratuitement et commencez à vous connecter avec des professionnels."
-          }
-        ]}
       />
       
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">

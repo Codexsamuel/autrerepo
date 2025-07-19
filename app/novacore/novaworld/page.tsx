@@ -1,31 +1,28 @@
 "use client";
 
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import SEOOptimized from '@/components/SEOOptimized';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Users, 
-  Briefcase, 
-  Network, 
-  Plus, 
-  Search, 
-  MessageSquare, 
-  Heart, 
-  Share2, 
-  MoreHorizontal,
-  Building2,
-  MapPin,
-  Calendar,
-  Star,
-  TrendingUp,
-  UserPlus,
-  Bell,
-  Filter
+import {
+    Bell,
+    Briefcase,
+    Building2,
+    Filter,
+    Heart,
+    MapPin,
+    MessageSquare,
+    Plus,
+    Search,
+    Share2,
+    TrendingUp,
+    UserPlus,
+    Users
 } from 'lucide-react';
 import Link from 'next/link';
+import { useState } from 'react';
 
 // Données réelles des entreprises
 const companies = [
@@ -195,341 +192,351 @@ export default function NovaWorldPage() {
   const [activeTab, setActiveTab] = useState('feed');
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">NW</span>
+    <>
+      <SEOOptimized
+        pageKey="novaworld"
+        customConfig={{
+          title: "NovaWorld | Réseau social professionnel & business – DL Solutions",
+          description: "NovaWorld, le réseau social de DL Solutions pour connecter, collaborer et développer votre business. Rejoignez des milliers de professionnels et d’entreprises innovantes.",
+          url: "https://www.dl-solutions.com/novacore/novaworld"
+        }}
+      />
+      <div className="min-h-screen bg-gray-50">
+        {/* Header */}
+        <div className="bg-white border-b">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-xl">NW</span>
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">NovaWorld</h1>
+                  <p className="text-sm text-gray-600">Réseau professionnel B2B</p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">NovaWorld</h1>
-                <p className="text-sm text-gray-600">Réseau professionnel B2B</p>
+              
+              <div className="flex items-center space-x-4">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Input
+                    placeholder="Rechercher entreprises, emplois, personnes..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10 w-80"
+                  />
+                </div>
+                <Button variant="ghost" size="sm">
+                  <Bell className="h-5 w-5" />
+                </Button>
+                <Button variant="ghost" size="sm">
+                  <MessageSquare className="h-5 w-5" />
+                </Button>
               </div>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  placeholder="Rechercher entreprises, emplois, personnes..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 w-80"
-                />
-              </div>
-              <Button variant="ghost" size="sm">
-                <Bell className="h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="sm">
-                <MessageSquare className="h-5 w-5" />
-              </Button>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="feed">Fil d'actualité</TabsTrigger>
-            <TabsTrigger value="companies">Entreprises</TabsTrigger>
-            <TabsTrigger value="jobs">Emplois</TabsTrigger>
-            <TabsTrigger value="network">Réseau</TabsTrigger>
-          </TabsList>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="feed">Fil d'actualité</TabsTrigger>
+              <TabsTrigger value="companies">Entreprises</TabsTrigger>
+              <TabsTrigger value="jobs">Emplois</TabsTrigger>
+              <TabsTrigger value="network">Réseau</TabsTrigger>
+            </TabsList>
 
-          {/* Fil d'actualité */}
-          <TabsContent value="feed" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Posts */}
-              <div className="lg:col-span-2 space-y-6">
-                {posts.map((post) => (
-                  <Card key={post.id} className="p-6">
-                    <div className="flex items-start space-x-3 mb-4">
-                      <img src={post.author.avatar} alt={post.author.name} className="w-12 h-12 rounded-full" />
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-2">
-                          <h3 className="font-semibold">{post.author.name}</h3>
-                          {post.author.company === "DL Solutions" && (
-                            <Badge variant="outline" className="bg-blue-50 text-blue-700">Vérifié</Badge>
-                          )}
+            {/* Fil d'actualité */}
+            <TabsContent value="feed" className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Posts */}
+                <div className="lg:col-span-2 space-y-6">
+                  {posts.map((post) => (
+                    <Card key={post.id} className="p-6">
+                      <div className="flex items-start space-x-3 mb-4">
+                        <img src={post.author.avatar} alt={post.author.name} className="w-12 h-12 rounded-full" />
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2">
+                            <h3 className="font-semibold">{post.author.name}</h3>
+                            {post.author.company === "DL Solutions" && (
+                              <Badge variant="outline" className="bg-blue-50 text-blue-700">Vérifié</Badge>
+                            )}
+                          </div>
+                          <p className="text-sm text-gray-600">{post.author.role} chez {post.author.company}</p>
+                          <p className="text-xs text-gray-500">{post.time}</p>
                         </div>
-                        <p className="text-sm text-gray-600">{post.author.role} chez {post.author.company}</p>
-                        <p className="text-xs text-gray-500">{post.time}</p>
                       </div>
-                    </div>
-                    <p className="text-gray-800 mb-4">{post.content}</p>
-                    {post.image && (
-                      <img src={post.image} alt="Post" className="w-full h-48 object-cover rounded-lg mb-4" />
-                    )}
-                    <div className="flex items-center justify-between text-sm text-gray-600">
-                      <div className="flex items-center space-x-6">
-                        <button className="flex items-center space-x-1 hover:text-red-500">
-                          <Heart className="h-4 w-4" />
-                          <span>{post.likes}</span>
-                        </button>
-                        <button className="flex items-center space-x-1 hover:text-blue-500">
-                          <MessageSquare className="h-4 w-4" />
-                          <span>{post.comments}</span>
-                        </button>
-                        <button className="flex items-center space-x-1 hover:text-green-500">
-                          <Share2 className="h-4 w-4" />
-                          <span>{post.shares}</span>
-                        </button>
+                      <p className="text-gray-800 mb-4">{post.content}</p>
+                      {post.image && (
+                        <img src={post.image} alt="Post" className="w-full h-48 object-cover rounded-lg mb-4" />
+                      )}
+                      <div className="flex items-center justify-between text-sm text-gray-600">
+                        <div className="flex items-center space-x-6">
+                          <button className="flex items-center space-x-1 hover:text-red-500">
+                            <Heart className="h-4 w-4" />
+                            <span>{post.likes}</span>
+                          </button>
+                          <button className="flex items-center space-x-1 hover:text-blue-500">
+                            <MessageSquare className="h-4 w-4" />
+                            <span>{post.comments}</span>
+                          </button>
+                          <button className="flex items-center space-x-1 hover:text-green-500">
+                            <Share2 className="h-4 w-4" />
+                            <span>{post.shares}</span>
+                          </button>
+                        </div>
                       </div>
-                    </div>
+                    </Card>
+                  ))}
+                </div>
+
+                {/* Sidebar */}
+                <div className="space-y-6">
+                  {/* Statistiques */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center space-x-2">
+                        <TrendingUp className="h-5 w-5" />
+                        <span>Statistiques</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-600">Entreprises</span>
+                        <span className="font-semibold">{companies.length}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-600">Emplois actifs</span>
+                        <span className="font-semibold">{jobs.length}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-600">Membres</span>
+                        <span className="font-semibold">2,847</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Entreprises populaires */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Entreprises populaires</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {companies.slice(0, 3).map((company) => (
+                        <div key={company.id} className="flex items-center space-x-3">
+                          <img src={company.logo} alt={company.name} className="w-10 h-10 rounded-full" />
+                          <div className="flex-1">
+                            <p className="font-medium text-sm">{company.name}</p>
+                            <p className="text-xs text-gray-500">{company.followers} followers</p>
+                          </div>
+                          <Button size="sm" variant="outline">
+                            <UserPlus className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </TabsContent>
+
+            {/* Entreprises */}
+            <TabsContent value="companies" className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold">Entreprises</h2>
+                <Link href="/novacore/novaworld/companies/nouveau">
+                  <Button className="bg-blue-600 hover:bg-blue-700">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Nouvelle entreprise
+                  </Button>
+                </Link>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {companies.map((company) => (
+                  <Card key={company.id} className="hover:shadow-lg transition-shadow">
+                    <CardHeader className="pb-4">
+                      <div className="flex items-center space-x-3">
+                        <img src={company.logo} alt={company.name} className="w-16 h-16 rounded-full object-cover" />
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2">
+                            <CardTitle className="text-lg">{company.name}</CardTitle>
+                            {company.verified && (
+                              <Badge variant="outline" className="bg-blue-50 text-blue-700">Vérifié</Badge>
+                            )}
+                          </div>
+                          <p className="text-sm text-gray-600">{company.industry}</p>
+                          <div className="flex items-center space-x-2 text-xs text-gray-500 mt-1">
+                            <MapPin className="h-3 w-3" />
+                            <span>{company.location}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <p className="text-sm text-gray-700">{company.description}</p>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">{company.employees} employés</span>
+                        <span className="text-gray-600">{company.jobs} offres d'emploi</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">{company.followers} followers</span>
+                        <span className="text-gray-600">Fondé en {company.founded}</span>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button size="sm" variant="outline" className="flex-1">
+                          <UserPlus className="h-3 w-3 mr-1" />
+                          Suivre
+                        </Button>
+                        <Button size="sm" variant="outline" asChild>
+                          <Link href={`/novacore/novaworld/companies/${company.id}`}>
+                            Voir
+                          </Link>
+                        </Button>
+                      </div>
+                    </CardContent>
                   </Card>
                 ))}
               </div>
+            </TabsContent>
 
-              {/* Sidebar */}
-              <div className="space-y-6">
-                {/* Statistiques */}
+            {/* Emplois */}
+            <TabsContent value="jobs" className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold">Offres d'emploi</h2>
+                <div className="flex items-center space-x-2">
+                  <Button variant="outline" size="sm">
+                    <Filter className="h-4 w-4 mr-2" />
+                    Filtrer
+                  </Button>
+                  <Button className="bg-green-600 hover:bg-green-700">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Publier un emploi
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {jobs.map((job) => (
+                  <Card key={job.id} className="hover:shadow-lg transition-shadow">
+                    <CardHeader className="pb-4">
+                      <div className="flex items-start space-x-3">
+                        <img src={job.logo} alt={job.company} className="w-12 h-12 rounded-full object-cover" />
+                        <div className="flex-1">
+                          <CardTitle className="text-lg">{job.title}</CardTitle>
+                          <p className="text-sm text-gray-600">{job.company}</p>
+                          <div className="flex items-center space-x-2 text-xs text-gray-500 mt-1">
+                            <MapPin className="h-3 w-3" />
+                            <span>{job.location}</span>
+                            <span>•</span>
+                            <span>{job.type}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Salaire: {job.salary}</span>
+                        <span className="text-gray-600">Expérience: {job.experience}</span>
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {job.skills.map((skill, index) => (
+                          <Badge key={index} variant="secondary" className="text-xs">
+                            {skill}
+                          </Badge>
+                        ))}
+                      </div>
+                      <div className="flex justify-between items-center text-sm text-gray-500">
+                        <span>{job.posted}</span>
+                        <span>{job.applications} candidatures</span>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button size="sm" className="flex-1 bg-blue-600 hover:bg-blue-700">
+                          Postuler
+                        </Button>
+                        <Button size="sm" variant="outline">
+                          <Heart className="h-3 w-3" />
+                        </Button>
+                        <Button size="sm" variant="outline">
+                          <Share2 className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            {/* Réseau */}
+            <TabsContent value="network" className="space-y-6">
+              <h2 className="text-2xl font-bold">Votre réseau</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center space-x-2">
-                      <TrendingUp className="h-5 w-5" />
-                      <span>Statistiques</span>
+                      <Users className="h-5 w-5" />
+                      <span>Connexions</span>
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">Entreprises</span>
-                      <span className="font-semibold">{companies.length}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">Emplois actifs</span>
-                      <span className="font-semibold">{jobs.length}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">Membres</span>
-                      <span className="font-semibold">2,847</span>
-                    </div>
+                  <CardContent>
+                    <div className="text-3xl font-bold text-blue-600">847</div>
+                    <p className="text-sm text-gray-600">+12 cette semaine</p>
                   </CardContent>
                 </Card>
-
-                {/* Entreprises populaires */}
+                
                 <Card>
                   <CardHeader>
-                    <CardTitle>Entreprises populaires</CardTitle>
+                    <CardTitle className="flex items-center space-x-2">
+                      <Building2 className="h-5 w-5" />
+                      <span>Entreprises suivies</span>
+                    </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    {companies.slice(0, 3).map((company) => (
-                      <div key={company.id} className="flex items-center space-x-3">
+                  <CardContent>
+                    <div className="text-3xl font-bold text-green-600">23</div>
+                    <p className="text-sm text-gray-600">+3 ce mois</p>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-2">
+                      <Briefcase className="h-5 w-5" />
+                      <span>Candidatures</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-3xl font-bold text-purple-600">12</div>
+                    <p className="text-sm text-gray-600">5 en attente</p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Suggestions de connexions</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {companies.map((company) => (
+                      <div key={company.id} className="flex items-center space-x-3 p-3 border rounded-lg">
                         <img src={company.logo} alt={company.name} className="w-10 h-10 rounded-full" />
                         <div className="flex-1">
                           <p className="font-medium text-sm">{company.name}</p>
-                          <p className="text-xs text-gray-500">{company.followers} followers</p>
+                          <p className="text-xs text-gray-500">{company.industry}</p>
                         </div>
                         <Button size="sm" variant="outline">
                           <UserPlus className="h-3 w-3" />
                         </Button>
                       </div>
                     ))}
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </TabsContent>
-
-          {/* Entreprises */}
-          <TabsContent value="companies" className="space-y-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">Entreprises</h2>
-              <Link href="/novacore/novaworld/companies/nouveau">
-                <Button className="bg-blue-600 hover:bg-blue-700">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Nouvelle entreprise
-                </Button>
-              </Link>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {companies.map((company) => (
-                <Card key={company.id} className="hover:shadow-lg transition-shadow">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center space-x-3">
-                      <img src={company.logo} alt={company.name} className="w-16 h-16 rounded-full object-cover" />
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-2">
-                          <CardTitle className="text-lg">{company.name}</CardTitle>
-                          {company.verified && (
-                            <Badge variant="outline" className="bg-blue-50 text-blue-700">Vérifié</Badge>
-                          )}
-                        </div>
-                        <p className="text-sm text-gray-600">{company.industry}</p>
-                        <div className="flex items-center space-x-2 text-xs text-gray-500 mt-1">
-                          <MapPin className="h-3 w-3" />
-                          <span>{company.location}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-sm text-gray-700">{company.description}</p>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">{company.employees} employés</span>
-                      <span className="text-gray-600">{company.jobs} offres d'emploi</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">{company.followers} followers</span>
-                      <span className="text-gray-600">Fondé en {company.founded}</span>
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button size="sm" variant="outline" className="flex-1">
-                        <UserPlus className="h-3 w-3 mr-1" />
-                        Suivre
-                      </Button>
-                      <Button size="sm" variant="outline" asChild>
-                        <Link href={`/novacore/novaworld/companies/${company.id}`}>
-                          Voir
-                        </Link>
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-
-          {/* Emplois */}
-          <TabsContent value="jobs" className="space-y-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">Offres d'emploi</h2>
-              <div className="flex items-center space-x-2">
-                <Button variant="outline" size="sm">
-                  <Filter className="h-4 w-4 mr-2" />
-                  Filtrer
-                </Button>
-                <Button className="bg-green-600 hover:bg-green-700">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Publier un emploi
-                </Button>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {jobs.map((job) => (
-                <Card key={job.id} className="hover:shadow-lg transition-shadow">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-start space-x-3">
-                      <img src={job.logo} alt={job.company} className="w-12 h-12 rounded-full object-cover" />
-                      <div className="flex-1">
-                        <CardTitle className="text-lg">{job.title}</CardTitle>
-                        <p className="text-sm text-gray-600">{job.company}</p>
-                        <div className="flex items-center space-x-2 text-xs text-gray-500 mt-1">
-                          <MapPin className="h-3 w-3" />
-                          <span>{job.location}</span>
-                          <span>•</span>
-                          <span>{job.type}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Salaire: {job.salary}</span>
-                      <span className="text-gray-600">Expérience: {job.experience}</span>
-                    </div>
-                    <div className="flex flex-wrap gap-1">
-                      {job.skills.map((skill, index) => (
-                        <Badge key={index} variant="secondary" className="text-xs">
-                          {skill}
-                        </Badge>
-                      ))}
-                    </div>
-                    <div className="flex justify-between items-center text-sm text-gray-500">
-                      <span>{job.posted}</span>
-                      <span>{job.applications} candidatures</span>
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button size="sm" className="flex-1 bg-blue-600 hover:bg-blue-700">
-                        Postuler
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        <Heart className="h-3 w-3" />
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        <Share2 className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-
-          {/* Réseau */}
-          <TabsContent value="network" className="space-y-6">
-            <h2 className="text-2xl font-bold">Votre réseau</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Users className="h-5 w-5" />
-                    <span>Connexions</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-blue-600">847</div>
-                  <p className="text-sm text-gray-600">+12 cette semaine</p>
+                  </div>
                 </CardContent>
               </Card>
-              
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Building2 className="h-5 w-5" />
-                    <span>Entreprises suivies</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-green-600">23</div>
-                  <p className="text-sm text-gray-600">+3 ce mois</p>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Briefcase className="h-5 w-5" />
-                    <span>Candidatures</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-purple-600">12</div>
-                  <p className="text-sm text-gray-600">5 en attente</p>
-                </CardContent>
-              </Card>
-            </div>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Suggestions de connexions</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {companies.map((company) => (
-                    <div key={company.id} className="flex items-center space-x-3 p-3 border rounded-lg">
-                      <img src={company.logo} alt={company.name} className="w-10 h-10 rounded-full" />
-                      <div className="flex-1">
-                        <p className="font-medium text-sm">{company.name}</p>
-                        <p className="text-xs text-gray-500">{company.industry}</p>
-                      </div>
-                      <Button size="sm" variant="outline">
-                        <UserPlus className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

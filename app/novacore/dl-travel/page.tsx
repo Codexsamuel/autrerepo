@@ -1,40 +1,32 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import SEOOptimized from '@/components/SEOOptimized';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Plane, 
-  MapPin, 
-  TrendingUp, 
-  Plus, 
-  Search, 
-  Calendar,
-  Users,
-  Star,
-  Heart,
-  Share2,
-  Hotel,
-  Car,
-  Camera,
-  Globe,
-  Clock,
-  DollarSign,
-  Filter,
-  ArrowRight,
-  CheckCircle,
-  XCircle,
-  RefreshCw,
-  Wifi,
-  WifiOff,
-  AlertCircle,
-  CheckCircle2
-} from 'lucide-react';
-import Link from 'next/link';
 import { useTravelData } from '@/hooks/useTravelData';
+import {
+    AlertCircle,
+    ArrowRight,
+    Calendar,
+    Camera,
+    CheckCircle,
+    Clock,
+    Globe,
+    Hotel,
+    MapPin,
+    Plane,
+    Plus,
+    RefreshCw,
+    Search,
+    Star,
+    Wifi,
+    WifiOff,
+    XCircle
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function DLTravelPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -447,82 +439,92 @@ export default function DLTravelPage() {
   const hotels = displayData?.hotels || [];
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">DL Travel - Agence de Voyage</h1>
-        <p className="text-gray-600">
-          Découvrez des destinations uniques avec nos offres exclusives
-        </p>
-      </div>
-
-      <ConnectionStatus />
-      <StatsCards />
-
-      {/* Barre de recherche */}
-      <div className="mb-6">
-        <div className="flex gap-4">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <Input
-              placeholder="Rechercher destinations, vols, hôtels..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          <Button onClick={handleSearch} disabled={!searchQuery.trim()}>
-            Rechercher
-          </Button>
+    <>
+      <SEOOptimized
+        pageKey="dl-travel"
+        customConfig={{
+          title: "DL Travel | Réservations & voyages d’affaires – DL Solutions",
+          description: "Plateforme de réservation de voyages, hôtels, packages sur-mesure pour entreprises et particuliers. Service premium, gestion centralisée.",
+          url: "https://www.dl-solutions.com/novacore/dl-travel"
+        }}
+      />
+      <div className="container mx-auto p-6">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold mb-2">DL Travel - Agence de Voyage</h1>
+          <p className="text-gray-600">
+            Découvrez des destinations uniques avec nos offres exclusives
+          </p>
         </div>
-      </div>
 
-      {/* Onglets */}
-      <Tabs value={selectedTab} onValueChange={setSelectedTab} className="mb-6">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="destinations">Destinations</TabsTrigger>
-          <TabsTrigger value="flights">Vols</TabsTrigger>
-          <TabsTrigger value="hotels">Hôtels</TabsTrigger>
-          <TabsTrigger value="packages">Packages</TabsTrigger>
-        </TabsList>
+        <ConnectionStatus />
+        <StatsCards />
 
-        <TabsContent value="destinations" className="mt-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {destinations.map((destination: any) => (
-              <DestinationCard key={destination.id} destination={destination} />
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="flights" className="mt-6">
-          <div className="space-y-4">
-            {flights.map((flight: any) => (
-              <FlightCard key={flight.id} flight={flight} />
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="hotels" className="mt-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {hotels.map((hotel: any) => (
-              <HotelCard key={hotel.id} hotel={hotel} />
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="packages" className="mt-6">
-          <div className="text-center py-12">
-            <Globe className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Packages de voyage</h3>
-            <p className="text-gray-600 mb-4">
-              Nos packages exclusifs seront bientôt disponibles
-            </p>
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              Créer un package personnalisé
+        {/* Barre de recherche */}
+        <div className="mb-6">
+          <div className="flex gap-4">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Input
+                placeholder="Rechercher destinations, vols, hôtels..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <Button onClick={handleSearch} disabled={!searchQuery.trim()}>
+              Rechercher
             </Button>
           </div>
-        </TabsContent>
-      </Tabs>
-    </div>
+        </div>
+
+        {/* Onglets */}
+        <Tabs value={selectedTab} onValueChange={setSelectedTab} className="mb-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="destinations">Destinations</TabsTrigger>
+            <TabsTrigger value="flights">Vols</TabsTrigger>
+            <TabsTrigger value="hotels">Hôtels</TabsTrigger>
+            <TabsTrigger value="packages">Packages</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="destinations" className="mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {destinations.map((destination: any) => (
+                <DestinationCard key={destination.id} destination={destination} />
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="flights" className="mt-6">
+            <div className="space-y-4">
+              {flights.map((flight: any) => (
+                <FlightCard key={flight.id} flight={flight} />
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="hotels" className="mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {hotels.map((hotel: any) => (
+                <HotelCard key={hotel.id} hotel={hotel} />
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="packages" className="mt-6">
+            <div className="text-center py-12">
+              <Globe className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Packages de voyage</h3>
+              <p className="text-gray-600 mb-4">
+                Nos packages exclusifs seront bientôt disponibles
+              </p>
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                Créer un package personnalisé
+              </Button>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </>
   );
 }

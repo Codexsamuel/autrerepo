@@ -24,10 +24,5 @@
   "env": {
     "NODE_ENV": "production",
     "NEXT_TELEMETRY_DISABLED": "1"
-  },
-  "functions": {
-    "app/api/scraping/production/route.ts": {
-      "maxDuration": 30
-    }
   }
 }

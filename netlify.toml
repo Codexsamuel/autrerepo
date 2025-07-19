@@ -1,5 +1,5 @@
 # Configuration Netlify pour DL Solutions Platform
-# Version: 3.3 - Configuration optimisée pour Next.js
+# Version: 3.4 - Configuration optimisée pour Next.js API Routes
 
 [build]
   # Commande de build avec npm
@@ -17,7 +17,7 @@
   NETLIFY_FUNCTIONS_TIMEOUT = "10"
   NETLIFY_FUNCTIONS_MAX_SIZE = "50"
   # Variables essentielles seulement pour les fonctions
-  NEXT_PUBLIC_APP_URL = "https://daveandlucesolutions-clean.netlify.app"
+  NEXT_PUBLIC_APP_URL = "https://daveandlucesolutions.com"
   NEXT_PUBLIC_SUPABASE_URL = "https://your-project.supabase.co"
   NEXT_PUBLIC_SUPABASE_ANON_KEY = "your-anon-key"
 
@@ -28,7 +28,7 @@
   publish = ".next"
   autoLaunch = true
 
-# Configuration des fonctions Netlify
+# Configuration des fonctions Netlify (si nécessaire)
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
@@ -51,27 +51,6 @@
   [headers.values]
   Cache-Control = "public, max-age=31536000, immutable"
 
-# Redirections pour les fonctions Netlify
-[[redirects]]
-  from = "/api/scraping/*"
-  to = "/.netlify/functions/scraping-api/:splat"
-  status = 200
-
-[[redirects]]
-  from = "/api/debug/*"
-  to = "/.netlify/functions/scraping-api/:splat"
-  status = 200
-
-[[redirects]]
-  from = "/api/trading/*"
-  to = "/.netlify/functions/trading-api/:splat"
-  status = 200
-
-[[redirects]]
-  from = "/api/international/*"
-  to = "/.netlify/functions/scraping-api/:splat"
-  status = 200
-
 # Configuration du domaine personnalisé
 [[headers]]
   for = "/*"
@@ -83,7 +62,7 @@
 
 # Redirection HTTPS
 [[redirects]]
-  from = "http://daveandlucesolutions-clean.netlify.app/*"
-  to = "https://daveandlucesolutions-clean.netlify.app/:splat"
+  from = "http://daveandlucesolutions.com/*"
+  to = "https://daveandlucesolutions.com/:splat"
   status = 301
   force = true 

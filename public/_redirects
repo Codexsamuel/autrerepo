@@ -1,5 +1,2 @@
-# Redirections pour les API routes via fonction Netlify
-/api/*   /.netlify/functions/api-proxy/api/:splat   200
-
-# Redirections générales pour SPA
+# Redirections générales pour SPA Next.js
 /*    /index.html   200 

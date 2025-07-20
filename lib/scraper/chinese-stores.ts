@@ -20,6 +20,23 @@ export interface ScrapedProduct {
     customsFee?: number;
     transportFee?: number;
   };
+  // Données spécifiques aux APIs
+  taobaoData?: {
+    itemId?: string;
+    shopId?: string;
+    sales?: number;
+    location?: string;
+    isTmall?: boolean;
+    guarantee?: string;
+    returnPolicy?: string;
+  };
+  alibabaData?: {
+    productId?: string;
+    supplierId?: string;
+    tradeAssurance?: boolean;
+    verifiedSupplier?: boolean;
+    responseTime?: string;
+  };
 }
 
 // Base de données complète avec TOUS les produits pour TOUS les marchés

@@ -1,0 +1,730 @@
+/* ===== CORRECTIONS MOBILE DL SOLUTIONS ===== */
+
+/* Reset mobile viewport */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== CORRECTIONS LAYOUT MOBILE ===== */
+
+/* Fix pour les écrans très petits */
+@media (max-width: 320px) {
+  body {
+    font-size: 14px;
+  }
+
+  .container {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  h1 {
+    font-size: 1.5rem !important;
+  }
+
+  h2 {
+    font-size: 1.25rem !important;
+  }
+
+  h3 {
+    font-size: 1.1rem !important;
+  }
+}
+
+/* Fix pour les écrans moyens */
+@media (max-width: 768px) {
+  body {
+    padding-top: 0 !important; /* Supprimer le padding-top sur mobile */
+  }
+
+  /* Correction des marges et paddings */
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+    max-width: 100%;
+  }
+
+  /* Fix pour les cartes */
+  .card {
+    margin-bottom: 16px;
+    border-radius: 12px;
+  }
+
+  /* Fix pour les boutons */
+  .btn,
+  button {
+    min-height: 44px; /* Taille minimale pour le touch */
+    padding: 12px 16px;
+    font-size: 16px; /* Éviter le zoom sur iOS */
+  }
+
+  /* Fix pour les inputs */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important; /* Éviter le zoom sur iOS */
+    min-height: 44px;
+  }
+}
+
+/* ===== CORRECTIONS NAVIGATION MOBILE ===== */
+
+/* Fix pour la navigation mobile */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100vh;
+    z-index: 1000;
+    transition: left 0.3s ease;
+    background: rgba(0, 0, 0, 0.9);
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .sidebar-content {
+    width: 280px;
+    height: 100%;
+    background: white;
+    overflow-y: auto;
+    padding: 20px;
+  }
+
+  /* Bouton hamburger */
+  .mobile-menu-toggle {
+    display: block !important;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 1001;
+    background: #2563eb;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    color: white;
+  }
+
+  /* Overlay pour fermer le menu */
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .sidebar-overlay.open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Layout responsive */
+  .responsive-layout {
+    min-height: 100vh;
+    background: #f8fafc;
+  }
+
+  .main-content {
+    padding-top: 80px; /* Espace pour le bouton hamburger */
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 20px;
+    min-height: calc(100vh - 80px);
+  }
+
+  /* Safe area pour PWA */
+  .safe-area-inset {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Composants responsives */
+  .mobile-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+  }
+
+  .mobile-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .mobile-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+
+  /* Améliorations pour les cartes sur mobile */
+  .mobile-card .animate-pulse > div {
+    background-color: #e5e7eb;
+    border-radius: 4px;
+  }
+
+  /* Optimisations pour les grilles sur mobile */
+  .mobile-grid > * {
+    min-width: 0; /* Éviter le débordement */
+  }
+}
+
+/* ===== CORRECTIONS CONTENU MOBILE ===== */
+
+/* Fix pour les grilles */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+
+  .grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .grid-cols-4 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Fix pour les flexbox */
+@media (max-width: 768px) {
+  .flex {
+    flex-direction: column;
+  }
+
+  .flex-row {
+    flex-direction: column;
+  }
+
+  .flex-col {
+    flex-direction: column;
+  }
+
+  /* Espacement vertical sur mobile */
+  .flex > * {
+    margin-bottom: 16px;
+  }
+
+  .flex > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* ===== CORRECTIONS TEXTE MOBILE ===== */
+
+/* Fix pour les tailles de texte */
+@media (max-width: 768px) {
+  .text-xs {
+    font-size: 12px;
+  }
+
+  .text-sm {
+    font-size: 14px;
+  }
+
+  .text-base {
+    font-size: 16px;
+  }
+
+  .text-lg {
+    font-size: 18px;
+  }
+
+  .text-xl {
+    font-size: 20px;
+  }
+
+  .text-2xl {
+    font-size: 24px;
+  }
+
+  .text-3xl {
+    font-size: 28px;
+  }
+
+  .text-4xl {
+    font-size: 32px;
+  }
+
+  .text-5xl {
+    font-size: 36px;
+  }
+}
+
+/* ===== CORRECTIONS ESPACEMENT MOBILE ===== */
+
+/* Fix pour les marges et paddings */
+@media (max-width: 768px) {
+  .p-1 {
+    padding: 4px;
+  }
+  .p-2 {
+    padding: 8px;
+  }
+  .p-3 {
+    padding: 12px;
+  }
+  .p-4 {
+    padding: 16px;
+  }
+  .p-5 {
+    padding: 20px;
+  }
+  .p-6 {
+    padding: 24px;
+  }
+
+  .m-1 {
+    margin: 4px;
+  }
+  .m-2 {
+    margin: 8px;
+  }
+  .m-3 {
+    margin: 12px;
+  }
+  .m-4 {
+    margin: 16px;
+  }
+  .m-5 {
+    margin: 20px;
+  }
+  .m-6 {
+    margin: 24px;
+  }
+
+  .px-1 {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+  .px-2 {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .px-3 {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .px-4 {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .px-5 {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .px-6 {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .py-1 {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  .py-2 {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  .py-3 {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  .py-4 {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+  .py-5 {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .py-6 {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+/* ===== CORRECTIONS COMPOSANTS SPÉCIFIQUES ===== */
+
+/* Fix pour les cartes de produits */
+@media (max-width: 768px) {
+  .product-card {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  .product-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+}
+
+/* Fix pour les formulaires */
+@media (max-width: 768px) {
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+}
+
+/* Fix pour les modales */
+@media (max-width: 768px) {
+  .modal {
+    padding: 16px;
+  }
+
+  .modal-content {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    border-radius: 12px;
+  }
+}
+
+/* Fix pour les tableaux */
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table {
+    min-width: 600px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px;
+    font-size: 14px;
+  }
+}
+
+/* ===== CORRECTIONS ANIMATIONS MOBILE ===== */
+
+/* Désactiver les animations lourdes sur mobile */
+@media (max-width: 768px) {
+  .animate-spin-slow {
+    animation: none;
+  }
+
+  .animate-float {
+    animation: none;
+  }
+
+  .robot-walker {
+    display: none;
+  }
+
+  .cursor-dog {
+    display: none;
+  }
+}
+
+/* ===== CORRECTIONS PERFORMANCE MOBILE ===== */
+
+/* Optimisations pour les performances mobiles */
+@media (max-width: 768px) {
+  /* Réduire les ombres */
+  .shadow-lg,
+  .shadow-xl,
+  .shadow-2xl {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Réduire les effets de hover */
+  .hover\:scale-105:hover {
+    transform: none;
+  }
+
+  .hover\:scale-110:hover {
+    transform: none;
+  }
+
+  /* Réduire les gradients complexes */
+  .bg-gradient-to-r {
+    background: linear-gradient(90deg, var(--tw-gradient-stops));
+  }
+
+  .bg-gradient-to-br {
+    background: linear-gradient(135deg, var(--tw-gradient-stops));
+  }
+}
+
+/* ===== CORRECTIONS ACCESSIBILITÉ MOBILE ===== */
+
+/* Améliorer l'accessibilité sur mobile */
+@media (max-width: 768px) {
+  /* Augmenter la taille des éléments cliquables */
+  button,
+  a,
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Améliorer le contraste */
+  .text-gray-600 {
+    color: #374151;
+  }
+
+  .text-gray-500 {
+    color: #6b7280;
+  }
+
+  /* Améliorer la lisibilité */
+  .text-sm {
+    line-height: 1.5;
+  }
+
+  .text-base {
+    line-height: 1.6;
+  }
+
+  .text-lg {
+    line-height: 1.6;
+  }
+}
+
+/* ===== CORRECTIONS SPÉCIFIQUES DL SOLUTIONS ===== */
+
+/* Fix pour la page d'accueil */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 40px 16px;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-top: 16px;
+  }
+}
+
+/* Fix pour les services */
+@media (max-width: 768px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .service-card {
+    padding: 20px;
+  }
+}
+
+/* Fix pour NovaCore */
+@media (max-width: 768px) {
+  .novacore-sidebar {
+    position: fixed;
+    left: -100%;
+    width: 280px;
+    height: 100vh;
+    z-index: 1000;
+    transition: left 0.3s ease;
+  }
+
+  .novacore-sidebar.open {
+    left: 0;
+  }
+
+  .novacore-content {
+    margin-left: 0;
+    padding: 16px;
+  }
+}
+
+/* Fix pour DL Style */
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .product-card {
+    padding: 12px;
+  }
+
+  .product-image {
+    height: 120px;
+  }
+}
+
+/* Fix pour les formations */
+@media (max-width: 768px) {
+  .formation-card {
+    margin-bottom: 20px;
+  }
+
+  .formation-image {
+    height: 200px;
+  }
+}
+
+/* ===== CORRECTIONS ULTIMES ===== */
+
+/* Fix pour les problèmes de débordement */
+@media (max-width: 768px) {
+  .overflow-hidden {
+    overflow: hidden;
+  }
+
+  .w-full {
+    width: 100%;
+  }
+
+  .max-w-full {
+    max-width: 100%;
+  }
+}
+
+/* Fix pour les problèmes de hauteur */
+@media (max-width: 768px) {
+  .min-h-screen {
+    min-height: 100vh;
+  }
+
+  .h-full {
+    height: 100%;
+  }
+}
+
+/* Fix pour les problèmes de position */
+@media (max-width: 768px) {
+  .fixed {
+    position: fixed;
+  }
+
+  .absolute {
+    position: absolute;
+  }
+
+  .relative {
+    position: relative;
+  }
+}
+
+/* ===== CORRECTIONS PWA ===== */
+
+/* Optimisations pour PWA */
+@media (display-mode: standalone) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* ===== CORRECTIONS ORIENTATION ===== */
+
+/* Fix pour l'orientation paysage sur mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  .hero-section {
+    padding: 20px 16px;
+  }
+
+  .hero-title {
+    font-size: 1.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+}
+
+/* ===== CORRECTIONS FINALES ===== */
+
+/* Assurer que tout s'affiche correctement */
+@media (max-width: 768px) {
+  * {
+    max-width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  iframe {
+    max-width: 100%;
+  }
+}
+
+/* ===== CORRECTIONS DARK MODE MOBILE ===== */
+
+@media (max-width: 768px) and (prefers-color-scheme: dark) {
+  body {
+    background-color: #1f2937;
+    color: #f9fafb;
+  }
+
+  .card {
+    background-color: #374151;
+    border-color: #4b5563;
+  }
+
+  .btn {
+    background-color: #3b82f6;
+    color: white;
+  }
+}
+
+/* ===== CORRECTIONS RÉDUCTION MOUVEMENT ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

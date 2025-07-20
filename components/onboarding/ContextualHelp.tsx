@@ -68,7 +68,7 @@ const ContextualHelp: React.FC = () => {
   const currentTipData = helpTips[currentTip];
 
   return (
-    <>
+    <div>
       {/* Bouton d'activation de l'aide contextuelle */}
       {!isActivated && (
         <div 
@@ -160,7 +160,7 @@ const ContextualHelp: React.FC = () => {
       </Card>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

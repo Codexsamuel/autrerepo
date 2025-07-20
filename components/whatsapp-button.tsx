@@ -52,7 +52,7 @@ export default function WhatsAppButton() {
   };
 
   return (
-    <>
+    <div>
       {/* Bouton d'activation WhatsApp */}
       {!isVisible && (
         <button
@@ -191,6 +191,6 @@ export default function WhatsAppButton() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 } 

@@ -13,7 +13,9 @@
     "scrape:industrial": "ts-node scripts/scrape-industrial-products.ts",
     "scrape:all": "npm run scrape:industrial",
     "generate-favicons": "node scripts/generate-favicons.js",
-    "generate-og-images": "node scripts/generate-og-images.js"
+    "generate-og-images": "node scripts/generate-og-images.js",
+    "test:alibaba": "node scripts/test-alibaba.js",
+    "setup:alibaba": "node scripts/alibaba-setup.js"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.24.0",
@@ -101,6 +103,8 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@alicloud/openapi-client": "^0.4.15",
+    "@alicloud/tea-util": "^1.4.10",
     "eslint": "^8.57.1",
     "eslint-config-next": "15.3.4",
     "sharp": "^0.34.3"

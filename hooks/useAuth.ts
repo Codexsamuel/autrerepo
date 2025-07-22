@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface User {
   id: string;
   email: string;
   name: string;
+  role?: 'user' | 'admin' | 'superadmin';
 }
 
 export function useAuth() {
@@ -15,7 +16,13 @@ export function useAuth() {
     const userData = localStorage.getItem('user_data');
     if (token && userData) {
       try {
-        setUser(JSON.parse(userData));
+        const parsed = JSON.parse(userData);
+        setUser({
+          id: parsed.id,
+          email: parsed.email,
+          name: parsed.name,
+          role: parsed.role || 'user',
+        });
       } catch {
         setUser(null);
       }
@@ -32,7 +39,12 @@ export function useAuth() {
       });
       if (response.ok) {
         const data = await response.json();
-        setUser({ id: data.user.id, email: data.user.email, name: data.user.name });
+        setUser({
+          id: data.user.id,
+          email: data.user.email,
+          name: data.user.name,
+          role: data.user.role || 'user',
+        });
         localStorage.setItem('auth_token', data.token);
         localStorage.setItem('user_data', JSON.stringify(data.user));
         return true;
@@ -52,7 +64,12 @@ export function useAuth() {
       });
       if (response.ok) {
         const data = await response.json();
-        setUser({ id: data.user.id, email: data.user.email, name: data.user.name });
+        setUser({
+          id: data.user.id,
+          email: data.user.email,
+          name: data.user.name,
+          role: data.user.role || 'user',
+        });
         localStorage.setItem('auth_token', data.token);
         localStorage.setItem('user_data', JSON.stringify(data.user));
         return true;

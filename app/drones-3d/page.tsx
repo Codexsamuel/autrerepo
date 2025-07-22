@@ -74,6 +74,9 @@ export default function Drones3DPage() {
   const [show3D, setShow3D] = useState(false);
   const [featureDetail, setFeatureDetail] = useState<null | { label: string; description: string; icon: string }>(null);
 
+  // SEO balises (toujours publiques)
+  // ... (ajoute ici le composant SEOOptimized ou balises <Head> si besoin) ...
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0b0f17] text-white">
@@ -92,6 +95,30 @@ export default function Drones3DPage() {
             <Link href="/sign-in" className="px-6 py-3 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold shadow-lg hover:scale-105 transition">Se connecter</Link>
             <Link href="/sign-up" className="px-6 py-3 rounded-full bg-gradient-to-r from-green-600 to-blue-600 text-white font-bold shadow-lg hover:scale-105 transition">Créer un compte</Link>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (user.role !== 'superadmin') {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#0b0f17] text-white">
+        <div className="bg-[#181f2a] rounded-2xl shadow-xl p-10 max-w-xl text-center">
+          <h2 className="text-3xl font-bold mb-4">Extrait du projet Drone</h2>
+          <p className="mb-6 text-lg">Vous avez accès à un aperçu du projet. Pour consulter la version complète, contactez l'administrateur.</p>
+          <div className="my-8">
+            <h3 className="text-xl font-semibold mb-2">Aperçu :</h3>
+            <ul className="text-left text-gray-200 space-y-2 mb-4">
+              <li>• Deux drones nouvelle génération : Sentinel V1 (militaire), Atlas X1 (industriel)</li>
+              <li>• 3D interactive, IA embarquée, autonomie avancée</li>
+              <li>• Applications : sécurité, agriculture, logistique, analyse géologique</li>
+              <li>• Fabrication locale, modularité, maintenance simplifiée</li>
+            </ul>
+            <div className="w-full h-40 bg-gradient-to-br from-blue-900/40 via-purple-900/30 to-pink-900/20 rounded-xl flex items-center justify-center mb-4">
+              <span className="text-4xl text-white/30">[Visuel teaser]</span>
+            </div>
+          </div>
+          <div className="mt-6 text-sm text-gray-400">Accès complet réservé au super administrateur.</div>
         </div>
       </div>
     );

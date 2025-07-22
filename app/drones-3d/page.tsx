@@ -1,8 +1,10 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useAuth } from "@/hooks/useAuth";
+import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { useState } from "react";
 
 const Drone3DModal = dynamic(() => import("@/components/Drone3DModal"), { ssr: false });
 const FeatureDetailModal = dynamic(() => import("@/components/FeatureDetailModal"), { ssr: false });
@@ -68,8 +70,32 @@ const sectionVariants = {
 };
 
 export default function Drones3DPage() {
+  const { user, loading } = useAuth();
   const [show3D, setShow3D] = useState(false);
   const [featureDetail, setFeatureDetail] = useState<null | { label: string; description: string; icon: string }>(null);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0b0f17] text-white">
+        <span className="text-xl">Chargement...</span>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#0b0f17] text-white">
+        <div className="bg-[#181f2a] rounded-2xl shadow-xl p-10 max-w-lg text-center">
+          <h2 className="text-3xl font-bold mb-4">Accès réservé</h2>
+          <p className="mb-6 text-lg">Cette page premium est réservée aux membres inscrits.<br/>Merci de vous connecter ou de créer un compte pour découvrir le projet drone en détail.</p>
+          <div className="flex gap-4 justify-center">
+            <Link href="/sign-in" className="px-6 py-3 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold shadow-lg hover:scale-105 transition">Se connecter</Link>
+            <Link href="/sign-up" className="px-6 py-3 rounded-full bg-gradient-to-r from-green-600 to-blue-600 text-white font-bold shadow-lg hover:scale-105 transition">Créer un compte</Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-[#0b0f17] text-white min-h-screen font-sans">

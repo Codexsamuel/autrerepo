@@ -62,6 +62,11 @@ const Navigation: React.FC = () => {
       icon: Globe
     },
     {
+      name: 'Drone Business',
+      href: '/drone-business',
+      icon: Globe
+    },
+    {
       name: 'Contact',
       href: '/contact',
       icon: User

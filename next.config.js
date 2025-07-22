@@ -1,9 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Optimisations pour les API routes
-  experimental: {
-    serverComponentsExternalPackages: [],
-  },
+  serverExternalPackages: [],
+  
+  // Autoriser le développement en réseau local (Cross-Origin)
+  allowedDevOrigins: [
+    'http://localhost:3000',
+    'http://172.20.10.8:3000'
+  ],
   
   // Configuration des images
   images: {

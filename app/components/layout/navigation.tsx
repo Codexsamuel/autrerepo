@@ -21,6 +21,11 @@ const navigation = [
     name: "DL Bot Avancé",
     href: "/dl-bot-advanced",
     logo: "https://res.cloudinary.com/dko5sommz/image/upload/v1748454501/Logo_NovaCore_mrqlfs.svg"
+  },
+  {
+    name: "Drones 3D",
+    href: "/drones-3d",
+    logo: "/images/products/drone-motor.jpg" // Remplacer par un logo drone si besoin
   }
 ]
 

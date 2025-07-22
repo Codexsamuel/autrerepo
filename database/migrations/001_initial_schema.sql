@@ -151,6 +151,16 @@ CREATE TABLE news_feeds (
   detected_at TIMESTAMP DEFAULT NOW()
 );
 
+-- Table d'historique des changements de rôle utilisateur
+CREATE TABLE IF NOT EXISTS role_change_logs (
+  id BIGSERIAL PRIMARY KEY,
+  user_id BIGINT REFERENCES users(id) ON DELETE CASCADE,
+  old_role TEXT NOT NULL,
+  new_role TEXT NOT NULL,
+  changed_by BIGINT REFERENCES users(id),
+  changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Indexes for better performance
 CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_users_role ON users(role);

@@ -376,6 +376,28 @@ export class DatabaseService {
     if (error) throw error
     return data
   }
+
+  // Récupérer l'historique des changements de rôle
+  static async getRoleChangeLogs(limit = 50) {
+    const { data, error } = await supabase
+      .from('role_change_logs')
+      .select('*')
+      .order('changed_at', { ascending: false })
+      .limit(limit)
+    if (error) throw error
+    return data
+  }
+
+  // Logger un changement de rôle
+  static async logRoleChange(userId: number, oldRole: string, newRole: string, changedBy: number) {
+    const { data, error } = await supabase
+      .from('role_change_logs')
+      .insert([{ user_id: userId, old_role: oldRole, new_role: newRole, changed_by: changedBy }])
+      .select()
+      .single()
+    if (error) throw error
+    return data
+  }
 }
 
 // Hooks React pour utiliser la base de données
@@ -399,4 +421,4 @@ export const databaseConfig = {
   }
 }
 
-export { supabase }; 
+export { supabase }

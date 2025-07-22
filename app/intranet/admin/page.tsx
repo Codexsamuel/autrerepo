@@ -1,18 +1,48 @@
 "use client";
 
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Users, UserPlus, UserCog, Shield, List, Eye, Edit, Trash2, Search, 
-  MessageSquare, Bell, FileText, Calendar, Mail, Send, Download, 
-  Plus, MoreHorizontal, Clock, AlertCircle, CheckCircle, XCircle,
-  Building, Users2, Briefcase, GraduationCap, DollarSign, FileCheck
+import { Textarea } from '@/components/ui/textarea';
+import { toast } from '@/hooks/use-toast';
+import { DatabaseService } from '@/lib/database';
+import {
+    AlertCircle,
+    Bell,
+    Building,
+    Calendar,
+    CheckCircle,
+    Clock,
+    DollarSign,
+    Download,
+    Edit,
+    Eye,
+    FileCheck,
+    FileText,
+    GraduationCap,
+    List,
+    MessageSquare,
+    Send,
+    Shield,
+    Trash2,
+    UserCog,
+    Users,
+    Users2,
+    XCircle
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 // Données des utilisateurs
 const users = [
@@ -59,6 +89,123 @@ export default function AdminPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [newMessage, setNewMessage] = useState('');
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [usersDb, setUsersDb] = useState<any[]>([]);
+  const [logsDb, setLogsDb] = useState<any[]>([]);
+  const [roleLogs, setRoleLogs] = useState<any[]>([]);
+  const [loadingSecurity, setLoadingSecurity] = useState(true);
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [pendingAction, setPendingAction] = useState<null | { type: '2fa' | 'status'; user: any }> (null);
+  const [actionLoading, setActionLoading] = useState(false);
+  const [logPage, setLogPage] = useState(1);
+  const [roleLogPage, setRoleLogPage] = useState(1);
+  const LOGS_PER_PAGE = 20;
+  const [logSearch, setLogSearch] = useState('');
+  const [roleLogSearch, setRoleLogSearch] = useState('');
+
+  useEffect(() => {
+    async function fetchSecurityData() {
+      setLoadingSecurity(true);
+      try {
+        const users = await DatabaseService.getUsers();
+        const logs = await DatabaseService.getLoginLogs();
+        const roleLogs = await DatabaseService.getRoleChangeLogs();
+        setUsersDb(users || []);
+        setLogsDb(logs || []);
+        setRoleLogs(roleLogs || []);
+      } catch (e) {
+        setUsersDb([]);
+        setLogsDb([]);
+        setRoleLogs([]);
+      }
+      setLoadingSecurity(false);
+    }
+    if (activeTab === 'security') fetchSecurityData();
+  }, [activeTab]);
+
+  useEffect(() => {
+    // Récupérer l'utilisateur courant (depuis localStorage ou contexte auth)
+    const userData = localStorage.getItem('user_data');
+    if (userData) {
+      try {
+        setCurrentUser(JSON.parse(userData));
+      } catch {}
+    }
+  }, []);
+
+  // Fonction pour changer le rôle d'un utilisateur
+  async function handleRoleChange(user: any, newRole: string) {
+    const allowedRoles = ['super_admin', 'admin', 'user', 'employee', 'client'];
+    if (!allowedRoles.includes(newRole)) return;
+    if (!currentUser || currentUser.role !== 'super_admin') {
+      toast({ title: 'Accès refusé', description: 'Seul le superadmin peut changer les rôles.', variant: 'destructive' });
+      return;
+    }
+    if (user.role === newRole) return;
+    try {
+      await secureUpdateUser(user.id, { role: newRole });
+      await DatabaseService.logRoleChange(user.id, user.role, newRole, currentUser.id);
+      toast({ title: 'Rôle modifié', description: `${user.full_name || user.name} est maintenant ${newRole}` });
+      // Rafraîchir les données
+      const users = await DatabaseService.getUsers();
+      const roleLogs = await DatabaseService.getRoleChangeLogs();
+      setUsersDb(users || []);
+      setRoleLogs(roleLogs || []);
+    } catch (e) {
+      toast({ title: 'Erreur', description: 'Impossible de changer le rôle.', variant: 'destructive' });
+    }
+  }
+
+  // Fonction pour activer/désactiver le 2FA
+  async function handleToggle2FA(user: any) {
+    if (!currentUser || currentUser.role !== 'super_admin') {
+      toast({ title: 'Accès refusé', description: 'Seul le superadmin peut modifier le 2FA.', variant: 'destructive' });
+      return;
+    }
+    try {
+      await secureUpdateUser(user.id, { two_factor_enabled: !user.two_factor_enabled });
+      toast({ title: '2FA modifié', description: `${user.full_name || user.name} : 2FA ${!user.two_factor_enabled ? 'activé' : 'désactivé'}` });
+      const users = await DatabaseService.getUsers();
+      setUsersDb(users || []);
+    } catch (e) {
+      toast({ title: 'Erreur', description: 'Impossible de modifier le 2FA.', variant: 'destructive' });
+    }
+  }
+
+  // Fonction pour suspendre/réactiver un utilisateur
+  async function handleToggleStatus(user: any) {
+    if (!currentUser || currentUser.role !== 'super_admin') {
+      toast({ title: 'Accès refusé', description: 'Seul le superadmin peut modifier le statut.', variant: 'destructive' });
+      return;
+    }
+    const newStatus = user.status === 'active' ? 'suspended' : 'active';
+    try {
+      await secureUpdateUser(user.id, { status: newStatus });
+      toast({ title: 'Statut modifié', description: `${user.full_name || user.name} est maintenant ${newStatus}` });
+      const users = await DatabaseService.getUsers();
+      setUsersDb(users || []);
+    } catch (e) {
+      toast({ title: 'Erreur', description: 'Impossible de modifier le statut.', variant: 'destructive' });
+    }
+  }
+
+  // Fonction utilitaire pour update via API sécurisée
+  async function secureUpdateUser(userId: number, updates: any) {
+    const token = localStorage.getItem('auth_token');
+    const res = await fetch('/api/admin/update-user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify({ userId, updates })
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Erreur API');
+    }
+    return (await res.json()).user;
+  }
+
   const filteredUsers = users.filter(user => user.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const getNotificationIcon = (type: string) => {
@@ -109,12 +256,13 @@ export default function AdminPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="dashboard">Tableau de bord</TabsTrigger>
             <TabsTrigger value="messaging">Messagerie</TabsTrigger>
             <TabsTrigger value="news">Actualités</TabsTrigger>
             <TabsTrigger value="hr">Ressources Humaines</TabsTrigger>
             <TabsTrigger value="documents">Documents</TabsTrigger>
+            <TabsTrigger value="security">Sécurité & Rôles</TabsTrigger>
           </TabsList>
 
           {/* Tableau de bord */}
@@ -353,6 +501,298 @@ export default function AdminPage() {
                       </div>
                     </div>
                   ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Sécurité & Rôles */}
+          <TabsContent value="security" className="space-y-6">
+            {/* Gestion dynamique des utilisateurs */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Shield className="h-5 w-5" />
+                  <span>Gestion des utilisateurs & rôles</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {/* Tableau dynamique des utilisateurs */}
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Avatar</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nom</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Rôle</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Statut</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">2FA</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Dernier login</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {loadingSecurity ? (
+                        <tr><td colSpan={8} className="text-center py-4">Chargement...</td></tr>
+                      ) : (
+                        usersDb.map((user: any) => (
+                          <tr key={user.id}>
+                            <td className="px-4 py-2"><img src={user.avatar_url || user.avatar || '/images/default-avatar.png'} alt={user.full_name || user.name} className="w-8 h-8 rounded-full" /></td>
+                            <td className="px-4 py-2 font-medium">{user.full_name || user.name}</td>
+                            <td className="px-4 py-2">{user.email}</td>
+                            <td className="px-4 py-2">
+                              {currentUser && currentUser.role === 'super_admin' ? (
+                                <select
+                                  className="border rounded px-2 py-1 bg-white text-sm"
+                                  value={String(user.role)}
+                                  onChange={e => handleRoleChange(user, e.target.value)}
+                                >
+                                  <option value="user">user</option>
+                                  <option value="admin">admin</option>
+                                  <option value="super_admin">super_admin</option>
+                                </select>
+                              ) : (
+                                <Badge variant={user.role === 'super_admin' ? 'destructive' : 'default'}>{user.role}</Badge>
+                              )}
+                            </td>
+                            <td className="px-4 py-2">
+                              {currentUser && currentUser.role === 'super_admin' ? (
+                                <AlertDialog open={pendingAction?.type === 'status' && pendingAction.user.id === user.id} onOpenChange={setPendingAction}>
+                                  <AlertDialogTrigger asChild>
+                                    <button
+                                      className={`px-2 py-1 rounded text-xs font-bold ${user.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
+                                      onClick={e => { e.preventDefault(); setPendingAction({ type: 'status', user }); }}
+                                    >
+                                      {user.status === 'active' ? 'Suspendre' : 'Réactiver'}
+                                    </button>
+                                  </AlertDialogTrigger>
+                                  <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                      <AlertDialogTitle>Confirmer l'action</AlertDialogTitle>
+                                      <AlertDialogDescription>
+                                        {user.status === 'active'
+                                          ? `Voulez-vous vraiment suspendre ${user.full_name || user.name || user.email} ?`
+                                          : `Voulez-vous vraiment réactiver ${user.full_name || user.name || user.email} ?`}
+                                      </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                      <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                      <AlertDialogAction
+                                        onClick={async () => {
+                                          setActionLoading(true);
+                                          await handleToggleStatus(user);
+                                          setActionLoading(false);
+                                          setPendingAction(null);
+                                        }}
+                                        disabled={actionLoading}
+                                      >
+                                        Confirmer
+                                      </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                  </AlertDialogContent>
+                                </AlertDialog>
+                              ) : (
+                                user.status
+                              )}
+                            </td>
+                            <td className="px-4 py-2">
+                              {currentUser && currentUser.role === 'super_admin' ? (
+                                <AlertDialog open={pendingAction?.type === '2fa' && pendingAction.user.id === user.id} onOpenChange={setPendingAction}>
+                                  <AlertDialogTrigger asChild>
+                                    <button
+                                      className={`px-2 py-1 rounded text-xs font-bold ${user.two_factor_enabled ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}
+                                      onClick={e => { e.preventDefault(); setPendingAction({ type: '2fa', user }); }}
+                                    >
+                                      {user.two_factor_enabled ? 'Désactiver' : 'Activer'}
+                                    </button>
+                                  </AlertDialogTrigger>
+                                  <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                      <AlertDialogTitle>Confirmer l'action</AlertDialogTitle>
+                                      <AlertDialogDescription>
+                                        {user.two_factor_enabled
+                                          ? `Voulez-vous vraiment désactiver la double authentification pour ${user.full_name || user.name || user.email} ?`
+                                          : `Voulez-vous vraiment activer la double authentification pour ${user.full_name || user.name || user.email} ?`}
+                                      </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                      <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                      <AlertDialogAction
+                                        onClick={async () => {
+                                          setActionLoading(true);
+                                          await handleToggle2FA(user);
+                                          setActionLoading(false);
+                                          setPendingAction(null);
+                                        }}
+                                        disabled={actionLoading}
+                                      >
+                                        Confirmer
+                                      </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                  </AlertDialogContent>
+                                </AlertDialog>
+                              ) : (
+                                <Badge variant={user.two_factor_enabled ? 'success' : 'outline'}>{user.two_factor_enabled ? 'Activé' : 'Désactivé'}</Badge>
+                              )}
+                            </td>
+                            <td className="px-4 py-2">{user.last_login ? new Date(user.last_login).toLocaleString() : '-'}</td>
+                            <td className="px-4 py-2 space-x-2">
+                              {/* TODO: Actions dynamiques (changer rôle, activer/désactiver 2FA, suspendre) */}
+                              <Button size="sm" variant="outline"><UserCog className="h-4 w-4" /></Button>
+                              <Button size="sm" variant="outline"><Shield className="h-4 w-4" /></Button>
+                              <Button size="sm" variant="outline"><Trash2 className="h-4 w-4" /></Button>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Logs d'accès */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <List className="h-5 w-5" />
+                  <span>Logs d'accès</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between mb-2">
+                  <input
+                    type="text"
+                    placeholder="Rechercher par nom ou email..."
+                    className="border rounded px-2 py-1 text-sm"
+                    value={logSearch}
+                    onChange={e => setLogSearch(e.target.value)}
+                  />
+                  <div className="space-x-2">
+                    <button
+                      className="px-2 py-1 border rounded text-xs"
+                      onClick={() => setLogPage(p => Math.max(1, p - 1))}
+                      disabled={logPage === 1}
+                    >Page précédente</button>
+                    <span className="text-xs">Page {logPage}</span>
+                    <button
+                      className="px-2 py-1 border rounded text-xs"
+                      onClick={() => setLogPage(p => p + 1)}
+                      disabled={logPage * LOGS_PER_PAGE >= logsDb.length}
+                    >Page suivante</button>
+                  </div>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Utilisateur</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">IP</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Succès</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {loadingSecurity ? (
+                        <tr><td colSpan={4} className="text-center py-4">Chargement...</td></tr>
+                      ) : (
+                        logsDb
+                          .filter(log => {
+                            const u = usersDb.find(u => u.id === log.user_id);
+                            const name = u ? (u.full_name || u.name || u.email) : '';
+                            return name.toLowerCase().includes(logSearch.toLowerCase());
+                          })
+                          .slice((logPage - 1) * LOGS_PER_PAGE, logPage * LOGS_PER_PAGE)
+                          .map((log) => (
+                            <tr key={log.id}>
+                              <td className="px-4 py-2">{(() => {
+                                const u = usersDb.find(u => u.id === log.user_id);
+                                return u ? (u.full_name || u.name || u.email) : log.user_id;
+                              })()}</td>
+                              <td className="px-4 py-2">{log.ip_address}</td>
+                              <td className="px-4 py-2">{log.timestamp ? new Date(log.timestamp).toLocaleString() : '-'}</td>
+                              <td className="px-4 py-2"><Badge variant={log.success ? 'success' : 'destructive'}>{log.success ? 'Oui' : 'Non'}</Badge></td>
+                            </tr>
+                          ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Historique des changements de rôle */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Clock className="h-5 w-5" />
+                  <span>Historique des changements de rôle</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between mb-2">
+                  <input
+                    type="text"
+                    placeholder="Rechercher par nom ou email..."
+                    className="border rounded px-2 py-1 text-sm"
+                    value={roleLogSearch}
+                    onChange={e => setRoleLogSearch(e.target.value)}
+                  />
+                  <div className="space-x-2">
+                    <button
+                      className="px-2 py-1 border rounded text-xs"
+                      onClick={() => setRoleLogPage(p => Math.max(1, p - 1))}
+                      disabled={roleLogPage === 1}
+                    >Page précédente</button>
+                    <span className="text-xs">Page {roleLogPage}</span>
+                    <button
+                      className="px-2 py-1 border rounded text-xs"
+                      onClick={() => setRoleLogPage(p => p + 1)}
+                      disabled={roleLogPage * LOGS_PER_PAGE >= roleLogs.length}
+                    >Page suivante</button>
+                  </div>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Utilisateur</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Ancien rôle</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nouveau rôle</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Par</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {loadingSecurity ? (
+                        <tr><td colSpan={5} className="text-center py-4">Chargement...</td></tr>
+                      ) : (
+                        roleLogs
+                          .filter(log => {
+                            const u = usersDb.find(u => u.id === log.user_id);
+                            const name = u ? (u.full_name || u.name || u.email) : '';
+                            return name.toLowerCase().includes(roleLogSearch.toLowerCase());
+                          })
+                          .slice((roleLogPage - 1) * LOGS_PER_PAGE, roleLogPage * LOGS_PER_PAGE)
+                          .map((log: any) => (
+                            <tr key={log.id}>
+                              <td className="px-4 py-2">{(() => {
+                                const u = usersDb.find(u => u.id === log.user_id);
+                                return u ? (u.full_name || u.name || u.email) : log.user_id;
+                              })()}</td>
+                              <td className="px-4 py-2">{log.old_role}</td>
+                              <td className="px-4 py-2">{log.new_role}</td>
+                              <td className="px-4 py-2">{log.changed_at ? new Date(log.changed_at).toLocaleString() : '-'}</td>
+                              <td className="px-4 py-2">{(() => {
+                                const u = usersDb.find(u => u.id === log.changed_by);
+                                return u ? (u.full_name || u.name || u.email) : log.changed_by;
+                              })()}</td>
+                            </tr>
+                          ))
+                      )}
+                    </tbody>
+                  </table>
                 </div>
               </CardContent>
             </Card>

@@ -74,8 +74,13 @@ export default function Drones3DPage() {
   const [show3D, setShow3D] = useState(false);
   const [featureDetail, setFeatureDetail] = useState<null | { label: string; description: string; icon: string }>(null);
 
-  // SEO balises (toujours publiques)
-  // ... (ajoute ici le composant SEOOptimized ou balises <Head> si besoin) ...
+  // SEO balises (toujours publiques, mais uniquement industriel)
+  // Exemple avec next/head ou SEOOptimized :
+  // <Head>
+  //   <title>Drone Industriel Atlas X1 – Pulvérisation, Analyse, Transport | DL Solutions</title>
+  //   <meta name="description" content="Découvrez Atlas X1, le drone industriel nouvelle génération pour l'agriculture, la logistique et l'analyse environnementale. Fabrication locale, IA embarquée, 3D interactive." />
+  //   <meta name="keywords" content="drone industriel, agriculture, pulvérisation, transport médical, analyse géologique, IA, DL Solutions" />
+  // </Head>
 
   if (loading) {
     return (
@@ -104,18 +109,18 @@ export default function Drones3DPage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#0b0f17] text-white">
         <div className="bg-[#181f2a] rounded-2xl shadow-xl p-10 max-w-xl text-center">
-          <h2 className="text-3xl font-bold mb-4">Extrait du projet Drone</h2>
-          <p className="mb-6 text-lg">Vous avez accès à un aperçu du projet. Pour consulter la version complète, contactez l'administrateur.</p>
+          <h2 className="text-3xl font-bold mb-4">Drone Industriel Atlas X1</h2>
+          <p className="mb-6 text-lg">Découvrez Atlas X1, le drone industriel nouvelle génération pour l'agriculture, la logistique et l'analyse environnementale. Fabrication locale, IA embarquée, 3D interactive.</p>
           <div className="my-8">
             <h3 className="text-xl font-semibold mb-2">Aperçu :</h3>
             <ul className="text-left text-gray-200 space-y-2 mb-4">
-              <li>• Deux drones nouvelle génération : Sentinel V1 (militaire), Atlas X1 (industriel)</li>
+              <li>• Drone industriel Atlas X1 : pulvérisation intelligente, transport médical, analyse géologique</li>
               <li>• 3D interactive, IA embarquée, autonomie avancée</li>
-              <li>• Applications : sécurité, agriculture, logistique, analyse géologique</li>
+              <li>• Applications : agriculture, logistique, environnement</li>
               <li>• Fabrication locale, modularité, maintenance simplifiée</li>
             </ul>
             <div className="w-full h-40 bg-gradient-to-br from-blue-900/40 via-purple-900/30 to-pink-900/20 rounded-xl flex items-center justify-center mb-4">
-              <span className="text-4xl text-white/30">[Visuel teaser]</span>
+              <span className="text-4xl text-white/30">[Visuel Atlas X1]</span>
             </div>
           </div>
           <div className="mt-6 text-sm text-gray-400">Accès complet réservé au super administrateur.</div>

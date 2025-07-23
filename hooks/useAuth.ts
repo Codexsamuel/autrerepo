@@ -4,7 +4,7 @@ interface User {
   id: string;
   email: string;
   name: string;
-  role?: 'user' | 'admin' | 'superadmin';
+  role?: 'user' | 'admin' | 'super_admin';
 }
 
 export function useAuth() {
@@ -30,15 +30,17 @@ export function useAuth() {
     setLoading(false);
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
       });
-      if (response.ok) {
-        const data = await response.json();
+      
+      const data = await response.json();
+      
+      if (data.success) {
         setUser({
           id: data.user.id,
           email: data.user.email,
@@ -47,23 +49,26 @@ export function useAuth() {
         });
         localStorage.setItem('auth_token', data.token);
         localStorage.setItem('user_data', JSON.stringify(data.user));
-        return true;
+        return { success: true };
+      } else {
+        return { success: false, error: data.error || 'Erreur de connexion' };
       }
-      return false;
-    } catch {
-      return false;
+    } catch (error) {
+      return { success: false, error: 'Erreur de connexion' };
     }
   };
 
-  const signup = async (email: string, password: string, name: string): Promise<boolean> => {
+  const signup = async (email: string, password: string, name: string): Promise<{ success: boolean; error?: string }> => {
     try {
       const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, name })
       });
-      if (response.ok) {
-        const data = await response.json();
+      
+      const data = await response.json();
+      
+      if (data.success) {
         setUser({
           id: data.user.id,
           email: data.user.email,
@@ -72,11 +77,12 @@ export function useAuth() {
         });
         localStorage.setItem('auth_token', data.token);
         localStorage.setItem('user_data', JSON.stringify(data.user));
-        return true;
+        return { success: true };
+      } else {
+        return { success: false, error: data.error || 'Erreur d\'inscription' };
       }
-      return false;
-    } catch {
-      return false;
+    } catch (error) {
+      return { success: false, error: 'Erreur d\'inscription' };
     }
   };
 

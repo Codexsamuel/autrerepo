@@ -106,7 +106,7 @@ export default function Drones3DPage() {
     );
   }
 
-  if (user.role !== 'superadmin') {
+  if (user.role !== 'super_admin') {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#0b0f17] text-white">
         <div className="bg-[#181f2a] rounded-2xl shadow-xl p-10 max-w-xl text-center">

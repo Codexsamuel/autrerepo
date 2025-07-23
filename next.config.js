@@ -8,21 +8,10 @@ const nextConfig = {
   // Configuration pour export statique
   output: 'export',
   trailingSlash: true,
-  images: {
-    unoptimized: true
-  },
-  
-  // Optimisations pour les API routes
-  serverExternalPackages: [],
-  
-  // Autoriser le développement en réseau local (Cross-Origin)
-  allowedDevOrigins: [
-    'http://localhost:3000',
-    'http://172.20.10.8:3000'
-  ],
   
   // Configuration des images avancée
   images: {
+    unoptimized: true,
     domains: [
       'images.unsplash.com',
       'res.cloudinary.com',
@@ -40,83 +29,28 @@ const nextConfig = {
   // Optimisations de performance avancées
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+    optimizeCss: true,
+  },
+  
+  // Configuration Turbopack (remplace experimental.turbo)
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
   },
   
-  // Configuration des redirections
-  async redirects() {
-    return [
-      // Redirections SEO
-      {
-        source: '/drone-simulator',
-        destination: '/simulateur-drones',
-        permanent: true,
-      },
-      {
-        source: '/drone-business',
-        destination: '/business-drones',
-        permanent: true,
-      },
-    ];
-  },
-  
-  // Configuration des headers avancés
-  async headers() {
-    return [
-      {
-        source: '/api/:path*',
-        headers: [
-          {
-            key: 'Access-Control-Allow-Origin',
-            value: '*',
-          },
-          {
-            key: 'Access-Control-Allow-Methods',
-            value: 'GET, POST, PUT, DELETE, OPTIONS',
-          },
-          {
-            key: 'Access-Control-Allow-Headers',
-            value: 'Content-Type, Authorization',
-          },
-        ],
-      },
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-          {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
-          },
-        ],
-      },
-    ];
-  },
-  
-  // Configuration pour Netlify
-  trailingSlash: false,
+  // Autoriser le développement en réseau local (Cross-Origin)
+  allowedDevOrigins: [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:3002',
+    'http://172.20.10.8:3000',
+    'http://172.20.10.8:3001',
+    'http://172.20.10.8:3002'
+  ],
   
   // Optimisations de performance
   compress: true,
@@ -155,16 +89,6 @@ const nextConfig = {
     });
     
     return config;
-  },
-  
-  // Configuration PWA
-  async rewrites() {
-    return [
-      {
-        source: '/sw.js',
-        destination: '/_next/static/sw.js',
-      },
-    ];
   },
 };
 

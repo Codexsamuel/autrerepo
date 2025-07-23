@@ -269,7 +269,7 @@ export default function Drones3DPage() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
             className="w-full max-w-2xl aspect-video rounded-2xl overflow-hidden shadow-2xl bg-black flex items-center justify-center cursor-pointer group"
-            // onClick={() => setShow3DAtlas(true)}
+            onClick={() => setShow3D(true)}
             title="Voir le drone en 3D interactif (bientôt)"
           >
             <iframe src="https://sketchfab.com/models/YOUR_MODEL_ID_EMBED_2/embed" allowFullScreen className="w-full h-full min-h-[350px] group-hover:opacity-80 transition-opacity duration-200" />
@@ -280,8 +280,9 @@ export default function Drones3DPage() {
         </div>
       </motion.section>
 
-      {/* Modale détail feature */}
-      {featureDetail && <FeatureDetailModal feature={featureDetail} onClose={() => setFeatureDetail(null)} />}
+      {/* Modales */}
+      <Drone3DModal isOpen={show3D} onClose={() => setShow3D(false)} />
+      <FeatureDetailModal isOpen={!!featureDetail} onClose={() => setFeatureDetail(null)} feature={featureDetail} />
 
       {/* Applications Slider Section (placeholder) */}
       <motion.section className="max-w-6xl mx-auto py-24 px-4" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>

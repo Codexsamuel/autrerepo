@@ -1,53 +1,106 @@
+"use client";
+
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
+import { ReactNode, useEffect } from 'react';
 
-interface FeatureDetail {
-  label: string;
-  description: string;
-  icon: string;
+interface FeatureDetailModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  feature: {
+    label: string;
+    description: string;
+    icon: string;
+  } | null;
+  children?: ReactNode;
 }
 
-export default function FeatureDetailModal({ feature, onClose }: { feature: FeatureDetail; onClose: () => void }) {
+export default function FeatureDetailModal({ isOpen, onClose, feature, children }: FeatureDetailModalProps) {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
+  if (!feature) return null;
+
   return (
     <AnimatePresence>
-      <motion.div
-        className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/70 backdrop-blur-sm"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={onClose}
-      >
+      {isOpen && (
         <motion.div
-          className="relative w-full max-w-lg bg-[#181f2a] rounded-2xl shadow-2xl p-8 flex flex-col items-center justify-center overflow-hidden"
-          initial={{ scale: 0.96, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.96, opacity: 0 }}
-          transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-          onClick={e => e.stopPropagation()}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          onClick={onClose}
         >
-          {/* Bouton de fermeture */}
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 z-10 bg-black/60 hover:bg-black/80 text-white rounded-full p-2 shadow-lg focus:outline-none"
-            aria-label="Fermer le détail"
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            className="relative bg-[#0b0f17] rounded-2xl shadow-2xl w-full max-w-2xl p-8"
+            onClick={(e) => e.stopPropagation()}
           >
-            <X className="w-6 h-6" />
-          </button>
-          {/* Icône et titre */}
-          <div className="flex flex-col items-center mb-6">
-            <span className="text-5xl mb-2">{feature.icon}</span>
-            <h3 className="text-2xl font-bold text-center mb-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg">
-              {feature.label}
-            </h3>
-          </div>
-          {/* Illustration placeholder */}
-          <div className="w-full h-40 bg-gradient-to-br from-blue-900/40 via-purple-900/30 to-pink-900/20 rounded-xl mb-6 flex items-center justify-center">
-            <span className="text-4xl text-white/30">[Illustration]</span>
-          </div>
-          {/* Description */}
-          <p className="text-lg text-gray-200 text-center mb-2">{feature.description}</p>
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-4">
+                <span className="text-4xl">{feature.icon}</span>
+                <h2 className="text-2xl font-bold text-white">{feature.label}</h2>
+              </div>
+              <button
+                onClick={onClose}
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+              >
+                <X className="w-6 h-6 text-white" />
+              </button>
+            </div>
+
+            {/* Contenu */}
+            <div className="space-y-6">
+              <p className="text-lg text-gray-300 leading-relaxed">
+                {feature.description}
+              </p>
+              
+              {/* Section technique */}
+              <div className="bg-[#181f2a] rounded-xl p-6">
+                <h3 className="text-xl font-semibold text-white mb-4">Spécifications techniques</h3>
+                <div className="grid grid-cols-2 gap-4 text-sm text-gray-300">
+                  <div>
+                    <span className="font-medium text-blue-400">Type:</span> Fonctionnalité avancée
+                  </div>
+                  <div>
+                    <span className="font-medium text-blue-400">Compatibilité:</span> Atlas X1
+                  </div>
+                  <div>
+                    <span className="font-medium text-blue-400">Activation:</span> Via interface
+                  </div>
+                  <div>
+                    <span className="font-medium text-blue-400">Sécurité:</span> Niveau militaire
+                  </div>
+                </div>
+              </div>
+
+              {/* Call to action */}
+              <div className="flex gap-4 pt-4">
+                <button className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:scale-105 transition-transform">
+                  Demander une démo
+                </button>
+                <button className="px-6 py-3 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-800 transition-colors">
+                  Documentation
+                </button>
+              </div>
+            </div>
+
+            {children}
+          </motion.div>
         </motion.div>
-      </motion.div>
+      )}
     </AnimatePresence>
   );
 } 

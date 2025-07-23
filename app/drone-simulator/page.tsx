@@ -37,6 +37,8 @@ import { useEffect, useRef, useState } from "react";
 const Drone3DModal = dynamic(() => import("@/components/Drone3DModal"), { ssr: false });
 const DronePrototypeImages = dynamic(() => import("@/components/DronePrototypeImages"), { ssr: false });
 const DroneFlightChart = dynamic(() => import("@/components/DroneFlightChart"), { ssr: false });
+const DroneScenarios = dynamic(() => import("@/components/DroneScenarios"), { ssr: false });
+const DroneVariants = dynamic(() => import("@/components/DroneVariants"), { ssr: false });
 
 interface SimulationState {
   isRunning: boolean;
@@ -94,6 +96,9 @@ export default function DroneSimulatorPage() {
   const [simulationTime, setSimulationTime] = useState(0);
   const [alerts, setAlerts] = useState<string[]>([]);
   const [isExporting, setIsExporting] = useState(false);
+  const [currentScenario, setCurrentScenario] = useState<any>(null);
+  const [selectedVariant, setSelectedVariant] = useState<any>(null);
+  const [activeTab, setActiveTab] = useState<'simulation' | 'scenarios' | 'variants'>('simulation');
 
   const simulationInterval = useRef<NodeJS.Timeout | null>(null);
   const startTime = useRef<number>(Date.now());
@@ -260,9 +265,36 @@ export default function DroneSimulatorPage() {
       </header>
 
       <div className="container mx-auto p-6">
-        <div className="grid lg:grid-cols-4 gap-6">
-          {/* Main Simulation Area */}
-          <div className="lg:col-span-3 space-y-6">
+        {/* Navigation des onglets */}
+        <div className="flex gap-2 mb-6">
+          <Button
+            onClick={() => setActiveTab('simulation')}
+            variant={activeTab === 'simulation' ? 'default' : 'outline'}
+            className="flex items-center gap-2"
+          >
+            🎮 Simulation
+          </Button>
+          <Button
+            onClick={() => setActiveTab('scenarios')}
+            variant={activeTab === 'scenarios' ? 'default' : 'outline'}
+            className="flex items-center gap-2"
+          >
+            🎯 Scénarios
+          </Button>
+          <Button
+            onClick={() => setActiveTab('variants')}
+            variant={activeTab === 'variants' ? 'default' : 'outline'}
+            className="flex items-center gap-2"
+          >
+            🚁 Variantes
+          </Button>
+        </div>
+
+        {/* Contenu des onglets */}
+        {activeTab === 'simulation' && (
+          <div className="grid lg:grid-cols-4 gap-6">
+            {/* Main Simulation Area */}
+            <div className="lg:col-span-3 space-y-6">
             {/* 3D Visualization */}
             <Card className="bg-[#181f2a] border-gray-700">
               <CardHeader>
@@ -654,8 +686,41 @@ export default function DroneSimulatorPage() {
                 </Button>
               </CardContent>
             </Card>
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* Onglet Scénarios */}
+        {activeTab === 'scenarios' && (
+          <DroneScenarios
+            onScenarioSelect={setCurrentScenario}
+            onScenarioStart={(scenario) => {
+              setCurrentScenario(scenario);
+              setActiveTab('simulation');
+              setSimulationState(prev => ({
+                ...prev,
+                droneType: scenario.droneType,
+                altitude: scenario.parameters.altitude,
+                speed: scenario.parameters.speed,
+                battery: scenario.parameters.battery,
+                signal: scenario.parameters.signal,
+                windSpeed: scenario.parameters.windSpeed,
+                weather: scenario.parameters.weather,
+                timeOfDay: scenario.parameters.timeOfDay
+              }));
+            }}
+            currentScenario={currentScenario}
+            isRunning={simulationState.isRunning}
+          />
+        )}
+
+        {/* Onglet Variantes */}
+        {activeTab === 'variants' && (
+          <DroneVariants
+            onVariantSelect={setSelectedVariant}
+            selectedVariant={selectedVariant}
+          />
+        )}
       </div>
 
       {/* 3D Modal */}

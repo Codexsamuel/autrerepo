@@ -1,8 +1,6 @@
 'use client';
 
-import { useFrame } from '@react-three/fiber';
-import { motion } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Drone3DViewerProps {
   droneType: 'sentinel' | 'atlas';
@@ -23,45 +21,46 @@ function DroneModel({ droneType, droneState, isPlaying }: {
   droneState: any;
   isPlaying: boolean;
 }) {
-  const meshRef = useRef<any>(null);
   const [hovered, setHovered] = useState(false);
+  const [animationFrame, setAnimationFrame] = useState(0);
 
-  // Animation du drone
-  useFrame((state) => {
-    if (meshRef.current && isPlaying) {
-      // Légère oscillation en vol
-      if (droneState.status === 'flying') {
-        meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 2) * 0.1;
-        meshRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.5) * 0.05;
-      }
+  // Animation frame counter for hover effects
+  useEffect(() => {
+    if (isPlaying && droneState.status === 'flying') {
+      const interval = setInterval(() => {
+        setAnimationFrame(prev => prev + 1);
+      }, 50);
+      return () => clearInterval(interval);
     }
-  });
+  }, [isPlaying, droneState.status]);
 
   const droneColor = droneType === 'sentinel' ? '#4ade80' : '#3b82f6';
   const droneSize = droneType === 'sentinel' ? 1.2 : 1.8;
 
   return (
-    <motion.div
-      initial={{ scale: 0 }}
-      animate={{ scale: 1 }}
-      transition={{ duration: 0.5 }}
+    <div
+      className={`w-full h-full flex items-center justify-center transition-all duration-500 ${
+        hovered ? 'scale-110' : 'scale-100'
+      }`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="w-full h-full flex items-center justify-center"
+      style={{
+        transform: `scale(${hovered ? 1.1 : 1})`,
+      }}
     >
       <div 
-        ref={meshRef}
-        className={`relative transition-all duration-300 ${
-          hovered ? 'scale-110' : 'scale-100'
-        }`}
+        className={`relative transition-all duration-300`}
         style={{
           width: `${droneSize * 100}px`,
           height: `${droneSize * 100}px`,
+          transform: isPlaying && droneState.status === 'flying' 
+            ? `translateY(${Math.sin(animationFrame * 0.1) * 5}px) rotateZ(${Math.sin(animationFrame * 0.05) * 2}deg)`
+            : 'none',
         }}
       >
         {/* Corps principal du drone */}
         <div 
-          className="absolute inset-0 rounded-lg shadow-2xl"
+          className="absolute inset-0 rounded-lg shadow-2xl transition-all duration-300"
           style={{
             backgroundColor: hovered ? droneColor : '#1e293b',
             border: `2px solid ${droneColor}`,
@@ -86,7 +85,7 @@ function DroneModel({ droneType, droneState, isPlaying }: {
         {[0, 90, 180, 270].map((angle, index) => (
           <div
             key={`prop-${index}`}
-            className={`absolute w-8 h-1 bg-gray-400 rounded-full ${
+            className={`absolute w-8 h-1 bg-gray-400 rounded-full transition-all duration-100 ${
               isPlaying && droneState.status === 'flying' ? 'animate-spin' : ''
             }`}
             style={{
@@ -110,7 +109,7 @@ function DroneModel({ droneType, droneState, isPlaying }: {
         
         {/* LED de statut */}
         <div 
-          className={`absolute w-3 h-3 rounded-full ${
+          className={`absolute w-3 h-3 rounded-full transition-all duration-300 ${
             droneState.status === 'flying' ? 'bg-green-500' : 'bg-yellow-500'
           } shadow-lg`}
           style={{
@@ -133,7 +132,7 @@ function DroneModel({ droneType, droneState, isPlaying }: {
           }}
         />
       </div>
-    </motion.div>
+    </div>
   );
 }
 

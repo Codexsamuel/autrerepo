@@ -1,30 +1,19 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import {
-    AlertTriangle,
-    Camera,
-    CheckCircle,
-    Clock,
-    Eye,
-    Map,
-    Package,
-    Play,
-    Target,
-    X
-} from 'lucide-react';
 import { useState } from 'react';
+
+interface Waypoint {
+  lat: number;
+  lng: number;
+  altitude: number;
+  action: string;
+}
 
 interface Mission {
   id: string;
   name: string;
-  type: 'reconnaissance' | 'mapping' | 'delivery' | 'inspection' | 'surveillance';
-  waypoints: Array<{
-    lat: number;
-    lng: number;
-    altitude: number;
-    action: string;
-  }>;
+  type: 'reconnaissance' | 'inspection' | 'mapping' | 'delivery';
+  waypoints: Waypoint[];
   status: 'pending' | 'active' | 'completed' | 'failed';
 }
 
@@ -42,217 +31,291 @@ export default function MissionPlanner({
   onCancelMission 
 }: MissionPlannerProps) {
   const [selectedMission, setSelectedMission] = useState<Mission | null>(null);
-  const [showNewMission, setShowNewMission] = useState(false);
+  const [newMission, setNewMission] = useState({
+    name: '',
+    type: 'reconnaissance' as const,
+    waypoints: [] as Waypoint[]
+  });
 
-  const getMissionIcon = (type: string) => {
+  const getMissionTypeColor = (type: string) => {
     switch (type) {
-      case 'reconnaissance':
-        return <Eye className="w-4 h-4" />;
-      case 'mapping':
-        return <Map className="w-4 h-4" />;
-      case 'delivery':
-        return <Package className="w-4 h-4" />;
-      case 'inspection':
-        return <Camera className="w-4 h-4" />;
-      case 'surveillance':
-        return <Target className="w-4 h-4" />;
-      default:
-        return <Target className="w-4 h-4" />;
+      case 'reconnaissance': return 'bg-blue-600';
+      case 'inspection': return 'bg-green-600';
+      case 'mapping': return 'bg-purple-600';
+      case 'delivery': return 'bg-orange-600';
+      default: return 'bg-gray-600';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active':
-        return 'text-blue-400';
-      case 'completed':
-        return 'text-green-400';
-      case 'failed':
-        return 'text-red-400';
-      default:
-        return 'text-yellow-400';
+      case 'active': return 'bg-green-600';
+      case 'completed': return 'bg-blue-600';
+      case 'failed': return 'bg-red-600';
+      default: return 'bg-gray-600';
     }
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'active':
-        return <Play className="w-4 h-4" />;
-      case 'completed':
-        return <CheckCircle className="w-4 h-4" />;
-      case 'failed':
-        return <AlertTriangle className="w-4 h-4" />;
-      default:
-        return <Clock className="w-4 h-4" />;
+  const addWaypoint = () => {
+    const newWaypoint: Waypoint = {
+      lat: 3.8480 + (Math.random() - 0.5) * 0.01,
+      lng: 11.5021 + (Math.random() - 0.5) * 0.01,
+      altitude: Math.floor(Math.random() * 200) + 50,
+      action: 'Surveillance'
+    };
+    setNewMission(prev => ({
+      ...prev,
+      waypoints: [...prev.waypoints, newWaypoint]
+    }));
+  };
+
+  const removeWaypoint = (index: number) => {
+    setNewMission(prev => ({
+      ...prev,
+      waypoints: prev.waypoints.filter((_, i) => i !== index)
+    }));
+  };
+
+  const saveMission = () => {
+    if (newMission.name && newMission.waypoints.length > 0) {
+      const mission: Mission = {
+        id: Date.now().toString(),
+        name: newMission.name,
+        type: newMission.type,
+        waypoints: newMission.waypoints,
+        status: 'pending'
+      };
+      // Ici vous pourriez ajouter la mission à la liste
+      setNewMission({ name: '', type: 'reconnaissance', waypoints: [] });
     }
   };
 
   return (
-    <div className="space-y-4">
-      
-      {/* Liste des missions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {missions.map((mission) => (
-          <motion.div
-            key={mission.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`p-4 rounded-lg border cursor-pointer transition-all ${
-              selectedMission?.id === mission.id
-                ? 'bg-blue-600/20 border-blue-500'
-                : 'bg-slate-700/50 border-slate-600 hover:bg-slate-700/70'
-            }`}
-            onClick={() => setSelectedMission(mission)}
-          >
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center space-x-2">
-                {getMissionIcon(mission.type)}
-                <h4 className="font-semibold text-sm">{mission.name}</h4>
+    <div className="space-y-6">
+      {/* Missions existantes */}
+      <div className="space-y-4">
+        <h4 className="text-lg font-semibold text-white">Missions Disponibles</h4>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {missions.map((mission) => (
+            <div 
+              key={mission.id}
+              className={`bg-slate-700/50 rounded-lg p-4 border border-slate-600 cursor-pointer transition-all duration-200 hover:bg-slate-600/50 ${
+                selectedMission?.id === mission.id ? 'ring-2 ring-blue-500' : ''
+              }`}
+              onClick={() => setSelectedMission(mission)}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <h5 className="font-semibold text-white">{mission.name}</h5>
+                <span className={`px-2 py-1 rounded text-xs ${getMissionTypeColor(mission.type)}`}>
+                  {mission.type.toUpperCase()}
+                </span>
               </div>
-              <div className={`flex items-center space-x-1 ${getStatusColor(mission.status)}`}>
-                {getStatusIcon(mission.status)}
-                <span className="text-xs">{mission.status}</span>
-              </div>
-            </div>
-            
-            <div className="text-xs text-slate-400 mb-3">
-              <div>Type: {mission.type}</div>
-              <div>Waypoints: {mission.waypoints.length}</div>
-            </div>
-            
-            <div className="flex space-x-2">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onStartMission(mission);
-                }}
-                disabled={mission.status === 'active' || activeMission !== null}
-                className={`flex-1 py-1 px-2 rounded text-xs font-medium transition-colors ${
-                  mission.status === 'active' || activeMission !== null
-                    ? 'bg-slate-600 text-slate-400 cursor-not-allowed'
-                    : 'bg-green-600 hover:bg-green-500 text-white'
-                }`}
-              >
-                <Play className="w-3 h-3 inline mr-1" />
-                Démarrer
-              </button>
               
-              {mission.status === 'active' && (
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-sm text-gray-300">
+                  {mission.waypoints.length} waypoints
+                </span>
+                <span className={`px-2 py-1 rounded text-xs ${getStatusColor(mission.status)}`}>
+                  {mission.status.toUpperCase()}
+                </span>
+              </div>
+              
+              <div className="space-y-2">
+                {mission.waypoints.slice(0, 3).map((waypoint, index) => (
+                  <div key={index} className="text-xs text-gray-400">
+                    WP{index + 1}: {waypoint.lat.toFixed(4)}, {waypoint.lng.toFixed(4)} 
+                    ({waypoint.altitude}m - {waypoint.action})
+                  </div>
+                ))}
+                {mission.waypoints.length > 3 && (
+                  <div className="text-xs text-gray-500">
+                    +{mission.waypoints.length - 3} autres waypoints
+                  </div>
+                )}
+              </div>
+              
+              <div className="mt-3 flex space-x-2">
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    onCancelMission();
+                    onStartMission(mission);
                   }}
-                  className="flex-1 py-1 px-2 rounded bg-red-600 hover:bg-red-500 text-white text-xs font-medium transition-colors"
+                  disabled={mission.status === 'active' || activeMission?.id === mission.id}
+                  className={`flex-1 px-3 py-2 rounded text-sm font-medium transition-colors ${
+                    mission.status === 'active' || activeMission?.id === mission.id
+                      ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                      : 'bg-green-600 hover:bg-green-700 text-white'
+                  }`}
                 >
-                  <X className="w-3 h-3 inline mr-1" />
-                  Annuler
+                  Démarrer
                 </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Mission active */}
+      {activeMission && (
+        <div className="bg-green-600/20 border border-green-500 rounded-lg p-4">
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="text-lg font-semibold text-green-400">
+              Mission Active: {activeMission.name}
+            </h4>
+            <button
+              onClick={onCancelMission}
+              className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm transition-colors"
+            >
+              Annuler
+            </button>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div>
+              <span className="text-gray-300">Type:</span>
+              <div className="text-white font-medium">{activeMission.type}</div>
+            </div>
+            <div>
+              <span className="text-gray-300">Waypoints:</span>
+              <div className="text-white font-medium">{activeMission.waypoints.length}</div>
+            </div>
+            <div>
+              <span className="text-gray-300">Statut:</span>
+              <div className="text-green-400 font-medium">EN COURS</div>
+            </div>
+            <div>
+              <span className="text-gray-300">Progression:</span>
+              <div className="text-white font-medium">2/5 waypoints</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Créer une nouvelle mission */}
+      <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
+        <h4 className="text-lg font-semibold text-white mb-4">Créer une Nouvelle Mission</h4>
+        
+        <div className="space-y-4">
+          {/* Informations de base */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm text-gray-300 mb-2">Nom de la mission</label>
+              <input
+                type="text"
+                value={newMission.name}
+                onChange={(e) => setNewMission(prev => ({ ...prev, name: e.target.value }))}
+                className="w-full px-3 py-2 bg-slate-600 border border-slate-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Ex: Reconnaissance Zone A"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm text-gray-300 mb-2">Type de mission</label>
+              <select
+                value={newMission.type}
+                onChange={(e) => setNewMission(prev => ({ ...prev, type: e.target.value as any }))}
+                className="w-full px-3 py-2 bg-slate-600 border border-slate-500 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="reconnaissance">Reconnaissance</option>
+                <option value="inspection">Inspection</option>
+                <option value="mapping">Cartographie</option>
+                <option value="delivery">Livraison</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Waypoints */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <label className="text-sm text-gray-300">Waypoints</label>
+              <button
+                onClick={addWaypoint}
+                className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm transition-colors"
+              >
+                + Ajouter
+              </button>
+            </div>
+            
+            <div className="space-y-2 max-h-40 overflow-y-auto">
+              {newMission.waypoints.map((waypoint, index) => (
+                <div key={index} className="flex items-center space-x-2 p-2 bg-slate-600 rounded">
+                  <span className="text-xs text-gray-300 w-8">WP{index + 1}</span>
+                  <span className="text-xs text-white flex-1">
+                    {waypoint.lat.toFixed(4)}, {waypoint.lng.toFixed(4)} ({waypoint.altitude}m)
+                  </span>
+                  <button
+                    onClick={() => removeWaypoint(index)}
+                    className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-xs transition-colors"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+              
+              {newMission.waypoints.length === 0 && (
+                <div className="text-center py-4 text-gray-400 text-sm">
+                  Aucun waypoint ajouté
+                </div>
               )}
             </div>
-          </motion.div>
-        ))}
+          </div>
+
+          {/* Actions */}
+          <div className="flex justify-end space-x-3">
+            <button
+              onClick={() => setNewMission({ name: '', type: 'reconnaissance', waypoints: [] })}
+              className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+            >
+              Réinitialiser
+            </button>
+            <button
+              onClick={saveMission}
+              disabled={!newMission.name || newMission.waypoints.length === 0}
+              className={`px-4 py-2 rounded-lg transition-colors ${
+                !newMission.name || newMission.waypoints.length === 0
+                  ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                  : 'bg-green-600 hover:bg-green-700 text-white'
+              }`}
+            >
+              Sauvegarder
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Détails de la mission sélectionnée */}
       {selectedMission && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          className="bg-slate-700/50 rounded-lg p-4 border border-slate-600"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold flex items-center space-x-2">
-              {getMissionIcon(selectedMission.type)}
-              <span>{selectedMission.name}</span>
-            </h3>
-            <button
-              onClick={() => setSelectedMission(null)}
-              className="p-1 rounded hover:bg-slate-600 transition-colors"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
+        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
+          <h4 className="text-lg font-semibold text-white mb-4">
+            Détails: {selectedMission.name}
+          </h4>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <h4 className="text-sm font-medium mb-2">Informations</h4>
-              <div className="space-y-1 text-xs text-slate-300">
-                <div>Type: {selectedMission.type}</div>
-                <div>Status: {selectedMission.status}</div>
-                <div>Waypoints: {selectedMission.waypoints.length}</div>
-                <div>Distance estimée: {selectedMission.waypoints.length * 0.5} km</div>
-                <div>Temps estimé: {selectedMission.waypoints.length * 2} min</div>
+          <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <span className="text-gray-300">Type:</span>
+                <div className="text-white">{selectedMission.type}</div>
+              </div>
+              <div>
+                <span className="text-gray-300">Statut:</span>
+                <div className="text-white">{selectedMission.status}</div>
               </div>
             </div>
             
             <div>
-              <h4 className="text-sm font-medium mb-2">Waypoints</h4>
-              <div className="space-y-2 max-h-32 overflow-y-auto">
+              <span className="text-sm text-gray-300">Waypoints détaillés:</span>
+              <div className="mt-2 space-y-1">
                 {selectedMission.waypoints.map((waypoint, index) => (
-                  <div key={index} className="flex items-center space-x-2 text-xs">
-                    <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs">
-                      {index + 1}
-                    </div>
-                    <div className="flex-1">
-                      <div>Lat: {waypoint.lat.toFixed(6)}</div>
-                      <div>Lng: {waypoint.lng.toFixed(6)}</div>
-                    </div>
-                    <div className="text-right">
-                      <div>{waypoint.altitude}m</div>
-                      <div className="text-slate-400">{waypoint.action}</div>
-                    </div>
+                  <div key={index} className="text-xs text-gray-400 bg-slate-600 p-2 rounded">
+                    <strong>WP{index + 1}:</strong> {waypoint.lat.toFixed(6)}, {waypoint.lng.toFixed(6)}<br/>
+                    Altitude: {waypoint.altitude}m | Action: {waypoint.action}
                   </div>
                 ))}
               </div>
             </div>
           </div>
-          
-          {selectedMission.status === 'pending' && (
-            <div className="mt-4 flex space-x-2">
-              <button
-                onClick={() => onStartMission(selectedMission)}
-                disabled={activeMission !== null}
-                className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
-                  activeMission !== null
-                    ? 'bg-slate-600 text-slate-400 cursor-not-allowed'
-                    : 'bg-green-600 hover:bg-green-500 text-white'
-                }`}
-              >
-                <Play className="w-4 h-4 inline mr-2" />
-                Démarrer la Mission
-              </button>
-            </div>
-          )}
-        </motion.div>
-      )}
-
-      {/* Mission active */}
-      {activeMission && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="bg-blue-600/20 border border-blue-500 rounded-lg p-4"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="font-semibold text-blue-400 flex items-center space-x-2">
-              <Play className="w-4 h-4 animate-pulse" />
-              <span>Mission Active: {activeMission.name}</span>
-            </h3>
-            <button
-              onClick={onCancelMission}
-              className="py-1 px-3 rounded bg-red-600 hover:bg-red-500 text-white text-sm font-medium transition-colors"
-            >
-              <X className="w-4 h-4 inline mr-1" />
-              Annuler
-            </button>
-          </div>
-          
-          <div className="text-sm text-blue-300">
-            <div>Progression: En cours...</div>
-            <div>Waypoint actuel: 1/{activeMission.waypoints.length}</div>
-          </div>
-        </motion.div>
+        </div>
       )}
     </div>
   );

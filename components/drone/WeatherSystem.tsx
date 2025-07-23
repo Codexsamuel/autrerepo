@@ -1,17 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import {
-    AlertTriangle,
-    Cloud,
-    CloudLightning,
-    CloudRain,
-    Droplets,
-    Eye,
-    Sun,
-    Thermometer,
-    Wind
-} from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface WeatherSystemProps {
@@ -20,221 +8,242 @@ interface WeatherSystemProps {
   windDirection: number;
 }
 
-export default function WeatherSystem({ 
-  temperature, 
-  windSpeed, 
-  windDirection 
-}: WeatherSystemProps) {
-  const [weatherCondition, setWeatherCondition] = useState<'clear' | 'cloudy' | 'rain' | 'storm'>('clear');
-  const [humidity, setHumidity] = useState(65);
-  const [pressure, setPressure] = useState(1013);
-  const [visibility, setVisibility] = useState(10);
+export default function WeatherSystem({ temperature, windSpeed, windDirection }: WeatherSystemProps) {
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [weatherConditions, setWeatherConditions] = useState({
+    visibility: 10.5,
+    humidity: 65,
+    pressure: 1013.25,
+    uvIndex: 3
+  });
 
-  // Simuler les changements météo
   useEffect(() => {
     const interval = setInterval(() => {
-      // Changement aléatoire des conditions météo
-      const conditions: Array<'clear' | 'cloudy' | 'rain' | 'storm'> = ['clear', 'cloudy', 'rain', 'storm'];
-      const randomCondition = conditions[Math.floor(Math.random() * conditions.length)];
-      
-      if (Math.random() < 0.1) { // 10% de chance de changement
-        setWeatherCondition(randomCondition);
-      }
-      
-      // Mise à jour de l'humidité
-      setHumidity(prev => Math.max(30, Math.min(95, prev + (Math.random() - 0.5) * 10)));
-      
-      // Mise à jour de la pression
-      setPressure(prev => Math.max(980, Math.min(1030, prev + (Math.random() - 0.5) * 5)));
-      
-      // Mise à jour de la visibilité
-      setVisibility(prev => Math.max(1, Math.min(20, prev + (Math.random() - 0.5) * 2)));
-    }, 5000);
-
+      setCurrentTime(new Date());
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  const getWeatherIcon = () => {
-    switch (weatherCondition) {
-      case 'clear':
-        return <Sun className="w-6 h-6 text-yellow-400" />;
-      case 'cloudy':
-        return <Cloud className="w-6 h-6 text-gray-400" />;
-      case 'rain':
-        return <CloudRain className="w-6 h-6 text-blue-400" />;
-      case 'storm':
-        return <CloudLightning className="w-6 h-6 text-purple-400" />;
-      default:
-        return <Sun className="w-6 h-6 text-yellow-400" />;
-    }
+  const getWindDirectionText = (degrees: number) => {
+    const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+    const index = Math.round(degrees / 22.5) % 16;
+    return directions[index];
   };
 
-  const getWindDirectionArrow = () => {
-    const rotation = windDirection;
-    return (
-      <div 
-        className="inline-block transition-transform duration-300"
-        style={{ transform: `rotate(${rotation}deg)` }}
-      >
-        ↑
-      </div>
-    );
+  const getTemperatureColor = (temp: number) => {
+    if (temp > 30) return 'text-red-400';
+    if (temp > 20) return 'text-orange-400';
+    if (temp > 10) return 'text-yellow-400';
+    return 'text-blue-400';
   };
 
-  const getFlightSafety = () => {
-    let safety = 'green';
-    let message = 'Conditions optimales';
-    
-    if (windSpeed > 15) {
-      safety = 'yellow';
-      message = 'Vent modéré - Prudence';
-    }
-    
-    if (windSpeed > 25) {
-      safety = 'red';
-      message = 'Vent fort - Vol déconseillé';
-    }
-    
-    if (weatherCondition === 'storm') {
-      safety = 'red';
-      message = 'Orage - Vol interdit';
-    }
-    
-    if (visibility < 3) {
-      safety = 'yellow';
-      message = 'Visibilité réduite';
-    }
-    
-    return { safety, message };
+  const getWindSpeedColor = (speed: number) => {
+    if (speed > 15) return 'text-red-400';
+    if (speed > 10) return 'text-yellow-400';
+    return 'text-green-400';
   };
 
-  const { safety, message } = getFlightSafety();
+  const getVisibilityColor = (visibility: number) => {
+    if (visibility < 5) return 'text-red-400';
+    if (visibility < 10) return 'text-yellow-400';
+    return 'text-green-400';
+  };
 
   return (
-    <div className="space-y-4">
-      
-      {/* Conditions actuelles */}
-      <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-        <div className="flex items-center justify-between mb-3">
-          <h4 className="font-semibold text-sm">Conditions Actuelles</h4>
-          {getWeatherIcon()}
+    <div className="space-y-6">
+      {/* En-tête avec timestamp */}
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-semibold text-white">Conditions Météorologiques</h3>
+        <div className="text-sm text-gray-400">
+          {currentTime.toLocaleTimeString()}
         </div>
+      </div>
+
+      {/* Conditions principales */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div className="flex items-center space-x-2">
-            <Thermometer className="w-4 h-4 text-red-400" />
-            <span>{temperature.toFixed(1)}°C</span>
+        {/* Température */}
+        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-gray-300">Température</span>
+            <span className={`text-2xl font-bold ${getTemperatureColor(temperature)}`}>
+              {temperature.toFixed(1)}°C
+            </span>
           </div>
-          
-          <div className="flex items-center space-x-2">
-            <Droplets className="w-4 h-4 text-blue-400" />
-            <span>{humidity.toFixed(0)}%</span>
+          <div className="w-full bg-slate-600 rounded-full h-2">
+            <div 
+              className={`h-2 rounded-full transition-all duration-300 ${getTemperatureColor(temperature).replace('text-', 'bg-')}`}
+              style={{ width: `${Math.min(100, ((temperature + 20) / 60) * 100)}%` }}
+            />
           </div>
-          
-          <div className="flex items-center space-x-2">
-            <Wind className="w-4 h-4 text-cyan-400" />
-            <span>{windSpeed.toFixed(1)} km/h</span>
+        </div>
+
+        {/* Vitesse du vent */}
+        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-gray-300">Vitesse du vent</span>
+            <span className={`text-2xl font-bold ${getWindSpeedColor(windSpeed)}`}>
+              {windSpeed.toFixed(1)} m/s
+            </span>
           </div>
-          
-          <div className="flex items-center space-x-2">
-            <span className="text-cyan-400">{getWindDirectionArrow()}</span>
-            <span>{windDirection.toFixed(0)}°</span>
+          <div className="w-full bg-slate-600 rounded-full h-2">
+            <div 
+              className={`h-2 rounded-full transition-all duration-300 ${getWindSpeedColor(windSpeed).replace('text-', 'bg-')}`}
+              style={{ width: `${Math.min(100, (windSpeed / 20) * 100)}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Direction du vent */}
+        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-gray-300">Direction du vent</span>
+            <span className="text-2xl font-bold text-blue-400">
+              {getWindDirectionText(windDirection)}
+            </span>
+          </div>
+          <div className="w-full bg-slate-600 rounded-full h-2">
+            <div 
+              className="h-2 bg-blue-500 rounded-full transition-all duration-300"
+              style={{ width: `${(windDirection / 360) * 100}%` }}
+            />
+          </div>
+          <div className="text-xs text-gray-400 text-center mt-1">
+            {windDirection.toFixed(0)}°
+          </div>
+        </div>
+
+        {/* Visibilité */}
+        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-gray-300">Visibilité</span>
+            <span className={`text-2xl font-bold ${getVisibilityColor(weatherConditions.visibility)}`}>
+              {weatherConditions.visibility.toFixed(1)} km
+            </span>
+          </div>
+          <div className="w-full bg-slate-600 rounded-full h-2">
+            <div 
+              className={`h-2 rounded-full transition-all duration-300 ${getVisibilityColor(weatherConditions.visibility).replace('text-', 'bg-')}`}
+              style={{ width: `${Math.min(100, (weatherConditions.visibility / 15) * 100)}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Humidité */}
+        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-gray-300">Humidité</span>
+            <span className="text-2xl font-bold text-cyan-400">
+              {weatherConditions.humidity.toFixed(0)}%
+            </span>
+          </div>
+          <div className="w-full bg-slate-600 rounded-full h-2">
+            <div 
+              className="h-2 bg-cyan-500 rounded-full transition-all duration-300"
+              style={{ width: `${weatherConditions.humidity}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Pression atmosphérique */}
+        <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-gray-300">Pression</span>
+            <span className="text-2xl font-bold text-purple-400">
+              {weatherConditions.pressure.toFixed(1)} hPa
+            </span>
+          </div>
+          <div className="w-full bg-slate-600 rounded-full h-2">
+            <div 
+              className="h-2 bg-purple-500 rounded-full transition-all duration-300"
+              style={{ width: `${Math.min(100, ((weatherConditions.pressure - 950) / 100) * 100)}%` }}
+            />
           </div>
         </div>
       </div>
 
-      {/* Indicateur de sécurité */}
-      <div className={`rounded-lg p-4 border ${
-        safety === 'green' ? 'bg-green-600/20 border-green-500' :
-        safety === 'yellow' ? 'bg-yellow-600/20 border-yellow-500' :
-        'bg-red-600/20 border-red-500'
-      }`}>
-        <div className="flex items-center space-x-2 mb-2">
-          {safety === 'green' ? (
-            <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
-          ) : safety === 'yellow' ? (
-            <AlertTriangle className="w-4 h-4 text-yellow-400" />
-          ) : (
-            <AlertTriangle className="w-4 h-4 text-red-400" />
-          )}
-          <span className={`font-semibold text-sm ${
-            safety === 'green' ? 'text-green-400' :
-            safety === 'yellow' ? 'text-yellow-400' :
-            'text-red-400'
-          }`}>
-            Sécurité de Vol
-          </span>
+      {/* Rose des vents */}
+      <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
+        <h4 className="text-md font-semibold text-white mb-4">Rose des Vents</h4>
+        <div className="flex justify-center">
+          <div className="relative w-32 h-32">
+            {/* Cercle de base */}
+            <div className="absolute inset-0 border-2 border-slate-600 rounded-full"></div>
+            
+            {/* Flèche de direction du vent */}
+            <div 
+              className="absolute top-1/2 left-1/2 w-1 h-12 bg-blue-400 rounded-full origin-bottom transition-transform duration-500"
+              style={{ 
+                transform: `translate(-50%, -50%) rotate(${windDirection}deg)`,
+              }}
+            />
+            
+            {/* Points cardinaux */}
+            <div className="absolute top-1 left-1/2 transform -translate-x-1/2 text-xs text-gray-400">N</div>
+            <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 text-xs text-gray-400">S</div>
+            <div className="absolute left-1 top-1/2 transform -translate-y-1/2 text-xs text-gray-400">O</div>
+            <div className="absolute right-1 top-1/2 transform -translate-y-1/2 text-xs text-gray-400">E</div>
+          </div>
         </div>
-        <p className={`text-xs ${
-          safety === 'green' ? 'text-green-300' :
-          safety === 'yellow' ? 'text-yellow-300' :
-          'text-red-300'
-        }`}>
-          {message}
-        </p>
+        <div className="text-center mt-4 text-sm text-gray-300">
+          Direction: {getWindDirectionText(windDirection)} ({windDirection.toFixed(0)}°)
+        </div>
       </div>
 
-      {/* Détails météo */}
+      {/* Conditions de vol */}
       <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-        <h4 className="font-semibold text-sm mb-3">Détails Météo</h4>
-        
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-slate-400">Pression atmosphérique</span>
-            <span className="text-sm font-medium">{pressure} hPa</span>
-          </div>
-          
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-slate-400">Visibilité</span>
-            <div className="flex items-center space-x-1">
-              <Eye className="w-3 h-3 text-slate-400" />
-              <span className="text-sm font-medium">{visibility.toFixed(1)} km</span>
+        <h4 className="text-md font-semibold text-white mb-4">Conditions de Vol</h4>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-300">Vol autorisé</span>
+              <span className={`px-2 py-1 rounded text-xs ${
+                windSpeed < 15 && weatherConditions.visibility > 5 ? 'bg-green-600' : 'bg-red-600'
+              }`}>
+                {windSpeed < 15 && weatherConditions.visibility > 5 ? 'OUI' : 'NON'}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-300">Risque de turbulence</span>
+              <span className={`px-2 py-1 rounded text-xs ${
+                windSpeed > 10 ? 'bg-yellow-600' : 'bg-green-600'
+              }`}>
+                {windSpeed > 10 ? 'ÉLEVÉ' : 'FAIBLE'}
+              </span>
             </div>
           </div>
-          
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-slate-400">Conditions</span>
-            <span className="text-sm font-medium capitalize">{weatherCondition}</span>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-300">Qualité de l'air</span>
+              <span className="px-2 py-1 rounded text-xs bg-green-600">BONNE</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-300">Indice UV</span>
+              <span className="px-2 py-1 rounded text-xs bg-yellow-600">
+                {weatherConditions.uvIndex}/10
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Prévisions */}
       <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-        <h4 className="font-semibold text-sm mb-3">Prévisions (3h)</h4>
-        
-        <div className="grid grid-cols-3 gap-2">
+        <h4 className="text-md font-semibold text-white mb-4">Prévisions (3h)</h4>
+        <div className="grid grid-cols-3 gap-4">
           {[1, 2, 3].map((hour) => (
-            <div key={hour} className="text-center p-2 rounded bg-slate-600/50">
-              <div className="text-xs text-slate-400">+{hour}h</div>
-              <div className="text-sm font-medium">
-                {(temperature + (Math.random() - 0.5) * 5).toFixed(0)}°C
+            <div key={hour} className="text-center">
+              <div className="text-sm text-gray-300 mb-2">+{hour}h</div>
+              <div className={`text-lg font-bold ${getTemperatureColor(temperature + hour * 0.5)}`}>
+                {(temperature + hour * 0.5).toFixed(1)}°C
               </div>
-              <div className="text-xs text-slate-400">
-                {(windSpeed + (Math.random() - 0.5) * 3).toFixed(0)} km/h
+              <div className="text-xs text-gray-400 mt-1">
+                {(windSpeed + hour * 0.2).toFixed(1)} m/s
               </div>
             </div>
           ))}
         </div>
       </div>
-
-      {/* Alertes météo */}
-      {(windSpeed > 20 || weatherCondition === 'storm' || visibility < 5) && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="bg-red-600/20 border border-red-500 rounded-lg p-3"
-        >
-          <div className="flex items-center space-x-2">
-            <AlertTriangle className="w-4 h-4 text-red-400" />
-            <span className="text-sm font-semibold text-red-400">Alerte Météo</span>
-          </div>
-          <p className="text-xs text-red-300 mt-1">
-            Conditions météorologiques défavorables détectées. 
-            Vérifiez les conditions avant le décollage.
-          </p>
-        </motion.div>
-      )}
     </div>
   );
 } 

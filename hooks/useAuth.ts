@@ -7,6 +7,15 @@ interface User {
   role?: 'user' | 'admin' | 'super_admin';
 }
 
+// Super Admin par défaut
+const SUPER_ADMIN = {
+  email: 'sobam@daveandlucesolutions.com',
+  password: '@DavyFrantz2025',
+  role: 'super_admin',
+  name: 'Samuel OBAM',
+  id: 'super-admin'
+};
+
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -32,6 +41,22 @@ export function useAuth() {
 
   const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
+      // Vérifier si c'est le super admin
+      if (email === SUPER_ADMIN.email && password === SUPER_ADMIN.password) {
+        const user: User = {
+          id: SUPER_ADMIN.id,
+          email: SUPER_ADMIN.email,
+          name: SUPER_ADMIN.name,
+          role: 'super_admin'
+        };
+        
+        setUser(user);
+        localStorage.setItem('auth_token', btoa(`${user.id}:${Date.now()}:${user.email}`));
+        localStorage.setItem('user_data', JSON.stringify(user));
+        return { success: true };
+      }
+
+      // Pour les autres utilisateurs, essayer l'API
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -51,7 +76,7 @@ export function useAuth() {
         localStorage.setItem('user_data', JSON.stringify(data.user));
         return { success: true };
       } else {
-        return { success: false, error: data.error || 'Erreur de connexion' };
+        return { success: false, error: data.error || 'Email ou mot de passe incorrect' };
       }
     } catch (error) {
       return { success: false, error: 'Erreur de connexion' };

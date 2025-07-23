@@ -5,6 +5,15 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+// Super Admin par défaut
+const SUPER_ADMIN = {
+  email: 'sobam@daveandlucesolutions.com',
+  password: '@DavyFrantz2025',
+  role: 'super_admin',
+  name: 'Samuel OBAM',
+  id: 'super-admin'
+};
+
 export default function SignInPage() {
   const { login } = useAuth();
   const router = useRouter();
@@ -20,6 +29,26 @@ export default function SignInPage() {
     setError('');
     setLoading(true);
 
+    // Vérifier si c'est le super admin
+    if (formData.email === SUPER_ADMIN.email && formData.password === SUPER_ADMIN.password) {
+      // Authentification directe du super admin
+      const user = {
+        id: SUPER_ADMIN.id,
+        email: SUPER_ADMIN.email,
+        name: SUPER_ADMIN.name,
+        role: SUPER_ADMIN.role
+      };
+      
+      // Sauvegarder dans localStorage
+      localStorage.setItem('auth_token', btoa(`${user.id}:${Date.now()}:${user.email}`));
+      localStorage.setItem('user_data', JSON.stringify(user));
+      
+      // Rediriger
+      router.push('/');
+      return;
+    }
+
+    // Pour les autres utilisateurs, utiliser l'API
     const result = await login(formData.email, formData.password);
     
     if (result.success) {

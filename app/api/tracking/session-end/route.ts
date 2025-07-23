@@ -1,3 +1,4 @@
+export const revalidate = false;
 import { VisitorTrackingDB } from '@/lib/database/visitor-tracking';
 import { NextRequest, NextResponse } from 'next/server';
 

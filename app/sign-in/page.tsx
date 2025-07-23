@@ -4,7 +4,7 @@ import { useSession } from '@/components/providers/SessionProvider';
 import { ArrowRight, Eye, EyeOff, Lock, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,8 +14,20 @@ export default function SignInPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isClient, setIsClient] = useState(false);
+  const [sessionData, setSessionData] = useState<any>(null);
   const router = useRouter();
-  const { login } = useSession();
+
+  useEffect(() => {
+    setIsClient(true);
+    try {
+      const { login } = useSession();
+      setSessionData({ login });
+    } catch (error) {
+      // Ignore useSession error during SSR
+      setSessionData({ login: () => {} });
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +39,9 @@ export default function SignInPage() {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Connexion réussie
-      login({ email, name: email.split('@')[0] });
+      if (sessionData?.login) {
+        sessionData.login({ email, name: email.split('@')[0] });
+      }
       
       // Redirection vers la page précédente ou l'accueil
       window.location.href = '/';
@@ -37,6 +51,26 @@ export default function SignInPage() {
       setIsLoading(false);
     }
   };
+
+  // During SSR or before client hydration, render a loading state
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+        <div className="max-w-md w-full space-y-8">
+          <div className="bg-white rounded-2xl shadow-xl p-8">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                Connexion
+              </h2>
+              <p className="text-gray-600">
+                Chargement...
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">

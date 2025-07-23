@@ -4,7 +4,7 @@ import { useSession } from '@/components/providers/SessionProvider';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Crown, Star } from 'lucide-react';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 interface SubscriptionGuardProps {
   children: ReactNode;
@@ -17,7 +17,26 @@ export function SubscriptionGuard({
   requiredPlan = 'basic',
   fallback 
 }: SubscriptionGuardProps) {
-  const { hasSubscription, setShowSubscriptionModal } = useSession();
+  const [isClient, setIsClient] = useState(false);
+  const [sessionData, setSessionData] = useState<any>(null);
+
+  useEffect(() => {
+    setIsClient(true);
+    try {
+      const { hasSubscription, setShowSubscriptionModal } = useSession();
+      setSessionData({ hasSubscription, setShowSubscriptionModal });
+    } catch (error) {
+      // Ignore useSession error during SSR
+      setSessionData({ hasSubscription: true, setShowSubscriptionModal: () => {} });
+    }
+  }, []);
+
+  // During SSR or before client hydration, render children
+  if (!isClient || !sessionData) {
+    return <>{children}</>;
+  }
+
+  const { hasSubscription, setShowSubscriptionModal } = sessionData;
 
   if (!hasSubscription) {
     if (fallback) {

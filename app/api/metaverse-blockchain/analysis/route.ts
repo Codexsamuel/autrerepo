@@ -1,5 +1,8 @@
+
 import { MetaverseBlockchainService } from '@/lib/ai/metaverse-blockchain-service';
 import { NextRequest, NextResponse } from 'next/server';
+
+export const revalidate = false;
 
 const metaverseBlockchainService = new MetaverseBlockchainService({
   enableBlockchainAnalysis: true,

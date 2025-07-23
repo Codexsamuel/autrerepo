@@ -1,3 +1,5 @@
+export const dynamic = "force-static";
+
 import { FORMATION_SEO_CONFIGS, SEO_CONFIGS, SITEMAP_CONFIG } from '@/config/seo-config';
 import { MetadataRoute } from 'next';
 

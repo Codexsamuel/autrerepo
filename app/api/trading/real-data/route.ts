@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
+export const revalidate = false;
+import { NextRequest, NextResponse } from "next/server";
 
 // Cache intelligent avec TTL
 interface CacheEntry {

@@ -1,34 +1,29 @@
+export const revalidate = false;
 import { scrapeAliExpress } from '@/lib/scraper/aliexpress';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const { searchParams } = new URL(request.url);
-    const query = searchParams.get('q') || searchParams.get('query') || '';
-    const limit = parseInt(searchParams.get('limit') || '20');
-
-    if (!query) {
-      return NextResponse.json({
-        success: false,
-        error: 'Paramètre de recherche requis'
-      }, { status: 400 });
-    }
-
-    const products = await scrapeAliExpress({ category: "", query });
-    const limitedProducts = products.slice(0, limit);
+    // Pour l'export statique, retourner des données statiques
+    const products = await scrapeAliExpress({ category: "", query: "smartphone" });
+    const limitedProducts = products.slice(0, 10);
 
     return NextResponse.json({
       success: true,
-      products: limitedProducts,
-      total: limitedProducts.length,
-      query: query
+      data: {
+        products: limitedProducts,
+        total: limitedProducts.length,
+        message: 'Données de produits (mode statique)'
+      }
     });
 
   } catch (error) {
     console.error('Erreur API scraping products:', error);
-    return NextResponse.json(
-      { success: false, error: 'Erreur interne du serveur' },
-      { status: 500 }
-    );
+    
+    return NextResponse.json({
+      success: false,
+      message: 'Erreur lors de la récupération des produits',
+      error: error instanceof Error ? error.message : 'Erreur inconnue'
+    }, { status: 500 });
   }
 } 

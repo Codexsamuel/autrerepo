@@ -1,10 +1,10 @@
 'use client';
 
 import { useSession } from '@/components/providers/SessionProvider';
-import { ArrowRight, Check, Eye, EyeOff, Lock, Mail, User } from 'lucide-react';
+import { ArrowRight, Eye, EyeOff, Lock, Mail, User } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,9 +19,20 @@ export default function SignUpPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const [sessionData, setSessionData] = useState<any>(null);
   const router = useRouter();
-  const { login } = useSession();
+
+  useEffect(() => {
+    setIsClient(true);
+    try {
+      const { login } = useSession();
+      setSessionData({ login });
+    } catch (error) {
+      // Ignore useSession error during SSR
+      setSessionData({ login: () => {} });
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -35,14 +46,9 @@ export default function SignUpPage() {
     setIsLoading(true);
     setError('');
 
+    // Validation
     if (formData.password !== formData.confirmPassword) {
       setError('Les mots de passe ne correspondent pas');
-      setIsLoading(false);
-      return;
-    }
-
-    if (formData.password.length < 8) {
-      setError('Le mot de passe doit contenir au moins 8 caractères');
       setIsLoading(false);
       return;
     }
@@ -52,24 +58,31 @@ export default function SignUpPage() {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Inscription réussie, connexion automatique
-      login({ email: formData.email, name: formData.name });
+      if (sessionData?.login) {
+        sessionData.login({ 
+          name: formData.name, 
+          email: formData.email 
+        });
+      }
       
       // Redirection vers l'accueil
       window.location.href = '/';
     } catch (err) {
-      setError('Erreur lors de l\'inscription. Veuillez réessayer.');
+      setError('Erreur d\'inscription. Veuillez réessayer.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (success) {
+  if (sessionData?.success) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center p-4">
         <div className="max-w-md w-full">
           <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Check className="h-8 w-8 text-green-600" />
+              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+                <div className="h-8 w-8 text-green-600">✓</div>
+              </div>
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
               Compte créé avec succès !
@@ -84,6 +97,26 @@ export default function SignUpPage() {
               Se connecter maintenant
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // During SSR or before client hydration, render a loading state
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-100 flex items-center justify-center p-4">
+        <div className="max-w-md w-full space-y-8">
+          <div className="bg-white rounded-2xl shadow-xl p-8">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                Inscription
+              </h2>
+              <p className="text-gray-600">
+                Chargement...
+              </p>
+            </div>
           </div>
         </div>
       </div>

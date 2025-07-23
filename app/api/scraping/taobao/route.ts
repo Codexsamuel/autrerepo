@@ -1,3 +1,4 @@
+export const revalidate = false;
 import { taobaoService } from '@/lib/scraper/taobao-rapidapi';
 import { NextRequest, NextResponse } from 'next/server';
 

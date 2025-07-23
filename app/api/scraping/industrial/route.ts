@@ -1,4 +1,5 @@
-import { saveScrapedProducts, scrapeAllIndustrialMarkets, updateMainCatalog } from '@/lib/scraper/industrial-tech-scraper';
+export const revalidate = false;
+import { IndustrialProduct } from '@/types/industrial';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
@@ -21,9 +22,9 @@ export async function POST(request: NextRequest) {
       message: 'Industrial scraping completed successfully',
       data: {
         productsScraped: products.length,
-        categories: [...new Set(products.map(p => p.category))],
-        origins: [...new Set(products.map(p => p.origin))],
-        averagePrice: products.reduce((sum, p) => sum + p.price, 0) / products.length
+        categories: [...new Set(products.map((p: IndustrialProduct) => p.category))],
+        origins: [...new Set(products.map((p: IndustrialProduct) => p.origin))],
+        averagePrice: products.reduce((sum: number, p: IndustrialProduct) => sum + p.price, 0) / products.length
       }
     });
     

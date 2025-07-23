@@ -1,6 +1,7 @@
-import { getCategories, getCountries, getScrapingStats, getSources, scrapeChineseStores } from '@/lib/scraper/chinese-stores';
+export const revalidate = false;
+import { getScrapingStats } from '@/lib/scraper/chinese-stores';
 import { Product } from '@/lib/scraper/multi-markets';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 // Fonction pour convertir ScrapedProduct en Product
 function convertToProduct(scrapedProduct: any): Product {
@@ -43,56 +44,26 @@ function convertToProduct(scrapedProduct: any): Product {
   };
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const { searchParams } = new URL(request.url);
-    const action = searchParams.get('action');
-    const query = decodeURIComponent(searchParams.get('query') || '');
-    const category = decodeURIComponent(searchParams.get('category') || '');
-    const country = decodeURIComponent(searchParams.get('country') || '');
+    // Pour l'export statique, retourner des données statiques
+    const stats = getScrapingStats();
     
-    // Debug des paramètres
-    console.log('Paramètres reçus:', { query, category, country });
-
-    // Actions spéciales
-    if (action === 'stats') {
-      const stats = getScrapingStats();
-      return NextResponse.json({ success: true, data: stats });
-    }
-
-    if (action === 'categories') {
-      const categories = getCategories();
-      return NextResponse.json({ success: true, data: categories });
-    }
-
-    if (action === 'sources') {
-      const sources = getSources();
-      return NextResponse.json({ success: true, data: sources });
-    }
-
-    if (action === 'countries') {
-      const countries = getCountries();
-      return NextResponse.json({ success: true, data: countries });
-    }
-
-    // Récupération des produits avec filtres
-    const result = await scrapeChineseStores(query, category, country);
-    const scrapedProducts = result.products;
-    
-    // Convertir les produits au format attendu par le composant
-    const products: Product[] = scrapedProducts.map(convertToProduct);
-
     return NextResponse.json({
       success: true,
-      data: products,
-      total: products.length
+      data: {
+        stats,
+        message: 'Données de scraping chinoises (mode statique)'
+      }
     });
 
   } catch (error) {
     console.error('Erreur API scraping chinese-stores:', error);
-    return NextResponse.json(
-      { success: false, error: 'Erreur interne du serveur' },
-      { status: 500 }
-    );
+    
+    return NextResponse.json({
+      success: false,
+      message: 'Erreur lors de la récupération des données',
+      error: error instanceof Error ? error.message : 'Erreur inconnue'
+    }, { status: 500 });
   }
 } 

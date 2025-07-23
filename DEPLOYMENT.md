@@ -1,319 +1,207 @@
-# 🚀 Guide de Déploiement - Novacore CRM
-
-Ce guide vous explique comment déployer l'application Novacore CRM sur Vercel et Netlify.
+# 🚀 Guide de Déploiement - DL Solutions Platform
 
 ## 📋 Prérequis
 
-- Node.js 18+ installé
-- Compte GitHub
-- Compte Vercel (optionnel)
-- Compte Netlify (optionnel)
-- Variables d'environnement configurées
+- Compte Netlify actif
+- Repository GitHub connecté
+- Domaine personnalisé configuré (daveandlucesolutions.com)
 
-## 🔧 Configuration des Variables d'Environnement
+## 🔧 Configuration Netlify
 
-### Variables Requises
+### 1. Variables d'Environnement
+
+Configurez ces variables dans les paramètres Netlify :
 
 ```bash
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=votre_url_supabase
-NEXT_PUBLIC_SUPABASE_ANON_KEY=votre_clé_anon_supabase
-SUPABASE_SERVICE_ROLE_KEY=votre_clé_service_supabase
-
-# Clerk (Authentification)
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=votre_clé_publique_clerk
-CLERK_SECRET_KEY=votre_clé_secrète_clerk
-
-# Stripe (Paiements)
-STRIPE_SECRET_KEY=votre_clé_secrète_stripe
-STRIPE_WEBHOOK_SECRET=votre_webhook_secret_stripe
-
-# Redis (Cache)
-REDIS_URL=votre_url_redis
-
-# OpenAI (IA)
-OPENAI_API_KEY=votre_clé_api_openai
-
-# ElevenLabs (Synthèse vocale)
-ELEVENLABS_API_KEY=votre_clé_api_elevenlabs
-
-# MetaAPI (Trading)
-METAAPI_TOKEN=votre_token_metaapi
+# Variables essentielles
+NODE_VERSION=18
+NPM_FLAGS=--legacy-peer-deps
+NEXT_TELEMETRY_DISABLED=1
 
 # URLs de l'application
-NEXT_PUBLIC_API_URL=https://votre-backend-api.vercel.app
+NEXT_PUBLIC_APP_URL=https://daveandlucesolutions.com
+NEXT_PUBLIC_SITE_URL=https://daveandlucesolutions.com
+
+# APIs (optionnelles pour le mode simulation)
+OPENAI_API_KEY=your_openai_key
+GEMINI_API_KEY=your_gemini_key
+ALPHA_VANTAGE_API_KEY=your_alpha_vantage_key
+
+# Base de données (optionnel)
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_key
 ```
 
-## 🌐 Déploiement sur Vercel
+### 2. Paramètres de Build
 
-### Méthode 1: Via GitHub (Recommandé)
+- **Commande de build** : `npm run build:netlify`
+- **Dossier de publication** : `.next`
+- **Fonctions** : `netlify/functions`
 
-1. **Connectez votre repository GitHub à Vercel**
-   - Allez sur [vercel.com](https://vercel.com)
-   - Cliquez sur "New Project"
-   - Importez votre repository GitHub
-   - Vercel détectera automatiquement Next.js
+## 🚀 Déploiement Automatique
 
-2. **Configurez les variables d'environnement**
-   - Dans les paramètres du projet Vercel
-   - Allez dans "Environment Variables"
-   - Ajoutez toutes les variables requises
-
-3. **Déployez**
-   - Vercel déploiera automatiquement à chaque push sur la branche main
-   - Les branches de développement créeront des previews automatiques
-
-### Méthode 2: Via CLI
+### Option 1 : Script Automatisé
 
 ```bash
-# Installer Vercel CLI
-npm i -g vercel
-
-# Se connecter à Vercel
-vercel login
-
-# Déployer
-vercel --prod
+# Exécuter le script de déploiement
+./scripts/deploy.sh
 ```
 
-## 🌐 Déploiement sur Netlify
-
-### Méthode 1: Via GitHub (Recommandé)
-
-1. **Connectez votre repository GitHub à Netlify**
-   - Allez sur [netlify.com](https://netlify.com)
-   - Cliquez sur "New site from Git"
-   - Choisissez GitHub et votre repository
-   - Configurez les paramètres de build :
-     - Build command: `npm run build`
-     - Publish directory: `.next`
-
-2. **Configurez les variables d'environnement**
-   - Dans les paramètres du site Netlify
-   - Allez dans "Environment variables"
-   - Ajoutez toutes les variables requises
-
-3. **Déployez**
-   - Netlify déploiera automatiquement à chaque push sur la branche main
-
-### Méthode 2: Via CLI
+### Option 2 : Déploiement Manuel
 
 ```bash
-# Installer Netlify CLI
-npm i -g netlify-cli
+# 1. Nettoyer le cache
+rm -rf .next
+rm -rf node_modules/.cache
 
-# Se connecter à Netlify
-netlify login
+# 2. Installer les dépendances
+npm install --legacy-peer-deps
 
-# Déployer
-netlify deploy --prod --dir=.next
+# 3. Build de production
+npm run build:netlify
+
+# 4. Vérifier le build
+ls -la .next/
 ```
 
-## 🚀 Déploiement Automatisé
+## 🌐 Configuration du Domaine
 
-Utilisez notre script de déploiement automatisé :
+### 1. DNS Configuration
 
-```bash
-# Déployer sur Vercel et Netlify
-./scripts/deploy-all.sh both
+Ajoutez ces enregistrements DNS :
 
-# Déployer seulement sur Vercel
-./scripts/deploy-all.sh vercel
+```
+Type: CNAME
+Nom: www
+Valeur: your-site.netlify.app
 
-# Déployer seulement sur Netlify
-./scripts/deploy-all.sh netlify
+Type: A
+Nom: @
+Valeur: 75.2.60.5
 ```
 
-## 📦 Build Local
+### 2. Certificat SSL
 
-Pour tester le build localement avant le déploiement :
+Netlify génère automatiquement un certificat SSL gratuit.
 
-```bash
-# Installer les dépendances
-pnpm install
+## 📱 PWA Configuration
 
-# Build de production
-pnpm run build
+Le site est configuré comme PWA avec :
 
-# Tester le build
-pnpm run start
-```
+- ✅ Service Worker (`/sw.js`)
+- ✅ Manifest (`/manifest.json`)
+- ✅ Icônes multiples
+- ✅ Installation hors ligne
+- ✅ Notifications push
 
-## 🔍 Vérification du Déploiement
+## 🔒 Sécurité
 
-Après le déploiement, vérifiez :
+### Headers Configurés
 
-1. **Page d'accueil** : L'application se charge correctement
-2. **Authentification** : Les connexions fonctionnent
-3. **API Routes** : Les endpoints répondent
-4. **Base de données** : Les connexions Supabase fonctionnent
-5. **Paiements** : Les intégrations Stripe marchent
-6. **IA** : Les fonctionnalités OpenAI sont opérationnelles
+- `X-Frame-Options: DENY`
+- `X-XSS-Protection: 1; mode=block`
+- `X-Content-Type-Options: nosniff`
+- `Referrer-Policy: strict-origin-when-cross-origin`
+- `Permissions-Policy: camera=(), microphone=(), geolocation=()`
 
-## 🛠️ Dépannage
+### Cache Strategy
 
-### Erreurs Communes
+- **Statiques** : 1 an (immutable)
+- **Images** : 24 heures
+- **API** : Pas de cache
 
-1. **Build Failed**
-   - Vérifiez les variables d'environnement
-   - Consultez les logs de build
-   - Testez le build localement
+## 📊 Monitoring
 
-2. **Runtime Errors**
-   - Vérifiez les variables d'environnement en production
-   - Consultez les logs de runtime
-   - Testez les fonctionnalités une par une
+### Performance
 
-3. **CORS Errors**
-   - Configurez les domaines autorisés dans Supabase
-   - Vérifiez les headers CORS dans vercel.json et netlify.toml
+- ✅ Lighthouse Score optimisé
+- ✅ Core Web Vitals
+- ✅ Performance Monitor intégré
+- ✅ Analytics temps réel
 
-### Logs et Monitoring
+### SEO
 
-- **Vercel** : Dashboard > Functions > Logs
-- **Netlify** : Site settings > Functions > Logs
-- **Supabase** : Dashboard > Logs
-- **Clerk** : Dashboard > Logs
+- ✅ Meta tags optimisés
+- ✅ Open Graph
+- ✅ Twitter Cards
+- ✅ JSON-LD structured data
+- ✅ Sitemap automatique
 
-## 🔄 Déploiement Continu
+## 🛠️ Fonctionnalités Déployées
 
-### GitHub Actions (Optionnel)
+### 🎯 Simulation de Drones
 
-Créez `.github/workflows/deploy.yml` :
+- Interface 3D interactive
+- Contrôles réalistes
+- Scénarios multiples
+- Analytics de performance
 
-```yaml
-name: Deploy to Vercel and Netlify
+### 💼 Interface Investisseurs
 
-on:
-  push:
-    branches: [ main ]
+- Dashboard professionnel
+- Métriques temps réel
+- Rapports détaillés
+- Présentation pitch
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-      - run: npm ci
-      - run: npm run build
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v20
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.ORG_ID }}
-          vercel-project-id: ${{ secrets.PROJECT_ID }}
-      - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v1.2
-        with:
-          publish-dir: './.next'
-          production-branch: main
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Deploy from GitHub Actions"
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-```
+### 🤖 Intelligence Artificielle
 
-## 📞 Support
+- Chatbot avancé
+- Analyse prédictive
+- Recommandations personnalisées
+- Mode simulation intégré
+
+### 📈 Analytics & Performance
+
+- Monitoring temps réel
+- Métriques utilisateur
+- Optimisation automatique
+- Rapports détaillés
+
+## 🔄 Mise à Jour
+
+### Déploiement Continu
+
+1. Poussez vers `clean-start`
+2. Netlify déploie automatiquement
+3. Vérifiez les métriques
+4. Testez les fonctionnalités
+
+### Rollback
 
 En cas de problème :
 
-1. Consultez les logs de déploiement
-2. Vérifiez la documentation officielle
-3. Contactez l'équipe de développement
-4. Ouvrez une issue sur GitHub
+1. Allez dans Netlify Dashboard
+2. Sélectionnez un déploiement précédent
+3. Cliquez sur "Publish this deploy"
 
-## 🎯 URLs de Déploiement
+## 📞 Support
 
-Une fois déployé, votre application sera accessible sur :
+### Logs de Déploiement
 
-- **Vercel** : `https://votre-projet.vercel.app`
-- **Netlify** : `https://votre-projet.netlify.app`
+- Netlify Dashboard → Deployments → Logs
+- Vérifiez les erreurs de build
+- Consultez les métriques de performance
 
-N'oubliez pas de configurer vos domaines personnalisés si nécessaire !
+### Problèmes Courants
 
-## Architecture
-- **Frontend**: Netlify (export statique Next.js)
-- **Backend**: Vercel (API routes)
-- **Base de données**: Supabase
+1. **Erreur useSession** : Normal en mode statique
+2. **Modules manquants** : Vérifiez les dépendances
+3. **Cache** : Nettoyez le cache Netlify
 
-## Déploiement Rapide
+## 🎉 Déploiement Réussi !
 
-### 1. Déploiement automatique
-```bash
-./scripts/deploy.sh "Votre message de commit"
-```
+Votre site est maintenant accessible sur :
+**https://daveandlucesolutions.com**
 
-### 2. Déploiement manuel
-```bash
-git add .
-git commit -m "Votre message"
-git push origin clean-start
-```
+### Vérifications Post-Déploiement
 
-## Configuration Netlify
+- [ ] Site accessible
+- [ ] PWA installable
+- [ ] Performance optimale
+- [ ] SEO configuré
+- [ ] Analytics fonctionnels
+- [ ] Sécurité active
 
-### Variables d'environnement requises
-```env
-NEXT_PUBLIC_SUPABASE_URL=votre_url_supabase
-NEXT_PUBLIC_SUPABASE_ANON_KEY=votre_clé_supabase
-NEXT_PUBLIC_SITE_URL=https://votre-site.netlify.app
-```
+---
 
-### Build Settings
-- **Build command**: `pnpm run build`
-- **Publish directory**: `out`
-- **Node version**: `18.20.0`
-
-## Configuration Vercel (Backend)
-
-### Variables d'environnement
-```env
-SUPABASE_URL=votre_url_supabase
-SUPABASE_SERVICE_ROLE_KEY=votre_clé_service
-JWT_SECRET=votre_secret_jwt
-```
-
-## Monitoring
-
-### Netlify
-- Dashboard: https://app.netlify.com/sites/[votre-site]
-- Logs: Disponibles dans l'onglet "Deploys"
-
-### Vercel
-- Dashboard: https://vercel.com/dashboard
-- Logs: Disponibles dans l'onglet "Functions"
-
-## Troubleshooting
-
-### Erreurs courantes
-1. **Build failed**: Vérifier les logs Netlify
-2. **API errors**: Vérifier la configuration Vercel
-3. **Environment variables**: S'assurer que toutes les variables sont définies
-
-### Commandes utiles
-```bash
-# Test local
-pnpm run build
-pnpm run dev
-
-# Vérifier les erreurs
-pnpm run lint
-pnpm run type-check
-```
-
-## Performance
-
-### Optimisations appliquées
-- ✅ Export statique Next.js
-- ✅ Compression des assets
-- ✅ Cache headers optimisés
-- ✅ Images optimisées
-- ✅ Code splitting automatique
-
-### Métriques cibles
-- **First Contentful Paint**: < 1.5s
-- **Largest Contentful Paint**: < 2.5s
-- **Cumulative Layout Shift**: < 0.1 
+**DL Solutions Platform** - Plateforme de simulation de drones haute qualité 🚁

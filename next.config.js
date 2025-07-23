@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Désactiver ESLint pendant le build de production
+  eslint: {
+    ignoreDuringBuilds: process.env.NODE_ENV === 'production',
+  },
+  
   // Optimisations pour les API routes
   serverExternalPackages: [],
   

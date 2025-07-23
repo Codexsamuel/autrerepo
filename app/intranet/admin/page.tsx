@@ -558,7 +558,7 @@ export default function AdminPage() {
                             </td>
                             <td className="px-4 py-2">
                               {currentUser && currentUser.role === 'super_admin' ? (
-                                <AlertDialog open={pendingAction?.type === 'status' && pendingAction.user.id === user.id} onOpenChange={setPendingAction}>
+                                <AlertDialog open={pendingAction?.type === 'status' && pendingAction.user.id === user.id} onOpenChange={(open) => !open && setPendingAction(null)}>
                                   <AlertDialogTrigger asChild>
                                     <button
                                       className={`px-2 py-1 rounded text-xs font-bold ${user.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
@@ -598,7 +598,7 @@ export default function AdminPage() {
                             </td>
                             <td className="px-4 py-2">
                               {currentUser && currentUser.role === 'super_admin' ? (
-                                <AlertDialog open={pendingAction?.type === '2fa' && pendingAction.user.id === user.id} onOpenChange={setPendingAction}>
+                                <AlertDialog open={pendingAction?.type === '2fa' && pendingAction.user.id === user.id} onOpenChange={(open) => !open && setPendingAction(null)}>
                                   <AlertDialogTrigger asChild>
                                     <button
                                       className={`px-2 py-1 rounded text-xs font-bold ${user.two_factor_enabled ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}

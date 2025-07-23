@@ -31,6 +31,7 @@ export default function ModernNavigation({ className = '' }: ModernNavigationPro
     { name: t.navigation.intranet, href: '/intranet', icon: Building },
     { name: 'DL Trading', href: '/trading', icon: TrendingUp },
     { name: 'Drones 3D', href: '/drones-3d', icon: TrendingUp },
+    { name: 'Simulateur Drone', href: '/drone-simulator', icon: TrendingUp },
     { name: t.navigation.contact, href: '/contact', icon: Phone },
   ];
 

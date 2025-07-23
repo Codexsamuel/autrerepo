@@ -1,0 +1,36 @@
+{
+  "name": "atlas",
+  "version": "1.0.0",
+  "type": "drone",
+  "formats": ["gltf", "obj", "fbx"],
+  "features": {
+    "curves_preserved": true,
+    "lods_generated": true,
+    "geometry_optimized": true
+  },
+  "components": {
+    "body": true,
+    "arms": true,
+    "propellers": true,
+    "cameras": true,
+    "leds": true,
+    "sensors": true
+  },
+  "specifications": {
+    "dimensions": {
+      "length": "1.8m",
+      "width": "1.8m",
+      "height": "0.4m"
+    },
+    "weight": "4.2kg",
+    "max_payload": "3.0kg",
+    "flight_time": "35 minutes",
+    "max_speed": "20 m/s",
+    "max_altitude": "150m"
+  },
+  "export_path": "public/models/drones/",
+  "created_at": "2025-01-27T10:00:00Z",
+  "blender_version": "3.6.0",
+  "polygon_count": 28450,
+  "texture_resolution": "4096x4096"
+} 

@@ -6,6 +6,7 @@ import {
     Bell,
     Globe,
     Home,
+    Plane,
     Settings,
     Sparkles,
     TrendingUp,
@@ -65,6 +66,11 @@ const Navigation: React.FC = () => {
       name: 'Drone Business',
       href: '/drone-business',
       icon: Globe
+    },
+    {
+      name: 'Simulateur Drones',
+      href: '/drone-simulator',
+      icon: Plane
     },
     {
       name: 'Contact',

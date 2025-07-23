@@ -6,9 +6,9 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useState } from "react";
 
-const Drone3DModal = dynamic(() => import("@/components/Drone3DModal"), { ssr: false });
-const FeatureDetailModal = dynamic(() => import("@/components/FeatureDetailModal"), { ssr: false });
-const DronePrototypeImages = dynamic(() => import("@/components/DronePrototypeImages"), { ssr: false });
+
+const FeatureDetailModal = dynamic(() => import("@/components/FeatureDetailModal"));
+const DronePrototypeImages = dynamic(() => import("@/components/DronePrototypeImages"));
 
 const featuresSentinel = [
   {
@@ -228,7 +228,6 @@ export default function Drones3DPage() {
       </motion.section>
 
       {/* Modales */}
-      <Drone3DModal isOpen={show3D} onClose={() => setShow3D(false)} />
       <FeatureDetailModal isOpen={!!featureDetail} onClose={() => setFeatureDetail(null)} feature={featureDetail} />
 
       {/* Atlas X1 Section */}
@@ -271,7 +270,6 @@ export default function Drones3DPage() {
       </motion.section>
 
       {/* Modales */}
-      <Drone3DModal isOpen={show3D} onClose={() => setShow3D(false)} />
       <FeatureDetailModal isOpen={!!featureDetail} onClose={() => setFeatureDetail(null)} feature={featureDetail} />
 
       {/* Applications Slider Section (placeholder) */}

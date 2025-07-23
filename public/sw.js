@@ -2,15 +2,10 @@
 const CACHE_NAME = 'dl-solutions-v1.0.0';
 const urlsToCache = [
   '/',
-  '/css/globals.css',
+  '/drone-simulator',
+  '/investor-demo',
+  '/static/css/app/layout.css',
   '/images/logos/logo-dl.png',
-  '/manifest.json',
-  '/api/scraping/chinese-stores',
-  '/api/trading/real-data',
-  '/novacore',
-  '/dl-style',
-  '/formations',
-  '/novaworld'
 ];
 
 // Installation du Service Worker
@@ -24,39 +19,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Interception des requêtes
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Retourner la réponse du cache si elle existe
-        if (response) {
-          return response;
-        }
-        
-        // Sinon, faire la requête réseau
-        return fetch(event.request)
-          .then((response) => {
-            // Vérifier si la réponse est valide
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-
-            // Cloner la réponse
-            const responseToCache = response.clone();
-
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                cache.put(event.request, responseToCache);
-              });
-
-            return response;
-          });
-      })
-  );
-});
-
-// Mise à jour du cache
+// Activation et nettoyage des anciens caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -72,12 +35,34 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+// Stratégie de cache: Network First, puis Cache
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    fetch(event.request)
+      .then((response) => {
+        // Si la réponse est valide, on la met en cache
+        if (response.status === 200) {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME)
+            .then((cache) => {
+              cache.put(event.request, responseClone);
+            });
+        }
+        return response;
+      })
+      .catch(() => {
+        // Si le réseau échoue, on utilise le cache
+        return caches.match(event.request);
+      })
+  );
+});
+
 // Gestion des notifications push
 self.addEventListener('push', (event) => {
   const options = {
     body: event.data ? event.data.text() : 'Nouvelle notification DL Solutions',
     icon: '/images/logos/logo-dl.png',
-    badge: '/images/icons/icon-72x72.png',
+    badge: '/images/logos/logo-dl.png',
     vibrate: [100, 50, 100],
     data: {
       dateOfArrival: Date.now(),
@@ -87,12 +72,12 @@ self.addEventListener('push', (event) => {
       {
         action: 'explore',
         title: 'Voir plus',
-        icon: '/images/icons/icon-72x72.png'
+        icon: '/images/logos/logo-dl.png'
       },
       {
         action: 'close',
         title: 'Fermer',
-        icon: '/images/icons/icon-72x72.png'
+        icon: '/images/logos/logo-dl.png'
       }
     ]
   };

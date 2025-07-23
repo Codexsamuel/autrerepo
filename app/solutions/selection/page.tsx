@@ -1,6 +1,5 @@
 "use client";
 
-import SEOOptimized from '@/components/SEOOptimized';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -110,14 +109,6 @@ export default function CRMSSelectionPage() {
 
   return (
     <>
-      <SEOOptimized
-        pageKey="erp"
-        customConfig={{
-          title: "ERP & Solutions sectorielles | DL Solutions",
-          description: "ERP spécialisés pour banque, assurance, hôtellerie, immobilier, restauration. Optimisez vos processus métier avec DL Solutions.",
-          url: "https://www.dl-solutions.com/solutions/selection"
-        }}
-      />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
         {/* Header */}
         <header className="bg-white shadow-sm border-b">

@@ -1,6 +1,5 @@
 'use client';
 
-import SEOOptimized from '@/components/SEOOptimized';
 import { Award, Calendar, Code, Database, ExternalLink, Github, Globe, Palette, Smartphone, Star, Users, Zap } from 'lucide-react';
 import { useState } from 'react';
 
@@ -139,14 +138,6 @@ export default function PortfolioPage() {
 
   return (
     <>
-      <SEOOptimized
-        pageKey="portfolio"
-        customConfig={{
-          title: "Portfolio | Projets & Réalisations DL Solutions",
-          description: "Découvrez notre portfolio de projets : sites web, applications, CRM, e-commerce, IA. Réalisations DL Solutions pour entreprises au Cameroun et à l'international.",
-          url: "https://www.dl-solutions.com/portfolio"
-        }}
-      />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20">

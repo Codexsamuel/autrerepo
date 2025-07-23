@@ -1,6 +1,5 @@
 "use client";
 
-import SEOOptimized from '@/components/SEOOptimized';
 import BettingHistory from '@/components/betting/BettingHistory';
 import LiveChat from '@/components/chat/LiveChat';
 import PushNotifications from '@/components/notifications/PushNotifications';
@@ -69,14 +68,6 @@ export default function DLBookmakerPage() {
 
   return (
     <>
-      <SEOOptimized
-        pageKey="dl-bookmaker"
-        customConfig={{
-          title: "DL Bookmaker | Gestion des paris sportifs – DL Solutions",
-          description: "Plateforme de gestion de paris sportifs, résultats en temps réel, statistiques et outils d’analyse pour les passionnés et professionnels.",
-          url: "https://www.dl-solutions.com/novacore/dl-bookmaker"
-        }}
-      />
       <div className="space-y-6">
         {/* Header avec thème */}
         <div className="flex items-center justify-between flex-wrap gap-4">

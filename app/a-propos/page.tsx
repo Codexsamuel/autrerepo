@@ -1,6 +1,5 @@
 "use client";
 
-import SEOOptimized from '@/components/SEOOptimized';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -35,14 +34,6 @@ export default function AboutPage() {
     { number: "24/7", label: "Support client" },]
   return (
     <>
-      <SEOOptimized
-        pageKey="about"
-        customConfig={{
-          title: "À propos | DL Solutions - Davy & Lucie, Experts Digitaux",
-          description: "Découvrez DL Solutions, fondée par Davy et Lucie. Experts en solutions digitales, CRM, e-commerce, formation. Innovation et excellence au service des entreprises au Cameroun.",
-          url: "https://www.dl-solutions.com/a-propos"
-        }}
-      />
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-teal-50">
         {/* Header */}
         <header className="bg-white/90 backdrop-blur-xl shadow-lg border-b border-white/20">

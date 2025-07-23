@@ -1,6 +1,5 @@
 "use client";
 
-import SEOOptimized from '@/components/SEOOptimized';
 import { FormValidation } from "@/components/form-validation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, MapPin, Phone } from "lucide-react";
@@ -75,14 +74,6 @@ export default function ContactPage() {
 
   return (
     <>
-      <SEOOptimized
-        pageKey="contact"
-        customConfig={{
-          title: "Contact | DL Solutions - Yaoundé, Cameroun",
-          description: "Contactez DL Solutions à Yaoundé. Support technique, devis, formation, conseil. Équipe d'experts disponibles pour vos projets digitaux au Cameroun.",
-          url: "https://www.dl-solutions.com/contact"
-        }}
-      />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">

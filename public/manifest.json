@@ -1,131 +1,79 @@
 {
-  "name": "DL Solutions - Solutions Digitales Innovantes",
+  "name": "DL Solutions - Plateforme de Simulation de Drones",
   "short_name": "DL Solutions",
-  "description": "Solutions digitales innovantes pour entreprises : développement web, applications mobiles, e-commerce, formation, et conseil en transformation numérique.",
+  "description": "Plateforme professionnelle de simulation de drones avec IA avancée, réalité virtuelle et analytics en temps réel",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#10B981",
+  "background_color": "#0f172a",
+  "theme_color": "#3b82f6",
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "fr",
   "dir": "ltr",
-  "categories": [
-    "business",
-    "productivity",
-    "education",
-    "shopping",
-    "social",
-    "utilities"
-  ],
+  "categories": ["business", "productivity", "technology", "education"],
   "icons": [
     {
-      "src": "/android-chrome-192x192.png",
+      "src": "/images/logos/logo-dl.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "/android-chrome-512x512.png",
+      "src": "/images/logos/logo-dl.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "/favicon-32x32.png",
-      "sizes": "32x32",
-      "type": "image/png"
-    },
-    {
-      "src": "/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml"
+      "src": "/images/logos/logo-dl.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
   "screenshots": [
     {
-      "src": "/images/screenshots/desktop-home.png",
+      "src": "/images/screenshots/drone-simulator.png",
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Page d'accueil DL Solutions"
+      "label": "Simulateur de Drones DL Solutions"
     },
     {
-      "src": "/images/screenshots/mobile-home.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Page d'accueil mobile"
-    },
-    {
-      "src": "/images/screenshots/desktop-formations.png",
+      "src": "/images/screenshots/investor-demo.png",
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Catalogue des formations"
-    },
-    {
-      "src": "/images/screenshots/desktop-novaworld.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "NovaWorld - Réseau social professionnel"
+      "label": "Démo Investisseurs"
     }
   ],
   "shortcuts": [
     {
-      "name": "Formations",
-      "short_name": "Formations",
-      "description": "Accéder aux formations professionnelles",
-      "url": "/formations",
+      "name": "Simulateur Drones",
+      "short_name": "Simulateur",
+      "description": "Accéder au simulateur de drones",
+      "url": "/drone-simulator",
       "icons": [
         {
-          "src": "/images/icons/formations-96x96.png",
+          "src": "/images/logos/logo-dl.png",
           "sizes": "96x96"
         }
       ]
     },
     {
-      "name": "NovaWorld",
-      "short_name": "NovaWorld",
-      "description": "Réseau social professionnel",
-      "url": "/novaworld",
+      "name": "Démo Investisseurs",
+      "short_name": "Démo",
+      "description": "Voir la démo pour investisseurs",
+      "url": "/investor-demo",
       "icons": [
         {
-          "src": "/images/icons/novaworld-96x96.png",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "DL-Style",
-      "short_name": "DL-Style",
-      "description": "Boutique en ligne",
-      "url": "/dl-style",
-      "icons": [
-        {
-          "src": "/images/icons/dlstyle-96x96.png",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "Scraping",
-      "short_name": "Scraping",
-      "description": "API de scraping multi-marchés",
-      "url": "/scraping-multi-market",
-      "icons": [
-        {
-          "src": "/images/icons/scraping-96x96.png",
+          "src": "/images/logos/logo-dl.png",
           "sizes": "96x96"
         }
       ]
     }
   ],
-  "related_applications": [
-    {
-      "platform": "webapp",
-      "url": "https://dlsolutions.com"
-    }
-  ],
+  "related_applications": [],
   "prefer_related_applications": false,
   "edge_side_panel": {
     "preferred_width": 400
@@ -133,77 +81,10 @@
   "launch_handler": {
     "client_mode": "navigate-existing"
   },
-  "handle_links": "preferred",
-  "capture_links": "existing-client-navigate",
-  "file_handlers": [
-    {
-      "action": "/file-handler",
-      "accept": {
-        "text/*": [".txt", ".md", ".json"],
-        "application/pdf": [".pdf"],
-        "image/*": [".png", ".jpg", ".jpeg", ".gif", ".webp"]
-      }
-    }
-  ],
   "protocol_handlers": [
     {
-      "protocol": "web+dlsolutions",
-      "url": "/protocol-handler?url=%s"
+      "protocol": "web+dl",
+      "url": "/?protocol=%s"
     }
-  ],
-  "share_target": {
-    "action": "/share",
-    "method": "POST",
-    "enctype": "multipart/form-data",
-    "params": {
-      "title": "title",
-      "text": "text",
-      "url": "url",
-      "files": [
-        {
-          "name": "files",
-          "accept": ["image/*", "text/*", "application/pdf"]
-        }
-      ]
-    }
-  },
-  "permissions": [
-    "geolocation",
-    "notifications",
-    "camera",
-    "microphone"
-  ],
-  "display_override": [
-    "window-controls-overlay",
-    "standalone",
-    "minimal-ui"
-  ],
-  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
-  "id": "dlsolutions-app",
-  "version": "1.0.0",
-  "author": "DL Solutions",
-  "homepage_url": "https://dlsolutions.com",
-  "developer": {
-    "name": "DL Solutions",
-    "url": "https://dlsolutions.com"
-  },
-  "keywords": [
-    "solutions digitales",
-    "développement web",
-    "applications mobiles",
-    "e-commerce",
-    "formation",
-    "conseil",
-    "transformation numérique",
-    "DL Solutions",
-    "NovaWorld",
-    "DL-Style",
-    "scraping",
-    "trading",
-    "CRM",
-    "immobilier",
-    "hopital",
-    "banque",
-    "assurance"
   ]
 } 

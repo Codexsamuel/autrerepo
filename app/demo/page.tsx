@@ -34,6 +34,8 @@ interface Portfolio {
   lastUpdate: string;
 }
 
+export const dynamic = 'force-dynamic';
+
 export default function DemoPage() {
   const [activeTab, setActiveTab] = useState('symbols');
   const [symbols, setSymbols] = useState<TradingSymbol[]>([]);

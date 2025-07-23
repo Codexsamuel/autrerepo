@@ -1,7 +1,6 @@
 "use client";
 
 import { mediaConfig } from "@/app/config/media";
-import SEOOptimized from "@/components/SEOOptimized";
 import AppointmentPopup from '@/components/appointment-popup';
 import CookiesBanner from '@/components/cookies-banner';
 import { EventVideoCard } from "@/components/event-video-card";
@@ -506,23 +505,6 @@ export default function HomePage() {
 
   return (
     <>
-      <SEOOptimized
-        pageKey="home"
-        faq={[
-          {
-            question: "Quels services propose DL Solutions ?",
-            answer: "DL Solutions propose du développement web, des applications mobiles, de l'e-commerce, des formations et du conseil en transformation numérique."
-          },
-          {
-            question: "Comment contacter DL Solutions ?",
-            answer: "Vous pouvez nous contacter par téléphone, email ou via notre formulaire de contact en ligne."
-          },
-          {
-            question: "DL Solutions propose-t-il des formations ?",
-            answer: "Oui, nous proposons des formations professionnelles certifiantes dans divers domaines du digital."
-          }
-        ]}
-      />
       
       <MarqueeBanner />
 

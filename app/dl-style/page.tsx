@@ -1,6 +1,5 @@
 'use client';
 
-import SEOOptimized from '@/components/SEOOptimized';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -748,32 +747,6 @@ export default function DLStylePage() {
 
   return (
     <>
-      <SEOOptimized
-        pageKey="dl-style"
-        product={{
-          name: 'Catalogue DL-Style',
-          description: 'Boutique en ligne premium avec produits de qualité',
-          price: '49-1499',
-          currency: 'EUR',
-          availability: 'InStock',
-          brand: 'DL-Style',
-          category: 'E-commerce'
-        }}
-        faq={[
-          {
-            question: "DL-Style propose-t-il la livraison gratuite ?",
-            answer: "Oui, la livraison est gratuite dès 50€ d'achat sur toute la France."
-          },
-          {
-            question: "Quelle est la garantie des produits ?",
-            answer: "Tous nos produits bénéficient d'une garantie de 2 ans minimum."
-          },
-          {
-            question: "Puis-je payer en plusieurs fois ?",
-            answer: "Oui, nous proposons le paiement en 3 ou 4 fois sans frais."
-          }
-        ]}
-      />
       
       <div className="min-h-screen bg-gray-50">
         {/* Header */}

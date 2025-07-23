@@ -5,6 +5,9 @@ const nextConfig = {
     ignoreDuringBuilds: process.env.NODE_ENV === 'production',
   },
   
+  // Désactiver le rendu statique pour éviter les erreurs useSession
+  trailingSlash: false,
+  
   // Optimisations pour les API routes
   serverExternalPackages: [],
   
@@ -14,7 +17,7 @@ const nextConfig = {
     'http://172.20.10.8:3000'
   ],
   
-  // Configuration des images
+  // Configuration des images avancée
   images: {
     domains: [
       'images.unsplash.com',
@@ -23,16 +26,44 @@ const nextConfig = {
       'picsum.photos'
     ],
     formats: ['image/webp', 'image/avif'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+  },
+  
+  // Optimisations de performance avancées
+  experimental: {
+    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
   },
   
   // Configuration des redirections
   async redirects() {
     return [
-      // Redirections spécifiques si nécessaire
+      // Redirections SEO
+      {
+        source: '/drone-simulator',
+        destination: '/simulateur-drones',
+        permanent: true,
+      },
+      {
+        source: '/drone-business',
+        destination: '/business-drones',
+        permanent: true,
+      },
     ];
   },
   
-  // Configuration des headers
+  // Configuration des headers avancés
   async headers() {
     return [
       {
@@ -52,6 +83,31 @@ const nextConfig = {
           },
         ],
       },
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
+        ],
+      },
     ];
   },
   
@@ -66,10 +122,45 @@ const nextConfig = {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
   
-  // Configuration des webpack
-  webpack: (config, { isServer }) => {
-    // Optimisations webpack si nécessaire
+  // Configuration webpack avancée
+  webpack: (config, { isServer, dev }) => {
+    // Optimisations pour la production
+    if (!dev && !isServer) {
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+          common: {
+            name: 'common',
+            minChunks: 2,
+            chunks: 'all',
+            enforce: true,
+          },
+        },
+      };
+    }
+    
+    // Optimisation des images SVG
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+    
     return config;
+  },
+  
+  // Configuration PWA
+  async rewrites() {
+    return [
+      {
+        source: '/sw.js',
+        destination: '/_next/static/sw.js',
+      },
+    ];
   },
 };
 

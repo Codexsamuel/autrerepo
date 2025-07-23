@@ -2,7 +2,6 @@
 
 import ContentAd from '@/components/ads/ContentAds';
 import { SubscriptionGuard } from '@/components/guards/SubscriptionGuard';
-import SEOOptimized from '@/components/SEOOptimized';
 import { Brain, Building2, Database, Globe, Shield, ShoppingCart, Smartphone, Target, TrendingUp, Users, Video, Zap } from "lucide-react";
 
 const services = [
@@ -104,17 +103,11 @@ const services = [
   }
 ]
 
+export const dynamic = 'force-dynamic';
+
 export default function ServicesPage() {
   return (
     <>
-      <SEOOptimized
-        pageKey="services"
-        customConfig={{
-          title: "Services & Solutions Digitales | DL Solutions",
-          description: "Services complets : développement web, mobile, IA, CRM, ERP, e-commerce, formation, conseil. Solutions sur-mesure pour entreprises au Cameroun et à l'international.",
-          url: "https://www.dl-solutions.com/services"
-        }}
-      />
       <SubscriptionGuard>
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
           <div className="container mx-auto px-4 py-8">

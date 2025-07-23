@@ -1,6 +1,5 @@
 "use client";
 
-import SEOOptimized from '@/components/SEOOptimized';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
@@ -440,14 +439,6 @@ export default function DLTravelPage() {
 
   return (
     <>
-      <SEOOptimized
-        pageKey="dl-travel"
-        customConfig={{
-          title: "DL Travel | Réservations & voyages d’affaires – DL Solutions",
-          description: "Plateforme de réservation de voyages, hôtels, packages sur-mesure pour entreprises et particuliers. Service premium, gestion centralisée.",
-          url: "https://www.dl-solutions.com/novacore/dl-travel"
-        }}
-      />
       <div className="container mx-auto p-6">
         <div className="mb-6">
           <h1 className="text-3xl font-bold mb-2">DL Travel - Agence de Voyage</h1>

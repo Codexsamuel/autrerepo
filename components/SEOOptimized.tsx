@@ -1,366 +1,144 @@
 'use client';
 
-import { SEOConfig, getFormationSEOConfig, getSEOConfig } from '@/config/seo-config';
-import { useEffect } from 'react';
+import Head from 'next/head';
 
-interface SEOOptimizedProps {
-  pageKey?: string;
-  formationKey?: string;
-  customConfig?: Partial<SEOConfig>;
-  faq?: Array<{ question: string; answer: string }>;
-  product?: {
-    name: string;
-    description: string;
-    price: string;
-    currency: string;
-    availability: string;
-    brand: string;
-    category: string;
-  };
-  course?: {
-    name: string;
-    description: string;
-    provider: string;
-    instructor: string;
-    duration: string;
-    price: string;
-    currency: string;
-  };
+interface SEOProps {
+  title: string;
+  description: string;
+  keywords?: string;
+  image?: string;
+  url?: string;
+  type?: 'website' | 'article' | 'product';
+  structuredData?: any;
+  canonical?: string;
 }
 
 export default function SEOOptimized({
-  pageKey = 'home',
-  formationKey,
-  customConfig = {},
-  faq = [],
-  product,
-  course
-}: SEOOptimizedProps) {
-  
-  // Obtenir la configuration SEO de base
-  const baseConfig = formationKey 
-    ? getFormationSEOConfig(formationKey)
-    : getSEOConfig(pageKey);
-  
-  // Fusionner avec la configuration personnalisée
-  const config: SEOConfig = {
-    ...baseConfig,
-    ...customConfig,
-    faq: customConfig.faq || faq || baseConfig.faq
+  title,
+  description,
+  keywords,
+  image = '/images/logos/logo-dl.png',
+  url,
+  type = 'website',
+  structuredData,
+  canonical,
+}: SEOProps) {
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://dlsolutions.com';
+  const fullUrl = url ? `${siteUrl}${url}` : siteUrl;
+  const fullImageUrl = image.startsWith('http') ? image : `${siteUrl}${image}`;
+
+  // Données structurées par défaut pour DL Solutions
+  const defaultStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'DL Solutions',
+    url: siteUrl,
+    logo: `${siteUrl}/images/logos/logo-dl.png`,
+    description: 'Plateforme professionnelle de simulation de drones avec IA avancée',
+    sameAs: [
+      'https://linkedin.com/company/dl-solutions',
+      'https://twitter.com/dlsolutions',
+    ],
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: '+237-XXX-XXX-XXX',
+      contactType: 'customer service',
+      areaServed: 'CM',
+      availableLanguage: ['French', 'English'],
+    },
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'CM',
+      addressLocality: 'Douala',
+    },
   };
 
-  useEffect(() => {
-    // Mise à jour du titre
-    document.title = config.title;
+  const finalStructuredData = structuredData || defaultStructuredData;
 
-    // Robots meta tag optimisé
-    const robotsContent = [
-      'index',
-      'follow',
-      'max-snippet:-1',
-      'max-image-preview:large',
-      'max-video-preview:-1'
-    ].join(', ');
+  return (
+    <Head>
+      {/* Métadonnées de base */}
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      {keywords && <meta name="keywords" content={keywords} />}
+      <meta name="author" content="DL Solutions" />
+      <meta name="robots" content="index, follow" />
+      <meta name="language" content="fr" />
+      <meta name="revisit-after" content="7 days" />
+      <meta name="distribution" content="global" />
+      <meta name="rating" content="general" />
 
-          // Meta tags ultra-optimisés pour DL Solutions
-      const metaTags = [
-        // Meta tags de base
-        { name: 'description', content: config.description },
-        { name: 'keywords', content: config.keywords },
-        { name: 'author', content: 'DL Solutions - Davy & Lucie' },
-        { name: 'robots', content: robotsContent },
-        { name: 'googlebot', content: robotsContent },
-        { name: 'bingbot', content: robotsContent },
-        
-        // Favicon et logo circulaire
-        { rel: 'icon', type: 'image/svg+xml', href: config.favicon || '/favicon-circular.svg' },
-        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
-        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
-        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
-        { rel: 'manifest', href: '/site.webmanifest' },
-      
-      // Open Graph avancé
-      { property: 'og:title', content: config.title },
-      { property: 'og:description', content: config.description },
-      { property: 'og:image', content: config.image },
-      { property: 'og:url', content: config.url },
-      { property: 'og:type', content: config.type },
-      { property: 'og:site_name', content: 'DL Solutions' },
-      { property: 'og:locale', content: 'fr_FR' },
-      { property: 'og:image:width', content: '1200' },
-      { property: 'og:image:height', content: '630' },
-      { property: 'og:image:alt', content: config.title },
-      { property: 'og:image:type', content: 'image/jpeg' },
-      
-      // Twitter Cards avancées
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: config.title },
-      { name: 'twitter:description', content: config.description },
-      { name: 'twitter:image', content: config.image },
-      { name: 'twitter:image:alt', content: config.title },
-      { name: 'twitter:site', content: '@dlsolutions' },
-      { name: 'twitter:creator', content: '@dlsolutions' },
-      { name: 'twitter:domain', content: 'dlsolutions.com' },
-      
-      // Canonical et alternates
-      { rel: 'canonical', href: config.url || 'https://dlsolutions.com' },
-      
-      // Géolocalisation pour le Cameroun
-      { name: 'geo.region', content: 'CM' },
-      { name: 'geo.placename', content: 'Yaoundé, Cameroun' },
-      { name: 'geo.position', content: '3.848033;11.502075' },
-      { name: 'ICBM', content: '3.848033, 11.502075' },
-      
-      // Mots-clés spécifiques DL Solutions
-      { name: 'application-name', content: 'DL Solutions' },
-      { name: 'apple-mobile-web-app-title', content: 'DL Solutions' },
-      { name: 'msapplication-TileColor', content: '#2563eb' },
-      { name: 'theme-color', content: '#2563eb' }
-    ];
+      {/* Open Graph */}
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:image" content={fullImageUrl} />
+      <meta property="og:url" content={fullUrl} />
+      <meta property="og:type" content={type} />
+      <meta property="og:site_name" content="DL Solutions" />
+      <meta property="og:locale" content="fr_FR" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content={title} />
 
-    // Supprimer les anciens meta tags
-    const existingMetaTags = document.querySelectorAll('meta[name="description"], meta[name="keywords"], meta[property^="og:"], meta[name^="twitter:"]');
-    existingMetaTags.forEach(tag => tag.remove());
+      {/* Twitter Card */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@dlsolutions" />
+      <meta name="twitter:creator" content="@dlsolutions" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={fullImageUrl} />
+      <meta name="twitter:image:alt" content={title} />
 
-    // Ajouter les nouveaux meta tags
-    metaTags.forEach(tag => {
-      const meta = document.createElement('meta');
-      if (tag.property) {
-        meta.setAttribute('property', tag.property);
-      }
-      if (tag.name) {
-        meta.setAttribute('name', tag.name);
-      }
-      if (tag.rel) {
-        meta.setAttribute('rel', tag.rel);
-      }
-      meta.setAttribute('content', tag.content || '');
-      document.head.appendChild(meta);
-    });
+      {/* Canonical URL */}
+      {canonical && <link rel="canonical" href={canonical} />}
 
-    // Données structurées pour l'organisation DL Solutions
-    const organizationSchema = {
-      '@context': 'https://schema.org',
-      '@type': 'Organization',
-      '@id': 'https://dlsolutions.com/#organization',
-      name: 'DL Solutions',
-      alternateName: ['Dave and Luce Solutions', 'Davy & Lucie Solutions'],
-      url: 'https://dlsolutions.com',
-      logo: {
-        '@type': 'ImageObject',
-        url: config.logo ? `https://dlsolutions.com${config.logo}` : 'https://dlsolutions.com/favicon-circular.svg',
-        width: 512,
-        height: 512
-      },
-      description: 'Solutions digitales innovantes par Davy et Lucie au Cameroun',
-      foundingDate: '2024',
-      founders: [
-        {
-          '@type': 'Person',
-          name: 'Davy',
-          jobTitle: 'Co-fondateur',
-          worksFor: {
-            '@type': 'Organization',
-            name: 'DL Solutions'
-          }
-        },
-        {
-          '@type': 'Person',
-          name: 'Lucie',
-          jobTitle: 'Co-fondatrice',
-          worksFor: {
-            '@type': 'Organization',
-            name: 'DL Solutions'
-          }
-        }
-      ],
-      address: {
-        '@type': 'PostalAddress',
-        streetAddress: 'École de Police',
-        addressLocality: 'Yaoundé',
-        addressRegion: 'Centre',
-        addressCountry: 'CM',
-        postalCode: '00000'
-      },
-      contactPoint: {
-        '@type': 'ContactPoint',
-        telephone: '+237-694-341-586',
-        contactType: 'customer service',
-        email: 'contact@dlsolutions.com',
-        availableLanguage: ['French', 'English']
-      },
-      geo: {
-        '@type': 'GeoCoordinates',
-        latitude: 3.848033,
-        longitude: 11.502075
-      },
-      sameAs: [
-        'https://www.facebook.com/dlsolutions',
-        'https://www.linkedin.com/company/dlsolutions',
-        'https://twitter.com/dlsolutions'
-      ]
-    };
+      {/* Favicon et icônes */}
+      <link rel="icon" href="/favicon.ico" />
+      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+      <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+      <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+      <link rel="manifest" href="/manifest.json" />
+      <meta name="theme-color" content="#3b82f6" />
+      <meta name="msapplication-TileColor" content="#3b82f6" />
 
-    // Données structurées pour le site web
-    const websiteSchema = {
-      '@context': 'https://schema.org',
-      '@type': 'WebSite',
-      '@id': 'https://dlsolutions.com/#website',
-      name: 'DL Solutions',
-      url: 'https://dlsolutions.com',
-      description: 'Écosystème digital complet par Davy et Lucie',
-      publisher: {
-        '@id': 'https://dlsolutions.com/#organization'
-      },
-      potentialAction: {
-        '@type': 'SearchAction',
-        target: {
-          '@type': 'EntryPoint',
-          urlTemplate: 'https://dlsolutions.com/search?q={search_term_string}'
-        },
-        'query-input': 'required name=search_term_string'
-      }
-    };
+      {/* Préconnexions pour améliorer les performances */}
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link rel="preconnect" href="https://images.unsplash.com" />
+      <link rel="preconnect" href="https://res.cloudinary.com" />
 
-    // Données structurées pour la page
-    const webpageSchema = {
-      '@context': 'https://schema.org',
-      '@type': 'WebPage',
-      '@id': `${config.url}#webpage`,
-      name: config.title,
-      description: config.description,
-      url: config.url,
-      isPartOf: {
-        '@id': 'https://dlsolutions.com/#website'
-      },
-      about: {
-        '@id': 'https://dlsolutions.com/#organization'
-      },
-      primaryImageOfPage: {
-        '@type': 'ImageObject',
-        url: config.image
-      },
-      datePublished: new Date().toISOString(),
-      dateModified: new Date().toISOString(),
-      breadcrumb: config.breadcrumbs.length > 0 ? {
-        '@id': `${config.url}#breadcrumb`
-      } : undefined
-    };
+      {/* DNS Prefetch pour les domaines externes */}
+      <link rel="dns-prefetch" href="//www.google-analytics.com" />
+      <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+      <link rel="dns-prefetch" href="//fonts.googleapis.com" />
 
-    // Données structurées pour les breadcrumbs
-    const breadcrumbSchema = config.breadcrumbs.length > 0 ? {
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
-      '@id': `${config.url}#breadcrumb`,
-      itemListElement: config.breadcrumbs.map((item, index) => ({
-        '@type': 'ListItem',
-        position: index + 1,
-        name: item.name,
-        item: item.url
-      }))
-    } : null;
+      {/* Données structurées JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(finalStructuredData),
+        }}
+      />
 
-    // Données structurées pour FAQ
-    const faqSchema = config.faq && config.faq.length > 0 ? {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      '@id': `${config.url}#faq`,
-      mainEntity: config.faq.map(item => ({
-        '@type': 'Question',
-        name: item.question,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: item.answer
-        }
-      }))
-    } : null;
+      {/* Métadonnées supplémentaires pour les moteurs de recherche */}
+      <meta name="google-site-verification" content="your-verification-code" />
+      <meta name="bing-site-verification" content="your-verification-code" />
+      <meta name="yandex-verification" content="your-verification-code" />
 
-    // Données structurées pour produit (si applicable)
-    const productSchema = product ? {
-      '@context': 'https://schema.org',
-      '@type': 'Product',
-      '@id': `${config.url}#product`,
-      name: product.name,
-      description: product.description,
-      brand: {
-        '@type': 'Brand',
-        name: product.brand
-      },
-      category: product.category,
-      offers: {
-        '@type': 'Offer',
-        price: product.price,
-        priceCurrency: product.currency,
-        availability: `https://schema.org/${product.availability}`,
-        url: config.url
-      }
-    } : null;
+      {/* Métadonnées pour les réseaux sociaux */}
+      <meta property="fb:app_id" content="your-facebook-app-id" />
+      <meta name="instagram:site" content="@dlsolutions" />
+      <meta name="linkedin:company" content="dl-solutions" />
 
-    // Données structurées pour formation (si applicable)
-    const courseSchema = course ? {
-      '@context': 'https://schema.org',
-      '@type': 'Course',
-      '@id': `${config.url}#course`,
-      name: course.name,
-      description: course.description,
-      provider: {
-        '@type': 'Organization',
-        name: course.provider,
-        url: 'https://dlsolutions.com'
-      },
-      instructor: {
-        '@type': 'Person',
-        name: course.instructor,
-        worksFor: {
-          '@type': 'Organization',
-          name: 'DL Solutions'
-        }
-      },
-      timeRequired: course.duration,
-      offers: {
-        '@type': 'Offer',
-        price: course.price,
-        priceCurrency: course.currency,
-        url: config.url,
-        availability: 'https://schema.org/InStock'
-      }
-    } : null;
+      {/* Métadonnées pour les applications mobiles */}
+      <meta name="mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+      <meta name="apple-mobile-web-app-title" content="DL Solutions" />
 
-    // Injection des données structurées
-    const schemas = [
-      organizationSchema,
-      websiteSchema,
-      webpageSchema,
-      breadcrumbSchema,
-      faqSchema,
-      productSchema,
-      courseSchema
-    ].filter(Boolean);
-
-    // Supprimer les anciens scripts JSON-LD
-    const existingScripts = document.querySelectorAll('script[type="application/ld+json"]');
-    existingScripts.forEach(script => script.remove());
-
-    // Ajouter les nouveaux scripts JSON-LD
-    schemas.forEach(schema => {
-      const script = document.createElement('script');
-      script.type = 'application/ld+json';
-      script.text = JSON.stringify(schema);
-      document.head.appendChild(script);
-    });
-
-    // Nettoyage lors du démontage
-    return () => {
-      const scripts = document.querySelectorAll('script[type="application/ld+json"]');
-      scripts.forEach(script => {
-        if (script.textContent && schemas.some(schema => 
-          schema && script.textContent?.includes(schema['@type'] as string)
-        )) {
-          script.remove();
-        }
-      });
-    };
-  }, [config, product, course]);
-
-  return null; // Ce composant ne rend rien visuellement
+      {/* Métadonnées de sécurité */}
+      <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    </Head>
+  );
 } 

@@ -1,6 +1,5 @@
 "use client";
 
-import SEOOptimized from '@/components/SEOOptimized';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -177,14 +176,6 @@ export default function CRMIntegrationsPage() {
 
   return (
     <>
-      <SEOOptimized
-        pageKey="crm-integrations"
-        customConfig={{
-          title: "CRM & Gestion Client | DL Solutions",
-          description: "Solutions CRM avancées, intégrations Salesforce, HubSpot, gestion des contacts, automatisation, analytics et conformité RGPD pour booster votre relation client.",
-          url: "https://www.dl-solutions.com/novacore/crm-integrations"
-        }}
-      />
       <div className="space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between">

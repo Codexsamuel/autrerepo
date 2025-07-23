@@ -1,6 +1,5 @@
 "use client";
 
-import SEOOptimized from '@/components/SEOOptimized';
 import { FormValidation } from "@/components/form-validation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -178,14 +177,7 @@ export default function DevisPage() {
 
   return (
     <>
-      <SEOOptimized
-        pageKey="devis"
-        customConfig={{
-          title: "Devis Gratuit | DL Solutions - Estimation IA & Solutions Digitales",
-          description: "Obtenez un devis gratuit personnalisé pour vos projets digitaux : sites web, applications, CRM, e-commerce, IA. Estimation rapide et précise par DL Solutions.",
-          url: "https://www.dl-solutions.com/devis"
-        }}
-      />
+      {/* SEO Optimized */}
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">

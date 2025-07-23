@@ -1,5 +1,4 @@
 "use client";
-import SEOOptimized from '@/components/SEOOptimized';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -191,14 +190,6 @@ export default function NovaWorldPage() {
 
   return (
     <>
-      <SEOOptimized
-        pageKey="novaworld-main"
-        customConfig={{
-          title: "NovaWorld | Réseau social professionnel & business – DL Solutions",
-          description: "NovaWorld, le réseau social de DL Solutions pour connecter, collaborer et développer votre business. Rejoignez des milliers de professionnels et d'entreprises innovantes.",
-          url: "https://www.dl-solutions.com/novaworld"
-        }}
-      />
       
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
         {/* Header */}

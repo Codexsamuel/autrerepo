@@ -216,6 +216,29 @@ export default function Drones3DPage() {
                   ×
                 </button>
               </div>
+              
+              {/* Drone Prototype Images */}
+              <div className="mb-8">
+                <h4 className="text-xl font-bold mb-4 text-center">Prototypes de Drones</h4>
+                <DronePrototypeImages 
+                  images={[
+                    '/images/drone-simulator.jpg',
+                    '/images/drone-business.jpg',
+                    '/images/drones-presentation.jpg'
+                  ]}
+                  titles={[
+                    'Sentinel V1 - Drone Militaire',
+                    'Atlas X1 - Drone Industriel',
+                    'Prototype Avancé'
+                  ]}
+                  descriptions={[
+                    'Drone militaire tactique avec capacités avancées de surveillance',
+                    'Drone industriel polyvalent pour agriculture et logistique',
+                    'Prototype expérimental avec technologies de pointe'
+                  ]}
+                />
+              </div>
+              
               <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-8 text-center">
                 <div className="text-8xl mb-6 animate-bounce">🚁</div>
                 <h4 className="text-xl font-bold mb-4">Simulation 3D Interactive</h4>

@@ -9,10 +9,26 @@ import { useEffect, useState } from 'react';
 const SESSION_TIMEOUT = 3 * 60 * 1000; // 3 minutes
 
 export function SessionTimer() {
-  const { isAuthenticated, sessionStartTime } = useSession();
+  const [isClient, setIsClient] = useState(false);
+  const [sessionData, setSessionData] = useState<any>(null);
   const [timeLeft, setTimeLeft] = useState<number>(0);
 
   useEffect(() => {
+    setIsClient(true);
+    try {
+      const { isAuthenticated, sessionStartTime } = useSession();
+      setSessionData({ isAuthenticated, sessionStartTime });
+    } catch (error) {
+      // Ignore useSession error during SSR
+      setSessionData({ isAuthenticated: false, sessionStartTime: null });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isClient || !sessionData) return;
+
+    const { isAuthenticated, sessionStartTime } = sessionData;
+    
     if (isAuthenticated || !sessionStartTime) {
       setTimeLeft(0);
       return;
@@ -29,7 +45,14 @@ export function SessionTimer() {
     const interval = setInterval(updateTimer, 1000);
 
     return () => clearInterval(interval);
-  }, [isAuthenticated, sessionStartTime]);
+  }, [isClient, sessionData]);
+
+  // During SSR or before client hydration, render nothing
+  if (!isClient || !sessionData) {
+    return null;
+  }
+
+  const { isAuthenticated } = sessionData;
 
   if (isAuthenticated || timeLeft === 0) {
     return null;

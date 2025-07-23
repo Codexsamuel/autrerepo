@@ -28,6 +28,7 @@ const menuItems: MenuItem[] = [
   { id: "business", label: "Business Plan", icon: "💼", description: "Modèle économique" },
   { id: "faq", label: "FAQ", icon: "❓", description: "Questions & réponses" },
   { id: "contact", label: "Contact", icon: "📞", description: "Proposition commerciale" },
+  { id: "simulator", label: "Simulateur", icon: "🎮", description: "Simulation en temps réel" },
 ];
 
 const faqItems = [
@@ -412,6 +413,50 @@ export default function DronesPresentationPage() {
               <button className="px-8 py-4 bg-gradient-to-r from-green-600 to-blue-600 text-white font-bold rounded-xl hover:scale-105 transition-transform">
                 📋 Demander une démonstration
               </button>
+            </div>
+          </motion.div>
+        );
+
+      case "simulator":
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-8"
+          >
+            <h2 className="text-4xl font-bold text-center mb-8">🎮 Simulateur de Drones</h2>
+            
+            <div className="bg-[#181f2a] rounded-xl p-8 text-center">
+              <h3 className="text-2xl font-bold mb-4">Simulation en Temps Réel</h3>
+              <p className="text-gray-300 mb-8">
+                Testez nos drones dans un environnement virtuel réaliste. 
+                Contrôlez l'altitude, la vitesse, et observez les données en temps réel.
+              </p>
+              
+              <div className="grid md:grid-cols-3 gap-6 mb-8">
+                <div className="bg-gray-800 rounded-lg p-6">
+                  <div className="text-4xl mb-4">🛰️</div>
+                  <h4 className="text-lg font-bold mb-2">Sentinel V1</h4>
+                  <p className="text-gray-400">Simulation militaire avec vision nocturne</p>
+                </div>
+                <div className="bg-gray-800 rounded-lg p-6">
+                  <div className="text-4xl mb-4">🏭</div>
+                  <h4 className="text-lg font-bold mb-2">Atlas X1</h4>
+                  <p className="text-gray-400">Simulation industrielle avec capteurs</p>
+                </div>
+                <div className="bg-gray-800 rounded-lg p-6">
+                  <div className="text-4xl mb-4">📊</div>
+                  <h4 className="text-lg font-bold mb-2">Données en Temps Réel</h4>
+                  <p className="text-gray-400">Graphiques et métriques détaillées</p>
+                </div>
+              </div>
+              
+              <Link 
+                href="/drone-simulator" 
+                className="inline-block px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-xl hover:scale-105 transition-transform"
+              >
+                🚀 Lancer le Simulateur
+              </Link>
             </div>
           </motion.div>
         );

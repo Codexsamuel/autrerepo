@@ -8,6 +8,7 @@ import { useState } from "react";
 
 const Drone3DModal = dynamic(() => import("@/components/Drone3DModal"), { ssr: false });
 const FeatureDetailModal = dynamic(() => import("@/components/FeatureDetailModal"), { ssr: false });
+const DronePrototypeImages = dynamic(() => import("@/components/DronePrototypeImages"), { ssr: false });
 
 const featuresSentinel = [
   {
@@ -213,28 +214,22 @@ export default function Drones3DPage() {
           </ul>
         </div>
         <div className="flex-1 flex items-center justify-center">
-          {/* 3D/vidéo/visuel premium */}
+          {/* Visualisation des prototypes */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="w-full max-w-2xl aspect-video rounded-2xl overflow-hidden shadow-2xl bg-black flex items-center justify-center cursor-pointer group"
-            onClick={() => setShow3D(true)}
-            title="Voir le drone en 3D interactif"
+            className="w-full max-w-4xl h-[400px] rounded-2xl overflow-hidden shadow-2xl bg-[#0b0f17]"
           >
-            <iframe src="https://sketchfab.com/models/YOUR_MODEL_ID_EMBED_1/embed" allowFullScreen className="w-full h-full min-h-[350px] group-hover:opacity-80 transition-opacity duration-200" />
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <span className="text-white/80 text-lg font-semibold bg-black/40 px-4 py-2 rounded-full shadow-lg group-hover:scale-105 transition-transform">Cliquez pour manipuler en 3D</span>
-            </div>
+            <DronePrototypeImages droneType="sentinel" />
           </motion.div>
         </div>
       </motion.section>
 
-      {/* Modale 3D interactive */}
-      {show3D && <Drone3DModal onClose={() => setShow3D(false)} />}
-      {/* Modale détail feature */}
-      {featureDetail && <FeatureDetailModal feature={featureDetail} onClose={() => setFeatureDetail(null)} />}
+      {/* Modales */}
+      <Drone3DModal isOpen={show3D} onClose={() => setShow3D(false)} />
+      <FeatureDetailModal isOpen={!!featureDetail} onClose={() => setFeatureDetail(null)} feature={featureDetail} />
 
       {/* Atlas X1 Section */}
       <motion.section id="atlas" className="max-w-7xl mx-auto py-32 px-4 flex flex-col md:flex-row-reverse gap-20 items-center" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
@@ -262,20 +257,15 @@ export default function Drones3DPage() {
           </ul>
         </div>
         <div className="flex-1 flex items-center justify-center">
-          {/* 3D/vidéo/visuel premium */}
+          {/* Visualisation des prototypes */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="w-full max-w-2xl aspect-video rounded-2xl overflow-hidden shadow-2xl bg-black flex items-center justify-center cursor-pointer group"
-            onClick={() => setShow3D(true)}
-            title="Voir le drone en 3D interactif (bientôt)"
+            className="w-full max-w-4xl h-[400px] rounded-2xl overflow-hidden shadow-2xl bg-[#0b0f17]"
           >
-            <iframe src="https://sketchfab.com/models/YOUR_MODEL_ID_EMBED_2/embed" allowFullScreen className="w-full h-full min-h-[350px] group-hover:opacity-80 transition-opacity duration-200" />
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <span className="text-white/80 text-lg font-semibold bg-black/40 px-4 py-2 rounded-full shadow-lg group-hover:scale-105 transition-transform">Cliquez pour manipuler en 3D</span>
-            </div>
+            <DronePrototypeImages droneType="atlas" />
           </motion.div>
         </div>
       </motion.section>

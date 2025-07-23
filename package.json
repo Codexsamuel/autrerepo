@@ -5,8 +5,8 @@
   "description": "Plateforme de solutions digitales innovantes - DL Solutions",
   "scripts": {
     "dev": "next dev",
-    "build": "next build || echo 'Build completed with warnings'",
-    "build:netlify": "next build || echo 'Build completed with warnings'",
+    "build": "next build",
+    "build:netlify": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",

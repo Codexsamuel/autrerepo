@@ -5,8 +5,12 @@ const nextConfig = {
     ignoreDuringBuilds: process.env.NODE_ENV === 'production',
   },
   
-  // Désactiver le rendu statique pour éviter les erreurs useSession
-  trailingSlash: false,
+  // Configuration pour export statique
+  output: 'export',
+  trailingSlash: true,
+  images: {
+    unoptimized: true
+  },
   
   // Optimisations pour les API routes
   serverExternalPackages: [],

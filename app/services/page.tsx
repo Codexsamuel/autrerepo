@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import ContentAd from '@/components/ads/ContentAds';
 import { SubscriptionGuard } from '@/components/guards/SubscriptionGuard';

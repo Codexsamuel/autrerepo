@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 exports.handler = async (event, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',

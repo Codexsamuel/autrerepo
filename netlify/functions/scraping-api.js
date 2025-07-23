@@ -1,9 +1,3 @@
-const { scrapeAliExpress } = require('../../lib/scraper/aliexpress');
-const { scrapeChineseStores, getScrapingStats, getCategories, getSources, getCountries } = require('../../lib/scraper/chinese-stores');
-const { scrapeDubaiStores } = require('../../lib/scraper/dubai-stores');
-const { scrapeTurkeyStores } = require('../../lib/scraper/turkey-stores');
-const { scrapeCameroonStores } = require('../../lib/scraper/cameroon-stores');
-
 exports.handler = async (event, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',

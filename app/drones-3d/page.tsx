@@ -7,6 +7,7 @@ import { useState } from "react";
 
 const FeatureDetailModal = dynamic(() => import("@/components/FeatureDetailModal"));
 const DronePrototypeImages = dynamic(() => import("@/components/DronePrototypeImages"));
+const Drone3DVisualization = dynamic(() => import("@/components/Drone3DVisualization"));
 
 const featuresSentinel = [
   {
@@ -334,6 +335,25 @@ export default function Drones3DPage() {
                     'Drone FPV kamikaze tactique à bas coût pour frappe ciblée et neutralisation'
                   ]}
                 />
+              </div>
+
+              {/* Visualisations 3D Interactives */}
+              <div className="mb-8">
+                <h4 className="text-xl font-bold mb-6 text-center">Visualisations 3D Interactives</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <Drone3DVisualization droneType="sentinel" />
+                  <Drone3DVisualization droneType="atlas" />
+                  <Drone3DVisualization droneType="fpv" />
+                  <Drone3DVisualization droneType="recon" />
+                </div>
+                <div className="text-center mt-6">
+                  <p className="text-gray-400 text-sm mb-4">
+                    Survolez les drones pour voir les effets 3D et les informations détaillées
+                  </p>
+                  <Link href="/demo/drone-codes" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300">
+                    🔧 Voir les codes de programmation
+                  </Link>
+                </div>
               </div>
               
               <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-8 text-center">

@@ -121,6 +121,14 @@ export default function Drones3DPage() {
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Découvrez nos prototypes de drones nouvelle génération avec visualisation 3D interactive
             </p>
+            <div className="flex gap-4 justify-center mt-6">
+              <Link href="/demo/drone-simulator" className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-green-700 hover:to-blue-700 transition-all duration-300">
+                🎮 Demander une démo
+              </Link>
+              <Link href="/demo/drones-presentation" className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all duration-300">
+                📋 Documentation technique
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -148,17 +156,27 @@ export default function Drones3DPage() {
                     </div>
                   ))}
                 </div>
-                <button 
-                  onClick={() => setShow3D(true)}
-                  className="bg-gradient-to-r from-red-600 to-orange-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-red-700 hover:to-orange-700 transition-all duration-300"
-                >
-                  Voir en 3D
-                </button>
+                <div className="flex gap-4">
+                  <button 
+                    onClick={() => setShow3D(true)}
+                    className="bg-gradient-to-r from-red-600 to-orange-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-red-700 hover:to-orange-700 transition-all duration-300"
+                  >
+                    Voir en 3D
+                  </button>
+                  <Link href="/demo/drone-simulator" className="bg-gradient-to-r from-gray-600 to-gray-700 text-white px-8 py-3 rounded-lg font-semibold hover:from-gray-700 hover:to-gray-800 transition-all duration-300">
+                    Simulateur
+                  </Link>
+                </div>
               </div>
               <div className="bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-xl p-6 text-center">
                 <div className="text-6xl mb-4">🚁</div>
                 <h3 className="text-xl font-bold mb-2">Sentinel X1</h3>
                 <p className="text-gray-400">Drone tactique</p>
+                <div className="mt-4 text-sm text-gray-400">
+                  <p>Portée: 20 km</p>
+                  <p>Autonomie: 40 min</p>
+                  <p>Charge: 2 kg</p>
+                </div>
               </div>
             </div>
           </div>
@@ -173,6 +191,11 @@ export default function Drones3DPage() {
                   <div className="text-6xl mb-4">🛸</div>
                   <h3 className="text-xl font-bold mb-2">Atlas X1</h3>
                   <p className="text-gray-400">Drone industriel</p>
+                  <div className="mt-4 text-sm text-gray-400">
+                    <p>Portée: 15 km</p>
+                    <p>Autonomie: 60 min</p>
+                    <p>Charge: 3 kg</p>
+                  </div>
                 </div>
               </div>
               <div className="order-1 md:order-2">
@@ -192,12 +215,83 @@ export default function Drones3DPage() {
                     </div>
                   ))}
                 </div>
-                <button 
-                  onClick={() => setShow3D(true)}
-                  className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all duration-300"
-                >
-                  Voir en 3D
-                </button>
+                <div className="flex gap-4">
+                  <button 
+                    onClick={() => setShow3D(true)}
+                    className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all duration-300"
+                  >
+                    Voir en 3D
+                  </button>
+                  <Link href="/demo/drones-presentation" className="bg-gradient-to-r from-gray-600 to-gray-700 text-white px-8 py-3 rounded-lg font-semibold hover:from-gray-700 hover:to-gray-800 transition-all duration-300">
+                    Présentation
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* FPV Kamikaze Drone Section */}
+        <div className="bg-gradient-to-br from-red-900/30 to-orange-900/30 rounded-2xl p-8 mb-8 border border-red-500/20">
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
+            <div className="order-2 lg:order-1">
+              <h2 className="text-3xl font-bold mb-4 text-red-400">DL-FPV Tactical V1 - Drone Kamikaze</h2>
+              <p className="text-gray-300 mb-6 text-lg">
+                Drone FPV kamikaze tactique à bas coût pour frappe ciblée et neutralisation. 
+                Idéal pour les missions militaires en Afrique.
+              </p>
+              <div className="space-y-3 mb-6">
+                <div className="flex items-center space-x-3 p-3 bg-white/5 rounded-lg">
+                  <span className="text-2xl">⚡</span>
+                  <span className="font-medium">Accélération 0-100 km/h en 2-3 secondes</span>
+                </div>
+                <div className="flex items-center space-x-3 p-3 bg-white/5 rounded-lg">
+                  <span className="text-2xl">🎮</span>
+                  <span className="font-medium">Pilotage FPV immersif</span>
+                </div>
+                <div className="flex items-center space-x-3 p-3 bg-white/5 rounded-lg">
+                  <span className="text-2xl">💥</span>
+                  <span className="font-medium">Charge explosive déclenchable</span>
+                </div>
+                <div className="flex items-center space-x-3 p-3 bg-white/5 rounded-lg">
+                  <span className="text-2xl">🛡️</span>
+                  <span className="font-medium">Résistance aux chocs jusqu'à 50G</span>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <Link href="/demo/fpv-kamikaze" className="bg-gradient-to-r from-red-600 to-orange-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-red-700 hover:to-orange-700 transition-all duration-300">
+                  📋 Fiche Technique
+                </Link>
+                <Link href="/demo/drone-codes" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300">
+                  💻 Codes
+                </Link>
+                <Link href="/demo/drone-simulator" className="bg-gradient-to-r from-gray-600 to-gray-700 text-white px-8 py-3 rounded-lg font-semibold hover:from-gray-700 hover:to-gray-800 transition-all duration-300">
+                  🎮 Simulateur
+                </Link>
+              </div>
+            </div>
+            <div className="order-1 lg:order-2 text-center">
+              <div className="bg-gradient-to-br from-red-900/50 to-orange-900/50 rounded-2xl p-8 border border-red-500/30">
+                <div className="text-8xl mb-6">🚁</div>
+                <h3 className="text-2xl font-bold mb-4 text-red-400">DL-FPV Tactical V1</h3>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="bg-white/5 rounded-lg p-3">
+                    <div className="font-semibold text-red-400">Portée</div>
+                    <div>2-5 km</div>
+                  </div>
+                  <div className="bg-white/5 rounded-lg p-3">
+                    <div className="font-semibold text-orange-400">Autonomie</div>
+                    <div>8-12 min</div>
+                  </div>
+                  <div className="bg-white/5 rounded-lg p-3">
+                    <div className="font-semibold text-yellow-400">Vitesse max</div>
+                    <div>150 km/h</div>
+                  </div>
+                  <div className="bg-white/5 rounded-lg p-3">
+                    <div className="font-semibold text-red-400">Charge utile</div>
+                    <div>200-300g</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -222,19 +316,22 @@ export default function Drones3DPage() {
                 <h4 className="text-xl font-bold mb-4 text-center">Prototypes de Drones</h4>
                 <DronePrototypeImages 
                   images={[
-                    '/images/drone-simulator.jpg',
-                    '/images/drone-business.jpg',
-                    '/images/drones-presentation.jpg'
+                    '/images/drones/sentinel-x1.svg',
+                    '/images/drones/atlas-x1.svg',
+                    '/images/drones/prototype-advanced.svg',
+                    '/images/drones/fpv-kamikaze.svg'
                   ]}
                   titles={[
-                    'Sentinel V1 - Drone Militaire',
+                    'Sentinel X1 - Drone Tactique',
                     'Atlas X1 - Drone Industriel',
-                    'Prototype Avancé'
+                    'Prototype Avancé - Technologies de Pointe',
+                    'DL-FPV Tactical V1 - Drone Kamikaze'
                   ]}
                   descriptions={[
-                    'Drone militaire tactique avec capacités avancées de surveillance',
-                    'Drone industriel polyvalent pour agriculture et logistique',
-                    'Prototype expérimental avec technologies de pointe'
+                    'Drone militaire tactique avec capacités avancées de surveillance et détection',
+                    'Drone industriel polyvalent pour agriculture, logistique et analyse environnementale',
+                    'Prototype expérimental avec IA avancée et capteurs multiples',
+                    'Drone FPV kamikaze tactique à bas coût pour frappe ciblée et neutralisation'
                   ]}
                 />
               </div>
@@ -245,7 +342,7 @@ export default function Drones3DPage() {
                 <p className="text-gray-400 mb-6">
                   Interface de contrôle en temps réel avec visualisation 3D des drones
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                   <div className="bg-white/5 rounded-lg p-4">
                     <div className="text-2xl mb-2">🎮</div>
                     <h5 className="font-semibold mb-2">Contrôles de vol</h5>
@@ -261,6 +358,14 @@ export default function Drones3DPage() {
                     <h5 className="font-semibold mb-2">Planification</h5>
                     <p className="text-sm text-gray-400">Missions automatisées</p>
                   </div>
+                </div>
+                <div className="flex gap-4 justify-center">
+                  <Link href="/demo/drone-simulator" className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-green-700 hover:to-blue-700 transition-all duration-300">
+                    🎮 Accéder au simulateur
+                  </Link>
+                  <Link href="/demo/drones-presentation" className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all duration-300">
+                    📋 Voir la présentation
+                  </Link>
                 </div>
               </div>
             </div>

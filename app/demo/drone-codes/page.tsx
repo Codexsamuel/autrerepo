@@ -635,10 +635,9 @@ names: ['person', 'sang', 'organe', 'champ_infeste']
 # - modules/ : payload & MAVLink
 # 
 # ## Démarrage rapide
-# ```bash
+# bash
 # pip install -r requirements.txt
 # python main.py
-# ```
 # 
 # ## Auteurs
 # DL Solutions SARL - 2025

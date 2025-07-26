@@ -10,7 +10,6 @@ import MediaSection from '@/components/media-section';
 import ContextualHelp from '@/components/onboarding/ContextualHelp';
 import PrivacyMessage from '@/components/privacy-message';
 import TestimonialsSection from '@/components/testimonials-section';
-import MarqueeBanner from '@/components/ui/MarqueeBanner';
 import { Button } from "@/components/ui/button";
 import WhatsAppButton from '@/components/whatsapp-button';
 import {
@@ -504,10 +503,8 @@ export default function HomePage() {
   }, [slides.length]);
 
   return (
-    <>
+    <div>
       
-      <MarqueeBanner />
-
       <div className="min-h-screen bg-black text-white overflow-hidden pt-40">
         {/* Navigation moderne avec authentification */}
         <ModernNavigation />
@@ -854,6 +851,93 @@ export default function HomePage() {
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
+              </div>
+            </div>
+          </section>
+
+          {/* Section DL-Transport - Service Premium */}
+          <section className="py-20 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white relative overflow-hidden">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
+            </div>
+            
+            <div className="container mx-auto px-4 relative z-10">
+              <div className="text-center mb-16">
+                <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-sm font-semibold mb-6">
+                  🚗 NOUVEAU SERVICE PREMIUM
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                  DL-Transport
+                </h2>
+                <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+                  Votre service de transport personnel premium avec véhicules de luxe et chauffeurs professionnels. 
+                  Réservation en ligne, suivi en temps réel, tarifs transparents.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link href="/dl-transport">
+                    <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+                      🚗 Découvrir DL-Transport
+                      <ArrowRight className="ml-2 w-5 h-5" />
+                    </Button>
+                  </Link>
+                  <Link href="/dl-transport/app">
+                    <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300">
+                      📱 Télécharger l'App
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Features Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-blue-500/50 transition-all duration-300">
+                  <div className="text-4xl mb-4">🚗</div>
+                  <h3 className="text-xl font-bold mb-2">Véhicules Premium</h3>
+                  <p className="text-gray-300">Fleet de véhicules modernes et confortables</p>
+                  <ul className="mt-4 space-y-2 text-sm text-gray-300">
+                    <li>• Peugeot 3008 Blanche</li>
+                    <li>• Voiture Rouge Berline</li>
+                    <li>• Équipements haut de gamme</li>
+                  </ul>
+                </div>
+                <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-blue-500/50 transition-all duration-300">
+                  <div className="text-4xl mb-4">👨‍💼</div>
+                  <h3 className="text-xl font-bold mb-2">Chauffeurs Professionnels</h3>
+                  <p className="text-gray-300">Équipe expérimentée et certifiée</p>
+                  <ul className="mt-4 space-y-2 text-sm text-gray-300">
+                    <li>• Jean-Pierre Mbarga (8 ans exp.)</li>
+                    <li>• Marie-Claire Nguemo (5 ans exp.)</li>
+                    <li>• Service clientèle 24/7</li>
+                  </ul>
+                </div>
+                <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-blue-500/50 transition-all duration-300">
+                  <div className="text-4xl mb-4">📱</div>
+                  <h3 className="text-xl font-bold mb-2">Application Mobile</h3>
+                  <p className="text-gray-300">Réservation et suivi en temps réel</p>
+                  <ul className="mt-4 space-y-2 text-sm text-gray-300">
+                    <li>• Réservation en un clic</li>
+                    <li>• Suivi GPS en temps réel</li>
+                    <li>• Paiement sécurisé</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Pricing Preview */}
+              <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl p-8 text-center">
+                <h3 className="text-2xl font-bold mb-6">Tarifs Transparents</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+                  <div className="bg-white/10 rounded-xl p-6">
+                    <h4 className="text-lg font-semibold mb-2">Tarif Horaire</h4>
+                    <div className="text-3xl font-bold text-green-400 mb-2">12 000 - 15 000 FCFA</div>
+                    <p className="text-sm text-gray-300">Selon le véhicule</p>
+                  </div>
+                  <div className="bg-white/10 rounded-xl p-6">
+                    <h4 className="text-lg font-semibold mb-2">Tarif Journalier</h4>
+                    <div className="text-3xl font-bold text-green-400 mb-2">100 000 - 120 000 FCFA</div>
+                    <p className="text-sm text-gray-300">Service complet</p>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -1460,6 +1544,6 @@ export default function HomePage() {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { Car, CheckCircle, Download, MapPin, Shield, Smartphone, Star, Users, Zap } from "lucide-react";
+import { BarChart3, Car, CheckCircle, DollarSign, Download, MapPin, Shield, Smartphone, Star, Users, Zap } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -456,6 +456,103 @@ export default function DLTransportPage() {
               </ul>
               <Link href="/dl-transport/pricing">
                 <Button className="w-full">Voir les Détails</Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Partnership Section */}
+      <section className="py-20 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">
+              Devenez Partenaire DL-Transport
+            </h2>
+            <p className="text-xl opacity-90">
+              Rejoignez notre réseau et développez votre activité de transport
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
+              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <DollarSign className="h-8 w-8" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Frais fixe mensuel</h3>
+              <p className="text-2xl font-bold mb-2">50.000 FCFA</p>
+              <p className="text-sm opacity-80">Aucun pourcentage sur vos bénéfices</p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
+              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Smartphone className="h-8 w-8" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Application dédiée</h3>
+              <p className="text-lg mb-2">Dashboard partenaire</p>
+              <p className="text-sm opacity-80">Contrôle total de vos transports</p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
+              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Shield className="h-8 w-8" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Support prioritaire</h3>
+              <p className="text-lg mb-2">Assistance 24/7</p>
+              <p className="text-sm opacity-80">Accompagnement personnalisé</p>
+            </div>
+          </div>
+
+          <div className="text-center space-y-6">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 max-w-2xl mx-auto">
+              <h3 className="text-xl font-semibold mb-4">Avantages Partenaire</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="h-5 w-5 text-green-400" />
+                  <span className="text-sm">Frais mensuel fixe de 50.000 FCFA</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="h-5 w-5 text-green-400" />
+                  <span className="text-sm">Aucun pourcentage sur les courses</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="h-5 w-5 text-green-400" />
+                  <span className="text-sm">Application dédiée partenaire</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="h-5 w-5 text-green-400" />
+                  <span className="text-sm">Contrôle total de vos véhicules</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="h-5 w-5 text-green-400" />
+                  <span className="text-sm">Gestion de vos chauffeurs</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="h-5 w-5 text-green-400" />
+                  <span className="text-sm">Support technique prioritaire</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Link href="/dl-transport/partnership">
+                <Button 
+                  size="lg" 
+                  className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg"
+                >
+                  <Users className="mr-2 h-5 w-5" />
+                  Devenir Partenaire
+                </Button>
+              </Link>
+              <Link href="/dl-transport/partner/dashboard">
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  className="border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg"
+                >
+                  <BarChart3 className="mr-2 h-5 w-5" />
+                  Espace Partenaire
+                </Button>
               </Link>
             </div>
           </div>

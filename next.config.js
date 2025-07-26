@@ -5,9 +5,9 @@ const nextConfig = {
     ignoreDuringBuilds: process.env.NODE_ENV === 'production',
   },
   
-  // Configuration pour export statique
-  output: 'export',
-  trailingSlash: true,
+  // Configuration pour export statique (commenté pour le développement)
+  // output: 'export',
+  // trailingSlash: true,
   
   // Configuration des images avancée
   images: {

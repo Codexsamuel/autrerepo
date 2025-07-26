@@ -3,6 +3,7 @@ import ModernNavigation from '@/components/layout/ModernNavigation'
 import { Toaster } from '@/components/ui/toaster'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import './fonts.css'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })

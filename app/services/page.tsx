@@ -1,212 +1,350 @@
-'use client';
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+    Award,
+    BookOpen,
+    Bot,
+    Building,
+    Gamepad2,
+    Home,
+    Plane,
+    Shield,
+    ShoppingCart,
+    Star,
+    Target,
+    TrendingUp,
+    Truck,
+    Users,
+    Zap
+} from "lucide-react";
+import { Metadata } from 'next';
+import Link from "next/link";
 
-import ContentAd from '@/components/ads/ContentAds';
-import { SubscriptionGuard } from '@/components/guards/SubscriptionGuard';
-import { Brain, Building2, Database, Globe, Shield, ShoppingCart, Smartphone, Target, TrendingUp, Users, Video, Zap } from "lucide-react";
+export const metadata: Metadata = {
+  title: 'Services Principaux - DL Solutions | Davy & Lucie Solutions',
+  description: 'Découvrez nos services principaux : DL Style (e-commerce), NovaWorld (réseau social), NovaCore (plateforme), DL-Immobilier, DL-Transport, IA & Trading. Solutions digitales innovantes au Cameroun.',
+  keywords: 'DL Solutions, Davy, Lucie, services digitaux, e-commerce, réseau social, immobilier, transport, IA, trading, Cameroun, Yaoundé',
+  openGraph: {
+    title: 'Services Principaux - DL Solutions',
+    description: 'Écosystème digital complet avec e-commerce, réseau social, immobilier, transport et IA',
+    type: 'website',
+    url: 'https://dlsolutions.com/services',
+    images: ['/images/services-og.jpg'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Services Principaux - DL Solutions',
+    description: 'Écosystème digital complet avec e-commerce, réseau social, immobilier, transport et IA',
+    images: ['/images/services-og.jpg'],
+  },
+  alternates: {
+    canonical: 'https://dlsolutions.com/services',
+  },
+};
 
 const services = [
   {
-    title: "Intelligence Artificielle",
-    description: "Solutions IA personnalisées pour automatiser et optimiser vos processus métier",
-    icon: Brain,
-    features: ["Chatbots IA", "Analyse prédictive", "Automatisation", "Machine Learning"],
-    status: "active",
-    color: "from-purple-500 to-pink-500"
-  },
-  {
-    title: "E-commerce & Vente",
-    description: "Plateformes e-commerce complètes avec gestion des paiements et analytics",
+    id: 'dl-style',
+    name: 'DL Style',
+    description: 'Boutique en ligne premium avec électronique, mode, maison',
     icon: ShoppingCart,
-    features: ["Boutiques en ligne", "Paiements sécurisés", "Gestion des stocks", "Marketing automation"],
-    status: "active",
-    color: "from-blue-500 to-cyan-500"
+    color: 'bg-blue-600',
+    features: ['Livraison gratuite', 'Garantie 2 ans', 'Paiement sécurisé', 'Support 24/7'],
+    url: '/dl-style',
+    badge: 'E-commerce',
+    priority: 'high'
   },
   {
-    title: "CRM & Gestion Client",
-    description: "Systèmes de gestion de la relation client adaptés à votre secteur",
+    id: 'novaworld',
+    name: 'NovaWorld',
+    description: 'Réseau social professionnel avec gestion d\'entreprise et emplois',
     icon: Users,
-    features: ["Gestion des contacts", "Suivi des ventes", "Automatisation", "Analytics"],
-    status: "active",
-    color: "from-green-500 to-emerald-500"
+    color: 'bg-purple-600',
+    features: ['Networking professionnel', 'Gestion d\'entreprise', 'Offres d\'emploi', 'Collaboration'],
+    url: '/novaworld',
+    badge: 'Réseau Social',
+    priority: 'high'
   },
   {
-    title: "Solutions Sectorielles",
-    description: "CRM/ERP spécialisés pour l'immobilier, la banque, l'hôtellerie et plus",
-    icon: Building2,
-    features: ["Immobilier", "Banque", "Hôtellerie", "Assurance"],
-    status: "active",
-    color: "from-orange-500 to-red-500"
+    id: 'novacore',
+    name: 'NovaCore',
+    description: 'Plateforme d\'intégration complète pour CRM, ERP, e-commerce',
+    icon: Building,
+    color: 'bg-green-600',
+    features: ['CRM intégré', 'ERP complet', 'E-commerce', 'Analytics avancés'],
+    url: '/novacore',
+    badge: 'Plateforme',
+    priority: 'high'
   },
   {
-    title: "Trading & Finance",
-    description: "Plateformes de trading automatisées avec IA et gestion des risques",
+    id: 'dl-immobilier',
+    name: 'DL-Immobilier',
+    description: 'Plateforme immobilière avec IA et visites virtuelles',
+    icon: Home,
+    color: 'bg-orange-600',
+    features: ['IA intelligente', 'Visites 360°', 'Gestion propriétaires', 'Recherche avancée'],
+    url: '/dl-immobilier',
+    badge: 'Immobilier',
+    priority: 'high'
+  },
+  {
+    id: 'dl-transport',
+    name: 'DL-Transport',
+    description: 'Solutions de transport et logistique intelligentes',
+    icon: Truck,
+    color: 'bg-red-600',
+    features: ['Livraison rapide', 'Suivi GPS', 'Optimisation routes', 'Support client'],
+    url: '/dl-transport',
+    badge: 'Transport',
+    priority: 'medium'
+  },
+  {
+    id: 'dl-travel',
+    name: 'DL-Travel',
+    description: 'Agence de voyage avec réservations et conseils personnalisés',
+    icon: Plane,
+    color: 'bg-cyan-600',
+    features: ['Réservations', 'Conseils IA', 'Prix compétitifs', 'Assistance voyage'],
+    url: '/dl-travel',
+    badge: 'Voyage',
+    priority: 'medium'
+  },
+  {
+    id: 'trading',
+    name: 'Trading & Finance',
+    description: 'Plateforme de trading avec analyses et signaux IA',
     icon: TrendingUp,
-    features: ["Trading automatisé", "IA prédictive", "Gestion des risques", "Analytics avancés"],
-    status: "active",
-    color: "from-yellow-500 to-orange-500"
+    color: 'bg-emerald-600',
+    features: ['Trading automatisé', 'Analyses IA', 'Signaux en temps réel', 'Gestion risques'],
+    url: '/trading',
+    badge: 'Finance',
+    priority: 'medium'
   },
   {
-    title: "Sécurité & Conformité",
-    description: "Solutions de cybersécurité et conformité réglementaire",
-    icon: Shield,
-    features: ["Audit de sécurité", "Conformité RGPD", "Chiffrement", "Monitoring"],
-    status: "active",
-    color: "from-red-500 to-pink-500"
+    id: 'ai-chatbot',
+    name: 'IA & Chatbot',
+    description: 'Solutions d\'intelligence artificielle personnalisées',
+    icon: Bot,
+    color: 'bg-indigo-600',
+    features: ['Chatbots IA', 'Automatisation', 'Analyse prédictive', 'Support client'],
+    url: '/ai-chatbot',
+    badge: 'IA',
+    priority: 'medium'
   },
   {
-    title: "Développement Web",
-    description: "Sites web et applications sur mesure avec technologies modernes",
-    icon: Globe,
-    features: ["Sites responsives", "Applications web", "APIs", "Maintenance"],
-    status: "active",
-    color: "from-indigo-500 to-purple-500"
+    id: 'formations',
+    name: 'Formations',
+    description: 'Formations professionnelles certifiantes en ligne',
+    icon: BookOpen,
+    color: 'bg-pink-600',
+    features: ['Certifications', 'Formation continue', 'Support pédagogique', 'Suivi progrès'],
+    url: '/formations',
+    badge: 'Formation',
+    priority: 'medium'
   },
   {
-    title: "Applications Mobiles",
-    description: "Applications iOS et Android natives et cross-platform",
-    icon: Smartphone,
-    features: ["iOS & Android", "React Native", "Flutter", "PWA"],
-    status: "active",
-    color: "from-teal-500 to-blue-500"
-  },
-  {
-    title: "Édition Vidéo IA",
-    description: "Outils d'édition vidéo assistés par intelligence artificielle",
-    icon: Video,
-    features: ["Édition automatique", "IA générative", "Templates", "Export multi-format"],
-    status: "active",
-    color: "from-pink-500 to-rose-500"
-  },
-  {
-    title: "Bases de Données",
-    description: "Conception et optimisation de bases de données performantes",
-    icon: Database,
-    features: ["Architecture DB", "Optimisation", "Migration", "Maintenance"],
-    status: "active",
-    color: "from-gray-500 to-slate-500"
-  },
-  {
-    title: "Intégrations API",
-    description: "Connexion et synchronisation entre vos différents outils",
-    icon: Zap,
-    features: ["APIs REST", "Webhooks", "Synchronisation", "Monitoring"],
-    status: "active",
-    color: "from-amber-500 to-yellow-500"
-  },
-  {
-    title: "Formation & Consulting",
-    description: "Formation de vos équipes et accompagnement stratégique",
-    icon: Target,
-    features: ["Formation sur mesure", "Consulting", "Accompagnement", "Support"],
-    status: "active",
-    color: "from-emerald-500 to-green-500"
+    id: 'dl-paris-sportif',
+    name: 'DL Paris Sportif',
+    description: 'Plateforme de paris sportifs avec analyses IA',
+    icon: Gamepad2,
+    color: 'bg-yellow-600',
+    features: ['Analyses IA', 'Cotes compétitives', 'Paiements rapides', 'Support 24/7'],
+    url: '/dl-paris-sportif',
+    badge: 'Paris Sportifs',
+    priority: 'low'
   }
-]
-
-export const dynamic = 'force-dynamic';
+];
 
 export default function ServicesPage() {
+  const highPriorityServices = services.filter(s => s.priority === 'high');
+  const mediumPriorityServices = services.filter(s => s.priority === 'medium');
+  const lowPriorityServices = services.filter(s => s.priority === 'low');
+
   return (
-    <>
-      <SubscriptionGuard>
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-          <div className="container mx-auto px-4 py-8">
-            <div className="text-center mb-12">
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                Nos Services Premium
-              </h1>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Découvrez notre écosystème digital complet avec des solutions sur mesure pour votre entreprise
-              </p>
-            </div>
-
-            {/* Publicité en haut de page */}
-            <ContentAd position="top" className="mb-8" />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-              {/* Service 1 */}
-              <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
-                <div className="text-3xl mb-4">🏢</div>
-                <h3 className="text-xl font-semibold mb-3">CRM & Gestion Client</h3>
-                <p className="text-gray-600 mb-4">
-                  Solutions CRM complètes pour optimiser la relation client et augmenter vos ventes.
-                </p>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                  En savoir plus
-                </button>
-              </div>
-
-              {/* Service 2 */}
-              <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
-                <div className="text-3xl mb-4">🛒</div>
-                <h3 className="text-xl font-semibold mb-3">Boutique Internationale</h3>
-                <p className="text-gray-600 mb-4">
-                  Boutique en ligne avec produits du monde entier et livraison au Cameroun.
-                </p>
-                <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                  Découvrir
-                </button>
-              </div>
-
-              {/* Service 3 */}
-              <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
-                <div className="text-3xl mb-4">🎓</div>
-                <h3 className="text-xl font-semibold mb-3">Formations Professionnelles</h3>
-                <p className="text-gray-600 mb-4">
-                  Formations certifiantes en ligne pour développer vos compétences.
-                </p>
-                <button className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
-                  Commencer
-                </button>
-              </div>
-            </div>
-
-            {/* Publicité au milieu */}
-            <ContentAd position="middle" className="my-12" />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-              {/* Service 4 */}
-              <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
-                <div className="text-3xl mb-4">📊</div>
-                <h3 className="text-xl font-semibold mb-3">Analytics & Reporting</h3>
-                <p className="text-gray-600 mb-4">
-                  Tableaux de bord avancés et analyses détaillées pour prendre les bonnes décisions.
-                </p>
-                <button className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700">
-                  Analyser
-                </button>
-              </div>
-
-              {/* Service 5 */}
-              <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
-                <div className="text-3xl mb-4">🔒</div>
-                <h3 className="text-xl font-semibold mb-3">Sécurité & Conformité</h3>
-                <p className="text-gray-600 mb-4">
-                  Protection de vos données et conformité aux réglementations internationales.
-                </p>
-                <button className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
-                  Sécuriser
-                </button>
-              </div>
-            </div>
-
-            {/* Publicité en bas */}
-            <ContentAd position="bottom" className="mt-8" />
-
-            <div className="text-center mt-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                Prêt à transformer votre entreprise ?
-              </h2>
-              <p className="text-lg text-gray-600 mb-8">
-                Rejoignez des milliers d'entreprises qui font confiance à DL Solutions
-              </p>
-              <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all">
-                Commencer Maintenant
-              </button>
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-5xl font-bold mb-6">
+            Nos Services Principaux
+          </h1>
+          <p className="text-xl opacity-90 max-w-3xl mx-auto">
+            Découvrez l'écosystème digital complet de DL Solutions par Davy et Lucie. 
+            Des solutions innovantes pour tous vos besoins numériques.
+          </p>
+          <div className="flex justify-center mt-8 space-x-4">
+            <Badge variant="secondary" className="text-sm">
+              <Star className="h-3 w-3 mr-1" />
+              Services Premium
+            </Badge>
+            <Badge variant="secondary" className="text-sm">
+              <Shield className="h-3 w-3 mr-1" />
+              Sécurisé
+            </Badge>
+            <Badge variant="secondary" className="text-sm">
+              <Zap className="h-3 w-3 mr-1" />
+              Innovation
+            </Badge>
           </div>
         </div>
-      </SubscriptionGuard>
-    </>
-  )
+      </div>
+
+      <div className="container mx-auto px-4 py-16">
+        {/* Services Prioritaires */}
+        <section className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Services Principaux
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Nos services phares qui transforment votre expérience digitale
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {highPriorityServices.map((service) => (
+              <Card key={service.id} className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
+                <CardHeader className="text-center pb-4">
+                  <div className={`w-16 h-16 ${service.color} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                    <service.icon className="h-8 w-8 text-white" />
+                  </div>
+                  <CardTitle className="text-xl font-bold text-gray-900">
+                    {service.name}
+                  </CardTitle>
+                  <Badge variant="outline" className="w-fit mx-auto">
+                    {service.badge}
+                  </Badge>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <CardDescription className="text-gray-600 mb-4">
+                    {service.description}
+                  </CardDescription>
+                  <ul className="text-sm text-gray-500 space-y-1 mb-6">
+                    {service.features.slice(0, 2).map((feature, index) => (
+                      <li key={index} className="flex items-center justify-center">
+                        <Target className="h-3 w-3 text-green-500 mr-2" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link href={service.url}>
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                      Découvrir
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        {/* Services Secondaires */}
+        <section className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Services Spécialisés
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Des solutions adaptées à vos besoins spécifiques
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {mediumPriorityServices.map((service) => (
+              <Card key={service.id} className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
+                <CardHeader className="text-center pb-4">
+                  <div className={`w-14 h-14 ${service.color} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                    <service.icon className="h-7 w-7 text-white" />
+                  </div>
+                  <CardTitle className="text-lg font-bold text-gray-900">
+                    {service.name}
+                  </CardTitle>
+                  <Badge variant="outline" className="w-fit mx-auto text-xs">
+                    {service.badge}
+                  </Badge>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <CardDescription className="text-gray-600 mb-4 text-sm">
+                    {service.description}
+                  </CardDescription>
+                  <Link href={service.url}>
+                    <Button variant="outline" className="w-full">
+                      En savoir plus
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        {/* Services Additionnels */}
+        {lowPriorityServices.length > 0 && (
+          <section className="mb-16">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                Services Additionnels
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Des services complémentaires pour enrichir votre expérience
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {lowPriorityServices.map((service) => (
+                <Card key={service.id} className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md">
+                  <CardHeader className="text-center pb-4">
+                    <div className={`w-12 h-12 ${service.color} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                      <service.icon className="h-6 w-6 text-white" />
+                    </div>
+                    <CardTitle className="text-base font-bold text-gray-900">
+                      {service.name}
+                    </CardTitle>
+                    <Badge variant="outline" className="w-fit mx-auto text-xs">
+                      {service.badge}
+                    </Badge>
+                  </CardHeader>
+                  <CardContent className="text-center">
+                    <CardDescription className="text-gray-600 mb-4 text-sm">
+                      {service.description}
+                    </CardDescription>
+                    <Link href={service.url}>
+                      <Button variant="ghost" className="w-full">
+                        Découvrir
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* CTA Section */}
+        <section className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-12 text-center text-white">
+          <h2 className="text-3xl font-bold mb-4">
+            Prêt à transformer votre business ?
+          </h2>
+          <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
+            Rejoignez l'écosystème DL Solutions et bénéficiez de nos services innovants
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/contact">
+              <Button size="lg" variant="secondary" className="bg-white text-blue-600 hover:bg-gray-100">
+                <Users className="mr-2 h-5 w-5" />
+                Nous Contacter
+              </Button>
+            </Link>
+            <Link href="/devis">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
+                <Award className="mr-2 h-5 w-5" />
+                Demander un Devis
+              </Button>
+            </Link>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
 }

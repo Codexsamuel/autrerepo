@@ -1,9 +1,30 @@
-"use client";
-
 import { FormValidation } from "@/components/form-validation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, MapPin, Phone } from "lucide-react";
+import { Metadata } from 'next';
 import { useState } from "react";
+
+export const metadata: Metadata = {
+  title: 'Contact - DL Solutions | Davy & Lucie Solutions SARL',
+  description: 'Contactez DL Solutions à Ngoa Ekelle, Yaoundé. Téléphone: +237 694 341 586. Email: contact@dlsolutions.com. Solutions digitales, e-commerce, IA et transformation numérique au Cameroun.',
+  keywords: 'DL Solutions, contact, Davy, Lucie, téléphone, email, adresse, Ngoa Ekelle, Yaoundé, Cameroun, solutions digitales',
+  openGraph: {
+    title: 'Contact - DL Solutions | Davy & Lucie',
+    description: 'Contactez-nous pour vos projets digitaux au Cameroun',
+    type: 'website',
+    url: 'https://dlsolutions.com/contact',
+    images: ['/images/contact-og.jpg'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Contact - DL Solutions | Davy & Lucie',
+    description: 'Contactez-nous pour vos projets digitaux au Cameroun',
+    images: ['/images/contact-og.jpg'],
+  },
+  alternates: {
+    canonical: 'https://dlsolutions.com/contact',
+  },
+};
 
 
 export default function ContactPage() {

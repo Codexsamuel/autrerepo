@@ -26,6 +26,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Pages supplémentaires importantes
   const additionalPages = [
     {
+      url: `${baseUrl}/services`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/a-propos`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/sign-in`,
       lastModified: currentDate,
       changeFrequency: 'monthly' as const,
@@ -96,6 +114,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: currentDate,
       changeFrequency: 'monthly' as const,
       priority: 0.4,
+    },
+    // Pages DL-Immobilier
+    {
+      url: `${baseUrl}/dl-immobilier/locataire/inscription`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/api-test`,

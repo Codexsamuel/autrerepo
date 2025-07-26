@@ -1,9 +1,30 @@
-"use client";
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Award, Eye, Heart, Lightbulb, Shield, Star, Target, Users } from "lucide-react";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'À Propos - DL Solutions | Davy & Lucie Solutions SARL',
+  description: 'Découvrez l\'histoire de DL Solutions par Davy et Lucie. Entreprise innovante basée à Ngoa Ekelle, Yaoundé, spécialisée dans les solutions digitales, e-commerce, IA et transformation numérique au Cameroun.',
+  keywords: 'DL Solutions, Davy, Lucie, à propos, histoire, entreprise, Cameroun, Yaoundé, Ngoa Ekelle, solutions digitales, innovation, transformation numérique',
+  openGraph: {
+    title: 'À Propos - DL Solutions | Davy & Lucie',
+    description: 'Entreprise innovante spécialisée dans les solutions digitales au Cameroun',
+    type: 'website',
+    url: 'https://dlsolutions.com/a-propos',
+    images: ['/images/about-og.jpg'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'À Propos - DL Solutions | Davy & Lucie',
+    description: 'Entreprise innovante spécialisée dans les solutions digitales au Cameroun',
+    images: ['/images/about-og.jpg'],
+  },
+  alternates: {
+    canonical: 'https://dlsolutions.com/a-propos',
+  },
+};
 
 
 export default function AboutPage() {

@@ -5,9 +5,9 @@ const nextConfig = {
     ignoreDuringBuilds: process.env.NODE_ENV === 'production',
   },
   
-  // Configuration pour export statique (commenté pour le développement)
-  // output: 'export',
-  // trailingSlash: true,
+  // Configuration pour export statique (activé pour Netlify)
+  output: process.env.NETLIFY === 'true' ? 'export' : undefined,
+  trailingSlash: process.env.NETLIFY === 'true',
   
   // Configuration des images avancée
   images: {
@@ -26,14 +26,14 @@ const nextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   
-  // Optimisations de performance avancées
-  experimental: {
+  // Optimisations de performance avancées (désactivées pour export statique)
+  experimental: process.env.NETLIFY === 'true' ? {} : {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
     optimizeCss: true,
   },
   
-  // Configuration Turbopack (remplace experimental.turbo)
-  turbopack: {
+  // Configuration Turbopack (désactivée pour export statique)
+  turbopack: process.env.NETLIFY === 'true' ? undefined : {
     rules: {
       '*.svg': {
         loaders: ['@svgr/webpack'],

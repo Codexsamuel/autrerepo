@@ -1,6 +1,8 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import { Car, CheckCircle, Download, MapPin, Shield, Smartphone, Star, Users, Zap } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -8,26 +10,29 @@ const vehicles = [
   {
     id: 1,
     name: "Peugeot 3008",
-    color: "Blanche",
     type: "SUV Premium",
-    capacity: "5 passagers",
-    features: ["Climatisation", "GPS", "WiFi", "Sièges cuir"],
-    image: "/images/vehicles/peugeot-3008-white.jpg",
-    hourlyRate: "15 000 FCFA",
-    dailyRate: "120 000 FCFA",
-    status: "disponible"
+    color: "Blanche",
+    driver: "Jean-Pierre Mbarga",
+    rating: 4.9,
+    image: "https://res.cloudinary.com/dko5sommz/image/upload/v1753565358/Peugeot_3008_Mk2_GT_line_2016_360_720_50-1_jfoogx.jpg"
   },
   {
     id: 2,
-    name: "Voiture Rouge",
-    type: "Berline Confort",
+    name: "Peugeot 508",
+    type: "Berline Luxe",
+    color: "Grise",
+    driver: "Marie-Claire Nguemo",
+    rating: 4.8,
+    image: "https://res.cloudinary.com/dko5sommz/image/upload/v1753565358/PEUGEOT-508-2067408_1_vnlcjy.jpg"
+  },
+  {
+    id: 3,
+    name: "Peugeot 208",
+    type: "Citadine",
     color: "Rouge",
-    capacity: "4 passagers",
-    features: ["Climatisation", "GPS", "Audio premium"],
-    image: "/images/vehicles/red-car.jpg",
-    hourlyRate: "12 000 FCFA",
-    dailyRate: "100 000 FCFA",
-    status: "disponible"
+    driver: "Pierre Essomba",
+    rating: 4.7,
+    image: "https://res.cloudinary.com/dko5sommz/image/upload/v1753565357/peugeo_kbrrlo.jpg"
   }
 ];
 
@@ -35,348 +40,535 @@ const drivers = [
   {
     id: 1,
     name: "Jean-Pierre Mbarga",
-    experience: "8 ans",
+    experience: "5 ans",
     rating: 4.9,
-    languages: ["Français", "Anglais", "Douala"],
-    specialties: ["Transport VIP", "Aéroport", "Événements"],
-    image: "/images/drivers/driver-1.jpg",
-    status: "disponible"
+    trips: 1250,
+    vehicle: "Peugeot 3008"
   },
   {
     id: 2,
     name: "Marie-Claire Nguemo",
-    experience: "5 ans",
+    experience: "3 ans",
     rating: 4.8,
-    languages: ["Français", "Anglais", "Bassa"],
-    specialties: ["Transport d'affaires", "Courses urbaines"],
-    image: "/images/drivers/driver-2.jpg",
-    status: "disponible"
+    trips: 890,
+    vehicle: "Peugeot 508"
+  },
+  {
+    id: 3,
+    name: "Pierre Essomba",
+    experience: "4 ans",
+    rating: 4.7,
+    trips: 1100,
+    vehicle: "Peugeot 208"
   }
 ];
 
 export default function DLTransportPage() {
   const { user, loading } = useAuth();
-  const [selectedVehicle, setSelectedVehicle] = useState<number | null>(null);
-  const [selectedDriver, setSelectedDriver] = useState<number | null>(null);
-  const [bookingDate, setBookingDate] = useState("");
-  const [bookingTime, setBookingTime] = useState("");
-  const [pickupLocation, setPickupLocation] = useState("");
-  const [destination, setDestination] = useState("");
-  const [showBookingForm, setShowBookingForm] = useState(false);
+  const [showBookingModal, setShowBookingModal] = useState(false);
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <p>Chargement...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Chargement...</p>
         </div>
       </div>
     );
   }
-
-  if (!user) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white">
-        <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-2xl p-8 max-w-md text-center">
-          <h2 className="text-3xl font-bold mb-4">Accès réservé</h2>
-          <p className="mb-6 text-gray-300">Ce service premium nécessite une connexion.</p>
-          <div className="flex gap-4 justify-center">
-            <Link href="/sign-in" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300">
-              Se connecter
-            </Link>
-            <Link href="/sign-up" className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-green-700 hover:to-blue-700 transition-all duration-300">
-              Créer un compte
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const handleBooking = () => {
-    if (!selectedVehicle || !selectedDriver || !bookingDate || !bookingTime || !pickupLocation || !destination) {
-      alert("Veuillez remplir tous les champs");
-      return;
-    }
-    
-    // Simulation de réservation
-    alert("Réservation confirmée ! Vous recevrez un SMS de confirmation.");
-    setShowBookingForm(false);
-  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white">
-      {/* Header */}
-      <div className="bg-black/20 backdrop-blur-sm border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                DL-Transport
-              </h1>
-              <p className="text-gray-300 mt-2">Service de transport personnel premium</p>
-            </div>
-            <div className="flex gap-4">
-              <Link href="/contact" className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
-                Contact
-              </Link>
-              <Link href="/devis" className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors">
-                Devis
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Hero Section */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold mb-6">
-            Transport Personnel <span className="text-blue-400">Premium</span>
-          </h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-            Votre service de transport personnel avec des véhicules de luxe et des chauffeurs professionnels. 
-            Réservation en ligne, suivi en temps réel, tarifs transparents.
+    <div className="min-h-screen bg-white">
+      {/* Hero Section avec Background Image */}
+      <section 
+        className="relative h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://res.cloudinary.com/dko5sommz/image/upload/v1753565358/Peugeot_3008_Mk2_GT_line_2016_360_720_50-1_jfoogx.jpg')`
+        }}
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6">
+            DL-Transport
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 text-gray-200">
+            Votre service de transport premium personnel
           </p>
-          <div className="flex gap-4 justify-center">
-            <button 
-              onClick={() => setShowBookingForm(true)}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
-            >
-              🚗 Réserver maintenant
-            </button>
-            <Link href="#vehicles" className="bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300">
-              Voir nos véhicules
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link href="/dl-transport/booking">
+              <Button 
+                size="lg" 
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg"
+              >
+                <Car className="mr-2 h-5 w-5" />
+                Réserver Maintenant
+              </Button>
+            </Link>
+            <Link href="/dl-transport/tracking">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="border-white text-white hover:bg-white hover:text-black px-8 py-4 text-lg"
+              >
+                <MapPin className="mr-2 h-5 w-5" />
+                Suivre en Temps Réel
+              </Button>
             </Link>
           </div>
         </div>
+      </section>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-            <div className="text-4xl mb-4">🚗</div>
-            <h3 className="text-xl font-bold mb-2">Véhicules Premium</h3>
-            <p className="text-gray-300">Fleet de véhicules modernes et confortables</p>
+      {/* Features Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Pourquoi Choisir DL-Transport ?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Un service de transport premium avec des véhicules de qualité et des chauffeurs expérimentés
+            </p>
           </div>
-          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-            <div className="text-4xl mb-4">👨‍💼</div>
-            <h3 className="text-xl font-bold mb-2">Chauffeurs Professionnels</h3>
-            <p className="text-gray-300">Équipe expérimentée et certifiée</p>
-          </div>
-          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-            <div className="text-4xl mb-4">📱</div>
-            <h3 className="text-xl font-bold mb-2">Suivi en Temps Réel</h3>
-            <p className="text-gray-300">Localisation GPS et notifications</p>
-          </div>
-        </div>
 
-        {/* Vehicles Section */}
-        <div id="vehicles" className="mb-16">
-          <h3 className="text-3xl font-bold text-center mb-8">Nos Véhicules</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {vehicles.map((vehicle) => (
-              <div key={vehicle.id} className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-blue-500/50 transition-all duration-300">
-                <div className="flex items-center justify-between mb-4">
-                  <h4 className="text-2xl font-bold">{vehicle.name}</h4>
-                  <span className={`px-3 py-1 rounded-full text-sm ${
-                    vehicle.status === 'disponible' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
-                  }`}>
-                    {vehicle.status}
-                  </span>
-                </div>
-                <div className="mb-4">
-                  <p className="text-gray-300 mb-2">
-                    <span className="text-blue-400">Type:</span> {vehicle.type}
-                  </p>
-                  <p className="text-gray-300 mb-2">
-                    <span className="text-blue-400">Couleur:</span> {vehicle.color}
-                  </p>
-                  <p className="text-gray-300 mb-2">
-                    <span className="text-blue-400">Capacité:</span> {vehicle.capacity}
-                  </p>
-                </div>
-                <div className="mb-4">
-                  <h5 className="font-semibold mb-2">Équipements:</h5>
-                  <div className="flex flex-wrap gap-2">
-                    {vehicle.features.map((feature, index) => (
-                      <span key={index} className="bg-blue-500/20 text-blue-300 px-2 py-1 rounded text-sm">
-                        {feature}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="flex justify-between items-center">
-                  <div>
-                    <p className="text-sm text-gray-400">Tarif horaire</p>
-                    <p className="text-lg font-bold text-green-400">{vehicle.hourlyRate}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-400">Tarif journalier</p>
-                    <p className="text-lg font-bold text-green-400">{vehicle.dailyRate}</p>
-                  </div>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center p-8 bg-white rounded-lg shadow-lg">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Car className="h-8 w-8 text-blue-600" />
               </div>
-            ))}
+              <h3 className="text-xl font-semibold mb-4">Véhicules Premium</h3>
+              <p className="text-gray-600">
+                Flotte de véhicules Peugeot récents et bien entretenus pour votre confort et sécurité
+              </p>
+            </div>
+
+            <div className="text-center p-8 bg-white rounded-lg shadow-lg">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="h-8 w-8 text-green-600" />
+              </div>
+              <h3 className="text-xl font-semibold mb-4">Chauffeurs Expérimentés</h3>
+              <p className="text-gray-600">
+                Équipe de chauffeurs professionnels avec des années d'expérience et excellentes évaluations
+              </p>
+            </div>
+
+            <div className="text-center p-8 bg-white rounded-lg shadow-lg">
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Shield className="h-8 w-8 text-purple-600" />
+              </div>
+              <h3 className="text-xl font-semibold mb-4">Sécurité Garantie</h3>
+              <p className="text-gray-600">
+                Suivi GPS en temps réel, assurance complète et protocoles de sécurité stricts
+              </p>
+            </div>
           </div>
         </div>
+      </section>
 
-        {/* Drivers Section */}
-        <div className="mb-16">
-          <h3 className="text-3xl font-bold text-center mb-8">Nos Chauffeurs</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {/* Vehicles Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Notre Flotte Premium
+            </h2>
+            <p className="text-xl text-gray-600">
+              Une gamme complète de véhicules pour tous vos besoins
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            {/* Économique */}
+            <div className="bg-gray-50 rounded-lg p-6">
+              <div className="text-3xl mb-4">🚗</div>
+              <h3 className="text-xl font-semibold mb-2">Économique</h3>
+              <p className="text-gray-600 mb-4">Véhicules compacts et économiques</p>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Peugeot 208</li>
+                <li>• Toyota Yaris</li>
+                <li>• À partir de 2000 FCFA</li>
+              </ul>
+            </div>
+
+            {/* Confort */}
+            <div className="bg-blue-50 rounded-lg p-6">
+              <div className="text-3xl mb-4">🚙</div>
+              <h3 className="text-xl font-semibold mb-2">Confort</h3>
+              <p className="text-gray-600 mb-4">Berlines confortables et spacieuses</p>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Peugeot 3008</li>
+                <li>• Peugeot 508</li>
+                <li>• À partir de 2500 FCFA</li>
+              </ul>
+            </div>
+
+            {/* Premium */}
+            <div className="bg-purple-50 rounded-lg p-6">
+              <div className="text-3xl mb-4">🏎️</div>
+              <h3 className="text-xl font-semibold mb-2">Premium</h3>
+              <p className="text-gray-600 mb-4">Véhicules haut de gamme</p>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• BMW Série 3</li>
+                <li>• Audi A4</li>
+                <li>• À partir de 4000 FCFA</li>
+              </ul>
+            </div>
+
+            {/* SUV */}
+            <div className="bg-green-50 rounded-lg p-6">
+              <div className="text-3xl mb-4">🚐</div>
+              <h3 className="text-xl font-semibold mb-2">SUV</h3>
+              <p className="text-gray-600 mb-4">Véhicules tout-terrain spacieux</p>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Range Rover Evoque</li>
+                <li>• BMW X5</li>
+                <li>• À partir de 5000 FCFA</li>
+              </ul>
+            </div>
+
+            {/* Luxe */}
+            <div className="bg-yellow-50 rounded-lg p-6">
+              <div className="text-3xl mb-4">👑</div>
+              <h3 className="text-xl font-semibold mb-2">Luxe</h3>
+              <p className="text-gray-600 mb-4">Véhicules de luxe et prestige</p>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Mercedes Classe S</li>
+                <li>• BMW Série 7</li>
+                <li>• À partir de 6500 FCFA</li>
+              </ul>
+            </div>
+
+            {/* Minibus */}
+            <div className="bg-orange-50 rounded-lg p-6">
+              <div className="text-3xl mb-4">🚌</div>
+              <h3 className="text-xl font-semibold mb-2">Minibus</h3>
+              <p className="text-gray-600 mb-4">Véhicules pour groupes</p>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Mercedes Vito</li>
+                <li>• Toyota Hiace</li>
+                <li>• À partir de 3200 FCFA</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <Link href="/dl-transport/booking">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+                <Car className="mr-2 h-5 w-5" />
+                Voir Tous les Véhicules
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Drivers Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Nos Chauffeurs Professionnels
+            </h2>
+            <p className="text-xl text-gray-600">
+              Une équipe expérimentée et fiable à votre service
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {drivers.map((driver) => (
-              <div key={driver.id} className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-                <div className="flex items-center justify-between mb-4">
-                  <h4 className="text-xl font-bold">{driver.name}</h4>
-                  <span className={`px-3 py-1 rounded-full text-sm ${
-                    driver.status === 'disponible' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
-                  }`}>
-                    {driver.status}
-                  </span>
+              <div key={driver.id} className="bg-white rounded-lg shadow-lg p-6">
+                <div className="flex items-center mb-4">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                    <Users className="h-8 w-8 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold">{driver.name}</h3>
+                    <p className="text-gray-600">{driver.vehicle}</p>
+                  </div>
                 </div>
-                <div className="mb-4">
-                  <p className="text-gray-300 mb-2">
-                    <span className="text-blue-400">Expérience:</span> {driver.experience}
-                  </p>
-                  <p className="text-gray-300 mb-2">
-                    <span className="text-blue-400">Note:</span> ⭐ {driver.rating}/5
-                  </p>
-                  <p className="text-gray-300 mb-2">
-                    <span className="text-blue-400">Langues:</span> {driver.languages.join(", ")}
-                  </p>
-                </div>
-                <div>
-                  <h5 className="font-semibold mb-2">Spécialités:</h5>
-                  <div className="flex flex-wrap gap-2">
-                    {driver.specialties.map((specialty, index) => (
-                      <span key={index} className="bg-purple-500/20 text-purple-300 px-2 py-1 rounded text-sm">
-                        {specialty}
-                      </span>
-                    ))}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600">Expérience:</span>
+                    <span className="font-medium">{driver.experience}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600">Évaluation:</span>
+                    <div className="flex items-center">
+                      <Star className="h-4 w-4 text-yellow-400 mr-1" />
+                      <span className="font-medium">{driver.rating}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600">Courses:</span>
+                    <span className="font-medium">{driver.trips}</span>
                   </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
+      </section>
 
-        {/* Booking Form Modal */}
-        {showBookingForm && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-            <div className="bg-gray-800 rounded-2xl p-8 max-w-md w-full mx-4">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold">Réserver un véhicule</h3>
-                <button 
-                  onClick={() => setShowBookingForm(false)}
-                  className="text-gray-400 hover:text-white text-2xl"
-                >
-                  ×
-                </button>
+      {/* App Download Section */}
+      <section className="py-20 bg-blue-600">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl font-bold text-white mb-4">
+            Téléchargez l'Application DL-Transport
+          </h2>
+          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+            Réservez vos courses en quelques clics, suivez votre chauffeur en temps réel et profitez d'un service premium
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+            <Button 
+              size="lg" 
+              className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg"
+            >
+              <Download className="mr-2 h-5 w-5" />
+              App Store
+            </Button>
+            <Button 
+              size="lg" 
+              className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg"
+            >
+              <Download className="mr-2 h-5 w-5" />
+              Google Play
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            <div className="text-center text-white">
+              <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Smartphone className="h-6 w-6" />
               </div>
-              
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Véhicule</label>
-                  <select 
-                    value={selectedVehicle || ""} 
-                    onChange={(e) => setSelectedVehicle(Number(e.target.value))}
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
-                  >
-                    <option value="">Sélectionner un véhicule</option>
-                    {vehicles.map(vehicle => (
-                      <option key={vehicle.id} value={vehicle.id}>
-                        {vehicle.name} - {vehicle.color}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2">Chauffeur</label>
-                  <select 
-                    value={selectedDriver || ""} 
-                    onChange={(e) => setSelectedDriver(Number(e.target.value))}
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
-                  >
-                    <option value="">Sélectionner un chauffeur</option>
-                    {drivers.map(driver => (
-                      <option key={driver.id} value={driver.id}>
-                        {driver.name} - ⭐ {driver.rating}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2">Date</label>
-                  <input 
-                    type="date" 
-                    value={bookingDate}
-                    onChange={(e) => setBookingDate(e.target.value)}
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2">Heure</label>
-                  <input 
-                    type="time" 
-                    value={bookingTime}
-                    onChange={(e) => setBookingTime(e.target.value)}
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2">Lieu de prise en charge</label>
-                  <input 
-                    type="text" 
-                    value={pickupLocation}
-                    onChange={(e) => setPickupLocation(e.target.value)}
-                    placeholder="Adresse de départ"
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2">Destination</label>
-                  <input 
-                    type="text" 
-                    value={destination}
-                    onChange={(e) => setDestination(e.target.value)}
-                    placeholder="Adresse d'arrivée"
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
-                  />
-                </div>
-
-                <button 
-                  onClick={handleBooking}
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
-                >
-                  Confirmer la réservation
-                </button>
+              <h3 className="font-semibold mb-2">Réservation Simple</h3>
+              <p className="text-blue-100 text-sm">En quelques clics</p>
+            </div>
+            <div className="text-center text-white">
+              <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-3">
+                <MapPin className="h-6 w-6" />
               </div>
+              <h3 className="font-semibold mb-2">Suivi GPS</h3>
+              <p className="text-blue-100 text-sm">Temps réel</p>
+            </div>
+            <div className="text-center text-white">
+              <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Zap className="h-6 w-6" />
+              </div>
+              <h3 className="font-semibold mb-2">Paiement Sécurisé</h3>
+              <p className="text-blue-100 text-sm">Sans contact</p>
+            </div>
+            <div className="text-center text-white">
+              <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-3">
+                <CheckCircle className="h-6 w-6" />
+              </div>
+              <h3 className="font-semibold mb-2">Service Premium</h3>
+              <p className="text-blue-100 text-sm">Qualité garantie</p>
             </div>
           </div>
-        )}
+        </div>
+      </section>
 
-        {/* Download App Section */}
-        <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl p-8 text-center">
-          <h3 className="text-3xl font-bold mb-4">Application Mobile</h3>
-          <p className="text-gray-300 mb-6">
-            Téléchargez notre application pour réserver en un clic et suivre votre véhicule en temps réel
+      {/* Pricing Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Tarifs Transparents
+            </h2>
+            <p className="text-xl text-gray-600">
+              Des prix clairs sans surprise
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-8 text-center">
+              <h3 className="text-2xl font-bold mb-4">Standard</h3>
+              <div className="text-4xl font-bold text-blue-600 mb-6">
+                12 000 FCFA
+                <span className="text-lg text-gray-500">/course</span>
+              </div>
+              <ul className="space-y-3 mb-8 text-left">
+                <li className="flex items-center">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                  Peugeot 208
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                  Chauffeur expérimenté
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                  Suivi GPS
+                </li>
+              </ul>
+              <Link href="/dl-transport/pricing">
+                <Button className="w-full">Voir les Détails</Button>
+              </Link>
+            </div>
+
+            <div className="bg-blue-600 text-white border-2 border-blue-600 rounded-lg p-8 text-center transform scale-105">
+              <h3 className="text-2xl font-bold mb-4">Premium</h3>
+              <div className="text-4xl font-bold mb-6">
+                15 000 FCFA
+                <span className="text-lg text-blue-200">/course</span>
+              </div>
+              <ul className="space-y-3 mb-8 text-left">
+                <li className="flex items-center">
+                  <CheckCircle className="h-5 w-5 text-blue-200 mr-2" />
+                  Peugeot 3008
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="h-5 w-5 text-blue-200 mr-2" />
+                  Chauffeur 5 étoiles
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="h-5 w-5 text-blue-200 mr-2" />
+                  Priorité réservation
+                </li>
+              </ul>
+              <Link href="/dl-transport/pricing">
+                <Button variant="outline" className="w-full border-white text-white hover:bg-white hover:text-blue-600">
+                  Voir les Détails
+                </Button>
+              </Link>
+            </div>
+
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-8 text-center">
+              <h3 className="text-2xl font-bold mb-4">Luxe</h3>
+              <div className="text-4xl font-bold text-blue-600 mb-6">
+                18 000 FCFA
+                <span className="text-lg text-gray-500">/course</span>
+              </div>
+              <ul className="space-y-3 mb-8 text-left">
+                <li className="flex items-center">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                  Peugeot 508
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                  Service VIP
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                  Confort maximum
+                </li>
+              </ul>
+              <Link href="/dl-transport/pricing">
+                <Button className="w-full">Voir les Détails</Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gray-900">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl font-bold text-white mb-4">
+            Prêt à Essayer DL-Transport ?
+          </h2>
+          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+            Rejoignez des milliers de clients satisfaits qui font confiance à DL-Transport pour leurs déplacements
           </p>
-          <div className="flex gap-4 justify-center">
-            <Link href="/dl-transport/app" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300">
-              📱 Télécharger l'App
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link href="/dl-transport/booking">
+              <Button 
+                size="lg" 
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg"
+              >
+                <Car className="mr-2 h-5 w-5" />
+                Réserver Maintenant
+              </Button>
             </Link>
-            <Link href="/contact" className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
-              📞 Nous contacter
+            <Link href="/dl-transport/tracking">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 text-lg"
+              >
+                <MapPin className="mr-2 h-5 w-5" />
+                Voir la Carte
+              </Button>
             </Link>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <h3 className="text-xl font-bold mb-4">DL-Transport</h3>
+              <p className="text-gray-300">
+                Votre service de transport premium personnel avec des véhicules Peugeot de qualité.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Services</h4>
+              <ul className="space-y-2 text-gray-300">
+                <li><Link href="/dl-transport/booking" className="hover:text-white">Réserver un Véhicule</Link></li>
+                <li><Link href="/dl-transport/tracking" className="hover:text-white">Suivi en Temps Réel</Link></li>
+                <li><Link href="/dl-transport/pricing" className="hover:text-white">Tarifs</Link></li>
+                <li><Link href="/dl-transport/routes" className="hover:text-white">Optimisation Routes</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Support</h4>
+              <ul className="space-y-2 text-gray-300">
+                <li><a href="#" className="hover:text-white">Centre d'Aide</a></li>
+                <li><a href="#" className="hover:text-white">Contact</a></li>
+                <li><a href="#" className="hover:text-white">Sécurité</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Télécharger</h4>
+              <div className="space-y-2">
+                <Button variant="outline" size="sm" className="w-full border-gray-600 text-gray-300 hover:bg-gray-700">
+                  App Store
+                </Button>
+                <Button variant="outline" size="sm" className="w-full border-gray-600 text-gray-300 hover:bg-gray-700">
+                  Google Play
+                </Button>
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+            <p>&copy; 2024 DL-Transport. Tous droits réservés.</p>
+          </div>
+        </div>
+      </footer>
+
+      {/* Booking Modal */}
+      {showBookingModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-8 max-w-md w-full">
+            <h3 className="text-2xl font-bold mb-4">Télécharger DL-Transport</h3>
+            <p className="text-gray-600 mb-6">
+              Choisissez votre plateforme pour télécharger l'application DL-Transport
+            </p>
+            <div className="space-y-4">
+              <Button className="w-full bg-black text-white hover:bg-gray-800">
+                <Download className="mr-2 h-5 w-5" />
+                App Store (iOS)
+              </Button>
+              <Button className="w-full bg-green-600 text-white hover:bg-green-700">
+                <Download className="mr-2 h-5 w-5" />
+                Google Play (Android)
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => setShowBookingModal(false)}
+              >
+                Annuler
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 } 

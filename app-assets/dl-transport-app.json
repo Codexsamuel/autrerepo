@@ -1,0 +1,145 @@
+{
+  "app": {
+    "name": "DL-Transport",
+    "version": "1.0.0",
+    "description": "Service de transport personnel premium avec véhicules de luxe et chauffeurs professionnels",
+    "package": "com.dlsolutions.transport",
+    "bundleId": "com.dlsolutions.transport",
+    "platforms": ["ios", "android"],
+    "developer": "DL Solutions SARL",
+    "website": "https://daveandlucesolutions.com/dl-transport"
+  },
+  "features": {
+    "booking": {
+      "enabled": true,
+      "description": "Réservation de véhicules en temps réel"
+    },
+    "tracking": {
+      "enabled": true,
+      "description": "Suivi GPS en temps réel du chauffeur"
+    },
+    "payment": {
+      "enabled": true,
+      "methods": ["card", "cash", "mobile_money"],
+      "description": "Paiement sécurisé en ligne ou en espèces"
+    },
+    "rating": {
+      "enabled": true,
+      "description": "Système d'évaluation et commentaires"
+    },
+    "notifications": {
+      "enabled": true,
+      "types": ["booking_confirmation", "driver_arrival", "trip_completion"]
+    },
+    "support": {
+      "enabled": true,
+      "hours": "24/7",
+      "methods": ["chat", "phone", "email"]
+    }
+  },
+  "vehicles": [
+    {
+      "id": "peugeot_3008",
+      "name": "Peugeot 3008",
+      "type": "SUV Premium",
+      "color": "Blanche",
+      "capacity": 5,
+      "features": ["Climatisation", "GPS", "WiFi", "Sièges cuir"],
+      "hourlyRate": 15000,
+      "dailyRate": 120000,
+      "currency": "FCFA"
+    },
+    {
+      "id": "red_car",
+      "name": "Voiture Rouge",
+      "type": "Berline Confort",
+      "color": "Rouge",
+      "capacity": 4,
+      "features": ["Climatisation", "GPS", "Audio premium"],
+      "hourlyRate": 12000,
+      "dailyRate": 100000,
+      "currency": "FCFA"
+    }
+  ],
+  "drivers": [
+    {
+      "id": "driver_1",
+      "name": "Jean-Pierre Mbarga",
+      "experience": "8 ans",
+      "rating": 4.9,
+      "languages": ["Français", "Anglais", "Douala"],
+      "specialties": ["Transport VIP", "Aéroport", "Événements"],
+      "status": "available"
+    },
+    {
+      "id": "driver_2",
+      "name": "Marie-Claire Nguemo",
+      "experience": "5 ans",
+      "rating": 4.8,
+      "languages": ["Français", "Anglais", "Bassa"],
+      "specialties": ["Transport d'affaires", "Courses urbaines"],
+      "status": "available"
+    }
+  ],
+  "appStore": {
+    "ios": {
+      "storeUrl": "https://apps.apple.com/app/dl-transport",
+      "appId": "1234567890",
+      "category": "Travel",
+      "rating": 4.8,
+      "reviews": 156,
+      "downloads": "1000+"
+    },
+    "android": {
+      "storeUrl": "https://play.google.com/store/apps/details?id=com.dlsolutions.transport",
+      "packageName": "com.dlsolutions.transport",
+      "category": "Travel & Local",
+      "rating": 4.7,
+      "reviews": 203,
+      "downloads": "1000+"
+    }
+  },
+  "pricing": {
+    "hourly": {
+      "min": 12000,
+      "max": 15000,
+      "currency": "FCFA"
+    },
+    "daily": {
+      "min": 100000,
+      "max": 120000,
+      "currency": "FCFA"
+    },
+    "features": [
+      "Prix fixes, pas de surprise",
+      "Pas de frais cachés",
+      "Facturation transparente",
+      "Paiement sécurisé"
+    ]
+  },
+  "support": {
+    "phone": "+237 6XX XXX XXX",
+    "email": "transport@daveandlucesolutions.com",
+    "whatsapp": "+237 6XX XXX XXX",
+    "hours": "24/7",
+    "languages": ["Français", "Anglais"]
+  },
+  "security": {
+    "features": [
+      "Chiffrement SSL/TLS",
+      "Authentification sécurisée",
+      "Protection des données personnelles",
+      "Conformité RGPD",
+      "Paiements sécurisés"
+    ]
+  },
+  "analytics": {
+    "tracking": [
+      "Temps de réponse",
+      "Satisfaction client",
+      "Taux de ponctualité",
+      "Distance parcourue",
+      "Émissions CO2"
+    ]
+  }
+} 

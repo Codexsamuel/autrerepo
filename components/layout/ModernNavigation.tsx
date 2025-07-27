@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import LanguageSelector from '@/components/ui/language-selector';
 import { useLanguage } from '@/hooks/useLanguage';
 import { getTranslation } from '@/lib/i18n/translations';
-import { Briefcase, Building, ChevronDown, Home, Info, Menu, Phone, Search, Settings, TrendingUp, X } from 'lucide-react';
+import { Bot, Briefcase, Building, ChevronDown, Home, Info, Menu, Phone, Search, Settings, TrendingUp, X } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -28,6 +28,8 @@ export default function ModernNavigation({ className = '' }: ModernNavigationPro
     { name: 'Formations', href: '/formations', icon: Building, dataOnboarding: 'formations' },
     { name: 'DL-Transport', href: '/dl-transport', icon: TrendingUp, highlight: true },
     { name: 'DL-Immobilier', href: '/dl-immobilier', icon: Building, highlight: true },
+    { name: 'ULTRA AI Bot', href: '/ultra-ai-bot', icon: Bot, highlight: true },
+    { name: 'Comparaison Bots', href: '/bots-comparison', icon: TrendingUp, highlight: true },
     { name: t.navigation.about, href: '/a-propos', icon: Info },
     { name: 'NovaCore', href: '/novacore', icon: Settings, dataOnboarding: 'novacore' },
     { name: t.navigation.intranet, href: '/intranet', icon: Building },

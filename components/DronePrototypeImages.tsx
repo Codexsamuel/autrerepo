@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import ImageWithFallback from './ImageWithFallback';
 
 interface DronePrototypeImagesProps {
   images: string[];
@@ -10,7 +11,6 @@ interface DronePrototypeImagesProps {
 
 export default function DronePrototypeImages({ images, titles, descriptions }: DronePrototypeImagesProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
 
   const nextImage = () => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -18,21 +18,6 @@ export default function DronePrototypeImages({ images, titles, descriptions }: D
 
   const prevImage = () => {
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-  };
-
-  const handleImageError = (index: number) => {
-    setImageErrors(prev => new Set(prev).add(index));
-  };
-
-  const getFallbackImage = (index: number) => {
-    // Images par défaut pour les drones
-    const fallbackImages = [
-      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMTAxODI3Ii8+CjxjaXJjbGUgY3g9IjIwMCIgY3k9IjE1MCIgcj0iODAiIGZpbGw9IiMzNDM0MzQiLz4KPGNpcmNsZSBjeD0iMjAwIiBjeT0iMTUwIiByPSI2MCIgZmlsbD0iIzQ1NDU0NSIvPgo8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjQwIiBmaWxsPSIjNTY1NjU2Ii8+CjxwYXRoIGQ9Ik0xNjAgMTUwIEwyNDAgMTUwIE0yMDAgMTEwIEwyMDAgMTkwIiBzdHJva2U9IiM2NzY3NjciIHN0cm9rZS13aWR0aD0iNCIvPgo8dGV4dCB4PSIyMDAiIHk9IjI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+U2VudGluZWwgWDEmIzE3NzsgLSBEcm9uZSBUYWN0aXF1ZTwvdGV4dD4KPC9zdmc+',
-      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMTAxODI3Ii8+CjxyZWN0IHg9IjE1MCIgeT0iMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzM0MzQzNCIvPgo8cmVjdCB4PSIxNjAiIHk9IjExMCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjNDU0NTQ1Ii8+CjxyZWN0IHg9IjE3MCIgeT0iMTIwIiB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIGZpbGw9IiM1NjU2NTYiLz4KPHBhdGggZD0iTTE2MCAxNTAgTDI0MCAxNTAgTTIwMCAxMTAgTDIwMCAxOTAiIHN0cm9rZT0iIzY3Njc2NyIgc3Ryb2tlLXdpZHRoPSI0Ii8+Cjx0ZXh0IHg9IjIwMCIgeT0iMjUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5BdGxhcyBYMSAtIERyb25lIEluZHVzdHJpZWw8L3RleHQ+Cjwvc3ZnPg==',
-      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMTAxODI3Ii8+Cjxwb2x5Z29uIHBvaW50cz0iMjAwLDEwMCAyNTAsMTUwIDIwMCwyMDAgMTUwLDE1MCIgZmlsbD0iIzM0MzQzNCIvPgo8cG9seWdvbiBwb2ludHM9IjIwMCwxMjAgMjMwLDE1MCAyMDAsMTgwIDE3MCwxNTAiIGZpbGw9IiM0NTQ1NDUiLz4KPHBhdGggZD0iTTE2MCAxNTAgTDI0MCAxNTAgTTIwMCAxMTAgTDIwMCAxOTAiIHN0cm9rZT0iIzY3Njc2NyIgc3Ryb2tlLXdpZHRoPSI0Ii8+Cjx0ZXh0IHg9IjIwMCIgeT0iMjUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Qcm90b3R5cGUgQXZhw6luY8OpPC90ZXh0Pgo8L3N2Zz4=',
-      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMTAxODI3Ii8+CjxyZWN0IHg9IjE1MCIgeT0iMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzM0MzQzNCIvPgo8cmVjdCB4PSIxNjAiIHk9IjExMCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjNDU0NTQ1Ii8+CjxyZWN0IHg9IjE3MCIgeT0iMTIwIiB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIGZpbGw9IiM1NjU2NTYiLz4KPHBhdGggZD0iTTE2MCAxNTAgTDI0MCAxNTAgTTIwMCAxMTAgTDIwMCAxOTAiIHN0cm9rZT0iIzY3Njc2NyIgc3Ryb2tlLXdpZHRoPSI0Ii8+Cjx0ZXh0IHg9IjIwMCIgeT0iMjUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5ETF9GUFYgVGFjdGljYWwgVjEgLSBEcm9uZSBLYW1pa2F6ZTwvdGV4dD4KPC9zdmc+'
-    ];
-    return fallbackImages[index] || fallbackImages[0];
   };
 
   return (
@@ -46,19 +31,18 @@ export default function DronePrototypeImages({ images, titles, descriptions }: D
                 index === currentIndex ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'
               }`}
             >
-              <img
-                src={imageErrors.has(index) ? getFallbackImage(index) : image}
+              <ImageWithFallback
+                src={image}
                 alt={`Drone prototype ${index + 1}`}
                 className="w-full h-full object-cover"
-                onError={() => handleImageError(index)}
+                fallbackSrc="/images/drone-placeholder.svg"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                 <h3 className="text-2xl font-bold mb-2">{titles[index]}</h3>
                 <p className="text-lg opacity-90">{descriptions[index]}</p>
-                {imageErrors.has(index) && (
-                  <p className="text-sm opacity-70 mt-2">🖼️ Image 3D en cours de génération...</p>
-                )}
               </div>
             </div>
           ))}
@@ -82,19 +66,26 @@ export default function DronePrototypeImages({ images, titles, descriptions }: D
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </button>
+        
+        {/* Dots indicator */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                index === currentIndex ? 'bg-white' : 'bg-white/50'
+              }`}
+            />
+          ))}
+        </div>
       </div>
       
-      {/* Dots indicator */}
-      <div className="flex justify-center mt-4 space-x-2">
-        {images.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-200 ${
-              index === currentIndex ? 'bg-blue-500' : 'bg-gray-300 hover:bg-gray-400'
-            }`}
-          />
-        ))}
+      {/* Auto-play indicator */}
+      <div className="mt-4 text-center">
+        <p className="text-sm text-gray-500">
+          Navigation automatique toutes les 5 secondes • Cliquez pour arrêter
+        </p>
       </div>
     </div>
   );

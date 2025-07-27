@@ -10,6 +10,7 @@ import MediaSection from '@/components/media-section';
 import ContextualHelp from '@/components/onboarding/ContextualHelp';
 import PrivacyMessage from '@/components/privacy-message';
 import TestimonialsSection from '@/components/testimonials-section';
+import MarqueeBanner from '@/components/ui/MarqueeBanner';
 import { Button } from "@/components/ui/button";
 import WhatsAppButton from '@/components/whatsapp-button';
 import {
@@ -633,6 +634,9 @@ export default function HomePage() {
 
         {/* Contenu principal avec padding-top pour la navigation */}
         <main className="pt-20">
+          {/* Bande d'information qui défile */}
+          <MarqueeBanner />
+          
           {/* Hero Section */}
           <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
             {/* Background Video */}
@@ -928,14 +932,25 @@ export default function HomePage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
                   <div className="bg-white/10 rounded-xl p-6">
                     <h4 className="text-lg font-semibold mb-2">Tarif Horaire</h4>
-                    <div className="text-3xl font-bold text-green-400 mb-2">12 000 - 15 000 FCFA</div>
-                    <p className="text-sm text-gray-300">Selon le véhicule</p>
+                    <div className="text-3xl font-bold text-green-400 mb-2">5 000 - 8 000 FCFA</div>
+                    <p className="text-sm text-gray-300">Selon le véhicule et la distance</p>
+                    <p className="text-xs text-gray-400 mt-2">• Berline : 5 000 FCFA/h</p>
+                    <p className="text-xs text-gray-400">• SUV : 6 500 FCFA/h</p>
+                    <p className="text-xs text-gray-400">• Camion : 8 000 FCFA/h</p>
                   </div>
                   <div className="bg-white/10 rounded-xl p-6">
                     <h4 className="text-lg font-semibold mb-2">Tarif Journalier</h4>
-                    <div className="text-3xl font-bold text-green-400 mb-2">100 000 - 120 000 FCFA</div>
-                    <p className="text-sm text-gray-300">Service complet</p>
+                    <div className="text-3xl font-bold text-green-400 mb-2">45 000 - 65 000 FCFA</div>
+                    <p className="text-sm text-gray-300">Service complet avec chauffeur</p>
+                    <p className="text-xs text-gray-400 mt-2">• Berline : 45 000 FCFA/jour</p>
+                    <p className="text-xs text-gray-400">• SUV : 55 000 FCFA/jour</p>
+                    <p className="text-xs text-gray-400">• Camion : 65 000 FCFA/jour</p>
                   </div>
+                </div>
+                <div className="mt-6 p-4 bg-green-500/20 rounded-xl">
+                  <p className="text-sm text-green-300 font-medium">
+                    💡 Offre spéciale : Réduction de 15% pour les réservations de plus de 3 jours
+                  </p>
                 </div>
               </div>
             </div>

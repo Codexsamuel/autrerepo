@@ -27,6 +27,7 @@ export default function ModernNavigation({ className = '' }: ModernNavigationPro
     { name: t.navigation.services, href: '/services', icon: Briefcase },
     { name: 'Formations', href: '/formations', icon: Building, dataOnboarding: 'formations' },
     { name: 'DL-Transport', href: '/dl-transport', icon: TrendingUp, highlight: true },
+    { name: 'DL-Immobilier', href: '/dl-immobilier', icon: Building, highlight: true },
     { name: t.navigation.about, href: '/a-propos', icon: Info },
     { name: 'NovaCore', href: '/novacore', icon: Settings, dataOnboarding: 'novacore' },
     { name: t.navigation.intranet, href: '/intranet', icon: Building },

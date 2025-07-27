@@ -1,6 +1,10 @@
 import ultraAIProductionService from '@/lib/ai/ultra-ai-production';
 import { NextRequest, NextResponse } from 'next/server';
 
+// Configuration pour l'export statique
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

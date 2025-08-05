@@ -9,6 +9,12 @@ const nextConfig = {
   // output: process.env.NETLIFY === 'true' ? 'export' : undefined,
   trailingSlash: process.env.NETLIFY === 'true',
   
+  // Configuration pour le développement et la production
+  experimental: {
+    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+    optimizeCss: true,
+  },
+  
   // Configuration des images avancée
   images: {
     unoptimized: process.env.NETLIFY === 'true',

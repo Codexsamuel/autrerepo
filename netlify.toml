@@ -1,18 +1,33 @@
 # Configuration Netlify pour DL Solutions Platform
-# Version: 3.5 - Configuration optimisée pour Next.js API Routes
+# Version: 3.9 - Configuration pour Next.js avec serveur
 
 [build]
   command = "npm run build:netlify"
-  publish = "out"
+  publish = ".next"
   functions = "netlify/functions"
 
 [build.environment]
   NODE_VERSION = "18"
   NPM_FLAGS = "--legacy-peer-deps"
 
+# Configuration pour le serveur Next.js
+[functions]
+  directory = "netlify/functions"
+
+# Redirections pour Next.js
+[[redirects]]
+  from = "/_next/static/*"
+  to = "/_next/static/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/nextjs/:splat"
+  status = 200
+
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "/.netlify/functions/nextjs"
   status = 200
 
 [[headers]]

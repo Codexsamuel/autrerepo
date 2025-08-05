@@ -1,5 +1,6 @@
 "use client";
 
+import { AutoUpdateProducts } from '@/components/ui/AutoUpdateProducts';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -7,16 +8,14 @@ import {
     CheckCircle,
     Globe,
     MapPin,
-    Package,
+    RefreshCw,
     Shield,
     ShoppingBag,
     ShoppingCart,
-    Truck,
-    Zap
+    Truck
 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-import ChineseStoresClient from './ChineseStoresClient';
 import { useCart } from './cart-context';
 
 // Types de devises
@@ -152,114 +151,31 @@ export default function DLStyleClient() {
         </div>
 
         {/* Product Categories */}
-        <Tabs defaultValue="vehicles" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8">
-            <TabsTrigger value="vehicles" className="flex items-center space-x-2">
-              <Truck className="h-4 w-4" />
-              <span>Véhicules</span>
-            </TabsTrigger>
-            <TabsTrigger value="electronics" className="flex items-center space-x-2">
-              <Zap className="h-4 w-4" />
-              <span>Électronique</span>
-            </TabsTrigger>
-            <TabsTrigger value="fashion" className="flex items-center space-x-2">
-              <ShoppingBag className="h-4 w-4" />
-              <span>Mode</span>
-            </TabsTrigger>
-            <TabsTrigger value="accessories" className="flex items-center space-x-2">
-              <Package className="h-4 w-4" />
-              <span>Accessoires</span>
+        <Tabs defaultValue="all" className="w-full">
+          <TabsList className="grid w-full grid-cols-1 mb-8">
+            <TabsTrigger value="all" className="flex items-center space-x-2">
+              <RefreshCw className="h-4 w-4" />
+              <span>Tous les Produits - Auto-Mis à Jour</span>
             </TabsTrigger>
           </TabsList>
 
-          {/* Vehicles Tab */}
-          <TabsContent value="vehicles" className="space-y-6">
+          {/* Tous les Produits avec Mise à Jour Automatique */}
+          <TabsContent value="all" className="space-y-6">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Véhicules Premium du Monde Entier
+                Tous les Produits - Mise à Jour Automatique
               </h3>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                Découvrez notre sélection de véhicules de qualité provenant de Chine, 
-                Dubaï, Turquie et Cameroun. Livraison et dédouanement inclus.
+                Découvrez notre sélection complète de produits avec mise à jour automatique toutes les 6 heures.
+                Système de cache durable garantissant la disponibilité 24/7.
               </p>
             </div>
             
-            <div key="vehicles-content">
-              <ChineseStoresClient 
-                category="Véhicules" 
-                selectedCurrency={selectedCurrency}
-                convertPrice={convertPrice}
-                formatPrice={formatPrice}
-                getCurrencySymbol={getCurrencySymbol}
-              />
-            </div>
-          </TabsContent>
-
-          {/* Electronics Tab */}
-          <TabsContent value="electronics" className="space-y-6">
-            <div className="text-center mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Électronique et Technologies
-              </h3>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                Smartphones, ordinateurs, accessoires technologiques et plus encore. 
-                Produits de marques reconnues aux meilleurs prix.
-              </p>
-            </div>
-            
-            <div key="electronics-content">
-              <ChineseStoresClient 
-                category="Électronique" 
-                selectedCurrency={selectedCurrency}
-                convertPrice={convertPrice}
-                formatPrice={formatPrice}
-                getCurrencySymbol={getCurrencySymbol}
-              />
-            </div>
-          </TabsContent>
-
-          {/* Fashion Tab */}
-          <TabsContent value="fashion" className="space-y-6">
-            <div className="text-center mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Mode et Accessoires de Luxe
-              </h3>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                Vêtements, chaussures, sacs et accessoires de mode. 
-                Styles tendance du monde entier à des prix compétitifs.
-              </p>
-            </div>
-            
-            <div key="fashion-content">
-              <ChineseStoresClient 
-                category="Mode" 
-                selectedCurrency={selectedCurrency}
-                convertPrice={convertPrice}
-                formatPrice={formatPrice}
-                getCurrencySymbol={getCurrencySymbol}
-              />
-            </div>
-          </TabsContent>
-
-          {/* Accessories Tab */}
-          <TabsContent value="accessories" className="space-y-6">
-            <div className="text-center mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Accessoires et Lifestyle
-              </h3>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                Montres, bijoux, accessoires de maison et objets de décoration. 
-                Élégance et qualité pour tous les goûts.
-              </p>
-            </div>
-            
-            <div key="accessories-content">
-              <ChineseStoresClient 
-                category="Accessoires" 
-                selectedCurrency={selectedCurrency}
-                convertPrice={convertPrice}
-                formatPrice={formatPrice}
-                getCurrencySymbol={getCurrencySymbol}
+            <div key="all-products-content">
+              <AutoUpdateProducts 
+                showStats={true}
+                autoRefresh={true}
+                refreshInterval={300}
               />
             </div>
           </TabsContent>

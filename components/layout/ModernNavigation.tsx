@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import LanguageSelector from '@/components/ui/language-selector';
 import { useLanguage } from '@/hooks/useLanguage';
 import { getTranslation } from '@/lib/i18n/translations';
-import { Bot, Briefcase, Building, ChevronDown, Home, Info, Menu, Phone, Rocket, Search, Settings, TrendingUp, Truck, X } from 'lucide-react';
+import { Bot, Brain, Briefcase, Building, ChevronDown, Home, Info, Menu, Phone, Rocket, Search, Settings, TrendingUp, Truck, X } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -150,6 +150,14 @@ export default function ModernNavigation({ className = '' }: ModernNavigationPro
             {/* Sélecteur de langue */}
             <LanguageSelector variant="dropdown" />
 
+            {/* Bouton NovaIA */}
+            <Link href="/nova-ia">
+              <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2">
+                <Brain className="w-4 h-4" />
+                <span>NovaIA</span>
+              </Button>
+            </Link>
+
             {/* Bouton Solutions */}
             <Link href="/solutions/selection">
               <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
@@ -216,6 +224,12 @@ export default function ModernNavigation({ className = '' }: ModernNavigationPro
                   </DropdownMenuItem>
                 ))}
                 <div className="border-t border-gray-200 mt-2 pt-2">
+                  <DropdownMenuItem asChild>
+                    <Link href="/nova-ia" className="flex items-center space-x-3 p-3 hover:bg-blue-50">
+                      <Brain className="w-4 h-4 text-gray-500" />
+                      <span className="text-gray-700">NovaIA</span>
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/solutions/selection" className="flex items-center space-x-3 p-3 hover:bg-blue-50">
                       <Briefcase className="w-4 h-4 text-gray-500" />

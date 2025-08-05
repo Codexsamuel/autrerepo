@@ -1,0 +1,30 @@
+# Configuration des clés RapidAPI pour DL Style
+# Copiez ce fichier vers .env.local et ajoutez vos vraies clés
+
+# Amazon Products API
+RAPIDAPI_AMAZON_KEY=your_amazon_rapidapi_key_here
+RAPIDAPI_AMAZON_HOST=amazon-products1.p.rapidapi.com
+
+# Taobao/1688 API
+RAPIDAPI_TAOBAO_KEY=your_taobao_rapidapi_key_here
+RAPIDAPI_TAOBAO_HOST=taobao-api.p.rapidapi.com
+
+# eBay API
+RAPIDAPI_EBAY_KEY=your_ebay_rapidapi_key_here
+RAPIDAPI_EBAY_HOST=ebay-search-result.p.rapidapi.com
+
+# AliExpress API
+RAPIDAPI_ALIEXPRESS_KEY=your_aliexpress_rapidapi_key_here
+RAPIDAPI_ALIEXPRESS_HOST=aliexpress-data-scraper.p.rapidapi.com
+
+# Google Translator API
+RAPIDAPI_TRANSLATOR_KEY=your_translator_rapidapi_key_here
+RAPIDAPI_TRANSLATOR_HOST=google-translate1.p.rapidapi.com
+
+# Instructions pour obtenir les clés :
+# 1. Allez sur https://rapidapi.com/
+# 2. Créez un compte gratuit
+# 3. Recherchez les APIs mentionnées ci-dessus
+# 4. Souscrivez aux plans gratuits
+# 5. Copiez les clés X-RapidAPI-Key
+# 6. Collez-les dans ce fichier .env.local 

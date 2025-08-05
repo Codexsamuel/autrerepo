@@ -47,6 +47,12 @@ export default function ChineseStoresClient({
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMarket, setSelectedMarket] = useState('all');
+  const [minPrice, setMinPrice] = useState<number | undefined>();
+  const [maxPrice, setMaxPrice] = useState<number | undefined>();
+  const [sortBy, setSortBy] = useState('relevance');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalProducts, setTotalProducts] = useState(0);
   const { addToCart } = useCart();
   const [stats, setStats] = useState<ScrapingStats | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
@@ -83,8 +89,19 @@ export default function ChineseStoresClient({
       const params = new URLSearchParams({
         query: searchQuery,
         category: category,
-        country: selectedMarket
+        country: selectedMarket,
+        page: currentPage.toString(),
+        limit: '12',
+        sortBy: sortBy
       });
+
+      // Ajouter les filtres de prix si définis
+      if (minPrice !== undefined) {
+        params.append('minPrice', minPrice.toString());
+      }
+      if (maxPrice !== undefined) {
+        params.append('maxPrice', maxPrice.toString());
+      }
       
       const response = await fetch(`/api/scraping/chinese-stores?${params}`);
       
@@ -96,6 +113,8 @@ export default function ChineseStoresClient({
       
       if (data.success && Array.isArray(data.data)) {
         setProducts(data.data);
+        setTotalProducts(data.pagination?.total || 0);
+        setTotalPages(data.pagination?.totalPages || 1);
       } else {
         setProducts([]);
         if (data.error) {
@@ -147,7 +166,7 @@ export default function ChineseStoresClient({
 
   useEffect(() => {
     loadProducts();
-  }, [category, searchQuery, selectedMarket]);
+  }, [category, searchQuery, selectedMarket, minPrice, maxPrice, sortBy, currentPage]);
 
   // Fonction pour ajouter un produit au panier
   const handleAddToCart = (product: Product) => {
@@ -280,7 +299,8 @@ export default function ChineseStoresClient({
       {/* Filters */}
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {/* Filtres principaux */}
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
@@ -292,26 +312,9 @@ export default function ChineseStoresClient({
               />
             </div>
             
-            <Select value={category} onValueChange={(value) => {
-              setSelectedMarket(value === 'all' ? 'all' : value as string);
-              setSearchQuery('');
-            }}>
-              <SelectTrigger>
-                <SelectValue placeholder="Catégorie" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Toutes les catégories</SelectItem>
-                {categories.map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            
             <Select value={selectedMarket} onValueChange={(value) => {
               setSelectedMarket(value === 'all' ? 'all' : value as string);
-              setSearchQuery('');
+              setCurrentPage(1);
             }}>
               <SelectTrigger>
                 <SelectValue placeholder="Pays" />
@@ -326,10 +329,65 @@ export default function ChineseStoresClient({
               </SelectContent>
             </Select>
             
-            <Button onClick={handleSearch} className="w-full">
+            <Select value={sortBy} onValueChange={(value) => {
+              setSortBy(value);
+              setCurrentPage(1);
+            }}>
+              <SelectTrigger>
+                <SelectValue placeholder="Trier par" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="relevance">Pertinence</SelectItem>
+                <SelectItem value="price-asc">Prix croissant</SelectItem>
+                <SelectItem value="price-desc">Prix décroissant</SelectItem>
+                <SelectItem value="rating">Note</SelectItem>
+                <SelectItem value="newest">Plus récent</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <Input
+              placeholder="Prix min (USD)"
+              type="number"
+              value={minPrice || ''}
+              onChange={(e) => setMinPrice(e.target.value ? parseFloat(e.target.value) : undefined)}
+              className="w-full"
+            />
+            
+            <Input
+              placeholder="Prix max (USD)"
+              type="number"
+              value={maxPrice || ''}
+              onChange={(e) => setMaxPrice(e.target.value ? parseFloat(e.target.value) : undefined)}
+              className="w-full"
+            />
+          </div>
+          
+          {/* Boutons d'action */}
+          <div className="flex justify-between items-center">
+            <Button onClick={handleSearch} className="flex items-center">
               <Search className="h-4 w-4 mr-2" />
               Rechercher
             </Button>
+            
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-gray-600">
+                {totalProducts} produits trouvés
+              </span>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedMarket('all');
+                  setMinPrice(undefined);
+                  setMaxPrice(undefined);
+                  setSortBy('relevance');
+                  setCurrentPage(1);
+                }}
+              >
+                Réinitialiser
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -430,6 +488,48 @@ export default function ChineseStoresClient({
             <p className="text-gray-600">
               Essayez de modifier vos critères de recherche
             </p>
+          </div>
+        )}
+        
+        {/* Pagination */}
+        {!loading && totalPages > 1 && (
+          <div className="flex justify-center items-center space-x-2 mt-8">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+              disabled={currentPage === 1}
+            >
+              Précédent
+            </Button>
+            
+            <div className="flex items-center space-x-1">
+              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                const pageNum = Math.max(1, Math.min(totalPages - 4, currentPage - 2)) + i;
+                if (pageNum > totalPages) return null;
+                
+                return (
+                  <Button
+                    key={pageNum}
+                    variant={currentPage === pageNum ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setCurrentPage(pageNum)}
+                    className="w-10 h-10"
+                  >
+                    {pageNum}
+                  </Button>
+                );
+              })}
+            </div>
+            
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+              disabled={currentPage === totalPages}
+            >
+              Suivant
+            </Button>
           </div>
         )}
       </div>

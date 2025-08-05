@@ -5,11 +5,7 @@ const nextConfig = {
     ignoreDuringBuilds: process.env.NODE_ENV === 'production',
   },
   
-  // Configuration pour export statique (désactivé pour permettre les APIs)
-  // output: process.env.NETLIFY === 'true' ? 'export' : undefined,
-  trailingSlash: process.env.NETLIFY === 'true',
-  
-  // Configuration pour le développement et la production
+  // Configuration optimisée pour Vercel
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
     optimizeCss: true,
@@ -17,7 +13,6 @@ const nextConfig = {
   
   // Configuration des images avancée
   images: {
-    unoptimized: process.env.NETLIFY === 'true',
     domains: [
       'images.unsplash.com',
       'res.cloudinary.com',
@@ -54,74 +49,42 @@ const nextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   
-  // Optimisations de performance avancées (désactivées pour export statique)
-  experimental: process.env.NETLIFY === 'true' ? {} : {
-    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
-    optimizeCss: true,
-  },
-  
-  // Configuration Turbopack (désactivée pour export statique)
-  turbopack: process.env.NETLIFY === 'true' ? undefined : {
-    rules: {
-      '*.svg': {
-        loaders: ['@svgr/webpack'],
-        as: '*.js',
+  // Configuration pour le SEO
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+        ],
       },
-    },
+    ];
   },
   
-  // Autoriser le développement en réseau local (Cross-Origin)
-  allowedDevOrigins: [
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'http://localhost:3002',
-    'http://localhost:3003',
-    'http://localhost:3004',
-    'http://172.20.10.8:3000',
-    'http://172.20.10.8:3001',
-    'http://172.20.10.8:3002',
-    'http://192.168.1.134:3000',
-    'http://192.168.1.134:3001',
-    'http://192.168.1.134:3002'
-  ],
-  
-  // Optimisations de performance
-  compress: true,
-  
-  // Configuration des variables d'environnement
-  env: {
-    CUSTOM_KEY: process.env.CUSTOM_KEY,
-  },
-  
-  // Configuration webpack avancée
-  webpack: (config, { isServer, dev }) => {
-    // Optimisations pour la production
-    if (!dev && !isServer) {
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-          },
-          common: {
-            name: 'common',
-            minChunks: 2,
-            chunks: 'all',
-            enforce: true,
-          },
-        },
-      };
-    }
-    
-    // Optimisation des images SVG
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ['@svgr/webpack'],
-    });
-    
-    return config;
+  // Configuration des redirections
+  async redirects() {
+    return [
+      {
+        source: '/home',
+        destination: '/',
+        permanent: true,
+      },
+    ];
   },
 };
 

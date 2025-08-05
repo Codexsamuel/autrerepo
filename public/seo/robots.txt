@@ -1,0 +1,50 @@
+User-agent: *
+Allow: /
+Allow: /portfolio
+Allow: /portfolio/batobaye
+Allow: /services
+Allow: /a-propos
+Allow: /contact
+Allow: /dl-style
+Allow: /novaworld
+Allow: /novacore
+Allow: /marketing-digital
+Allow: /e-commerce
+Allow: /formations
+Allow: /capacites-techniques
+Allow: /devis
+Allow: /rendez-vous
+
+Disallow: /admin
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+Disallow: /temp/
+
+User-agent: Googlebot
+Allow: /
+Allow: /portfolio
+Allow: /portfolio/batobaye
+Allow: /services
+Allow: /a-propos
+Allow: /contact
+Allow: /dl-style
+Allow: /novaworld
+Allow: /novacore
+Allow: /marketing-digital
+Allow: /e-commerce
+Allow: /formations
+Allow: /capacites-techniques
+Allow: /devis
+Allow: /rendez-vous
+
+Disallow: /admin
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+Disallow: /temp/
+
+Crawl-delay: 1
+
+Sitemap: https://dlsolutions.com/sitemap.xml
+Host: https://dlsolutions.com

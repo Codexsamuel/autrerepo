@@ -1,5 +1,5 @@
 // Configuration SEO centralisée pour DL Solutions
-// Optimisation pour les mots-clés : DL Solutions, Davy, Lucie
+// Optimisation pour les mots-clés : DL Solutions, Davy, Lucie, Batobaye, marketplace, vente en ligne
 
 export interface SEOConfig {
   title: string;
@@ -25,19 +25,71 @@ const PRIMARY_KEYWORDS = [
   'solutions digitales',
   'transformation numérique',
   'Cameroun',
-  'Yaoundé'
+  'Yaoundé',
+  'Batobaye',
+  'Batobaye Market',
+  'marketplace',
+  'vente en ligne',
+  'e-commerce',
+  'boutique en ligne',
+  'marketing digital'
 ];
 
 // Mots-clés secondaires par secteur
 const SECTOR_KEYWORDS = {
   crm: ['CRM', 'gestion client', 'relation client', 'automatisation'],
   erp: ['ERP', 'gestion entreprise', 'planification ressources', 'système intégré'],
-  ecommerce: ['e-commerce', 'boutique en ligne', 'vente en ligne', 'DL Style'],
+  ecommerce: [
+    'e-commerce', 
+    'boutique en ligne', 
+    'vente en ligne', 
+    'DL Style',
+    'marketplace',
+    'plateforme de vente',
+    'commerce électronique',
+    'paiement en ligne',
+    'CinetPay',
+    'livraison',
+    'gestion des commandes'
+  ],
+  batobaye: [
+    'Batobaye',
+    'Batobaye Market',
+    'Batobaye E-commerce',
+    'marketplace Cameroun',
+    'boutique en ligne Cameroun',
+    'vente en ligne Cameroun',
+    'e-commerce Cameroun',
+    'plateforme de vente Cameroun',
+    'commerce électronique Cameroun',
+    'paiement CinetPay',
+    'livraison Cameroun',
+    'dashboard admin',
+    'gestion produits',
+    'inventaire en ligne',
+    'analytics e-commerce',
+    'IA e-commerce',
+    'OpenAI e-commerce',
+    'Sage Compta',
+    'intégration ERP'
+  ],
   formation: ['formation', 'formation professionnelle', 'certification', 'apprentissage'],
-  ia: ['intelligence artificielle', 'IA', 'machine learning', 'automatisation'],
-  web: ['développement web', 'site web', 'application web', 'programmation'],
+  ia: ['intelligence artificielle', 'IA', 'machine learning', 'automatisation', 'OpenAI', 'GPT-4'],
+  web: ['développement web', 'site web', 'application web', 'programmation', 'Next.js', 'React'],
   mobile: ['application mobile', 'app mobile', 'développement mobile', 'iOS', 'Android'],
-  marketing: ['marketing digital', 'SEO', 'réseaux sociaux', 'publicité en ligne'],
+  marketing: [
+    'marketing digital', 
+    'SEO', 
+    'réseaux sociaux', 
+    'publicité en ligne',
+    'marketing en ligne',
+    'stratégie marketing',
+    'campagne publicitaire',
+    'référencement naturel',
+    'Google Ads',
+    'Facebook Ads',
+    'Instagram marketing'
+  ],
   trading: ['trading', 'investissement', 'finance', 'marchés financiers'],
   novaworld: ['NovaWorld', 'réseau social', 'networking', 'collaboration'],
   novacore: ['NovaCore', 'plateforme', 'écosystème', 'intégration']
@@ -47,9 +99,9 @@ const SECTOR_KEYWORDS = {
 export const SEO_CONFIGS: Record<string, SEOConfig> = {
   // Page d'accueil
   home: {
-    title: 'DL Solutions - Écosystème Digital Complet | Davy & Lucie Solutions',
-    description: 'DL Solutions par Davy et Lucie - Écosystème digital complet avec CRM, ERP, boutique internationale, formations professionnelles. Solutions innovantes au Cameroun.',
-    keywords: `${PRIMARY_KEYWORDS.join(', ')}, écosystème digital, CRM, ERP, boutique, formations, Cameroun, Yaoundé, Davy, Lucie, Dave and Luce`,
+    title: 'DL Solutions - Écosystème Digital Complet | Marketplace & Vente en Ligne | Davy & Lucie',
+    description: 'DL Solutions par Davy et Lucie - Écosystème digital complet avec marketplace Batobaye, boutique en ligne, CRM, ERP, marketing digital. Solutions innovantes au Cameroun.',
+    keywords: `${PRIMARY_KEYWORDS.join(', ')}, écosystème digital, CRM, ERP, boutique, formations, Cameroun, Yaoundé, Davy, Lucie, Dave and Luce, marketplace, vente en ligne, marketing digital`,
     image: 'https://dlsolutions.com/images/og-home.jpg',
     url: 'https://dlsolutions.com',
     type: 'website',
@@ -60,11 +112,58 @@ export const SEO_CONFIGS: Record<string, SEOConfig> = {
     logo: '/favicon-circular.svg'
   },
 
+  // Portfolio
+  portfolio: {
+    title: 'Portfolio DL Solutions - Réalisations Marketplace & E-commerce | Davy & Lucie',
+    description: 'Découvrez notre portfolio de réalisations : Batobaye Marketplace, DL Style E-commerce, NovaWorld, NovaCore. Solutions digitales innovantes par Davy et Lucie.',
+    keywords: `${PRIMARY_KEYWORDS.join(', ')}, portfolio, réalisations, projets, Batobaye, DL Style, NovaWorld, NovaCore, marketplace, e-commerce, développement web, Cameroun`,
+    image: 'https://dlsolutions.com/images/portfolio-og.jpg',
+    url: 'https://dlsolutions.com/portfolio',
+    type: 'website',
+    breadcrumbs: [
+      { name: 'Accueil', url: 'https://dlsolutions.com' },
+      { name: 'Portfolio', url: 'https://dlsolutions.com/portfolio' }
+    ],
+    priority: 0.9,
+    changeFreq: 'weekly'
+  },
+
+  // Batobaye - Page dédiée
+  'portfolio-batobaye': {
+    title: 'Batobaye Marketplace - Plateforme E-commerce Complète | DL Solutions Davy & Lucie',
+    description: 'Batobaye Marketplace par DL Solutions - Plateforme e-commerce complète avec dashboard admin VIP, IA intégrée, paiement CinetPay. Solution marketplace moderne au Cameroun.',
+    keywords: `${PRIMARY_KEYWORDS.join(', ')}, ${SECTOR_KEYWORDS.batobaye.join(', ')}, marketplace Cameroun, e-commerce Cameroun, boutique en ligne Cameroun, vente en ligne Cameroun`,
+    image: 'https://dlsolutions.com/images/batobaye-og.jpg',
+    url: 'https://dlsolutions.com/portfolio/batobaye',
+    type: 'website',
+    breadcrumbs: [
+      { name: 'Accueil', url: 'https://dlsolutions.com' },
+      { name: 'Portfolio', url: 'https://dlsolutions.com/portfolio' },
+      { name: 'Batobaye', url: 'https://dlsolutions.com/portfolio/batobaye' }
+    ],
+    priority: 0.95,
+    changeFreq: 'weekly',
+    faq: [
+      {
+        question: 'Qu\'est-ce que Batobaye Marketplace ?',
+        answer: 'Batobaye est une plateforme e-commerce complète développée par DL Solutions, incluant un dashboard admin VIP, des intégrations IA, et un système de paiement CinetPay.'
+      },
+      {
+        question: 'Comment utiliser Batobaye Marketplace ?',
+        answer: 'Vous pouvez cloner le projet depuis GitHub, l\'installer localement avec pnpm install, et le lancer avec pnpm dev pour accéder au site sur localhost:3000.'
+      },
+      {
+        question: 'Quelles sont les fonctionnalités de Batobaye ?',
+        answer: 'Catalogue produits, panier d\'achat, checkout sécurisé, dashboard admin, intégration IA, analytics en temps réel, et gestion des commandes.'
+      }
+    ]
+  },
+
   // DL Style - Boutique
   'dl-style': {
-    title: 'DL Style - Boutique en Ligne Premium | Davy & Lucie Solutions',
+    title: 'DL Style - Boutique en Ligne Premium | Marketplace & Vente en Ligne | Davy & Lucie',
     description: 'DL Style par Davy et Lucie - Boutique en ligne premium avec électronique, mode, maison. Livraison gratuite, garantie 2 ans, paiement sécurisé au Cameroun.',
-    keywords: `${PRIMARY_KEYWORDS.join(', ')}, ${SECTOR_KEYWORDS.ecommerce.join(', ')}, boutique premium, livraison gratuite, garantie, Cameroun`,
+    keywords: `${PRIMARY_KEYWORDS.join(', ')}, ${SECTOR_KEYWORDS.ecommerce.join(', ')}, boutique premium, livraison gratuite, garantie, Cameroun, marketplace, vente en ligne`,
     image: 'https://dlsolutions.com/images/dl-style-og.jpg',
     url: 'https://dlsolutions.com/dl-style',
     type: 'website',
@@ -104,31 +203,15 @@ export const SEO_CONFIGS: Record<string, SEOConfig> = {
       { name: 'Accueil', url: 'https://dlsolutions.com' },
       { name: 'NovaCore', url: 'https://dlsolutions.com/novacore' }
     ],
-    priority: 0.8,
-    changeFreq: 'weekly'
-  },
-
-  // Formations
-  formations: {
-    title: 'Formations Professionnelles | DL Solutions Davy & Lucie',
-    description: 'Formations professionnelles certifiantes par DL Solutions - Télévente, marketing digital, e-commerce, IA, CRM. Développez vos compétences avec Davy et Lucie.',
-    keywords: `${PRIMARY_KEYWORDS.join(', ')}, ${SECTOR_KEYWORDS.formation.join(', ')}, certification, apprentissage, Cameroun`,
-    image: 'https://dlsolutions.com/images/formations-og.jpg',
-    url: 'https://dlsolutions.com/formations',
-    type: 'website',
-    breadcrumbs: [
-      { name: 'Accueil', url: 'https://dlsolutions.com' },
-      { name: 'Formations', url: 'https://dlsolutions.com/formations' }
-    ],
-    priority: 0.8,
+    priority: 0.9,
     changeFreq: 'weekly'
   },
 
   // Services
   services: {
-    title: 'Services Digitales | DL Solutions Davy & Lucie',
-    description: 'Services digitales complets par DL Solutions - Développement web, applications mobiles, e-commerce, IA, marketing digital. Solutions sur-mesure par Davy et Lucie.',
-    keywords: `${PRIMARY_KEYWORDS.join(', ')}, services digitales, développement web, applications mobiles, e-commerce, IA, marketing, Cameroun`,
+    title: 'Services DL Solutions - Marketplace, E-commerce, Marketing Digital | Davy & Lucie',
+    description: 'Services complets DL Solutions : développement marketplace, e-commerce, marketing digital, CRM, ERP. Solutions sur mesure par Davy et Lucie au Cameroun.',
+    keywords: `${PRIMARY_KEYWORDS.join(', ')}, services, développement, marketplace, e-commerce, marketing digital, CRM, ERP, Cameroun, Yaoundé`,
     image: 'https://dlsolutions.com/images/services-og.jpg',
     url: 'https://dlsolutions.com/services',
     type: 'website',
@@ -136,135 +219,39 @@ export const SEO_CONFIGS: Record<string, SEOConfig> = {
       { name: 'Accueil', url: 'https://dlsolutions.com' },
       { name: 'Services', url: 'https://dlsolutions.com/services' }
     ],
-    priority: 0.8,
+    priority: 0.9,
     changeFreq: 'weekly'
   },
 
-  // Trading
-  trading: {
-    title: 'Trading & Investissement | DL Solutions Davy & Lucie',
-    description: 'Plateforme de trading avancée par DL Solutions - Marchés financiers, crypto-monnaies, forex. Solutions d\'investissement innovantes par Davy et Lucie.',
-    keywords: `${PRIMARY_KEYWORDS.join(', ')}, ${SECTOR_KEYWORDS.trading.join(', ')}, investissement, marchés financiers, crypto, forex`,
-    image: 'https://dlsolutions.com/images/trading-og.jpg',
-    url: 'https://dlsolutions.com/trading',
+  // Marketing Digital
+  'marketing-digital': {
+    title: 'Marketing Digital DL Solutions - Stratégies E-commerce & Marketplace | Davy & Lucie',
+    description: 'Marketing digital DL Solutions : stratégies e-commerce, marketplace, SEO, réseaux sociaux, publicité en ligne. Solutions marketing innovantes par Davy et Lucie.',
+    keywords: `${PRIMARY_KEYWORDS.join(', ')}, ${SECTOR_KEYWORDS.marketing.join(', ')}, marketing digital Cameroun, stratégie marketing, campagne publicitaire, Cameroun`,
+    image: 'https://dlsolutions.com/images/marketing-digital-og.jpg',
+    url: 'https://dlsolutions.com/marketing-digital',
     type: 'website',
     breadcrumbs: [
       { name: 'Accueil', url: 'https://dlsolutions.com' },
-      { name: 'Trading', url: 'https://dlsolutions.com/trading' }
+      { name: 'Marketing Digital', url: 'https://dlsolutions.com/marketing-digital' }
     ],
-    priority: 0.7,
-    changeFreq: 'daily'
-  },
-
-  // IA & Intelligence
-  'advanced-intelligence': {
-    title: 'Intelligence Artificielle Avancée | DL Solutions Davy & Lucie',
-    description: 'Solutions d\'intelligence artificielle avancées par DL Solutions - OSINT, analyse prédictive, automatisation. Technologies IA innovantes par Davy et Lucie.',
-    keywords: `${PRIMARY_KEYWORDS.join(', ')}, ${SECTOR_KEYWORDS.ia.join(', ')}, OSINT, analyse prédictive, automatisation, Cameroun`,
-    image: 'https://dlsolutions.com/images/ai-og.jpg',
-    url: 'https://dlsolutions.com/advanced-intelligence',
-    type: 'website',
-    breadcrumbs: [
-      { name: 'Accueil', url: 'https://dlsolutions.com' },
-      { name: 'Intelligence Avancée', url: 'https://dlsolutions.com/advanced-intelligence' }
-    ],
-    priority: 0.7,
+    priority: 0.85,
     changeFreq: 'weekly'
   },
 
-  // Contact
-  contact: {
-    title: 'Contact | DL Solutions Davy & Lucie - Cameroun',
-    description: 'Contactez DL Solutions - Davy et Lucie à Yaoundé, Cameroun. Solutions digitales, formations, services. Téléphone, email, adresse.',
-    keywords: `${PRIMARY_KEYWORDS.join(', ')}, contact, Yaoundé, Cameroun, téléphone, email, adresse, Davy, Lucie`,
-    image: 'https://dlsolutions.com/images/contact-og.jpg',
-    url: 'https://dlsolutions.com/contact',
+  // E-commerce
+  'e-commerce': {
+    title: 'E-commerce DL Solutions - Marketplace & Boutiques en Ligne | Davy & Lucie',
+    description: 'Solutions e-commerce DL Solutions : marketplace, boutiques en ligne, paiement sécurisé, gestion des commandes. Développement e-commerce par Davy et Lucie.',
+    keywords: `${PRIMARY_KEYWORDS.join(', ')}, ${SECTOR_KEYWORDS.ecommerce.join(', ')}, e-commerce Cameroun, marketplace Cameroun, boutique en ligne Cameroun, vente en ligne Cameroun`,
+    image: 'https://dlsolutions.com/images/ecommerce-og.jpg',
+    url: 'https://dlsolutions.com/e-commerce',
     type: 'website',
     breadcrumbs: [
       { name: 'Accueil', url: 'https://dlsolutions.com' },
-      { name: 'Contact', url: 'https://dlsolutions.com/contact' }
+      { name: 'E-commerce', url: 'https://dlsolutions.com/e-commerce' }
     ],
-    priority: 0.6,
-    changeFreq: 'monthly'
-  },
-
-  // À propos
-  'a-propos': {
-    title: 'À Propos | DL Solutions - Davy & Lucie Solutions',
-    description: 'Découvrez DL Solutions - L\'histoire de Davy et Lucie, fondateurs de solutions digitales innovantes au Cameroun. Notre mission et nos valeurs.',
-    keywords: `${PRIMARY_KEYWORDS.join(', ')}, à propos, histoire, mission, valeurs, fondateurs, Davy, Lucie, Cameroun`,
-    image: 'https://dlsolutions.com/images/about-og.jpg',
-    url: 'https://dlsolutions.com/a-propos',
-    type: 'website',
-    breadcrumbs: [
-      { name: 'Accueil', url: 'https://dlsolutions.com' },
-      { name: 'À Propos', url: 'https://dlsolutions.com/a-propos' }
-    ],
-    priority: 0.6,
-    changeFreq: 'monthly'
-  },
-
-  // Dashboard
-  dashboard: {
-    title: 'Dashboard | DL Solutions Davy & Lucie',
-    description: 'Dashboard personnalisé DL Solutions - Tableau de bord intégré pour CRM, ERP, analytics. Gestion centralisée par Davy et Lucie.',
-    keywords: `${PRIMARY_KEYWORDS.join(', ')}, dashboard, tableau de bord, analytics, gestion, CRM, ERP`,
-    image: 'https://dlsolutions.com/images/dashboard-og.jpg',
-    url: 'https://dlsolutions.com/dashboard',
-    type: 'website',
-    breadcrumbs: [
-      { name: 'Accueil', url: 'https://dlsolutions.com' },
-      { name: 'Dashboard', url: 'https://dlsolutions.com/dashboard' }
-    ],
-    priority: 0.7,
-    changeFreq: 'daily'
-  },
-
-  // Ultra AI
-  'ultra-ai': {
-    title: 'Ultra AI - Intelligence Artificielle Avancée | DL Solutions',
-    description: 'Ultra AI par DL Solutions - Intelligence artificielle de pointe avec traitement du langage naturel, vision par ordinateur, apprentissage profond.',
-    keywords: `${PRIMARY_KEYWORDS.join(', ')}, Ultra AI, intelligence artificielle, NLP, vision par ordinateur, deep learning, Davy, Lucie`,
-    image: 'https://dlsolutions.com/images/ultra-ai-og.jpg',
-    url: 'https://dlsolutions.com/ultra-ai',
-    type: 'website',
-    breadcrumbs: [
-      { name: 'Accueil', url: 'https://dlsolutions.com' },
-      { name: 'Ultra AI', url: 'https://dlsolutions.com/ultra-ai' }
-    ],
-    priority: 0.7,
-    changeFreq: 'weekly'
-  },
-
-  // Quantum Intelligence
-  'quantum-intelligence': {
-    title: 'Quantum Intelligence | DL Solutions Davy & Lucie',
-    description: 'Quantum Intelligence par DL Solutions - Technologies quantiques pour l\'intelligence artificielle. Solutions révolutionnaires par Davy et Lucie.',
-    keywords: `${PRIMARY_KEYWORDS.join(', ')}, quantum intelligence, technologies quantiques, IA quantique, Davy, Lucie`,
-    image: 'https://dlsolutions.com/images/quantum-og.jpg',
-    url: 'https://dlsolutions.com/quantum-intelligence',
-    type: 'website',
-    breadcrumbs: [
-      { name: 'Accueil', url: 'https://dlsolutions.com' },
-      { name: 'Quantum Intelligence', url: 'https://dlsolutions.com/quantum-intelligence' }
-    ],
-    priority: 0.6,
-    changeFreq: 'weekly'
-  },
-
-  // Metaverse & Blockchain
-  'metaverse-blockchain': {
-    title: 'Metaverse & Blockchain | DL Solutions Davy & Lucie',
-    description: 'Solutions Metaverse et Blockchain par DL Solutions - Technologies Web3, NFT, réalité virtuelle. Innovation par Davy et Lucie.',
-    keywords: `${PRIMARY_KEYWORDS.join(', ')}, metaverse, blockchain, Web3, NFT, réalité virtuelle, Davy, Lucie`,
-    image: 'https://dlsolutions.com/images/metaverse-og.jpg',
-    url: 'https://dlsolutions.com/metaverse-blockchain',
-    type: 'website',
-    breadcrumbs: [
-      { name: 'Accueil', url: 'https://dlsolutions.com' },
-      { name: 'Metaverse & Blockchain', url: 'https://dlsolutions.com/metaverse-blockchain' }
-    ],
-    priority: 0.6,
+    priority: 0.9,
     changeFreq: 'weekly'
   }
 };
@@ -355,24 +342,34 @@ export const SITEMAP_CONFIG = {
     home: 1.0,
     'dl-style': 0.9,
     novaworld: 0.9,
-    novacore: 0.8,
-    formations: 0.8,
-    services: 0.8,
-    trading: 0.7,
-    'advanced-intelligence': 0.7,
+    novacore: 0.9,
+    services: 0.9,
+    'marketing-digital': 0.85,
+    'e-commerce': 0.9,
+    'portfolio-batobaye': 0.95,
+    portfolio: 0.9,
+    'a-propos': 0.6,
     contact: 0.6,
-    'a-propos': 0.6
+    dashboard: 0.7,
+    'ultra-ai': 0.7,
+    'quantum-intelligence': 0.6,
+    'metaverse-blockchain': 0.6
   },
   changeFreq: {
     home: 'daily',
     'dl-style': 'daily',
     novaworld: 'daily',
     novacore: 'weekly',
-    formations: 'weekly',
     services: 'weekly',
-    trading: 'daily',
-    'advanced-intelligence': 'weekly',
+    'marketing-digital': 'weekly',
+    'e-commerce': 'weekly',
+    'portfolio-batobaye': 'weekly',
+    portfolio: 'weekly',
+    'a-propos': 'monthly',
     contact: 'monthly',
-    'a-propos': 'monthly'
+    dashboard: 'daily',
+    'ultra-ai': 'weekly',
+    'quantum-intelligence': 'weekly',
+    'metaverse-blockchain': 'weekly'
   }
 }; 

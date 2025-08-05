@@ -1,45 +1,97 @@
 import { MetadataRoute } from 'next';
 
-// Configuration pour l'export statique
-export const dynamic = 'force-static';
-export const revalidate = false;
-
 export default function robots(): MetadataRoute.Robots {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://dlsolutions.com';
+  
   return {
     rules: [
       {
         userAgent: '*',
-        allow: '/',
+        allow: [
+          '/',
+          '/portfolio',
+          '/portfolio/batobaye',
+          '/services',
+          '/a-propos',
+          '/contact',
+          '/dl-style',
+          '/novaworld',
+          '/novacore',
+          '/marketing-digital',
+          '/e-commerce',
+          '/formations',
+          '/capacites-techniques',
+          '/devis',
+          '/rendez-vous'
+        ],
         disallow: [
+          '/admin',
           '/api/',
-          '/admin/',
           '/_next/',
           '/private/',
           '/temp/',
           '*.json',
           '*.xml'
-        ]
+        ],
       },
       {
         userAgent: 'Googlebot',
-        allow: '/',
+        allow: [
+          '/',
+          '/portfolio',
+          '/portfolio/batobaye',
+          '/services',
+          '/a-propos',
+          '/contact',
+          '/dl-style',
+          '/novaworld',
+          '/novacore',
+          '/marketing-digital',
+          '/e-commerce',
+          '/formations',
+          '/capacites-techniques',
+          '/devis',
+          '/rendez-vous'
+        ],
         disallow: [
+          '/admin',
           '/api/',
-          '/admin/',
-          '/private/'
-        ]
+          '/_next/',
+          '/private/',
+          '/temp/'
+        ],
+        crawlDelay: 1,
       },
       {
         userAgent: 'Bingbot',
-        allow: '/',
+        allow: [
+          '/',
+          '/portfolio',
+          '/portfolio/batobaye',
+          '/services',
+          '/a-propos',
+          '/contact',
+          '/dl-style',
+          '/novaworld',
+          '/novacore',
+          '/marketing-digital',
+          '/e-commerce',
+          '/formations',
+          '/capacites-techniques',
+          '/devis',
+          '/rendez-vous'
+        ],
         disallow: [
+          '/admin',
           '/api/',
-          '/admin/',
-          '/private/'
-        ]
+          '/_next/',
+          '/private/',
+          '/temp/'
+        ],
+        crawlDelay: 1,
       }
     ],
-    sitemap: 'https://dlsolutions.com/sitemap.xml',
-    host: 'https://dlsolutions.com'
-  }
+    sitemap: `${baseUrl}/sitemap.xml`,
+    host: baseUrl,
+  };
 }

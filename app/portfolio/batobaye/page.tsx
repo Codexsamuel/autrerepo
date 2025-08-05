@@ -3,6 +3,7 @@
 import { CheckCircle, ExternalLink, Github, Play, ShoppingCart, BarChart3, Bot, Shield, Zap, Users, Database, FileText, Search, Package, CreditCard, ShoppingBag, Mail, Phone, TrendingUp, Award, Target, Rocket, Info } from 'lucide-react';
 import { useState } from 'react';
 import BatobayeLauncher from '../../../components/BatobayeLauncher';
+import SEOOptimizedHead, { generateBatobayeStructuredData } from '../../../components/SEOOptimizedHead';
 
 export default function BatobayeProjectPage() {
   const [isDemoRunning, setIsDemoRunning] = useState(false);
@@ -15,7 +16,17 @@ export default function BatobayeProjectPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+    <>
+      <SEOOptimizedHead
+        title="Batobaye Marketplace - Plateforme E-commerce Complète | DL Solutions Davy & Lucie"
+        description="Batobaye Marketplace par DL Solutions - Plateforme e-commerce complète avec dashboard admin VIP, IA intégrée, paiement CinetPay. Solution marketplace moderne au Cameroun."
+        keywords="Batobaye, Batobaye Market, marketplace Cameroun, e-commerce Cameroun, boutique en ligne Cameroun, vente en ligne Cameroun, DL Solutions, Davy, Lucie, Dave and Luce, CinetPay, OpenAI, Sage Compta, dashboard admin, gestion produits, inventaire en ligne, analytics e-commerce, IA e-commerce"
+        image="/images/batobaye-og.jpg"
+        url="https://dlsolutions.com/portfolio/batobaye"
+        type="website"
+        structuredData={generateBatobayeStructuredData()}
+      />
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white py-20">
         <div className="container mx-auto px-4 text-center">
@@ -193,5 +204,6 @@ export default function BatobayeProjectPage() {
         </div>
       </div>
     </div>
+    </>
   );
 } 

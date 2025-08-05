@@ -77,7 +77,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/portfolio`,
       lastModified: currentDate,
       changeFrequency: 'weekly' as const,
-      priority: 0.6,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/portfolio/batobaye`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/price-alerts`,

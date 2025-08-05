@@ -35,15 +35,15 @@ export default function PortfolioPage() {
     },
     {
       id: 3,
-      title: 'DL Style E-commerce',
-      description: 'Plateforme e-commerce moderne avec IA de recommandation, gestion d\'inventaire et analytics avancés.',
+      title: 'Batobaye E-commerce',
+      description: 'Plateforme e-commerce complète avec dashboard admin VIP, intégrations IA avancées et système de paiement CinetPay.',
       category: 'ecommerce',
-      technologies: ['Next.js', 'Stripe', 'PostgreSQL', 'Redis', 'AI'],
-      image: '/images/portfolio/dl-style.jpg',
-      github: 'https://github.com/dlstyle',
-      live: 'https://dlstyle.com',
-      rating: 4.9,
-      views: 2100,
+      technologies: ['Next.js 14', 'TypeScript', 'PostgreSQL', 'OpenAI', 'CinetPay'],
+      image: '/images/portfolio/batobaye.jpg',
+      github: 'https://github.com/Codexsamuel/batobaye',
+      live: '/portfolio/batobaye',
+      rating: 5.0,
+      views: 1500,
       featured: true
     },
     {

@@ -134,7 +134,7 @@ function generateReport(results) {
 
 // Fonction pour vérifier le sitemap
 function validateSitemap() {
-  const sitemapPath = path.join('public', 'sitemap.xml');
+  const sitemapPath = path.join('public', 'seo', 'sitemap.xml');
   
   if (!fs.existsSync(sitemapPath)) {
     console.log('❌ Sitemap non trouvé. Génération en cours...');

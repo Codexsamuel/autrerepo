@@ -13,6 +13,7 @@ const nextConfig = {
   
   // Configuration des images avancée
   images: {
+    unoptimized: true, // Pour Vercel
     domains: [
       'images.unsplash.com',
       'res.cloudinary.com',
@@ -85,6 +86,29 @@ const nextConfig = {
         permanent: true,
       },
     ];
+  },
+  
+  // Configuration pour Vercel
+  trailingSlash: false,
+  compress: true,
+  
+  // Configuration webpack pour optimiser le build
+  webpack: (config, { isServer, dev }) => {
+    // Optimisations pour la production
+    if (!dev && !isServer) {
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+        },
+      };
+    }
+    
+    return config;
   },
 };
 

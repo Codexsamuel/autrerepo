@@ -308,7 +308,7 @@ export default function HomePage() {
               <EventVideoCard
                 key={index}
                 title={event.title}
-                videoUrl={event.video}
+                video={event.video}
               />
             ))}
           </div>

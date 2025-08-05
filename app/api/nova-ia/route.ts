@@ -60,8 +60,7 @@ export async function GET(request: NextRequest) {
             query,
             results: searchResults,
             totalFound: searchResults.length,
-            categories: [...new Set(searchResults.map(s => s.category))],
-            subcategories: [...new Set(searchResults.map(s => s.subcategory))]
+            categories: [...new Set(searchResults.map(s => s.category))]
           },
           timestamp: new Date().toISOString()
         });
@@ -99,7 +98,7 @@ export async function GET(request: NextRequest) {
               category,
               services: categoryServices,
               totalServices: categoryServices.length,
-              subcategories: [...new Set(categoryServices.map(s => s.subcategory))]
+              categories: [...new Set(categoryServices.map(s => s.category))]
             },
             timestamp: new Date().toISOString()
           });
@@ -125,16 +124,15 @@ export async function GET(request: NextRequest) {
           success: true,
           data: {
             categories: stats.categories,
-            subcategories: stats.subcategories,
             totalServices: stats.totalServices,
             services: NOVA_AI_SERVICES.map(s => ({
               id: s.id,
               name: s.name,
               category: s.category,
-              subcategory: s.subcategory,
               price: s.price,
-              status: s.status,
-              icon: s.icon
+              accuracy: s.accuracy,
+              executionTime: s.executionTime,
+              isProduction: s.isProduction
             }))
           },
           timestamp: new Date().toISOString()
@@ -145,8 +143,7 @@ export async function GET(request: NextRequest) {
           success: true,
           data: {
             services: NOVA_AI_SERVICES,
-            categories: ['text', 'image', 'voice', 'chatbot', 'ecommerce', 'automation', 'analysis', 'transformation'],
-            subcategories: [...new Set(NOVA_AI_SERVICES.map(s => s.subcategory))],
+            categories: ['conversation', 'images', 'voice', 'business', 'marketing', 'ecommerce', 'analysis', 'automation'],
             pricing: {
               currency: 'EUR',
               range: {
@@ -172,7 +169,7 @@ export async function GET(request: NextRequest) {
             stats: 'GET /api/nova-ia?action=stats',
             search: 'GET /api/nova-ia?action=search&query=génération contenu',
             recommendations: 'GET /api/nova-ia?action=recommendations&useCase=marketing',
-            categories: 'GET /api/nova-ia?action=categories&category=text',
+            categories: 'GET /api/nova-ia?action=categories&category=conversation',
             catalog: 'GET /api/nova-ia?action=catalog'
           },
           totalServices: NOVA_AI_SERVICES.length,
@@ -196,9 +193,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { action, serviceId, parameters, services } = body;
-
-    console.log(`🧠 NovaIA: Action "${action}"`);
+    const { action, serviceId, params, batch } = body;
 
     switch (action) {
       case 'execute':
@@ -206,13 +201,7 @@ export async function POST(request: NextRequest) {
           return NextResponse.json(
             { 
               success: false, 
-              error: 'Paramètre "serviceId" requis pour l\'exécution',
-              availableServices: NOVA_AI_SERVICES.map(s => ({ 
-                id: s.id, 
-                name: s.name, 
-                price: s.price, 
-                category: s.category 
-              })),
+              error: 'Paramètre "serviceId" requis',
               timestamp: new Date().toISOString()
             },
             { status: 400 }
@@ -224,41 +213,46 @@ export async function POST(request: NextRequest) {
           return NextResponse.json(
             { 
               success: false, 
-              error: `Service "${serviceId}" non trouvé`,
+              error: 'Service non trouvé',
               timestamp: new Date().toISOString()
             },
             { status: 404 }
           );
         }
 
-        // Simulation d'exécution (à connecter avec les vraies APIs)
-        const startTime = Date.now();
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulation délai
-        const processingTime = Date.now() - startTime;
+        // Simulation d'exécution
+        const executionTime = Math.floor(Math.random() * 5000) + 1000;
+        await new Promise(resolve => setTimeout(resolve, executionTime));
 
         return NextResponse.json({
           success: true,
           data: {
             serviceId,
             serviceName: service.name,
-            category: service.category,
-            subcategory: service.subcategory,
-            price: service.price,
-            credits: service.credits,
-            processingTime,
+            executionTime: `${executionTime}ms`,
             accuracy: service.accuracy,
-            result: `Résultat simulé pour ${service.name}`,
-            apiEndpoint: service.apiEndpoint
+            cost: service.price,
+            credits: service.credits,
+            result: {
+              type: service.category,
+              content: `Résultat de l'exécution de ${service.name}`,
+              metadata: {
+                protocols: service.protocols,
+                features: service.features,
+                eloRating: service.eloRating,
+                battleScore: service.battleScore
+              }
+            }
           },
           timestamp: new Date().toISOString()
         });
 
       case 'batch':
-        if (!services || !Array.isArray(services)) {
+        if (!batch || !Array.isArray(batch)) {
           return NextResponse.json(
             { 
               success: false, 
-              error: 'Paramètre "services" (array) requis pour l\'exécution en lot',
+              error: 'Paramètre "batch" requis (tableau de services)',
               timestamp: new Date().toISOString()
             },
             { status: 400 }
@@ -266,81 +260,40 @@ export async function POST(request: NextRequest) {
         }
 
         const batchResults = await Promise.all(
-          services.map(async (serviceRequest: any) => {
-            const service = NOVA_AI_SERVICES.find(s => s.id === serviceRequest.serviceId);
+          batch.map(async (item: any) => {
+            const service = NOVA_AI_SERVICES.find(s => s.id === item.serviceId);
             if (!service) {
               return {
+                serviceId: item.serviceId,
                 success: false,
-                serviceId: serviceRequest.serviceId,
                 error: 'Service non trouvé'
               };
             }
 
-            const startTime = Date.now();
-            await new Promise(resolve => setTimeout(resolve, 500)); // Simulation délai
-            const processingTime = Date.now() - startTime;
+            const executionTime = Math.floor(Math.random() * 3000) + 500;
+            await new Promise(resolve => setTimeout(resolve, executionTime));
 
             return {
+              serviceId: item.serviceId,
               success: true,
-              serviceId: serviceRequest.serviceId,
               serviceName: service.name,
-              price: service.price,
-              credits: service.credits,
-              processingTime,
-              result: `Résultat simulé pour ${service.name}`
+              executionTime: `${executionTime}ms`,
+              accuracy: service.accuracy,
+              cost: service.price,
+              result: `Résultat batch pour ${service.name}`
             };
           })
         );
 
-        const totalCredits = batchResults.reduce((sum, result) => sum + (result.credits || 0), 0);
-        const successfulServices = batchResults.filter(r => r.success).length;
-        const totalPrice = batchResults.reduce((sum, result) => sum + (result.price || 0), 0);
-
         return NextResponse.json({
           success: true,
           data: {
+            batchResults,
             totalServices: batchResults.length,
-            successfulServices,
-            failedServices: batchResults.length - successfulServices,
-            totalCredits,
-            totalPrice,
-            results: batchResults
-          },
-          timestamp: new Date().toISOString()
-        });
-
-      case 'analyze':
-        if (!parameters || !parameters.text) {
-          return NextResponse.json(
-            { 
-              success: false, 
-              error: 'Paramètre "parameters.text" requis pour l\'analyse',
-              timestamp: new Date().toISOString()
-            },
-            { status: 400 }
-          );
-        }
-
-        // Analyse intelligente du besoin
-        const text = parameters.text.toLowerCase();
-        const keywords = text.split(' ');
-        
-        const relevantServices = NOVA_AI_SERVICES.filter(service => {
-          const serviceText = `${service.name} ${service.description} ${service.keywords.join(' ')} ${service.useCases.join(' ')}`.toLowerCase();
-          return keywords.some((keyword: string) => serviceText.includes(keyword));
-        }).sort((a, b) => b.price - a.price);
-
-        return NextResponse.json({
-          success: true,
-          data: {
-            analysis: {
-              text: parameters.text,
-              keywords: keywords,
-              relevantServices: relevantServices.slice(0, 5),
-              totalMatches: relevantServices.length,
-              categories: [...new Set(relevantServices.map(s => s.category))],
-              estimatedCost: relevantServices.slice(0, 3).reduce((sum, s) => sum + s.price, 0)
-            }
+            successfulExecutions: batchResults.filter(r => r.success).length,
+            totalCost: batchResults
+              .filter(r => r.success)
+              .reduce((sum, r) => sum + (r.cost || 0), 0)
           },
           timestamp: new Date().toISOString()
         });
@@ -349,8 +302,8 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
           { 
             success: false, 
-            error: `Action "${action}" non supportée`,
-            supportedActions: ['execute', 'batch', 'analyze'],
+            error: 'Action non reconnue',
+            availableActions: ['execute', 'batch'],
             timestamp: new Date().toISOString()
           },
           { status: 400 }
@@ -358,12 +311,10 @@ export async function POST(request: NextRequest) {
     }
 
   } catch (error: any) {
-    console.error('❌ Erreur API NovaIA:', error);
-    
     return NextResponse.json(
       { 
         success: false, 
-        error: 'Erreur lors du traitement',
+        error: 'Erreur interne du serveur',
         details: error.message,
         timestamp: new Date().toISOString()
       },

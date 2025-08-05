@@ -46,7 +46,7 @@ export interface MCPContext {
 }
 
 // Catalogue des agents IA avancés
-export const novaAIServices: NovaAIService[] = [
+export const NOVA_AI_SERVICES: NovaAIService[] = [
   // Agents de Conversation Avancés
   {
     id: 'chat-ia-advanced',
@@ -298,7 +298,7 @@ export function getRecommendedServices(userInput: string): NovaAIService[] {
   const input = userInput.toLowerCase();
   const recommendations: Array<{service: NovaAIService, score: number}> = [];
 
-  for (const service of novaAIServices) {
+  for (const service of NOVA_AI_SERVICES) {
     let score = 0;
 
     // Analyse sémantique basique
@@ -349,7 +349,7 @@ export class AgentManager {
 
   constructor() {
     // Initialiser tous les agents
-    novaAIServices.forEach(service => {
+    NOVA_AI_SERVICES.forEach((service: NovaAIService) => {
       this.agents.set(service.id, service);
     });
   }
@@ -474,4 +474,43 @@ export class AgentManager {
 }
 
 // Instance globale du gestionnaire d'agents
-export const agentManager = new AgentManager(); 
+export const agentManager = new AgentManager();
+
+// Fonctions utilitaires pour l'API
+export function getServicesByCategory(category: string): NovaAIService[] {
+  return NOVA_AI_SERVICES.filter(service => service.category === category);
+}
+
+export function getServicesBySubcategory(subcategory: string): NovaAIService[] {
+  // Pour l'instant, retourne les services par catégorie
+  return NOVA_AI_SERVICES.filter(service => service.category === subcategory);
+}
+
+export function getServicesStats() {
+  const totalServices = NOVA_AI_SERVICES.length;
+  const categories = [...new Set(NOVA_AI_SERVICES.map(s => s.category))];
+  const totalPrice = NOVA_AI_SERVICES.reduce((sum, service) => sum + service.price, 0);
+  const avgAccuracy = NOVA_AI_SERVICES.reduce((sum, service) => sum + service.accuracy, 0) / totalServices;
+  
+  return {
+    totalServices,
+    categories: categories.length,
+    totalPrice,
+    averageAccuracy: Math.round(avgAccuracy),
+    productionReady: NOVA_AI_SERVICES.filter(s => s.isProduction).length,
+    protocols: {
+      A2A: NOVA_AI_SERVICES.filter(s => s.protocols.includes('A2A')).length,
+      MCP: NOVA_AI_SERVICES.filter(s => s.protocols.includes('MCP')).length,
+      API: NOVA_AI_SERVICES.filter(s => s.protocols.includes('API')).length
+    }
+  };
+}
+
+export function searchServices(query: string): NovaAIService[] {
+  const searchTerm = query.toLowerCase();
+  
+  return NOVA_AI_SERVICES.filter(service => {
+    const searchableText = `${service.name} ${service.description} ${service.features.join(' ')} ${service.category}`.toLowerCase();
+    return searchableText.includes(searchTerm);
+  });
+} 

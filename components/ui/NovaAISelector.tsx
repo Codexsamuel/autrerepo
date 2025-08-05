@@ -43,44 +43,44 @@ export function NovaAISelector({ onServiceSelect }: NovaAISelectorProps) {
       filtered = filtered.filter(service => service.category === selectedCategory);
     }
 
-    // Filtre par cas d'usage
+    // Filtre par cas d'usage (basé sur les features)
     if (selectedUseCase !== 'all') {
       filtered = filtered.filter(service => 
-        service.useCases.some(uc => uc.toLowerCase().includes(selectedUseCase.toLowerCase()))
+        service.features.some(feature => feature.toLowerCase().includes(selectedUseCase.toLowerCase()))
       );
     }
 
-    // Filtre par difficulté
+    // Filtre par difficulté (basé sur le prix comme indicateur)
     if (selectedDifficulty !== 'all') {
-      filtered = filtered.filter(service => service.difficulty === selectedDifficulty);
+      filtered = filtered.filter(service => {
+        const price = service.price;
+        switch (selectedDifficulty) {
+          case 'easy': return price <= 10;
+          case 'medium': return price > 10 && price <= 20;
+          case 'advanced': return price > 20;
+          default: return true;
+        }
+      });
     }
 
     setServices(filtered);
   };
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'premium':
-        return <Badge variant="default" className="bg-gradient-to-r from-yellow-400 to-orange-500"><Crown className="w-3 h-3 mr-1" />Premium</Badge>;
-      case 'active':
-        return <Badge variant="secondary" className="bg-green-100 text-green-800"><Zap className="w-3 h-3 mr-1" />Actif</Badge>;
-      case 'beta':
-        return <Badge variant="outline" className="border-blue-300 text-blue-600"><Star className="w-3 h-3 mr-1" />Beta</Badge>;
-      default:
-        return <Badge variant="outline">Standard</Badge>;
+  const getStatusBadge = (isProduction: boolean | undefined) => {
+    if (isProduction) {
+      return <Badge variant="secondary" className="bg-green-100 text-green-800"><Zap className="w-3 h-3 mr-1" />Production</Badge>;
+    } else {
+      return <Badge variant="outline" className="border-blue-300 text-blue-600"><Star className="w-3 h-3 mr-1" />Beta</Badge>;
     }
   };
 
-  const getDifficultyBadge = (difficulty: string) => {
-    switch (difficulty) {
-      case 'easy':
-        return <Badge variant="outline" className="border-green-300 text-green-600">Facile</Badge>;
-      case 'medium':
-        return <Badge variant="outline" className="border-yellow-300 text-yellow-600">Moyen</Badge>;
-      case 'advanced':
-        return <Badge variant="outline" className="border-red-300 text-red-600">Avancé</Badge>;
-      default:
-        return <Badge variant="outline">Standard</Badge>;
+  const getDifficultyBadge = (price: number) => {
+    if (price <= 10) {
+      return <Badge variant="outline" className="border-green-300 text-green-600">Facile</Badge>;
+    } else if (price <= 20) {
+      return <Badge variant="outline" className="border-yellow-300 text-yellow-600">Moyen</Badge>;
+    } else {
+      return <Badge variant="outline" className="border-red-300 text-red-600">Avancé</Badge>;
     }
   };
 
@@ -267,17 +267,26 @@ export function NovaAISelector({ onServiceSelect }: NovaAISelectorProps) {
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
-                      <span className="text-3xl">{service.icon}</span>
+                      <span className="text-3xl">
+                        {service.category === 'conversation' && '💬'}
+                        {service.category === 'images' && '🎨'}
+                        {service.category === 'voice' && '🎙️'}
+                        {service.category === 'business' && '💼'}
+                        {service.category === 'marketing' && '📢'}
+                        {service.category === 'ecommerce' && '🛍️'}
+                        {service.category === 'analysis' && '📊'}
+                        {service.category === 'automation' && '⚙️'}
+                      </span>
                       <div>
                         <CardTitle className="text-lg group-hover:text-blue-600 transition-colors">
                           {service.name}
                         </CardTitle>
                         <CardDescription className="text-sm">
-                          {service.subcategory}
+                          {service.category}
                         </CardDescription>
                       </div>
                     </div>
-                    {getStatusBadge(service.status)}
+                    {getStatusBadge(service.isProduction)}
                   </div>
                 </CardHeader>
                 
@@ -294,13 +303,13 @@ export function NovaAISelector({ onServiceSelect }: NovaAISelectorProps) {
                     </div>
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4 text-blue-600" />
-                      <span>{service.processingTime}</span>
+                      <span>{service.executionTime}</span>
                     </div>
                   </div>
 
                   {/* Badges */}
                   <div className="flex flex-wrap gap-2">
-                    {getDifficultyBadge(service.difficulty)}
+                    {getDifficultyBadge(service.price)}
                     <Badge variant="outline" className="text-xs">
                       {service.accuracy} précision
                     </Badge>
@@ -328,14 +337,14 @@ export function NovaAISelector({ onServiceSelect }: NovaAISelectorProps) {
                   <div>
                     <h4 className="font-semibold text-sm mb-2">Cas d'usage :</h4>
                     <div className="flex flex-wrap gap-1">
-                      {service.useCases.slice(0, 3).map((useCase, index) => (
+                      {service.features.slice(0, 3).map((feature, index) => (
                         <Badge key={index} variant="secondary" className="text-xs">
-                          {useCase}
+                          {feature}
                         </Badge>
                       ))}
-                      {service.useCases.length > 3 && (
+                      {service.features.length > 3 && (
                         <Badge variant="outline" className="text-xs">
-                          +{service.useCases.length - 3}
+                          +{service.features.length - 3}
                         </Badge>
                       )}
                     </div>
@@ -367,7 +376,16 @@ export function NovaAISelector({ onServiceSelect }: NovaAISelectorProps) {
               <Card key={service.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => handleServiceSelect(service)}>
                 <CardContent className="p-4">
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">{service.icon}</span>
+                    <span className="text-2xl">
+                      {service.category === 'conversation' && '💬'}
+                      {service.category === 'images' && '🎨'}
+                      {service.category === 'voice' && '🎙️'}
+                      {service.category === 'business' && '💼'}
+                      {service.category === 'marketing' && '📢'}
+                      {service.category === 'ecommerce' && '🛍️'}
+                      {service.category === 'analysis' && '📊'}
+                      {service.category === 'automation' && '⚙️'}
+                    </span>
                     <div>
                       <h4 className="font-semibold">{service.name}</h4>
                       <p className="text-sm text-gray-600">{service.price}€</p>

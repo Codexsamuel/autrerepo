@@ -1,8 +1,8 @@
 "use client";
 
-import { novaAIServices, agentManager } from '@/lib/services/nova-ai-catalog';
-import { useState, useEffect } from 'react';
-import { Trophy, Zap, Target, Users, Star, TrendingUp, Clock, Award } from 'lucide-react';
+import { NOVA_AI_SERVICES, agentManager } from '@/lib/services/nova-ai-catalog';
+import { Award, Clock, Target, TrendingUp, Trophy, Zap } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface BattleResult {
   winner: string;
@@ -66,7 +66,7 @@ export function AgentBattleSystem() {
   };
 
   const getAgentById = (id: string) => {
-    return novaAIServices.find(agent => agent.id === id);
+    return NOVA_AI_SERVICES.find(agent => agent.id === id);
   };
 
   const getEloColor = (rating: number) => {
@@ -93,7 +93,7 @@ export function AgentBattleSystem() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-          {novaAIServices.map((agent) => (
+          {NOVA_AI_SERVICES.map((agent) => (
             <div
               key={agent.id}
               onClick={() => handleAgentSelect(agent.id)}

@@ -2,817 +2,476 @@ export interface NovaAIService {
   id: string;
   name: string;
   description: string;
-  category: string;
-  subcategory: string;
+  category: 'conversation' | 'images' | 'voice' | 'business' | 'marketing' | 'ecommerce' | 'analysis' | 'automation';
   price: number;
   credits: number;
+  accuracy: number;
+  executionTime: string;
   features: string[];
-  apiEndpoint: string;
-  status: 'free' | 'premium' | 'beta';
-  icon: string;
-  keywords: string[];
-  useCases: string[];
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
-  processingTime: string;
-  accuracy: string;
+  protocols: ('A2A' | 'MCP' | 'API')[];
+  eloRating?: number;
+  battleScore?: number;
+  isProduction?: boolean;
 }
 
-export const NOVA_AI_SERVICES: NovaAIService[] = [
-  // Services IA Conversationnelle
+export interface AgentContext {
+  sessionId: string;
+  userId: string;
+  conversationHistory: Array<{role: string, content: string, timestamp: Date}>;
+  preferences: Record<string, any>;
+  performance: {
+    totalRequests: number;
+    successRate: number;
+    averageResponseTime: number;
+  };
+}
+
+export interface A2AMessage {
+  from: string;
+  to: string;
+  action: string;
+  payload: any;
+  timestamp: Date;
+  priority: 'low' | 'medium' | 'high' | 'critical';
+}
+
+export interface MCPContext {
+  sessionId: string;
+  contextData: Record<string, any>;
+  metadata: {
+    createdAt: Date;
+    lastUpdated: Date;
+    version: string;
+  };
+}
+
+// Catalogue des agents IA avancés
+export const novaAIServices: NovaAIService[] = [
+  // Agents de Conversation Avancés
   {
-    id: 'chat-ia-avance',
+    id: 'chat-ia-advanced',
     name: 'Chat IA Avancé',
-    description: 'Assistant conversationnel intelligent avec mémoire contextuelle',
+    description: 'Agent conversationnel avec mémoire contextuelle et apprentissage adaptatif',
     category: 'conversation',
-    subcategory: 'Chat IA',
     price: 8,
-    credits: 10,
+    credits: 2,
+    accuracy: 94,
+    executionTime: '2-5 secondes',
     features: [
-      'Conversation naturelle',
-      'Mémoire contextuelle',
+      'Mémoire conversationnelle',
+      'Apprentissage adaptatif',
+      'Analyse émotionnelle',
       'Support multilingue',
-      'Personnalisation du ton',
-      'Intégration API',
-      'Historique des conversations',
-      'Export des dialogues',
-      'Analytics de performance'
+      'Intégration A2A'
     ],
-    apiEndpoint: '/api/ai/chat',
-    status: 'premium',
-    icon: '🤖',
-    keywords: ['chat', 'conversation', 'assistant', 'dialogue', 'ia'],
-    useCases: ['Support client', 'FAQ', 'Formation', 'Ventes'],
-    difficulty: 'beginner',
-    processingTime: '2-5 secondes',
-    accuracy: '92%'
+    protocols: ['A2A', 'MCP'],
+    eloRating: 1850,
+    battleScore: 92,
+    isProduction: true
   },
   {
-    id: 'assistant-emotionnel',
+    id: 'emotional-assistant',
     name: 'Assistant Émotionnel',
-    description: 'IA capable de détecter et répondre aux émotions',
+    description: 'Agent spécialisé dans l\'analyse et la gestion des émotions',
     category: 'conversation',
-    subcategory: 'Émotions',
     price: 12,
-    credits: 15,
+    credits: 3,
+    accuracy: 91,
+    executionTime: '3-7 secondes',
     features: [
-      'Détection d\'émotions',
+      'Détection émotionnelle',
       'Réponses empathiques',
-      'Analyse sentimentale',
-      'Adaptation du ton',
-      'Support thérapeutique',
-      'Rapports émotionnels',
-      'Intégration CRM',
-      'Formation personnalisée'
+      'Gestion du stress',
+      'Support psychologique',
+      'Rapports émotionnels'
     ],
-    apiEndpoint: '/api/ai/emotional',
-    status: 'premium',
-    icon: '😊',
-    keywords: ['émotions', 'empathie', 'sentiment', 'thérapie', 'support'],
-    useCases: ['Thérapie', 'Support client', 'RH', 'Formation'],
-    difficulty: 'intermediate',
-    processingTime: '3-8 secondes',
-    accuracy: '89%'
-  },
-  {
-    id: 'chatbot-personnalise',
-    name: 'Chatbot Personnalisé',
-    description: 'Création de chatbots sur mesure pour votre business',
-    category: 'conversation',
-    subcategory: 'Chatbot',
-    price: 15,
-    credits: 20,
-    features: [
-      'Personnalisation complète',
-      'Intégration web/app',
-      'Base de connaissances',
-      'Workflows automatisés',
-      'Analytics détaillés',
-      'Multi-canaux',
-      'Formation continue',
-      'Support technique'
-    ],
-    apiEndpoint: '/api/ai/chatbot',
-    status: 'premium',
-    icon: '💬',
-    keywords: ['chatbot', 'bot', 'automatisation', 'support', 'vente'],
-    useCases: ['E-commerce', 'Support', 'Ventes', 'Formation'],
-    difficulty: 'intermediate',
-    processingTime: '5-15 secondes',
-    accuracy: '94%'
-  },
-  {
-    id: 'questions-reponses',
-    name: 'Questions/Réponses IA',
-    description: 'Système intelligent de questions et réponses',
-    category: 'conversation',
-    subcategory: 'Q&A',
-    price: 6,
-    credits: 8,
-    features: [
-      'Réponses précises',
-      'Sources citées',
-      'Support multilingue',
-      'Base de connaissances',
-      'Apprentissage continu',
-      'Export des réponses',
-      'Analytics d\'usage',
-      'Intégration facile'
-    ],
-    apiEndpoint: '/api/ai/qa',
-    status: 'premium',
-    icon: '❓',
-    keywords: ['questions', 'réponses', 'faq', 'aide', 'support'],
-    useCases: ['Documentation', 'Support', 'Formation', 'Recherche'],
-    difficulty: 'beginner',
-    processingTime: '2-4 secondes',
-    accuracy: '96%'
+    protocols: ['MCP'],
+    eloRating: 1780,
+    battleScore: 88,
+    isProduction: true
   },
 
-  // Services Génération d'Images
+  // Agents de Génération d'Images
   {
-    id: 'text-to-image',
-    name: 'Text-to-Image IA',
-    description: 'Génération d\'images à partir de descriptions textuelles',
+    id: 'text-to-image-pro',
+    name: 'Générateur d\'Images Pro',
+    description: 'Agent de génération d\'images avec styles multiples et haute résolution',
     category: 'images',
-    subcategory: 'Génération',
-    price: 10,
-    credits: 12,
+    price: 15,
+    credits: 3,
+    accuracy: 91,
+    executionTime: '5-15 secondes',
     features: [
-      'Génération haute qualité',
       'Styles multiples',
-      'Résolutions variées',
-      'Personnalisation avancée',
-      'Export multiples formats',
-      'Historique des créations',
-      'API intégrée',
-      'Support commercial'
+      'Haute résolution',
+      'Édition intelligente',
+      'Optimisation SEO',
+      'Batch processing'
     ],
-    apiEndpoint: '/api/ai/text-to-image',
-    status: 'premium',
-    icon: '🎨',
-    keywords: ['image', 'génération', 'art', 'création', 'design'],
-    useCases: ['Marketing', 'Design', 'E-commerce', 'Création'],
-    difficulty: 'beginner',
-    processingTime: '10-30 secondes',
-    accuracy: '88%'
+    protocols: ['API'],
+    eloRating: 1920,
+    battleScore: 95,
+    isProduction: true
   },
   {
-    id: 'style-ghibli',
-    name: 'Style Ghibli',
-    description: 'Génération d\'images dans le style Studio Ghibli',
+    id: 'ghibli-style-generator',
+    name: 'Générateur Style Ghibli',
+    description: 'Agent spécialisé dans la génération d\'images style Studio Ghibli',
     category: 'images',
-    subcategory: 'Style Artistique',
-    price: 8,
-    credits: 10,
+    price: 18,
+    credits: 4,
+    accuracy: 89,
+    executionTime: '8-20 secondes',
     features: [
       'Style Ghibli authentique',
       'Personnages animés',
       'Paysages magiques',
-      'Résolution haute qualité',
-      'Variations multiples',
-      'Export PNG/JPG',
-      'Usage commercial',
-      'Support créatif'
+      'Émotions artistiques',
+      'Export haute qualité'
     ],
-    apiEndpoint: '/api/ai/ghibli',
-    status: 'premium',
-    icon: '🌿',
-    keywords: ['ghibli', 'anime', 'style', 'artistique', 'magique'],
-    useCases: ['Animation', 'Gaming', 'Marketing', 'Art'],
-    difficulty: 'beginner',
-    processingTime: '15-45 secondes',
-    accuracy: '91%'
-  },
-  {
-    id: 'cartoonisation',
-    name: 'Cartoonisation',
-    description: 'Transformation d\'images en style cartoon/bande dessinée',
-    category: 'images',
-    subcategory: 'Transformation',
-    price: 6,
-    credits: 8,
-    features: [
-      'Style cartoon authentique',
-      'Préservation des détails',
-      'Styles multiples',
-      'Traitement rapide',
-      'Export haute qualité',
-      'API disponible',
-      'Usage commercial',
-      'Support technique'
-    ],
-    apiEndpoint: '/api/ai/cartoon',
-    status: 'premium',
-    icon: '🎭',
-    keywords: ['cartoon', 'bande dessinée', 'transformation', 'style'],
-    useCases: ['Marketing', 'Social Media', 'Gaming', 'Art'],
-    difficulty: 'beginner',
-    processingTime: '5-15 secondes',
-    accuracy: '93%'
-  },
-  {
-    id: 'face-swap-pro',
-    name: 'Face Swap Pro',
-    description: 'Échange de visages professionnel avec IA avancée',
-    category: 'images',
-    subcategory: 'Face Swap',
-    price: 12,
-    credits: 15,
-    features: [
-      'Échange réaliste',
-      'Préservation des expressions',
-      'Qualité haute définition',
-      'Détection automatique',
-      'Ajustements manuels',
-      'Export multiples formats',
-      'Usage commercial',
-      'Support professionnel'
-    ],
-    apiEndpoint: '/api/ai/faceswap',
-    status: 'premium',
-    icon: '🔄',
-    keywords: ['face swap', 'visage', 'échange', 'réaliste', 'ia'],
-    useCases: ['Cinéma', 'Marketing', 'Entertainment', 'Art'],
-    difficulty: 'advanced',
-    processingTime: '20-60 secondes',
-    accuracy: '87%'
-  },
-  {
-    id: 'background-removal',
-    name: 'Suppression d\'Arrière-plan',
-    description: 'Suppression automatique d\'arrière-plan avec IA',
-    category: 'images',
-    subcategory: 'Édition',
-    price: 5,
-    credits: 6,
-    features: [
-      'Suppression précise',
-      'Détection automatique',
-      'Arrière-plans personnalisés',
-      'Traitement en lot',
-      'Export PNG transparent',
-      'API intégrée',
-      'Usage commercial',
-      'Support technique'
-    ],
-    apiEndpoint: '/api/ai/background-removal',
-    status: 'premium',
-    icon: '✂️',
-    keywords: ['arrière-plan', 'suppression', 'transparent', 'édition'],
-    useCases: ['E-commerce', 'Marketing', 'Design', 'Photographie'],
-    difficulty: 'beginner',
-    processingTime: '3-8 secondes',
-    accuracy: '95%'
+    protocols: ['API'],
+    eloRating: 1890,
+    battleScore: 93,
+    isProduction: true
   },
 
-  // Services Audio & Voix
+  // Agents Audio et Voix
   {
-    id: 'synthese-vocale',
-    name: 'Synthèse Vocale Naturelle',
-    description: 'Génération de voix naturelles à partir de texte',
-    category: 'audio',
-    subcategory: 'Synthèse',
-    price: 8,
-    credits: 10,
+    id: 'voice-synthesis-pro',
+    name: 'Synthèse Vocale Pro',
+    description: 'Agent de synthèse vocale naturelle avec émotions',
+    category: 'voice',
+    price: 10,
+    credits: 2,
+    accuracy: 93,
+    executionTime: '3-8 secondes',
     features: [
       'Voix naturelles',
-      'Langues multiples',
-      'Émotions variées',
-      'Vitesse ajustable',
-      'Export MP3/WAV',
-      'API disponible',
-      'Usage commercial',
-      'Support technique'
+      'Émotions vocales',
+      'Support multilingue',
+      'Export haute qualité',
+      'Personnalisation'
     ],
-    apiEndpoint: '/api/ai/tts',
-    status: 'premium',
-    icon: '🎤',
-    keywords: ['voix', 'synthèse', 'audio', 'text-to-speech', 'naturel'],
-    useCases: ['Audiobooks', 'Podcasts', 'Marketing', 'Accessibilité'],
-    difficulty: 'beginner',
-    processingTime: '5-15 secondes',
-    accuracy: '94%'
-  },
-  {
-    id: 'transcription-automatique',
-    name: 'Transcription Automatique',
-    description: 'Conversion audio/vidéo en texte avec IA',
-    category: 'audio',
-    subcategory: 'Transcription',
-    price: 6,
-    credits: 8,
-    features: [
-      'Précision élevée',
-      'Langues multiples',
-      'Sous-titres automatiques',
-      'Export formats variés',
-      'Traitement en lot',
-      'API intégrée',
-      'Usage commercial',
-      'Support technique'
-    ],
-    apiEndpoint: '/api/ai/transcription',
-    status: 'premium',
-    icon: '📝',
-    keywords: ['transcription', 'audio', 'vidéo', 'texte', 'sous-titres'],
-    useCases: ['Médias', 'Formation', 'Réunions', 'Accessibilité'],
-    difficulty: 'beginner',
-    processingTime: '10-30 secondes',
-    accuracy: '96%'
-  },
-  {
-    id: 'detection-emotions-vocales',
-    name: 'Détection d\'Émotions Vocales',
-    description: 'Analyse des émotions dans la voix',
-    category: 'audio',
-    subcategory: 'Analyse',
-    price: 10,
-    credits: 12,
-    features: [
-      'Détection précise',
-      'Émotions multiples',
-      'Analyse en temps réel',
-      'Rapports détaillés',
-      'API disponible',
-      'Intégration CRM',
-      'Usage commercial',
-      'Support technique'
-    ],
-    apiEndpoint: '/api/ai/voice-emotion',
-    status: 'premium',
-    icon: '🎭',
-    keywords: ['émotions', 'voix', 'analyse', 'détection', 'sentiment'],
-    useCases: ['Call Centers', 'Thérapie', 'Recrutement', 'Formation'],
-    difficulty: 'intermediate',
-    processingTime: '3-8 secondes',
-    accuracy: '89%'
+    protocols: ['API'],
+    eloRating: 1810,
+    battleScore: 90,
+    isProduction: true
   },
 
-  // Services Business Intelligence
+  // Agents Business Intelligence
   {
-    id: 'analyse-donnees',
-    name: 'Analyse de Données IA',
-    description: 'Analyse intelligente de données business',
-    category: 'business',
-    subcategory: 'Analytics',
-    price: 15,
-    credits: 20,
+    id: 'data-analysis-pro',
+    name: 'Analyse de Données Pro',
+    description: 'Agent d\'analyse de données avec insights business',
+    category: 'analysis',
+    price: 20,
+    credits: 5,
+    accuracy: 96,
+    executionTime: '10-30 secondes',
     features: [
       'Analyse prédictive',
-      'Visualisations avancées',
+      'Visualisations',
+      'Insights business',
       'Rapports automatiques',
-      'Alertes intelligentes',
-      'Intégration bases de données',
-      'API complète',
-      'Support expert',
-      'Formation incluse'
+      'Intégration CRM'
     ],
-    apiEndpoint: '/api/ai/data-analysis',
-    status: 'premium',
-    icon: '📊',
-    keywords: ['analyse', 'données', 'business', 'prédictif', 'analytics'],
-    useCases: ['Finance', 'Marketing', 'Ventes', 'Opérations'],
-    difficulty: 'advanced',
-    processingTime: '30-90 secondes',
-    accuracy: '93%'
+    protocols: ['A2A', 'MCP'],
+    eloRating: 1950,
+    battleScore: 97,
+    isProduction: true
   },
   {
     id: 'scraping-intelligent',
     name: 'Scraping Intelligent',
-    description: 'Extraction automatique de données web',
-    category: 'business',
-    subcategory: 'Scraping',
+    description: 'Agent de collecte de données web intelligent',
+    category: 'analysis',
     price: 12,
-    credits: 15,
+    credits: 3,
+    accuracy: 91,
+    executionTime: '5-15 secondes',
     features: [
-      'Extraction précise',
-      'Sites multiples',
-      'Données structurées',
-      'Mise à jour automatique',
-      'Export formats variés',
-      'API disponible',
-      'Usage commercial',
-      'Support technique'
+      'Collecte automatisée',
+      'Nettoyage des données',
+      'Analyse en temps réel',
+      'Export structuré',
+      'Respect RGPD'
     ],
-    apiEndpoint: '/api/ai/scraping',
-    status: 'premium',
-    icon: '🕷️',
-    keywords: ['scraping', 'extraction', 'données', 'web', 'automatique'],
-    useCases: ['E-commerce', 'Recherche', 'Veille', 'Marketing'],
-    difficulty: 'intermediate',
-    processingTime: '20-60 secondes',
-    accuracy: '91%'
-  },
-  {
-    id: 'recherche-avancee',
-    name: 'Recherche Avancée IA',
-    description: 'Recherche intelligente et sémantique',
-    category: 'business',
-    subcategory: 'Recherche',
-    price: 8,
-    credits: 10,
-    features: [
-      'Recherche sémantique',
-      'Résultats pertinents',
-      'Sources multiples',
-      'Filtres avancés',
-      'Historique des recherches',
-      'API disponible',
-      'Usage commercial',
-      'Support technique'
-    ],
-    apiEndpoint: '/api/ai/search',
-    status: 'premium',
-    icon: '🔍',
-    keywords: ['recherche', 'sémantique', 'intelligente', 'pertinence'],
-    useCases: ['E-commerce', 'Documentation', 'Recherche', 'Support'],
-    difficulty: 'intermediate',
-    processingTime: '2-5 secondes',
-    accuracy: '94%'
-  },
-  {
-    id: 'resume-automatique',
-    name: 'Résumé Automatique',
-    description: 'Génération automatique de résumés intelligents',
-    category: 'business',
-    subcategory: 'Résumé',
-    price: 6,
-    credits: 8,
-    features: [
-      'Résumés intelligents',
-      'Longueurs variables',
-      'Préservation du sens',
-      'Support multilingue',
-      'Export formats variés',
-      'API disponible',
-      'Usage commercial',
-      'Support technique'
-    ],
-    apiEndpoint: '/api/ai/summarize',
-    status: 'premium',
-    icon: '📋',
-    keywords: ['résumé', 'automatique', 'intelligent', 'synthèse'],
-    useCases: ['Médias', 'Recherche', 'Formation', 'Business'],
-    difficulty: 'beginner',
-    processingTime: '5-15 secondes',
-    accuracy: '92%'
+    protocols: ['A2A'],
+    eloRating: 1870,
+    battleScore: 91,
+    isProduction: true
   },
 
-  // Services Marketing & Contenu
+  // Agents Marketing
   {
-    id: 'generation-contenu-marketing',
-    name: 'Génération Contenu Marketing',
-    description: 'Création automatique de contenu marketing optimisé',
+    id: 'content-generation-pro',
+    name: 'Génération de Contenu Pro',
+    description: 'Agent de création de contenu marketing optimisé',
     category: 'marketing',
-    subcategory: 'Contenu',
-    price: 10,
-    credits: 12,
+    price: 12,
+    credits: 3,
+    accuracy: 89,
+    executionTime: '5-12 secondes',
     features: [
-      'Contenu optimisé SEO',
-      'Tons personnalisables',
-      'Formats multiples',
-      'Mots-clés intégrés',
-      'Export formats variés',
-      'API disponible',
-      'Usage commercial',
-      'Support technique'
+      'Contenu SEO optimisé',
+      'Personnalisation',
+      'A/B testing',
+      'Analytics intégrés',
+      'Multi-formats'
     ],
-    apiEndpoint: '/api/ai/marketing-content',
-    status: 'premium',
-    icon: '📝',
-    keywords: ['marketing', 'contenu', 'seo', 'optimisation', 'création'],
-    useCases: ['Marketing', 'SEO', 'Social Media', 'Blog'],
-    difficulty: 'intermediate',
-    processingTime: '10-30 secondes',
-    accuracy: '90%'
+    protocols: ['MCP'],
+    eloRating: 1830,
+    battleScore: 89,
+    isProduction: true
   },
   {
-    id: 'detection-contenu-ia',
-    name: 'Détection Contenu IA',
-    description: 'Détection de contenu généré par IA',
+    id: 'seo-optimizer',
+    name: 'Optimiseur SEO',
+    description: 'Agent d\'optimisation SEO et référencement',
     category: 'marketing',
-    subcategory: 'Détection',
-    price: 8,
-    credits: 10,
-    features: [
-      'Détection précise',
-      'Scores de confiance',
-      'Analyse détaillée',
-      'Rapports complets',
-      'API disponible',
-      'Usage commercial',
-      'Support technique',
-      'Formation incluse'
-    ],
-    apiEndpoint: '/api/ai/content-detection',
-    status: 'premium',
-    icon: '🔍',
-    keywords: ['détection', 'ia', 'contenu', 'authenticité', 'vérification'],
-    useCases: ['Éducation', 'Médias', 'Recrutement', 'Content Moderation'],
-    difficulty: 'intermediate',
-    processingTime: '3-8 secondes',
-    accuracy: '95%'
-  },
-  {
-    id: 'traduction-multilingue',
-    name: 'Traduction Multilingue',
-    description: 'Traduction automatique de haute qualité',
-    category: 'marketing',
-    subcategory: 'Traduction',
-    price: 6,
-    credits: 8,
-    features: [
-      'Traduction précise',
-      'Langues multiples',
-      'Préservation du style',
-      'Traduction en lot',
-      'Export formats variés',
-      'API disponible',
-      'Usage commercial',
-      'Support technique'
-    ],
-    apiEndpoint: '/api/ai/translation',
-    status: 'premium',
-    icon: '🌍',
-    keywords: ['traduction', 'multilingue', 'langues', 'international'],
-    useCases: ['E-commerce', 'Marketing', 'Documentation', 'Support'],
-    difficulty: 'beginner',
-    processingTime: '5-15 secondes',
-    accuracy: '93%'
-  },
-
-  // Services E-commerce
-  {
-    id: 'analyse-concurrents-ecommerce',
-    name: 'Analyse Concurrents E-commerce',
-    description: 'Analyse intelligente de la concurrence e-commerce',
-    category: 'ecommerce',
-    subcategory: 'Analyse',
-    price: 20,
-    credits: 25,
-    features: [
-      'Surveillance concurrentielle',
-      'Analyse des prix',
-      'Tendances produits',
-      'Rapports détaillés',
-      'Alertes automatiques',
-      'API complète',
-      'Support expert',
-      'Formation incluse'
-    ],
-    apiEndpoint: '/api/ai/ecommerce-analysis',
-    status: 'premium',
-    icon: '📈',
-    keywords: ['e-commerce', 'concurrence', 'analyse', 'prix', 'tendances'],
-    useCases: ['E-commerce', 'Retail', 'Marketing', 'Stratégie'],
-    difficulty: 'advanced',
-    processingTime: '45-120 secondes',
-    accuracy: '91%'
-  },
-  {
-    id: 'generation-descriptions-produits',
-    name: 'Génération Descriptions Produits',
-    description: 'Création automatique de descriptions produits optimisées',
-    category: 'ecommerce',
-    subcategory: 'Produits',
-    price: 8,
-    credits: 10,
-    features: [
-      'Descriptions optimisées SEO',
-      'Mots-clés intégrés',
-      'Tons personnalisables',
-      'Génération en lot',
-      'Export formats variés',
-      'API disponible',
-      'Usage commercial',
-      'Support technique'
-    ],
-    apiEndpoint: '/api/ai/product-descriptions',
-    status: 'premium',
-    icon: '📦',
-    keywords: ['produits', 'descriptions', 'e-commerce', 'seo', 'optimisation'],
-    useCases: ['E-commerce', 'Marketplace', 'Retail', 'Marketing'],
-    difficulty: 'intermediate',
-    processingTime: '10-25 secondes',
-    accuracy: '89%'
-  },
-
-  // Services Automatisation
-  {
-    id: 'automatisation-processus',
-    name: 'Automatisation Processus',
-    description: 'Automatisation intelligente de processus business',
-    category: 'automation',
-    subcategory: 'Processus',
-    price: 25,
-    credits: 30,
-    features: [
-      'Workflows intelligents',
-      'Intégration API',
-      'Déclencheurs automatiques',
-      'Monitoring temps réel',
-      'Rapports détaillés',
-      'Support expert',
-      'Formation complète',
-      'Maintenance incluse'
-    ],
-    apiEndpoint: '/api/ai/automation',
-    status: 'premium',
-    icon: '⚙️',
-    keywords: ['automatisation', 'processus', 'workflow', 'efficacité'],
-    useCases: ['Opérations', 'RH', 'Finance', 'Marketing'],
-    difficulty: 'advanced',
-    processingTime: '60-180 secondes',
-    accuracy: '95%'
-  },
-
-  // Services Documents Commerciaux
-  {
-    id: 'generateur-documents-commerciaux',
-    name: 'Générateur Documents Commerciaux',
-    description: 'Création automatique de documents commerciaux professionnels',
-    category: 'business',
-    subcategory: 'Documents',
     price: 15,
-    credits: 20,
+    credits: 4,
+    accuracy: 92,
+    executionTime: '8-20 secondes',
     features: [
-      'Propositions commerciales',
-      'Présentations business',
+      'Analyse SEO complète',
+      'Recommandations',
+      'Suivi des positions',
       'Rapports détaillés',
-      'Budgets personnalisés',
-      'Planning de projet',
-      'KPIs automatiques',
-      'Export PDF/Word/PPT',
-      'Support professionnel'
+      'Optimisation automatique'
     ],
-    apiEndpoint: '/api/ai/commercial-documents',
-    status: 'premium',
-    icon: '📄',
-    keywords: ['documents', 'commerciaux', 'proposition', 'business', 'rapport'],
-    useCases: ['Ventes', 'Consulting', 'Marketing', 'Business Development'],
-    difficulty: 'advanced',
-    processingTime: '30-90 secondes',
-    accuracy: '94%'
+    protocols: ['A2A', 'MCP'],
+    eloRating: 1900,
+    battleScore: 94,
+    isProduction: true
   },
 
-  // Services IA Avancée (Nouvelles APIs)
+  // Agents E-commerce
   {
-    id: 'ai-query-advanced',
-    name: 'AI Query Avancé',
-    description: 'Requêtes IA avancées pour analyse et génération',
-    category: 'advanced',
-    subcategory: 'Query',
-    price: 12,
-    credits: 15,
-    features: [
-      'Requêtes complexes',
-      'Analyse de données',
-      'Génération de contenu',
-      'Recherche intelligente',
-      'API complète',
-      'Documentation détaillée',
-      'Support technique',
-      'Exemples inclus'
-    ],
-    apiEndpoint: '/api/ai/query2',
-    status: 'premium',
-    icon: '🔬',
-    keywords: ['query', 'requête', 'analyse', 'génération', 'avancé'],
-    useCases: ['Recherche', 'Analyse', 'Développement', 'Business'],
-    difficulty: 'advanced',
-    processingTime: '15-45 secondes',
-    accuracy: '93%'
-  },
-  {
-    id: 'deepfake-faceswap-pro',
-    name: 'Deepfake Face Swap Pro',
-    description: 'Échange de visages ultra-réaliste avec IA avancée',
-    category: 'advanced',
-    subcategory: 'Deepfake',
+    id: 'ecommerce-analysis',
+    name: 'Analyse E-commerce',
+    description: 'Agent d\'analyse e-commerce et optimisation',
+    category: 'ecommerce',
     price: 18,
-    credits: 25,
+    credits: 4,
+    accuracy: 94,
+    executionTime: '10-25 secondes',
     features: [
-      'Échange ultra-réaliste',
-      'Préservation des expressions',
-      'Qualité cinématographique',
-      'Détection automatique',
-      'Ajustements avancés',
-      'Export haute définition',
-      'Usage commercial',
-      'Support professionnel'
+      'Analyse concurrentielle',
+      'Optimisation conversion',
+      'Pricing intelligent',
+      'Gestion catalogue',
+      'Rapports business'
     ],
-    apiEndpoint: '/api/ai/deepfake-faceswap',
-    status: 'premium',
-    icon: '🎭',
-    keywords: ['deepfake', 'face swap', 'réaliste', 'cinématographique'],
-    useCases: ['Cinéma', 'Entertainment', 'Marketing', 'Art'],
-    difficulty: 'advanced',
-    processingTime: '30-90 secondes',
-    accuracy: '87%'
+    protocols: ['A2A', 'MCP'],
+    eloRating: 1930,
+    battleScore: 96,
+    isProduction: true
+  },
+
+  // Agents d'Automatisation
+  {
+    id: 'workflow-automation',
+    name: 'Automatisation Workflow',
+    description: 'Agent d\'automatisation de processus métier',
+    category: 'automation',
+    price: 25,
+    credits: 6,
+    accuracy: 95,
+    executionTime: '15-45 secondes',
+    features: [
+      'Automatisation complète',
+      'Intégration API',
+      'Monitoring temps réel',
+      'Alertes intelligentes',
+      'Optimisation continue'
+    ],
+    protocols: ['A2A', 'MCP'],
+    eloRating: 1980,
+    battleScore: 98,
+    isProduction: true
   }
 ];
 
-export const getServiceById = (id: string): NovaAIService | undefined => {
-  return NOVA_AI_SERVICES.find(service => service.id === id);
-};
+// Système de recommandation intelligent
+export function getRecommendedServices(userInput: string): NovaAIService[] {
+  const input = userInput.toLowerCase();
+  const recommendations: Array<{service: NovaAIService, score: number}> = [];
 
-export const getServicesByCategory = (category: string): NovaAIService[] => {
-  return NOVA_AI_SERVICES.filter(service => service.category === category);
-};
-
-export const getServicesBySubcategory = (subcategory: string): NovaAIService[] => {
-  return NOVA_AI_SERVICES.filter(service => service.subcategory === subcategory);
-};
-
-export const searchServices = (query: string): NovaAIService[] => {
-  const lowercaseQuery = query.toLowerCase();
-  return NOVA_AI_SERVICES.filter(service => 
-    service.name.toLowerCase().includes(lowercaseQuery) ||
-    service.description.toLowerCase().includes(lowercaseQuery) ||
-    service.keywords.some(keyword => keyword.toLowerCase().includes(lowercaseQuery)) ||
-    service.useCases.some(useCase => useCase.toLowerCase().includes(lowercaseQuery))
-  );
-};
-
-export const getRecommendedServices = (userNeeds: string): NovaAIService[] => {
-  const needs = userNeeds.toLowerCase();
-  const recommendations: { service: NovaAIService; score: number }[] = [];
-
-  NOVA_AI_SERVICES.forEach(service => {
+  for (const service of novaAIServices) {
     let score = 0;
-    
-    // Score basé sur les mots-clés
-    service.keywords.forEach(keyword => {
-      if (needs.includes(keyword.toLowerCase())) {
-        score += 2;
-      }
-    });
 
-    // Score basé sur les cas d'usage
-    service.useCases.forEach(useCase => {
-      if (needs.includes(useCase.toLowerCase())) {
-        score += 1.5;
-      }
-    });
+    // Analyse sémantique basique
+    const keywords = {
+      'chat': ['conversation', 'discussion', 'dialogue', 'parler', 'communiquer'],
+      'image': ['image', 'photo', 'visuel', 'dessin', 'créer', 'générer'],
+      'voix': ['voix', 'audio', 'son', 'parler', 'synthèse'],
+      'analyse': ['analyser', 'données', 'statistiques', 'rapport', 'étude'],
+      'marketing': ['marketing', 'publicité', 'promotion', 'vente', 'commercial'],
+      'ecommerce': ['e-commerce', 'boutique', 'vente', 'produit', 'commerce'],
+      'automatisation': ['automatiser', 'processus', 'workflow', 'efficacité']
+    };
 
-    // Score basé sur la description
-    if (service.description.toLowerCase().includes(needs)) {
-      score += 1;
+    // Calcul du score
+    for (const [category, words] of Object.entries(keywords)) {
+      if (words.some(word => input.includes(word))) {
+        score += 10;
+      }
     }
+
+    // Bonus pour les services en production
+    if (service.isProduction) score += 5;
+
+    // Bonus pour l'ELO rating
+    score += (service.eloRating || 0) / 100;
+
+    // Bonus pour le battle score
+    score += (service.battleScore || 0) / 10;
 
     if (score > 0) {
       recommendations.push({ service, score });
     }
-  });
+  }
 
-  // Trier par score décroissant et retourner les 6 meilleurs
+  // Tri par score décroissant et retour des 3 meilleurs
   return recommendations
     .sort((a, b) => b.score - a.score)
-    .slice(0, 6)
-    .map(item => item.service);
-};
+    .slice(0, 3)
+    .map(r => r.service);
+}
 
-export const getServicesStats = () => {
-  const totalServices = NOVA_AI_SERVICES.length;
-  const categories = [...new Set(NOVA_AI_SERVICES.map(s => s.category))];
-  const subcategories = [...new Set(NOVA_AI_SERVICES.map(s => s.subcategory))];
-  
-  const statsByCategory = categories.map(category => ({
-    category,
-    count: NOVA_AI_SERVICES.filter(s => s.category === category).length,
-    services: NOVA_AI_SERVICES.filter(s => s.category === category).map(s => ({
-      id: s.id,
-      name: s.name,
-      status: s.status,
-      price: s.price
-    }))
-  }));
+// Système de gestion des agents
+export class AgentManager {
+  private agents: Map<string, NovaAIService> = new Map();
+  private contexts: Map<string, AgentContext> = new Map();
+  private a2aMessages: A2AMessage[] = [];
+  private mcpContexts: Map<string, MCPContext> = new Map();
 
-  const statsByStatus = {
-    free: NOVA_AI_SERVICES.filter(s => s.status === 'free').length,
-    premium: NOVA_AI_SERVICES.filter(s => s.status === 'premium').length,
-    beta: NOVA_AI_SERVICES.filter(s => s.status === 'beta').length
-  };
+  constructor() {
+    // Initialiser tous les agents
+    novaAIServices.forEach(service => {
+      this.agents.set(service.id, service);
+    });
+  }
 
-  const statsByDifficulty = {
-    beginner: NOVA_AI_SERVICES.filter(s => s.difficulty === 'beginner').length,
-    intermediate: NOVA_AI_SERVICES.filter(s => s.difficulty === 'intermediate').length,
-    advanced: NOVA_AI_SERVICES.filter(s => s.difficulty === 'advanced').length
-  };
+  // Gestion des contextes
+  createContext(userId: string): AgentContext {
+    const context: AgentContext = {
+      sessionId: `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      userId,
+      conversationHistory: [],
+      preferences: {},
+      performance: {
+        totalRequests: 0,
+        successRate: 100,
+        averageResponseTime: 0
+      }
+    };
+    this.contexts.set(context.sessionId, context);
+    return context;
+  }
 
-  const totalPrice = NOVA_AI_SERVICES.reduce((sum, s) => sum + s.price, 0);
-  const totalCredits = NOVA_AI_SERVICES.reduce((sum, s) => sum + s.credits, 0);
+  getContext(sessionId: string): AgentContext | undefined {
+    return this.contexts.get(sessionId);
+  }
 
-  return {
-    totalServices,
-    categories: categories.length,
-    subcategories: subcategories.length,
-    statsByCategory,
-    statsByStatus,
-    statsByDifficulty,
-    totalPrice,
-    totalCredits,
-    averagePrice: totalPrice / totalServices,
-    averageCredits: totalCredits / totalServices
-  };
-}; 
+  updateContext(sessionId: string, updates: Partial<AgentContext>): void {
+    const context = this.contexts.get(sessionId);
+    if (context) {
+      Object.assign(context, updates);
+    }
+  }
+
+  // Communication A2A
+  sendA2AMessage(message: A2AMessage): void {
+    this.a2aMessages.push(message);
+    // Traitement des messages A2A
+    this.processA2AMessage(message);
+  }
+
+  private processA2AMessage(message: A2AMessage): void {
+    // Logique de traitement des messages A2A
+    console.log(`A2A Message: ${message.from} -> ${message.to}: ${message.action}`);
+  }
+
+  // Gestion MCP
+  createMCPContext(sessionId: string): MCPContext {
+    const context: MCPContext = {
+      sessionId,
+      contextData: {},
+      metadata: {
+        createdAt: new Date(),
+        lastUpdated: new Date(),
+        version: '1.0.0'
+      }
+    };
+    this.mcpContexts.set(sessionId, context);
+    return context;
+  }
+
+  updateMCPContext(sessionId: string, data: Record<string, any>): void {
+    const context = this.mcpContexts.get(sessionId);
+    if (context) {
+      context.contextData = { ...context.contextData, ...data };
+      context.metadata.lastUpdated = new Date();
+    }
+  }
+
+  // Battle System (inspiré d'AArena)
+  async battleAgents(agent1Id: string, agent2Id: string, task: string): Promise<{
+    winner: string;
+    scores: { [key: string]: number };
+    details: any;
+  }> {
+    const agent1 = this.agents.get(agent1Id);
+    const agent2 = this.agents.get(agent2Id);
+
+    if (!agent1 || !agent2) {
+      throw new Error('Agents non trouvés');
+    }
+
+    // Simulation d'un battle
+    const score1 = (agent1.eloRating || 0) + Math.random() * 100;
+    const score2 = (agent2.eloRating || 0) + Math.random() * 100;
+
+    return {
+      winner: score1 > score2 ? agent1Id : agent2Id,
+      scores: {
+        [agent1Id]: Math.round(score1),
+        [agent2Id]: Math.round(score2)
+      },
+      details: {
+        task,
+        executionTime: Date.now(),
+        metrics: {
+          accuracy: Math.max(agent1.accuracy, agent2.accuracy),
+          efficiency: Math.min(agent1.price, agent2.price)
+        }
+      }
+    };
+  }
+
+  // Performance tracking
+  trackPerformance(agentId: string, success: boolean, responseTime: number): void {
+    const agent = this.agents.get(agentId);
+    if (agent) {
+      // Mise à jour des métriques de performance
+      console.log(`Performance tracked for ${agentId}: success=${success}, time=${responseTime}ms`);
+    }
+  }
+
+  // Get agent rankings (ELO system)
+  getAgentRankings(): Array<{id: string, name: string, eloRating: number, battleScore: number}> {
+    return Array.from(this.agents.values())
+      .map(agent => ({
+        id: agent.id,
+        name: agent.name,
+        eloRating: agent.eloRating || 0,
+        battleScore: agent.battleScore || 0
+      }))
+      .sort((a, b) => b.eloRating - a.eloRating);
+  }
+}
+
+// Instance globale du gestionnaire d'agents
+export const agentManager = new AgentManager(); 

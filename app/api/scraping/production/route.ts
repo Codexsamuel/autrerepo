@@ -1,4 +1,3 @@
-export const revalidate = false;
 import { productionScraper } from '@/lib/scraper/production-scraper';
 import { NextRequest, NextResponse } from 'next/server';
 

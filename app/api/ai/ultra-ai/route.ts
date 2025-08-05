@@ -1,4 +1,3 @@
-export const revalidate = false;
 import { UltraAIService } from '@/lib/ai/ultra-ai-service';
 import { NextRequest, NextResponse } from 'next/server';
 

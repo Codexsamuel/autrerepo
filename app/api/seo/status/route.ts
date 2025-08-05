@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export const revalidate = false;
 
 export async function GET(request: NextRequest) {
   try {

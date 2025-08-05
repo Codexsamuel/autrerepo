@@ -5,8 +5,8 @@ const nextConfig = {
     ignoreDuringBuilds: process.env.NODE_ENV === 'production',
   },
   
-  // Configuration pour export statique (activé pour Netlify)
-  output: process.env.NETLIFY === 'true' ? 'export' : undefined,
+  // Configuration pour export statique (désactivé pour permettre les APIs)
+  // output: process.env.NETLIFY === 'true' ? 'export' : undefined,
   trailingSlash: process.env.NETLIFY === 'true',
   
   // Configuration des images avancée

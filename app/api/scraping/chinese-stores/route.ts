@@ -1,4 +1,3 @@
-export const revalidate = false;
 import { getScrapingStats } from '@/lib/scraper/chinese-stores';
 import { Product } from '@/lib/scraper/multi-markets';
 import { NextRequest, NextResponse } from 'next/server';

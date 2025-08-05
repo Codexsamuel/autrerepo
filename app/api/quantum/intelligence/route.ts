@@ -1,4 +1,3 @@
-export const revalidate = false;
 import { QuantumIntelligenceService } from '@/lib/ai/quantum-intelligence-service';
 import { NextRequest, NextResponse } from 'next/server';
 

@@ -111,13 +111,22 @@ async function generatePresentationStructure(request: PresentationRequest): Prom
   
   Génère uniquement les titres des slides, un par ligne, sans numérotation.`;
 
-  const response = await makeAIQuery2(prompt, 'Tu es un expert en présentation commerciale et pitch deck');
+  const response = await makeAIQuery2({
+    query: prompt,
+    type: 'general',
+    options: {
+      language: 'fr',
+      tone: 'professional',
+      length: 'medium',
+      format: 'text'
+    }
+  });
   
-  if (!response.success || !response.data?.response) {
+  if (!response.success || !response.data?.result) {
     throw new Error('Impossible de générer la structure de la présentation');
   }
 
-  const slides = response.data.response
+  const slides = response.data.result
     .split('\n')
     .map(line => line.trim())
     .filter(line => line.length > 0)
@@ -148,12 +157,12 @@ async function generateSlidesContent(slideTitles: string[], request: Presentatio
     
     Génère un contenu structuré et engageant pour cette slide.`;
 
-    const contentResponse = await generateContentWithAIQuery2(contentPrompt, 'article');
+    const contentResponse = await generateContentWithAIQuery2(contentPrompt, 'text');
     
     const slide: PresentationSlide = {
       id: `slide-${i + 1}`,
       title,
-      content: contentResponse.success ? contentResponse.data?.response || 'Contenu généré' : 'Contenu à personnaliser',
+      content: contentResponse || 'Contenu à personnaliser',
       slideType,
       layout
     };
@@ -175,10 +184,10 @@ async function generateSlidesImages(slides: PresentationSlide[], request: Presen
 
     try {
       const imagePrompt = generateImagePrompt(slide, request);
-      const imageResponse = await quickGhibliImage(imagePrompt, 2, '16:9');
+      const imageResponse = await quickGhibliImage(imagePrompt, 2, '16-9');
       
-      if (imageResponse.success && imageResponse.data?.imageUrl) {
-        slide.imageUrl = imageResponse.data.imageUrl;
+      if (imageResponse.success && imageResponse.imageUrl) {
+        slide.imageUrl = imageResponse.imageUrl;
       }
     } catch (error) {
       console.log(`⚠️ Impossible de générer l'image pour la slide: ${slide.title}`);
@@ -201,7 +210,7 @@ function determineSlideType(title: string, index: number): PresentationSlide['sl
   if (titleLower.includes('témoignage') || titleLower.includes('client')) return 'testimonials';
   if (titleLower.includes('contact') || titleLower.includes('action')) return 'cta';
   
-  return 'content';
+  return 'features';
 }
 
 /**

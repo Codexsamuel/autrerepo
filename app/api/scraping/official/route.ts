@@ -1,4 +1,3 @@
-export const revalidate = false;
 import { officialAPIService } from '@/lib/scraper/alibaba-official-api';
 import { NextRequest, NextResponse } from 'next/server';
 

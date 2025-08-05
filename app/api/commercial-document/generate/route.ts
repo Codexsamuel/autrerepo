@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateCommercialDocument } from '@/lib/services/commercial-document-generator';
 
+
 export async function GET() {
   return NextResponse.json({
     name: 'Commercial Document Generator API',

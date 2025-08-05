@@ -121,8 +121,8 @@ export async function generateCommercialDocument(
       if (shouldGenerateImage(section.type, section.title)) {
         const imagePrompt = generateImagePrompt(section.title, request.industry);
         try {
-          const imageUrl = await quickGhibliImage(imagePrompt);
-          generatedSections[i] = { ...section, imageUrl };
+          const ghibliResponse = await quickGhibliImage(imagePrompt);
+          generatedSections[i] = { ...section, imageUrl: ghibliResponse.imageUrl };
         } catch (error) {
           console.error('Erreur génération image:', error);
         }

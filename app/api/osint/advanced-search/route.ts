@@ -1,4 +1,3 @@
-export const revalidate = false;
 import { AdvancedOSINTService } from '@/lib/osint/advanced-osint-service';
 import { NextRequest, NextResponse } from 'next/server';
 

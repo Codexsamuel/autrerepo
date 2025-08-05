@@ -1,4 +1,3 @@
-export const revalidate = false;
 import { trackAction } from '@/middleware/visitor-tracker';
 import { NextRequest, NextResponse } from 'next/server';
 

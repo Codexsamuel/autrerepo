@@ -1,4 +1,3 @@
-export const revalidate = false;
 import { IndustrialProduct } from '@/types/industrial';
 import { NextRequest, NextResponse } from 'next/server';
 

@@ -1,4 +1,3 @@
-export const revalidate = false;
 import { scrapeAliExpress } from '@/lib/scraper/aliexpress';
 import { NextResponse } from 'next/server';
 

@@ -1,4 +1,3 @@
-export const revalidate = false;
 import { AdvancedIntelligenceService } from '@/lib/ai/advanced-intelligence-service';
 import { NextRequest, NextResponse } from 'next/server';
 

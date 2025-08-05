@@ -101,7 +101,7 @@ export async function makeChatGPT42Request(
  * @returns Réponse générée
  */
 export async function generateChatGPT42Response(
-  messages: Array<{ role: string; content: string }>,
+  messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }>,
   options: {
     model?: string;
     temperature?: number;
@@ -154,7 +154,7 @@ export async function chatWithChatGPT42(
   } = {}
 ): Promise<string> {
   try {
-    const messages = [];
+    const messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [];
     
     if (systemPrompt) {
       messages.push({ role: 'system', content: systemPrompt });

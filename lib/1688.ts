@@ -411,7 +411,7 @@ function generate1688FallbackProducts(keyword: string, limit: number): Product16
       image: `https://via.placeholder.com/300x300/1688FF/FFFFFF?text=${encodeURIComponent(keyword)}`,
       url: `https://1688.com/product/${Date.now()}_${i}`,
       source: '1688',
-      rating: (Math.random() * 2 + 3).toFixed(1), // 3.0 - 5.0
+      rating: Math.round((Math.random() * 2 + 3) * 10) / 10, // 3.0 - 5.0
       reviews: Math.floor(Math.random() * 500) + 50,
       seller: `Vendeur 1688 ${i + 1}`,
       location: 'Chine',

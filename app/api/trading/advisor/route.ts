@@ -1,4 +1,3 @@
-export const revalidate = false;
 import { NextRequest, NextResponse } from "next/server";
 
 // Types pour les conseils de trading

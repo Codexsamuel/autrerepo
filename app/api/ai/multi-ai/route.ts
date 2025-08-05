@@ -1,4 +1,3 @@
-export const revalidate = false;
 import { MultiAIService } from '@/lib/ai/multi-ai-service';
 import { NextRequest, NextResponse } from 'next/server';
 

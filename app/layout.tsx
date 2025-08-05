@@ -1,11 +1,11 @@
 import PerformanceMonitor from '@/components/PerformanceMonitor'
 import ModernNavigation from '@/components/layout/ModernNavigation'
 import { Toaster } from '@/components/ui/toaster'
-import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { Metadata } from 'next'
 import './fonts.css'
 import './globals.css'
-import { generateOrganizationStructuredData, generateWebSiteStructuredData } from '../components/SEOOptimizedHead'
+import { generateOrganizationStructuredData, generateWebSiteStructuredData } from '../lib/structured-data'
 
 const inter = Inter({ subsets: ['latin'] })
 

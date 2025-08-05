@@ -3,7 +3,8 @@
 import { CheckCircle, ExternalLink, Github, Play, ShoppingCart, BarChart3, Bot, Shield, Zap, Users, Database, FileText, Search, Package, CreditCard, ShoppingBag, Mail, Phone, TrendingUp, Award, Target, Rocket, Info } from 'lucide-react';
 import { useState } from 'react';
 import BatobayeLauncher from '../../../components/BatobayeLauncher';
-import SEOOptimizedHead, { generateBatobayeStructuredData } from '../../../components/SEOOptimizedHead';
+import SEOOptimizedHead from '../../../components/SEOOptimizedHead';
+import { generateBatobayeStructuredData } from '../../../lib/structured-data';
 
 export default function BatobayeProjectPage() {
   const [isDemoRunning, setIsDemoRunning] = useState(false);

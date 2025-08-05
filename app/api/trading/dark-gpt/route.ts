@@ -1,4 +1,3 @@
-export const revalidate = false;
 import { DarkGPTService, MarketContext } from '@/lib/ai/dark-gpt-service';
 import { NextRequest, NextResponse } from 'next/server';
 

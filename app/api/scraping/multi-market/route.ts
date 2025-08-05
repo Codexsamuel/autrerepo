@@ -1,4 +1,3 @@
-export const revalidate = false;
 import { scrapeAlibaba } from '@/lib/scraper/alibaba';
 import { scrapeAliExpress } from '@/lib/scraper/aliexpress';
 import { scrapeAmazon } from '@/lib/scraper/amazon';

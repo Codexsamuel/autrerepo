@@ -327,7 +327,7 @@ export async function POST(request: NextRequest) {
         
         const relevantServices = NOVA_AI_SERVICES.filter(service => {
           const serviceText = `${service.name} ${service.description} ${service.keywords.join(' ')} ${service.useCases.join(' ')}`.toLowerCase();
-          return keywords.some(keyword => serviceText.includes(keyword));
+          return keywords.some((keyword: string) => serviceText.includes(keyword));
         }).sort((a, b) => b.price - a.price);
 
         return NextResponse.json({

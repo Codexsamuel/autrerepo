@@ -441,7 +441,7 @@ export function NovaIAssistant({ initialSearch = '' }: NovaIAssistantProps) {
                   <ul className="space-y-1">
                     {Object.entries(results.metrics).map(([key, value]) => (
                       <li key={key} className="text-sm">
-                        <span className="text-gray-600">{key}:</span> {value}
+                        <span className="text-gray-600">{key}:</span> {String(value)}
                       </li>
                     ))}
                   </ul>

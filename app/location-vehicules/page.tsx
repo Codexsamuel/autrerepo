@@ -134,13 +134,13 @@ export default function LocationVehiculesPage() {
                           <span className="text-gray-600">Prix :</span>
                           <span className="font-bold text-green-600">{vehicle.price}</span>
                         </div>
-                        {vehicle.seats && (
+                        {'seats' in vehicle && vehicle.seats && (
                           <div className="flex justify-between">
                             <span className="text-gray-600">Places :</span>
                             <span className="font-semibold">{vehicle.seats}</span>
                           </div>
                         )}
-                        {vehicle.capacity && (
+                        {'capacity' in vehicle && vehicle.capacity && (
                           <div className="flex justify-between">
                             <span className="text-gray-600">Capacité :</span>
                             <span className="font-semibold">{vehicle.capacity}</span>

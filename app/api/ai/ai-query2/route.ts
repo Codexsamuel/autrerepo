@@ -79,7 +79,17 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           );
         }
-        result = await makeAIQuery2(query, context, options);
+        result = await makeAIQuery2({
+          query,
+          type: 'general',
+          options: {
+            language: 'fr',
+            tone: 'professional',
+            length: 'medium',
+            format: 'text',
+            ...options
+          }
+        });
         break;
 
       case 'analyze':

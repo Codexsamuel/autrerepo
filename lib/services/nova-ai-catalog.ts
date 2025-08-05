@@ -720,6 +720,10 @@ export const getServicesByCategory = (category: string): NovaAIService[] => {
   return NOVA_AI_SERVICES.filter(service => service.category === category);
 };
 
+export const getServicesBySubcategory = (subcategory: string): NovaAIService[] => {
+  return NOVA_AI_SERVICES.filter(service => service.subcategory === subcategory);
+};
+
 export const searchServices = (query: string): NovaAIService[] => {
   const lowercaseQuery = query.toLowerCase();
   return NOVA_AI_SERVICES.filter(service => 
@@ -766,4 +770,49 @@ export const getRecommendedServices = (userNeeds: string): NovaAIService[] => {
     .sort((a, b) => b.score - a.score)
     .slice(0, 6)
     .map(item => item.service);
+};
+
+export const getServicesStats = () => {
+  const totalServices = NOVA_AI_SERVICES.length;
+  const categories = [...new Set(NOVA_AI_SERVICES.map(s => s.category))];
+  const subcategories = [...new Set(NOVA_AI_SERVICES.map(s => s.subcategory))];
+  
+  const statsByCategory = categories.map(category => ({
+    category,
+    count: NOVA_AI_SERVICES.filter(s => s.category === category).length,
+    services: NOVA_AI_SERVICES.filter(s => s.category === category).map(s => ({
+      id: s.id,
+      name: s.name,
+      status: s.status,
+      price: s.price
+    }))
+  }));
+
+  const statsByStatus = {
+    free: NOVA_AI_SERVICES.filter(s => s.status === 'free').length,
+    premium: NOVA_AI_SERVICES.filter(s => s.status === 'premium').length,
+    beta: NOVA_AI_SERVICES.filter(s => s.status === 'beta').length
+  };
+
+  const statsByDifficulty = {
+    beginner: NOVA_AI_SERVICES.filter(s => s.difficulty === 'beginner').length,
+    intermediate: NOVA_AI_SERVICES.filter(s => s.difficulty === 'intermediate').length,
+    advanced: NOVA_AI_SERVICES.filter(s => s.difficulty === 'advanced').length
+  };
+
+  const totalPrice = NOVA_AI_SERVICES.reduce((sum, s) => sum + s.price, 0);
+  const totalCredits = NOVA_AI_SERVICES.reduce((sum, s) => sum + s.credits, 0);
+
+  return {
+    totalServices,
+    categories: categories.length,
+    subcategories: subcategories.length,
+    statsByCategory,
+    statsByStatus,
+    statsByDifficulty,
+    totalPrice,
+    totalCredits,
+    averagePrice: totalPrice / totalServices,
+    averageCredits: totalCredits / totalServices
+  };
 }; 

@@ -4,97 +4,29 @@
 User-agent: *
 Allow: /
 
-# Sitemap principal
-Sitemap: https://dlsolutions.com/sitemap.xml
-
-# Pages importantes à indexer en priorité
-Allow: /$
-Allow: /dl-style
-Allow: /novaworld
-Allow: /novacore
-Allow: /formations
+# Pages principales
+Allow: /services-ia
+Allow: /location-vehicules
+Allow: /immobilier
+Allow: /nova-ia
 Allow: /services
-Allow: /trading
-Allow: /advanced-intelligence
-Allow: /ultra-ai
-Allow: /quantum-intelligence
-Allow: /metaverse-blockchain
 Allow: /contact
 Allow: /a-propos
 
-# Pages de formations
-Allow: /formations/marketing-digital
-Allow: /formations/ia-entreprises
-Allow: /formations/creation-visuelle
-Allow: /formations/sav-excellence
+# Pages NovaIA
+Allow: /nova-ia/*
+Allow: /commercial-document-generator
+Allow: /api/ai/*
 
-# Pages NovaCore
-Allow: /novacore/dl-style
-Allow: /novacore/crm
-Allow: /novacore/erp
-Allow: /novacore/ecommerce
+# Pages de solutions
+Allow: /solutions/*
+Allow: /novacore/*
+Allow: /novaworld/*
 
-# Pages NovaWorld
-Allow: /novaworld/social
-Allow: /novaworld/business
-Allow: /novaworld/jobs
-Allow: /novaworld/events
+# Sitemap
+Sitemap: https://dlsolutions.com/sitemap.xml
 
-# Pages de démonstrations
-Allow: /demo/ezee-optimus
-Allow: /demo/real-trading
-Allow: /demo/trading-advisor
-
-# Pages de solutions sectorielles
-Allow: /solutions/agriculture
-Allow: /solutions/banque
-Allow: /solutions/assurance
-Allow: /solutions/immobilier
-Allow: /solutions/restaurant
-Allow: /solutions/mining
-Allow: /solutions/hospitalier
-Allow: /solutions/community-manager
-Allow: /solutions/travel
-Allow: /solutions/commerce
-Allow: /solutions/business
-
-# Pages utilitaires
-Allow: /devis
-Allow: /rendez-vous
-Allow: /capacites-techniques
-Allow: /portfolio
-Allow: /price-alerts
-Allow: /trading-charts
-Allow: /scraping-demo
-Allow: /scraping-multi-market
-Allow: /industrial-products
-
-# Pages à ne pas indexer (privées/administratives)
-Disallow: /admin/
-Disallow: /dashboard/
-Disallow: /sign-in
-Disallow: /sign-up
-Disallow: /api/
-Disallow: /_next/
-Disallow: /test-env/
-Disallow: /api-test/
-Disallow: /intranet/
-
-# Fichiers à ne pas indexer
-Disallow: /*.json$
-Disallow: /*.xml$
-Disallow: /*.txt$
-Disallow: /*.log$
-Disallow: /*.sql$
-
-# Images et ressources statiques
-Allow: /images/
-Allow: /public/
-Allow: /css/
-Allow: /js/
-Allow: /fonts/
-
-# Crawl-delay pour éviter de surcharger le serveur
+# Crawl-delay pour éviter la surcharge
 Crawl-delay: 1
 
 # Instructions spécifiques pour Google

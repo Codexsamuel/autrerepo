@@ -164,6 +164,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly' as const,
       priority: 0.9,
     },
+    // Nouvelles pages SEO optimisées
+    {
+      url: `${baseUrl}/services-ia`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/location-vehicules`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/immobilier`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/nova-ia`,
+      lastModified: currentDate,
+      changeFrequency: 'daily' as const,
+      priority: 0.9,
+    },
   ];
 
   // Pages NovaCore

@@ -64,7 +64,9 @@ export function VideoCarousel({
           )}
         >
           <video
-            ref={(el) => (videoRefs.current[index] = el)}
+            ref={(el) => {
+              videoRefs.current[index] = el;
+            }}
             className="w-full h-full object-cover"
             muted
             loop

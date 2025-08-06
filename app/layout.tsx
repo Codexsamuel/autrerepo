@@ -6,6 +6,7 @@ import { generateWebSiteStructuredData } from '@/lib/structured-data';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://daveandlucesolutions.com'),
   title: 'DL Solutions - Écosystème Digital Complet | Davy & Lucie',
   description: 'DL Solutions par Davy et Lucie - Écosystème digital complet avec marketplace Batobaye, boutique en ligne, CRM, ERP, marketing digital. Solutions innovantes au Cameroun.',
   keywords: [

@@ -27,7 +27,7 @@ export class StripeService {
 
   constructor() {
     this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-      apiVersion: '2023-10-16',
+      apiVersion: '2025-07-30.basil',
     });
   }
 
@@ -224,14 +224,14 @@ export class StripeService {
 
       await this.stripe.invoiceItems.create({
         customer: customerId,
-        invoice: invoice.id,
+        invoice: invoice.id!,
         amount: Math.round(amount * 100),
         currency,
         description: description || 'Service',
       });
 
       const finalizedInvoice = await this.stripe.invoices.finalizeInvoice(
-        invoice.id
+        invoice.id!
       );
 
       return finalizedInvoice;
@@ -286,7 +286,7 @@ export class StripeService {
       return subscriptions.data.map(sub => ({
         id: sub.id,
         status: sub.status,
-        current_period_end: sub.current_period_end,
+        current_period_end: (sub as any).current_period_end,
         plan: sub.items.data[0]?.price.id || '',
       }));
     } catch (error) {

@@ -93,12 +93,16 @@ export function NovaIAssistant({ initialSearch = '' }: NovaIAssistantProps) {
     }
   };
 
-  // Services IA réels
+  // Services IA réels avec GPT-4
   const executeChatService = async (input: string) => {
-    const response = await fetch('/api/ai/chat', {
+    const response = await fetch('/api/ai/gpt4', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: input })
+      body: JSON.stringify({
+        type: 'novaia',
+        message: input,
+        context: 'Assistant NovaIA - Analyse et recommandations'
+      })
     });
     
     if (!response.ok) throw new Error('Erreur API chat');

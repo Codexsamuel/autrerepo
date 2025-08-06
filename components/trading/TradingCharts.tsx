@@ -1,24 +1,24 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { Activity, BarChart3, DollarSign, TrendingUp } from 'lucide-react';
+import React, { useState } from 'react';
 import {
-  LineChart,
-  Line,
-  AreaChart,
-  Area,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell
+    Area,
+    AreaChart,
+    Bar,
+    BarChart,
+    CartesianGrid,
+    Cell,
+    Legend,
+    Line,
+    LineChart,
+    Pie,
+    PieChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis
 } from 'recharts';
-import { TrendingUp, TrendingDown, DollarSign, Activity, BarChart3 } from 'lucide-react';
 
 interface TradingData {
   symbol: string;
@@ -241,7 +241,7 @@ const TradingCharts: React.FC<TradingChartsProps> = ({
                         cx="50%"
                         cy="50%"
                         labelLine={false}
-                        label={({ name, value }) => `${name}: ${value.toFixed(1)}%`}
+                        label={({ name, value }) => `${name}: ${value?.toFixed(1) || 0}%`}
                         outerRadius={150}
                         fill="#8884d8"
                         dataKey="value"

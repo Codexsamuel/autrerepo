@@ -339,6 +339,19 @@ export default function NovaIAPage() {
                 </Button>
               </Link>
             </div>
+
+            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20">
+              <div className="text-4xl mb-4">🚁</div>
+              <h3 className="text-xl font-semibold text-white mb-4">DroneBuilder IA</h3>
+              <p className="text-gray-300 mb-4">
+                Générateur de drones militaires avec firmware, G-code et missions tactiques
+              </p>
+              <Link href="/nova-ia/drone-builder">
+                <Button className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600">
+                  Créer un Drone
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

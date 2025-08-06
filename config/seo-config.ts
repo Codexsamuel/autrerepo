@@ -335,7 +335,7 @@ export function getFormationSEOConfig(formationKey: string): SEOConfig {
 
 // Configuration pour le sitemap
 export const SITEMAP_CONFIG = {
-  baseUrl: 'https://dlsolutions.com',
+  baseUrl: 'https://daveandlucesolutions.com',
   pages: Object.keys(SEO_CONFIGS),
   formations: Object.keys(FORMATION_SEO_CONFIGS),
   priority: {

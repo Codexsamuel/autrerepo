@@ -1,20 +1,44 @@
-version: '3.8'
-
+version: "3.8"
 services:
-  dl-solutions-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  sentinel:
+    build: .
+    container_name: sentinel_zero_ai
+    ports:
+      - "8080:8080"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+      - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
+      - VECTOR_DB_PATH=./vectors
+      - NODE_ENV=production
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    restart: always
+    networks:
+      - sentinel_net
+    security_opt:
+      - no-new-privileges:true
+
+  novacore-dashboard:
+    build: ./frontend
+    container_name: novacore_dashboard
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=production
-      - NEXT_TELEMETRY_DISABLED=1
-    restart: unless-stopped
-    container_name: dl-solutions-nextjs
+      - NEXT_PUBLIC_API_URL=http://sentinel:8080
+      - NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_KEY}
+    depends_on:
+      - sentinel
+    restart: always
     networks:
-      - dl-solutions-network
+      - sentinel_net
 
 networks:
-  dl-solutions-network:
-    driver: bridge 
+  sentinel_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

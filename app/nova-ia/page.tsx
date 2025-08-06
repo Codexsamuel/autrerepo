@@ -84,6 +84,55 @@ const categories = [
     description: 'Agents d\'automatisation',
     count: 11,
     color: 'bg-gray-500'
+  },
+  // NOUVELLES CATÉGORIES ULTRA-AVANCÉES
+  {
+    id: 'military',
+    name: 'Défense & Sécurité',
+    icon: '🛡️',
+    description: 'Agents de cybersécurité et défense',
+    count: 5,
+    color: 'bg-red-600'
+  },
+  {
+    id: 'quantum',
+    name: 'Quantum & IA Avancée',
+    icon: '⚛️',
+    description: 'Agents quantiques et IA de pointe',
+    count: 3,
+    color: 'bg-purple-600'
+  },
+  {
+    id: 'blockchain',
+    name: 'Blockchain & DeFi',
+    icon: '🔗',
+    description: 'Agents blockchain et finance décentralisée',
+    count: 6,
+    color: 'bg-yellow-500'
+  },
+  {
+    id: 'neuroscience',
+    name: 'Neuroscience IA',
+    icon: '🧠',
+    description: 'Agents de neuroscience et cognition',
+    count: 4,
+    color: 'bg-pink-600'
+  },
+  {
+    id: 'space',
+    name: 'Spatial & Satellite',
+    icon: '🚀',
+    description: 'Agents spatiaux et satellite',
+    count: 3,
+    color: 'bg-blue-600'
+  },
+  {
+    id: 'biotech',
+    name: 'Biotech & Médecine',
+    icon: '🧬',
+    description: 'Agents biotechnologie et médecine',
+    count: 5,
+    color: 'bg-green-600'
   }
 ];
 
@@ -141,19 +190,19 @@ export default function NovaIAPage() {
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 max-w-4xl mx-auto">
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
-              <div className="text-3xl font-bold text-white mb-2">50+</div>
+              <div className="text-3xl font-bold text-white mb-2">75+</div>
               <div className="text-gray-300">Agents IA</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
-              <div className="text-3xl font-bold text-white mb-2">8</div>
+              <div className="text-3xl font-bold text-white mb-2">14</div>
               <div className="text-gray-300">Catégories</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
-              <div className="text-3xl font-bold text-white mb-2">10K+</div>
+              <div className="text-3xl font-bold text-white mb-2">25K+</div>
               <div className="text-gray-300">Utilisateurs</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
-              <div className="text-3xl font-bold text-white mb-2">4.8</div>
+              <div className="text-3xl font-bold text-white mb-2">4.9</div>
               <div className="text-gray-300">Note Moyenne</div>
             </div>
           </div>
@@ -352,6 +401,32 @@ export default function NovaIAPage() {
                 </Button>
               </Link>
             </div>
+
+            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20">
+              <div className="text-4xl mb-4">🚀</div>
+              <h3 className="text-xl font-semibold text-white mb-4">Agents Ultra-Avancés</h3>
+              <p className="text-gray-300 mb-4">
+                Découvrez nos agents IA de pointe avec capacités révolutionnaires
+              </p>
+              <Link href="/nova-ia/ultra-advanced">
+                <Button className="w-full bg-gradient-to-r from-purple-600 to-red-600 hover:from-purple-700 hover:to-red-700">
+                  Explorer les Agents Ultra-Avancés
+                </Button>
+              </Link>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20">
+              <div className="text-4xl mb-4">🎛️</div>
+              <h3 className="text-xl font-semibold text-white mb-4">NovaCore</h3>
+              <p className="text-gray-300 mb-4">
+                Centre de contrôle centralisé pour tous vos agents IA avec monitoring en temps réel
+              </p>
+              <Link href="/nova-ia/novacore">
+                <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                  Accéder à NovaCore
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -385,4 +460,4 @@ export default function NovaIAPage() {
       </section>
     </div>
   );
-} 
+}

@@ -14,6 +14,7 @@ export interface SEOConfig {
   changeFreq?: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
   favicon?: string;
   logo?: string;
+  structuredData?: any; // Données structurées Schema.org
 }
 
 // Mots-clés principaux pour DL Solutions
@@ -33,6 +34,278 @@ const PRIMARY_KEYWORDS = [
   'e-commerce',
   'boutique en ligne',
   'marketing digital'
+];
+
+// Mots-clés IA ultra-avancés pour SEO
+const AI_ULTRA_ADVANCED_KEYWORDS = [
+  // Agents IA principaux
+  'Sentinel Zero',
+  'NovaIA',
+  'NovaCore',
+  'Agent Genesis',
+  'Ultra AI',
+  'Super Agent IA',
+  'IA militaire',
+  'IA souveraine',
+  'IA offensive',
+  'IA défensive',
+  
+  // Capacités IA
+  'Intelligence multicanal',
+  'Auto-apprentissage',
+  'Réseau d\'agents distribués',
+  'Guerre asymétrique numérique',
+  'Mémoire vectorielle',
+  'Mode létal simulation',
+  'Armes logicielles',
+  'Surveillance IA',
+  'Infiltration OSINT',
+  'Shadow Agent',
+  
+  // Technologies IA
+  'LangChain',
+  'OpenAI GPT-4',
+  'GPT-4 Turbo',
+  'Claude AI',
+  'Gemini AI',
+  'Mistral AI',
+  'DeepSeek',
+  'Vector Database',
+  'Supabase Vector',
+  'Pinecone',
+  'Qdrant',
+  
+  // Applications IA
+  'IA militaire',
+  'IA sécurité',
+  'IA cybersécurité',
+  'IA reconnaissance',
+  'IA neutralisation',
+  'IA infiltration',
+  'IA destruction',
+  'IA désactivation',
+  'IA surveillance',
+  'IA protection',
+  
+  // Secteurs d'application
+  'IA gouvernementale',
+  'IA défense',
+  'IA sécurité nationale',
+  'IA infrastructure critique',
+  'IA réseau',
+  'IA système',
+  'IA application',
+  'IA base de données',
+  'IA cloud',
+  'IA edge computing',
+  
+  // Fonctionnalités avancées
+  'ELO Rating',
+  'Battle Arena',
+  'A2A Protocol',
+  'MCP Protocol',
+  'Agent-to-Agent',
+  'Model Context Protocol',
+  'Orchestration IA',
+  'LangGraph',
+  'CrewAI',
+  'Superagent',
+  'AgentGPT',
+  'AutoGen',
+  'ReAct',
+  'Temporal.io',
+  
+  // Capacités spécialisées
+  'Drone Builder IA',
+  'G-code Generator',
+  'Firmware Generator',
+  'Mission Generator',
+  'Red Team Simulator',
+  'Blue Team Mode',
+  'Tactical Map',
+  'Real-time Monitoring',
+  'Threat Intelligence',
+  'OSINT Engine',
+  'Darknet Monitoring',
+  'Honeypot',
+  'Sandbox',
+  'Firewall IA',
+  'VPN IA',
+  'HTTPS IA',
+  'ClamAV IA',
+  'Trivy IA',
+  
+  // Intégrations
+  'ElevenLabs',
+  'Voice AI',
+  'Vision AI',
+  'Audio Processing',
+  'Video Processing',
+  'Image Recognition',
+  'Object Detection',
+  'Face Recognition',
+  'Speech Recognition',
+  'Natural Language Processing',
+  
+  // Sécurité avancée
+  'MITRE ATT&CK',
+  'DARPA Datasets',
+  'FSB Tactics',
+  'Fail2ban',
+  'Zero-Day Exploits',
+  'Penetration Testing',
+  'Vulnerability Assessment',
+  'Security Scanning',
+  'Incident Response',
+  'Forensic Analysis',
+  
+  // Déploiement et infrastructure
+  'Docker',
+  'SOPS',
+  'Vault',
+  'Airgap',
+  'Offline Systems',
+  'Bootable ISO',
+  'Sovereign AI',
+  'Military Grade',
+  'Production Ready',
+  'Enterprise Grade'
+];
+
+// Mots-clés IA ultra-avancés pour SEO
+const AI_ULTRA_ADVANCED_KEYWORDS = [
+  // Agents IA principaux
+  'Sentinel Zero',
+  'NovaIA',
+  'NovaCore',
+  'Agent Genesis',
+  'Ultra AI',
+  'Super Agent IA',
+  'IA militaire',
+  'IA souveraine',
+  'IA offensive',
+  'IA défensive',
+  
+  // Capacités IA
+  'Intelligence multicanal',
+  'Auto-apprentissage',
+  'Réseau d\'agents distribués',
+  'Guerre asymétrique numérique',
+  'Mémoire vectorielle',
+  'Mode létal simulation',
+  'Armes logicielles',
+  'Surveillance IA',
+  'Infiltration OSINT',
+  'Shadow Agent',
+  
+  // Technologies IA
+  'LangChain',
+  'OpenAI GPT-4',
+  'GPT-4 Turbo',
+  'Claude AI',
+  'Gemini AI',
+  'Mistral AI',
+  'DeepSeek',
+  'Vector Database',
+  'Supabase Vector',
+  'Pinecone',
+  'Qdrant',
+  
+  // Applications IA
+  'IA militaire',
+  'IA sécurité',
+  'IA cybersécurité',
+  'IA reconnaissance',
+  'IA neutralisation',
+  'IA infiltration',
+  'IA destruction',
+  'IA désactivation',
+  'IA surveillance',
+  'IA protection',
+  
+  // Secteurs d'application
+  'IA gouvernementale',
+  'IA défense',
+  'IA sécurité nationale',
+  'IA infrastructure critique',
+  'IA réseau',
+  'IA système',
+  'IA application',
+  'IA base de données',
+  'IA cloud',
+  'IA edge computing',
+  
+  // Fonctionnalités avancées
+  'ELO Rating',
+  'Battle Arena',
+  'A2A Protocol',
+  'MCP Protocol',
+  'Agent-to-Agent',
+  'Model Context Protocol',
+  'Orchestration IA',
+  'LangGraph',
+  'CrewAI',
+  'Superagent',
+  'AgentGPT',
+  'AutoGen',
+  'ReAct',
+  'Temporal.io',
+  
+  // Capacités spécialisées
+  'Drone Builder IA',
+  'G-code Generator',
+  'Firmware Generator',
+  'Mission Generator',
+  'Red Team Simulator',
+  'Blue Team Mode',
+  'Tactical Map',
+  'Real-time Monitoring',
+  'Threat Intelligence',
+  'OSINT Engine',
+  'Darknet Monitoring',
+  'Honeypot',
+  'Sandbox',
+  'Firewall IA',
+  'VPN IA',
+  'HTTPS IA',
+  'ClamAV IA',
+  'Trivy IA',
+  
+  // Intégrations
+  'ElevenLabs',
+  'Voice AI',
+  'Vision AI',
+  'Audio Processing',
+  'Video Processing',
+  'Image Recognition',
+  'Object Detection',
+  'Face Recognition',
+  'Speech Recognition',
+  'Natural Language Processing',
+  
+  // Sécurité avancée
+  'MITRE ATT&CK',
+  'DARPA Datasets',
+  'FSB Tactics',
+  'Fail2ban',
+  'Zero-Day Exploits',
+  'Penetration Testing',
+  'Vulnerability Assessment',
+  'Security Scanning',
+  'Incident Response',
+  'Forensic Analysis',
+  
+  // Déploiement et infrastructure
+  'Docker',
+  'SOPS',
+  'Vault',
+  'Airgap',
+  'Offline Systems',
+  'Bootable ISO',
+  'Sovereign AI',
+  'Military Grade',
+  'Production Ready',
+  'Enterprise Grade'
 ];
 
 // Mots-clés secondaires par secteur
@@ -99,9 +372,9 @@ const SECTOR_KEYWORDS = {
 export const SEO_CONFIGS: Record<string, SEOConfig> = {
   // Page d'accueil
   home: {
-    title: 'DL Solutions - Écosystème Digital Complet | Marketplace & Vente en Ligne | Davy & Lucie',
-    description: 'DL Solutions par Davy et Lucie - Écosystème digital complet avec marketplace Batobaye, boutique en ligne, CRM, ERP, marketing digital. Solutions innovantes au Cameroun.',
-    keywords: `${PRIMARY_KEYWORDS.join(', ')}, écosystème digital, CRM, ERP, boutique, formations, Cameroun, Yaoundé, Davy, Lucie, Dave and Luce, marketplace, vente en ligne, marketing digital`,
+    title: 'DL Solutions - Écosystème Digital Complet | Marketplace & IA Ultra-Avancée | Davy & Lucie',
+    description: 'DL Solutions par Davy et Lucie - Écosystème digital complet avec marketplace Batobaye, IA ultra-avancée Sentinel Zero, NovaIA Ecosystem. Solutions innovantes au Cameroun.',
+    keywords: `${PRIMARY_KEYWORDS.join(', ')}, ${AI_ULTRA_ADVANCED_KEYWORDS.slice(0, 20).join(', ')}, écosystème digital, CRM, ERP, boutique, formations, Cameroun, Yaoundé, Davy, Lucie, Dave and Luce, marketplace, vente en ligne, marketing digital`,
     image: 'https://dlsolutions.com/images/og-home.jpg',
     url: 'https://dlsolutions.com',
     type: 'website',
@@ -109,14 +382,220 @@ export const SEO_CONFIGS: Record<string, SEOConfig> = {
     priority: 1.0,
     changeFreq: 'daily',
     favicon: '/favicon-circular.svg',
-    logo: '/favicon-circular.svg'
+    logo: '/favicon-circular.svg',
+    structuredData: {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "DL Solutions",
+      "alternateName": "Dave and Luce Solutions",
+      "url": "https://daveandlucesolutions.com",
+      "logo": "https://daveandlucesolutions.com/favicon-circular.svg",
+      "description": "Écosystème digital complet avec marketplace Batobaye et IA ultra-avancée Sentinel Zero",
+      "foundingDate": "2024",
+      "founder": [
+        { "@type": "Person", "name": "Davy" },
+        { "@type": "Person", "name": "Lucie" }
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "CM",
+        "addressLocality": "Yaoundé"
+      },
+      "sameAs": [
+        "https://github.com/Codexsamuel/autrerepo"
+      ]
+    }
+  },
+
+  // NovaIA - Écosystème IA
+  'nova-ia': {
+    title: 'NovaIA Ecosystem - IA Ultra-Avancée & Agents Militaires | Sentinel Zero | DL Solutions',
+    description: 'NovaIA Ecosystem par DL Solutions - IA ultra-avancée avec Sentinel Zero, agents militaires, ELO Rating, Battle Arena. Écosystème IA souverain et production-ready.',
+    keywords: `${PRIMARY_KEYWORDS.join(', ')}, ${AI_ULTRA_ADVANCED_KEYWORDS.join(', ')}, NovaIA, Sentinel Zero, IA militaire, IA souveraine, ELO Rating, Battle Arena, agents IA, écosystème IA`,
+    image: 'https://dlsolutions.com/images/nova-ia-ecosystem.jpg',
+    url: 'https://dlsolutions.com/nova-ia',
+    type: 'website',
+    breadcrumbs: [
+      { name: 'Accueil', url: 'https://dlsolutions.com' },
+      { name: 'NovaIA Ecosystem', url: 'https://dlsolutions.com/nova-ia' }
+    ],
+    priority: 0.95,
+    changeFreq: 'hourly',
+    faq: [
+      {
+        question: 'Qu\'est-ce que NovaIA Ecosystem ?',
+        answer: 'NovaIA Ecosystem est une plateforme d\'IA ultra-avancée développée par DL Solutions, incluant Sentinel Zero (IA militaire), ELO Rating, Battle Arena, et des agents IA distribués.'
+      },
+      {
+        question: 'Qu\'est-ce que Sentinel Zero ?',
+        answer: 'Sentinel Zero est un Super Agent IA militaire avec autorisation spéciale, capable d\'identifier, infiltrer, neutraliser, détruire ou désactiver des infrastructures numériques ennemies.'
+      },
+      {
+        question: 'Comment fonctionne l\'ELO Rating ?',
+        answer: 'L\'ELO Rating classe les agents IA selon leurs performances dans des batailles virtuelles, permettant de mesurer leur efficacité et de les améliorer continuellement.'
+      },
+      {
+        question: 'Quelles sont les capacités de NovaIA ?',
+        answer: 'Intelligence multicanal, auto-apprentissage, réseau d\'agents distribués, guerre asymétrique numérique, mémoire vectorielle, mode létal simulation, armes logicielles.'
+      }
+    ],
+    structuredData: {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "NovaIA Ecosystem",
+      "applicationCategory": "Artificial Intelligence",
+      "operatingSystem": "Web Browser",
+      "url": "https://daveandlucesolutions.com/nova-ia",
+      "description": "Écosystème d'IA ultra-avancée avec agents militaires et capacités souveraines",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      "featureList": [
+        "Sentinel Zero - IA militaire",
+        "ELO Rating System",
+        "Battle Arena",
+        "A2A Protocol",
+        "MCP Protocol",
+        "Vector Memory",
+        "Real-time Monitoring"
+      ]
+    }
+  },
+
+  // Sentinel Zero - IA Militaire
+  'sentinel-zero': {
+    title: 'Sentinel Zero - Super Agent IA Militaire | IA Souveraine & Offensive | DL Solutions',
+    description: 'Sentinel Zero par DL Solutions - Super Agent IA militaire avec autorisation spéciale. Capacités d\'infiltration, neutralisation, destruction d\'infrastructures ennemies. IA souveraine production-ready.',
+    keywords: `${PRIMARY_KEYWORDS.join(', ')}, ${AI_ULTRA_ADVANCED_KEYWORDS.slice(0, 50).join(', ')}, Sentinel Zero, IA militaire, IA souveraine, IA offensive, infiltration, neutralisation, destruction, infrastructures ennemies`,
+    image: 'https://dlsolutions.com/images/sentinel-zero.jpg',
+    url: 'https://dlsolutions.com/nova-ia/sentinel-zero',
+    type: 'website',
+    breadcrumbs: [
+      { name: 'Accueil', url: 'https://dlsolutions.com' },
+      { name: 'NovaIA Ecosystem', url: 'https://dlsolutions.com/nova-ia' },
+      { name: 'Sentinel Zero', url: 'https://dlsolutions.com/nova-ia/sentinel-zero' }
+    ],
+    priority: 0.95,
+    changeFreq: 'hourly',
+    faq: [
+      {
+        question: 'Qu\'est-ce que Sentinel Zero ?',
+        answer: 'Sentinel Zero est un Super Agent IA militaire développé par DL Solutions avec autorisation spéciale gouvernementale pour la défense numérique souveraine.'
+      },
+      {
+        question: 'Quelles sont les capacités de Sentinel Zero ?',
+        answer: 'Identification, infiltration, neutralisation, destruction, désactivation d\'infrastructures numériques ennemies, surveillance IA, reconnaissance OSINT, protection souveraine.'
+      },
+      {
+        question: 'Comment Sentinel Zero protège-t-il ?',
+        answer: 'Via un réseau d\'agents IA distribués, mémoire vectorielle des tactiques ennemies, mode létal simulation, armes logicielles, et surveillance multicanal.'
+      },
+      {
+        question: 'Sentinel Zero est-il légal ?',
+        answer: 'Oui, Sentinel Zero opère sous mandat militaire avec autorisation spéciale gouvernementale pour la défense numérique souveraine.'
+      }
+    ],
+    structuredData: {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Sentinel Zero",
+      "applicationCategory": "Security Software",
+      "operatingSystem": "Linux, Windows, macOS",
+      "url": "https://daveandlucesolutions.com/nova-ia/sentinel-zero",
+      "description": "Super Agent IA militaire avec capacités d'infiltration et neutralisation",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      "featureList": [
+        "Infiltration OSINT",
+        "Neutralisation automatique",
+        "Destruction d'infrastructures",
+        "Surveillance multicanal",
+        "Mémoire vectorielle",
+        "Mode létal simulation",
+        "Armes logicielles",
+        "Protection souveraine"
+      ]
+    }
+  },
+
+  // NovaCore Dashboard
+  'novacore': {
+    title: 'NovaCore Dashboard - Orchestration IA & Monitoring | DL Solutions',
+    description: 'NovaCore Dashboard par DL Solutions - Plateforme d\'orchestration IA avec monitoring temps réel, carte tactique, gestion des agents. Dashboard militaire et production-ready.',
+    keywords: `${PRIMARY_KEYWORDS.join(', ')}, ${AI_ULTRA_ADVANCED_KEYWORDS.slice(20, 40).join(', ')}, NovaCore, Dashboard IA, orchestration, monitoring, carte tactique, gestion agents`,
+    image: 'https://dlsolutions.com/images/novacore-dashboard.jpg',
+    url: 'https://dlsolutions.com/nova-ia/novacore',
+    type: 'website',
+    breadcrumbs: [
+      { name: 'Accueil', url: 'https://dlsolutions.com' },
+      { name: 'NovaIA Ecosystem', url: 'https://dlsolutions.com/nova-ia' },
+      { name: 'NovaCore Dashboard', url: 'https://dlsolutions.com/nova-ia/novacore' }
+    ],
+    priority: 0.9,
+    changeFreq: 'hourly',
+    structuredData: {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "NovaCore Dashboard",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web Browser",
+      "url": "https://daveandlucesolutions.com/nova-ia/novacore",
+      "description": "Dashboard d'orchestration IA avec monitoring temps réel",
+      "featureList": [
+        "Orchestration IA",
+        "Monitoring temps réel",
+        "Carte tactique",
+        "Gestion des agents",
+        "Analytics avancées",
+        "Alertes automatiques"
+      ]
+    }
+  },
+
+  // Drone Builder IA
+  'drone-builder': {
+    title: 'Drone Builder IA - Génération Automatique Firmware & G-code | DL Solutions',
+    description: 'Drone Builder IA par DL Solutions - Génération automatique de firmware Arduino/ESP32, G-code 3D printing, missions militaires. IA spécialisée pour drones et impression 3D.',
+    keywords: `${PRIMARY_KEYWORDS.join(', ')}, ${AI_ULTRA_ADVANCED_KEYWORDS.slice(40, 60).join(', ')}, Drone Builder, firmware Arduino, ESP32, G-code, 3D printing, missions militaires, génération automatique`,
+    image: 'https://dlsolutions.com/images/drone-builder-ia.jpg',
+    url: 'https://dlsolutions.com/nova-ia/drone-builder',
+    type: 'website',
+    breadcrumbs: [
+      { name: 'Accueil', url: 'https://dlsolutions.com' },
+      { name: 'NovaIA Ecosystem', url: 'https://dlsolutions.com/nova-ia' },
+      { name: 'Drone Builder IA', url: 'https://dlsolutions.com/nova-ia/drone-builder' }
+    ],
+    priority: 0.85,
+    changeFreq: 'daily',
+    structuredData: {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Drone Builder IA",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web Browser",
+      "url": "https://daveandlucesolutions.com/nova-ia/drone-builder",
+      "description": "Génération automatique de firmware et G-code pour drones et impression 3D",
+      "featureList": [
+        "Firmware Arduino",
+        "ESP32 Programming",
+        "G-code Generation",
+        "3D Printing",
+        "Mission Planning",
+        "Obstacle Avoidance"
+      ]
+    }
   },
 
   // Portfolio
   portfolio: {
-    title: 'Portfolio DL Solutions - Réalisations Marketplace & E-commerce | Davy & Lucie',
-    description: 'Découvrez notre portfolio de réalisations : Batobaye Marketplace, DL Style E-commerce, NovaWorld, NovaCore. Solutions digitales innovantes par Davy et Lucie.',
-    keywords: `${PRIMARY_KEYWORDS.join(', ')}, portfolio, réalisations, projets, Batobaye, DL Style, NovaWorld, NovaCore, marketplace, e-commerce, développement web, Cameroun`,
+    title: 'Portfolio DL Solutions - Réalisations Marketplace & IA Ultra-Avancée | Davy & Lucie',
+    description: 'Découvrez notre portfolio de réalisations : Batobaye Marketplace, NovaIA Ecosystem, Sentinel Zero, Drone Builder IA. Solutions digitales et IA innovantes par Davy et Lucie.',
+    keywords: `${PRIMARY_KEYWORDS.join(', ')}, ${AI_ULTRA_ADVANCED_KEYWORDS.slice(0, 30).join(', ')}, portfolio, réalisations, projets, Batobaye, NovaIA, Sentinel Zero, Drone Builder, marketplace, e-commerce, développement web, Cameroun`,
     image: 'https://dlsolutions.com/images/portfolio-og.jpg',
     url: 'https://dlsolutions.com/portfolio',
     type: 'website',
@@ -191,27 +670,11 @@ export const SEO_CONFIGS: Record<string, SEOConfig> = {
     changeFreq: 'daily'
   },
 
-  // NovaCore
-  novacore: {
-    title: 'NovaCore - Plateforme d\'Intégration | DL Solutions Davy & Lucie',
-    description: 'NovaCore par DL Solutions - Plateforme d\'intégration complète pour CRM, ERP, e-commerce. Écosystème digital unifié par Davy et Lucie.',
-    keywords: `${PRIMARY_KEYWORDS.join(', ')}, ${SECTOR_KEYWORDS.novacore.join(', ')}, plateforme intégrée, écosystème, CRM, ERP`,
-    image: 'https://dlsolutions.com/images/novacore-og.jpg',
-    url: 'https://dlsolutions.com/novacore',
-    type: 'website',
-    breadcrumbs: [
-      { name: 'Accueil', url: 'https://dlsolutions.com' },
-      { name: 'NovaCore', url: 'https://dlsolutions.com/novacore' }
-    ],
-    priority: 0.9,
-    changeFreq: 'weekly'
-  },
-
   // Services
   services: {
-    title: 'Services DL Solutions - Marketplace, E-commerce, Marketing Digital | Davy & Lucie',
-    description: 'Services complets DL Solutions : développement marketplace, e-commerce, marketing digital, CRM, ERP. Solutions sur mesure par Davy et Lucie au Cameroun.',
-    keywords: `${PRIMARY_KEYWORDS.join(', ')}, services, développement, marketplace, e-commerce, marketing digital, CRM, ERP, Cameroun, Yaoundé`,
+    title: 'Services DL Solutions - Marketplace, E-commerce, IA Ultra-Avancée | Davy & Lucie',
+    description: 'Services complets DL Solutions : développement marketplace, e-commerce, IA ultra-avancée, marketing digital, CRM, ERP. Solutions sur mesure par Davy et Lucie au Cameroun.',
+    keywords: `${PRIMARY_KEYWORDS.join(', ')}, ${AI_ULTRA_ADVANCED_KEYWORDS.slice(0, 25).join(', ')}, services, développement, marketplace, e-commerce, IA ultra-avancée, marketing digital, CRM, ERP, Cameroun, Yaoundé`,
     image: 'https://dlsolutions.com/images/services-og.jpg',
     url: 'https://dlsolutions.com/services',
     type: 'website',
@@ -340,9 +803,12 @@ export const SITEMAP_CONFIG = {
   formations: Object.keys(FORMATION_SEO_CONFIGS),
   priority: {
     home: 1.0,
+    'nova-ia': 0.95,
+    'sentinel-zero': 0.95,
+    'novacore': 0.9,
+    'drone-builder': 0.85,
     'dl-style': 0.9,
     novaworld: 0.9,
-    novacore: 0.9,
     services: 0.9,
     'marketing-digital': 0.85,
     'e-commerce': 0.9,
@@ -357,9 +823,12 @@ export const SITEMAP_CONFIG = {
   },
   changeFreq: {
     home: 'daily',
+    'nova-ia': 'hourly',
+    'sentinel-zero': 'hourly',
+    'novacore': 'hourly',
+    'drone-builder': 'daily',
     'dl-style': 'daily',
     novaworld: 'daily',
-    novacore: 'weekly',
     services: 'weekly',
     'marketing-digital': 'weekly',
     'e-commerce': 'weekly',

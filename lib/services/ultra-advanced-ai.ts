@@ -82,7 +82,7 @@ export const ULTRA_ADVANCED_AGENTS: UltraAdvancedAgent[] = [
               successRate: 96.2,
               energyEfficiency: 88,
               scalability: 92,
-              networkLatency: 5
+              networkLatency: 4.2
             }
   },
   {
@@ -108,7 +108,7 @@ export const ULTRA_ADVANCED_AGENTS: UltraAdvancedAgent[] = [
               successRate: 94.8,
               energyEfficiency: 92,
               scalability: 89,
-              networkLatency: 4
+              networkLatency: 2.8
             }
   },
   {
@@ -134,7 +134,7 @@ export const ULTRA_ADVANCED_AGENTS: UltraAdvancedAgent[] = [
               successRate: 92.1,
               energyEfficiency: 97,
               scalability: 96,
-              networkLatency: 2
+              networkLatency: 5.1
             }
   },
   {
@@ -159,7 +159,8 @@ export const ULTRA_ADVANCED_AGENTS: UltraAdvancedAgent[] = [
       responseTime: 1.2,
       successRate: 95.3,
       energyEfficiency: 90,
-      scalability: 94
+      scalability: 94,
+      networkLatency: 3.5
     }
   },
   {
@@ -184,7 +185,8 @@ export const ULTRA_ADVANCED_AGENTS: UltraAdvancedAgent[] = [
       responseTime: 3.2,
       successRate: 93.7,
       energyEfficiency: 85,
-      scalability: 87
+      scalability: 87,
+      networkLatency: 6.3
     }
   }
 ];

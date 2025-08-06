@@ -4,7 +4,7 @@ import { NovaAISelector } from '@/components/ui/NovaAISelector';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Brain, Zap, Star, Users, TrendingUp, Globe, Shield, Rocket, Target, Award, Crown, Sparkles } from 'lucide-react';
+import { Brain, Zap, Star, Users, TrendingUp, Globe, Shield, Rocket, Target, Award, Crown, Sparkles, Github, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
@@ -164,6 +164,13 @@ export default function NovaIAPage() {
                 <Globe className="mr-2 h-5 w-5" />
                 Explorer le Marketplace
                 <Sparkles className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+            <Link href="/nova-ia/agent-genesis">
+              <Button size="lg" className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700">
+                <Github className="mr-2 h-5 w-5" />
+                AgentGenesis
+                <ExternalLink className="ml-2 h-4 w-4" />
               </Button>
             </Link>
             <Link href="/nova-ia/battle">

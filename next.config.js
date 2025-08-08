@@ -1,5 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Configuration hybride : Frontend Netlify + Backend Vercel
+  // output: 'export', // Commenté pour permettre les API routes
+  trailingSlash: true,
+  images: {
+    unoptimized: true,
+  },
+  
   // Désactiver ESLint et TypeScript pendant le build de production
   eslint: {
     ignoreDuringBuilds: process.env.NODE_ENV === 'production',
@@ -53,47 +60,8 @@ const nextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   
-  // Configuration pour le SEO
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-        ],
-      },
-    ];
-  },
-  
-  // Configuration des redirections
-  async redirects() {
-    return [
-      {
-        source: '/home',
-        destination: '/',
-        permanent: true,
-      },
-    ];
-  },
-  
-  // Configuration pour Vercel
-  trailingSlash: false,
-  compress: true,
+  // Configuration pour Netlify - Export statique
+  trailingSlash: true,
   
   // Configuration webpack pour optimiser le build
   webpack: (config, { isServer, dev }) => {

@@ -1,0 +1,3 @@
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+const PRIMARY_DOMAIN = 'daveandlucesolutions.com'; const BACKUP_DOMAIN = 'dlsolutionssarl.tech'; export function middleware(request: NextRequest) { const hostname = request.headers.get('host') || ''; const url = request.nextUrl.clone(); if (hostname.includes(PRIMARY_DOMAIN) || hostname.includes(BACKUP_DOMAIN)) { if (hostname.includes(PRIMARY_DOMAIN)) { url.hostname = BACKUP_DOMAIN; url.protocol = 'https:'; return NextResponse.redirect(url, 302); } if (hostname.includes(BACKUP_DOMAIN)) { url.hostname = PRIMARY_DOMAIN; url.protocol = 'https:'; return NextResponse.redirect(url, 302); } } return NextResponse.next(); }

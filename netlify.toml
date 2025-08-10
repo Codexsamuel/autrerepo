@@ -10,10 +10,24 @@
   NPM_CONFIG_PRODUCTION = "false"
   NETLIFY = "true"
   NEXT_PUBLIC_NETLIFY = "true"
+  # Optimisations pour la performance
+  NEXT_TELEMETRY_DISABLED = "1"
+  NODE_ENV = "production"
 
 # Configuration des timeouts
 [build.timeout]
   build = 900
   functions = 900
+
+# Configuration des plugins
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Configuration des redirections (si nécessaire)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  conditions = {Role = ["admin"]}
 
  

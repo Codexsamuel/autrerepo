@@ -21,6 +21,12 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') {
+      setLoading(false);
+      return;
+    }
+    
     const token = localStorage.getItem('auth_token');
     const userData = localStorage.getItem('user_data');
     if (token && userData) {
@@ -51,8 +57,13 @@ export function useAuth() {
         };
         
         setUser(user);
-        localStorage.setItem('auth_token', btoa(`${user.id}:${Date.now()}:${user.email}`));
-        localStorage.setItem('user_data', JSON.stringify(user));
+        
+        // Only use localStorage on client side
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('auth_token', btoa(`${user.id}:${Date.now()}:${user.email}`));
+          localStorage.setItem('user_data', JSON.stringify(user));
+        }
+        
         return { success: true };
       }
 
@@ -72,8 +83,13 @@ export function useAuth() {
           name: data.user.name,
           role: data.user.role || 'user',
         });
-        localStorage.setItem('auth_token', data.token);
-        localStorage.setItem('user_data', JSON.stringify(data.user));
+        
+        // Only use localStorage on client side
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('auth_token', data.token);
+          localStorage.setItem('user_data', JSON.stringify(data.user));
+        }
+        
         return { success: true };
       } else {
         return { success: false, error: data.error || 'Email ou mot de passe incorrect' };
@@ -100,8 +116,13 @@ export function useAuth() {
           name: data.user.name,
           role: data.user.role || 'user',
         });
-        localStorage.setItem('auth_token', data.token);
-        localStorage.setItem('user_data', JSON.stringify(data.user));
+        
+        // Only use localStorage on client side
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('auth_token', data.token);
+          localStorage.setItem('user_data', JSON.stringify(data.user));
+        }
+        
         return { success: true };
       } else {
         return { success: false, error: data.error || 'Erreur d\'inscription' };
@@ -113,8 +134,12 @@ export function useAuth() {
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('user_data');
+    
+    // Only use localStorage on client side
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_data');
+    }
   };
 
   return {

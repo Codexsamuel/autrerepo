@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
+import { ClientOnly } from '@/lib/client-only';
 
 interface CacheStatus {
   isInstalled: boolean;
@@ -9,17 +11,24 @@ interface CacheStatus {
   lastUpdated: Date;
 }
 
-export default function CacheOptimizer() {
+function CacheOptimizerComponent() {
   const [cacheStatus, setCacheStatus] = useState<CacheStatus>({
     isInstalled: false,
-    isOnline: navigator.onLine,
+    isOnline: false,
     cacheSize: 0,
     lastUpdated: new Date(),
   });
 
   const [isOptimizing, setIsOptimizing] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    // Ensure we're on the client side
+    setIsClient(true);
+    
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+
     // Vérifier si le service worker est installé
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.ready.then((registration) => {
@@ -36,6 +45,9 @@ export default function CacheOptimizer() {
 
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
+
+    // Set initial online status
+    setCacheStatus(prev => ({ ...prev, isOnline: navigator.onLine }));
 
     // Calculer la taille du cache
     if ('caches' in window) {
@@ -70,6 +82,8 @@ export default function CacheOptimizer() {
   }, []);
 
   const optimizeCache = async () => {
+    if (typeof window === 'undefined') return;
+    
     setIsOptimizing(true);
 
     try {
@@ -137,6 +151,8 @@ export default function CacheOptimizer() {
   };
 
   const clearCache = async () => {
+    if (typeof window === 'undefined') return;
+    
     if ('caches' in window) {
       const cacheNames = await caches.keys();
       await Promise.all(
@@ -158,6 +174,25 @@ export default function CacheOptimizer() {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
+
+  // Don't render until we're on the client
+  if (!isClient) {
+    return (
+      <div className="bg-slate-900 rounded-xl p-6 border border-slate-700">
+        <div className="animate-pulse">
+          <div className="h-6 bg-slate-700 rounded mb-4"></div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="bg-slate-800 rounded-lg p-4">
+                <div className="h-4 bg-slate-700 rounded mb-2"></div>
+                <div className="h-6 bg-slate-700 rounded"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-slate-900 rounded-xl p-6 border border-slate-700">
@@ -236,4 +271,29 @@ export default function CacheOptimizer() {
       </div>
     </div>
   );
-} 
+}
+
+// Export with ClientOnly wrapper to ensure it never runs during SSR
+const CacheOptimizer = () => (
+  <ClientOnly
+    fallback={
+      <div className="bg-slate-900 rounded-xl p-6 border border-slate-700">
+        <div className="animate-pulse">
+          <div className="h-6 bg-slate-700 rounded mb-4"></div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="bg-slate-800 rounded-lg p-4">
+                <div className="h-4 bg-slate-700 rounded mb-2"></div>
+                <div className="h-6 bg-slate-700 rounded"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    }
+  >
+    <CacheOptimizerComponent />
+  </ClientOnly>
+);
+
+export default CacheOptimizer; 

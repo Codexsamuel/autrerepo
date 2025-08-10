@@ -1,13 +1,19 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { Language, getLanguageFromLocale } from '@/lib/i18n/translations';
+import { useEffect, useState } from 'react';
 
 export const useLanguage = () => {
   const [language, setLanguage] = useState<Language>('fr');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') {
+      setIsLoading(false);
+      return;
+    }
+    
     // Détecter la langue depuis localStorage ou le navigateur
     const savedLanguage = localStorage.getItem('dl_language') as Language;
     const browserLanguage = navigator.language.split('-')[0];
@@ -25,15 +31,19 @@ export const useLanguage = () => {
 
   const changeLanguage = (newLanguage: Language) => {
     setLanguage(newLanguage);
-    localStorage.setItem('dl_language', newLanguage);
     
-    // Mettre à jour la direction du texte pour l'arabe
-    if (newLanguage === 'ar') {
-      document.documentElement.dir = 'rtl';
-      document.documentElement.lang = 'ar';
-    } else {
-      document.documentElement.dir = 'ltr';
-      document.documentElement.lang = newLanguage;
+    // Only use localStorage and document on client side
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('dl_language', newLanguage);
+      
+      // Mettre à jour la direction du texte pour l'arabe
+      if (newLanguage === 'ar') {
+        document.documentElement.dir = 'rtl';
+        document.documentElement.lang = 'ar';
+      } else {
+        document.documentElement.dir = 'ltr';
+        document.documentElement.lang = newLanguage;
+      }
     }
   };
 

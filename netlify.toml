@@ -1,5 +1,5 @@
 [build]
-  command = "npm run prebuild:netlify && npm ci && npm run build:netlify && npm run postbuild:netlify"
+  command = "npm run build:netlify:robust"
   publish = ".next"
   functions = "netlify/functions"
 
@@ -13,6 +13,8 @@
   NEXT_TELEMETRY_DISABLED = "1"
   NPM_CONFIG_PRODUCTION = "false"
   NETLIFY = "true"
+  NODE_ENV = "production"
+  NEXT_PUBLIC_NETLIFY = "true"
 
 # Configuration DNS pour les domaines personnalisés
 [[redirects]]

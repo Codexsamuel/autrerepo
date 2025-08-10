@@ -52,6 +52,13 @@ logs
 .netlify
 backend-api/
 
+# Service Worker files (excluded from build to prevent SSR errors)
+public/sw.js
+public/images/sw.js
+public/images/workbox-*.js
+public/workbox-*.js
+temp-sw/
+
 # Subproject build directories
 */frontend/.next/
 */frontend/out/

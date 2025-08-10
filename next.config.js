@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const SelfReferenceFixerPlugin = require('./lib/webpack-plugins/self-reference-fixer');
+
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
@@ -33,6 +35,22 @@ const nextConfig = {
         test: /\.(sw\.js|workbox-.*\.js)$/,
         use: 'ignore-loader'
       });
+      
+      // Ignorer complètement les fichiers service worker
+      config.plugins.push(
+        new (require('webpack').IgnorePlugin)({
+          resourceRegExp: /\.(sw\.js|workbox-.*\.js)$/,
+          contextRegExp: /.*/
+        })
+      );
+      
+      // Ignorer les modules qui utilisent des APIs client-side
+      config.plugins.push(
+        new (require('webpack').IgnorePlugin)({
+          resourceRegExp: /^(localStorage|sessionStorage|navigator|document|window|self|globalThis|global)$/,
+          contextRegExp: /.*/
+        })
+      );
       
       // Gérer les modules qui utilisent 'self' ou 'window' côté serveur
       config.resolve.fallback = {
@@ -134,15 +152,11 @@ const nextConfig = {
           'typeof PaymentHandlerResponse': '"undefined"',
           'typeof PaymentHandlerWindow': '"undefined"',
           'typeof PaymentInstruments': '"undefined"',
-          'typeof PaymentManager': '"undefined"'
-        })
-      );
-      
-      // Plugin pour ignorer les modules problématiques
-      config.plugins.push(
-        new (require('webpack').IgnorePlugin)({
-          resourceRegExp: /^(sw\.js|workbox-.*\.js)$/,
-          contextRegExp: /.*/
+          'typeof PaymentManager': '"undefined"',
+          // Ajouter des fallbacks supplémentaires pour éviter l'erreur 'self'
+          'self': 'undefined',
+          'globalThis': 'undefined',
+          'global': 'undefined'
         })
       );
       
@@ -152,6 +166,18 @@ const nextConfig = {
         'sw.js': 'commonjs sw.js',
         'workbox-*.js': 'commonjs workbox-*.js'
       });
+      
+      // Utiliser le plugin personnalisé pour corriger les références à 'self'
+      config.plugins.push(new SelfReferenceFixerPlugin());
+      
+      // Ajouter un plugin pour ignorer complètement les fichiers service worker
+      config.plugins.push(
+        new (require('webpack').IgnorePlugin)({
+          resourceRegExp: /sw\.js|workbox-.*\.js/,
+          contextRegExp: /.*/
+        })
+      );
+      
     } else {
       // Configuration côté client
       config.resolve.fallback = {

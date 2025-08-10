@@ -11,7 +11,7 @@
     "type-check": "tsc --noEmit",
     "build:vercel": "next build",
     "vercel-build": "mv tsconfig.json tsconfig.json.backup && next build --no-lint && mv tsconfig.json.backup tsconfig.json",
-    "build:netlify": "next build --no-lint",
+    "build:netlify": "next build --no-lint --debug",
     "build:api-only": "next build --no-lint --no-mangling --api-only",
     "build:frontend-only": "mv app/api app/api.disabled && next build --no-lint --no-mangling && mv app/api.disabled app/api",
     "build:core-only": "mv app/admin app/admin.disabled && next build --no-lint --no-mangling && mv app/admin.disabled app/api",
@@ -106,7 +106,7 @@
     "eslint-config-next": "15.3.4"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "18.x"
   },
   "overrides": {
     "undici": "^6.21.0"

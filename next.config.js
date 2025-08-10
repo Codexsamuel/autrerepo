@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    optimizeCss: true,
+    optimizeCss: false,
     optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
   },
   
@@ -36,17 +36,19 @@ const nextConfig = {
       };
     }
     
-    // Optimisation des chunks
-    config.optimization.splitChunks = {
-      chunks: 'all',
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
+    // Optimisation des chunks - désactivée pour Netlify
+    if (process.env.NETLIFY) {
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
         },
-      },
-    };
+      };
+    }
     
     return config;
   },

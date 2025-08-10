@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
+interface Scan {
+  id: string;
+  target: string;
+  status: string;
+  type: string;
+}
+
 const SentinelDashboard: React.FC = () => {
-  const [scans, setScans] = useState([]);
+  const [scans, setScans] = useState<Scan[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

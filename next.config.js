@@ -82,23 +82,106 @@ const nextConfig = {
       return config;
     }
 
-    // Ajouter le plugin SelfReferenceFixer de manière sécurisée
+    // Plugin personnalisé pour éliminer les références à 'self' dans les chunks vendors
     if (!process.env.DISABLE_SELF_REFERENCE_FIXER) {
       try {
-        const SelfReferenceFixerPlugin = require('./lib/webpack-plugins/self-reference-fixer');
-        
-        // Vérifier que le plugin est valide avant de l'ajouter
-        if (SelfReferenceFixerPlugin && typeof SelfReferenceFixerPlugin === 'function') {
-          config.plugins.push(new SelfReferenceFixerPlugin({
-            replaceWith: 'undefined',
-            debug: process.env.DEBUG_SELF_REFERENCE_FIXER === 'true' || process.env.NODE_ENV === 'development'
-          }));
-          console.log('✅ SelfReferenceFixer plugin ajouté avec succès');
-        } else {
-          console.warn('⚠️ SelfReferenceFixer plugin non valide, ignoré');
+        // Plugin inline pour traiter directement les chunks vendors
+        class VendorsSelfReferenceFixer {
+          constructor(options = {}) {
+            this.options = { replaceWith: 'undefined', debug: false, ...options };
+          }
+          
+          apply(compiler) {
+            // Hook pour traiter les chunks après leur génération
+            compiler.hooks.afterEmit.tap('VendorsSelfReferenceFixer', (compilation) => {
+              if (this.options.debug) {
+                console.log('🔧 VendorsSelfReferenceFixer: Traitement des chunks vendors...');
+              }
+              
+              let processedFiles = 0;
+              let totalReplacements = 0;
+              
+              // Traiter tous les fichiers JavaScript générés
+              for (const [filename, asset] of Object.entries(compilation.assets)) {
+                if (filename.endsWith('.js')) {
+                  try {
+                    // Vérifier si l'asset a une méthode source() disponible
+                    if (typeof asset.source === 'function') {
+                      let source = asset.source();
+                      let modified = false;
+                      let replacements = 0;
+                      
+                      // Remplacer toutes les références à 'self' de manière plus agressive
+                      if (source.includes('self')) {
+                        // Compter les remplacements
+                        const beforeCount = (source.match(/\bself\b/g) || []).length;
+                        
+                        // Remplacer 'self' par 'undefined' dans tous les contextes
+                        source = source.replace(/\bself\b/g, this.options.replaceWith);
+                        
+                        const afterCount = (source.match(/\bself\b/g) || []).length;
+                        replacements = beforeCount - afterCount;
+                        
+                        if (replacements > 0) {
+                          modified = true;
+                          totalReplacements += replacements;
+                          
+                          if (this.options.debug) {
+                            console.log(`🔧 VendorsSelfReferenceFixer: Traité ${filename} (${replacements} remplacements)`);
+                          }
+                        }
+                      }
+                      
+                      if (modified) {
+                        compilation.assets[filename] = {
+                          source: () => source,
+                          size: () => source.length,
+                        };
+                        processedFiles++;
+                      }
+                    } else if (this.options.debug) {
+                      console.log(`ℹ️ Asset ${filename} n'a pas de méthode source() disponible`);
+                    }
+                  } catch (error) {
+                    if (this.options.debug) {
+                      console.log(`⚠️ Erreur lors du traitement de ${filename}:`, error.message);
+                    }
+                    // Continuer avec les autres assets
+                  }
+                }
+              }
+              
+              if (this.options.debug) {
+                console.log(`✅ VendorsSelfReferenceFixer: Traitement terminé - ${processedFiles} fichiers traités, ${totalReplacements} remplacements effectués`);
+              }
+            });
+          }
         }
+        
+        // Ajouter le plugin inline
+        config.plugins.push(new VendorsSelfReferenceFixer({
+          replaceWith: 'undefined',
+          debug: process.env.DEBUG_SELF_REFERENCE_FIXER === 'true' || process.env.NODE_ENV === 'development'
+        }));
+        console.log('✅ VendorsSelfReferenceFixer plugin inline ajouté avec succès');
+        
+        // Essayer aussi d'ajouter le plugin original si disponible
+        try {
+          const SelfReferenceFixerPlugin = require('./lib/webpack-plugins/self-reference-fixer');
+          
+          if (SelfReferenceFixerPlugin && typeof SelfReferenceFixerPlugin === 'function') {
+            config.plugins.push(new SelfReferenceFixerPlugin({
+              replaceWith: 'undefined',
+              debug: process.env.DEBUG_SELF_REFERENCE_FIXER === 'true' || process.env.NODE_ENV === 'development'
+            }));
+            console.log('✅ SelfReferenceFixer plugin original ajouté avec succès');
+          }
+        } catch (error) {
+          console.log('ℹ️ Plugin SelfReferenceFixer original non disponible, utilisation du plugin inline uniquement');
+        }
+        
       } catch (error) {
-        console.warn('⚠️ Impossible de charger SelfReferenceFixer plugin:', error.message);
+        console.warn('⚠️ Impossible de charger VendorsSelfReferenceFixer plugin:', error.message);
         // Continuer sans le plugin plutôt que de faire échouer le build
       }
     } else {
@@ -108,31 +191,61 @@ const nextConfig = {
     return config;
   },
   
-  // Configuration des rewrites (seulement pour le développement)
-  async rewrites() {
-    // Désactiver les rewrites en production pour éviter les conflits
-    if (process.env.NODE_ENV === 'production') {
-      return [];
-    }
-    
+  // Configuration des en-têtes de sécurité
+  async headers() {
     return [
       {
-        source: '/api/metaverse-blockchain/:path*',
-        destination: '/api/health',
-      },
-      {
-        source: '/api/intelligence/:path*',
-        destination: '/api/health',
-      },
-      {
-        source: '/api/ai/advanced/:path*',
-        destination: '/api/health',
-      },
-      {
-        source: '/api/ai/chatgpt-42/:path*',
-        destination: '/api/health',
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+        ],
       },
     ];
+  },
+  
+  // Configuration des redirections
+  async redirects() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: '/api/:path*',
+        permanent: false,
+      },
+    ];
+  },
+  
+  // Configuration des rewrites
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: '/api/:path*',
+      },
+    ];
+  },
+  
+  // Configuration des variables d'environnement
+  env: {
+    CUSTOM_KEY: process.env.CUSTOM_KEY,
+  },
+  
+  // Configuration des images
+  images: {
+    domains: ['images.unsplash.com', 'via.placeholder.com'],
+    formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 60,
+    unoptimized: true,
   },
 };
 

@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build:netlify:secure"
+  command = "npm run build:netlify:ultra-secure"
   publish = ".next"
   functions = "netlify/functions"
 

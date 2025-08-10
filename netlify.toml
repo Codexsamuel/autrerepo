@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build:netlify:optimized"
+  command = "npm run build:netlify:secure"
   publish = ".next"
   functions = "netlify/functions"
 
@@ -15,7 +15,6 @@
   NETLIFY = "true"
   NODE_ENV = "production"
   NEXT_PUBLIC_NETLIFY = "1"
-  DISABLE_SELF_REFERENCE_FIXER = "1"
   # Optimisations pour Netlify
   NEXT_SHARP_PATH = "/opt/buildhome/.npm-global/lib/node_modules/sharp"
 

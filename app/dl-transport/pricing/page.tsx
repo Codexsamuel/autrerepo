@@ -205,21 +205,24 @@ export default function PricingPage() {
     const hour = now.getHours();
     const day = now.getDay();
     
-    const factors = [];
+    const factors: PricingFactor[] = [];
     
     // Heures de pointe
     if ((hour >= 7 && hour <= 9) || (hour >= 17 && hour <= 19)) {
-      factors.push(pricingFactors.find(f => f.id === 'peak_hours')!);
+      const factor = pricingFactors.find(f => f.id === 'peak_hours');
+      if (factor) factors.push(factor);
     }
     
     // Course nocturne
     if (hour >= 22 || hour <= 6) {
-      factors.push(pricingFactors.find(f => f.id === 'night_ride')!);
+      const factor = pricingFactors.find(f => f.id === 'night_ride');
+      if (factor) factors.push(factor);
     }
     
     // Weekend
     if (day === 5 || day === 6 || day === 0) {
-      factors.push(pricingFactors.find(f => f.id === 'weekend')!);
+      const factor = pricingFactors.find(f => f.id === 'weekend');
+      if (factor) factors.push(factor);
     }
     
     return factors;

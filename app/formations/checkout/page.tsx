@@ -1,31 +1,23 @@
 "use client";
 
-import { useState } from 'react';
 import { Header } from '@/components/layout/header';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { 
-  CreditCard, 
-  Lock, 
-  Shield, 
-  CheckCircle, 
-  Clock, 
-  Users,
-  Award,
-  Calendar,
-  MapPin,
-  Mail,
-  Phone,
-  User,
-  Building,
-  FileText,
-  ArrowLeft
+import {
+    ArrowLeft,
+    Award,
+    CheckCircle,
+    CreditCard,
+    FileText,
+    Lock,
+    Mail,
+    Shield
 } from 'lucide-react';
 import Link from 'next/link';
+import { useState } from 'react';
 
 export default function CheckoutPage() {
   const [step, setStep] = useState(1);
@@ -82,7 +74,7 @@ export default function CheckoutPage() {
     const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
     const matches = v.match(/\d{4,16}/g);
     const match = matches && matches[0] || '';
-    const parts = [];
+    const parts: string[] = [];
     for (let i = 0, len = match.length; i < len; i += 4) {
       parts.push(match.substring(i, i + 4));
     }

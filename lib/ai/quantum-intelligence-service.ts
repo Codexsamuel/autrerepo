@@ -156,7 +156,7 @@ export class QuantumIntelligenceService {
    * Génération d'états quantiques simulés
    */
   private generateQuantumStates(query: string, classicalData: any): any[] {
-    const states = [];
+    const states: any[] = [];
     const keywords = query.toLowerCase().split(' ');
     
     // Simulation d'états quantiques basés sur les données classiques
@@ -376,9 +376,9 @@ export class QuantumIntelligenceService {
   }
 
   private generateCorrelationMatrix(states: any[]): number[][] {
-    const matrix = [];
+    const matrix: number[][] = [];
     for (let i = 0; i < Math.min(10, states.length); i++) {
-      const row = [];
+      const row: number[] = [];
       for (let j = 0; j < Math.min(10, states.length); j++) {
         row.push(Math.random() * 2 - 1);
       }
@@ -406,7 +406,7 @@ export class QuantumIntelligenceService {
 
   // Méthodes pour les prédictions
   private generateShortTermPredictions(query: string, analysisData: any): any[] {
-    const predictions = [];
+    const predictions: any[] = [];
     for (let i = 1; i <= 7; i++) {
       predictions.push({
         day: i,
@@ -419,7 +419,7 @@ export class QuantumIntelligenceService {
   }
 
   private generateMediumTermPredictions(query: string, analysisData: any): any[] {
-    const predictions = [];
+    const predictions: any[] = [];
     for (let i = 1; i <= 4; i++) {
       predictions.push({
         week: i,
@@ -432,7 +432,7 @@ export class QuantumIntelligenceService {
   }
 
   private generateLongTermPredictions(query: string, analysisData: any): any[] {
-    const predictions = [];
+    const predictions: any[] = [];
     for (let i = 1; i <= 12; i++) {
       predictions.push({
         month: i,
@@ -473,7 +473,7 @@ export class QuantumIntelligenceService {
   }
 
   private generatePricePredictions(query: string, analysisData: any): any[] {
-    const predictions = [];
+    const predictions: any[] = [];
     const basePrice = 100;
     for (let i = 1; i <= 30; i++) {
       const change = (Math.random() - 0.5) * 0.1; // ±5% par jour
@@ -488,7 +488,7 @@ export class QuantumIntelligenceService {
   }
 
   private generateVolumePredictions(query: string, analysisData: any): any[] {
-    const predictions = [];
+    const predictions: any[] = [];
     const baseVolume = 1000000;
     for (let i = 1; i <= 30; i++) {
       predictions.push({

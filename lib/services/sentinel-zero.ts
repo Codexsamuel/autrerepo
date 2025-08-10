@@ -171,7 +171,7 @@ export class SentinelZeroService {
   }
 
   // Surveiller une cible en continu
-  async startContinuousMonitoring(target: string, interval: number = 300000): Promise<void> {
+  async startContinuousMonitoring(target: string, interval: number = 300000): Promise<() => void> {
     try {
       console.log(`Démarrage de la surveillance continue pour ${target}`);
       
@@ -195,10 +195,12 @@ export class SentinelZeroService {
       }, interval);
 
       // Retourner une fonction pour arrêter la surveillance
-      return () => {
+      const stopMonitoring = () => {
         clearInterval(monitor);
         console.log(`Surveillance arrêtée pour ${target}`);
       };
+      
+      return stopMonitoring;
     } catch (error) {
       throw new Error(`Erreur lors du démarrage de la surveillance: ${error}`);
     }
@@ -212,7 +214,6 @@ export class SentinelZeroService {
       headers: {
         'Content-Type': 'application/json',
       },
-      timeout: this.config.timeout,
     };
 
     if (data) {

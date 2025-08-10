@@ -1,24 +1,22 @@
 'use client';
 
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  DollarSign, 
-  TrendingUp, 
-  Eye, 
-  Click, 
-  Settings, 
-  BarChart3, 
-  AlertTriangle,
-  CheckCircle,
-  RefreshCw,
-  Plus,
-  Trash2
+import {
+    BarChart3,
+    CheckCircle,
+    DollarSign,
+    Eye,
+    Plus,
+    RefreshCw,
+    Settings,
+    Trash2,
+    TrendingUp
 } from 'lucide-react';
+import { useState } from 'react';
 
 interface AdSenseData {
   publisherId: string;

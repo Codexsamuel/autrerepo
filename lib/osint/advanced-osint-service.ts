@@ -497,7 +497,7 @@ export class AdvancedOSINTService {
   private getOldestEntry(): any {
     if (this.cache.size === 0) return null;
     
-    let oldest = null;
+    let oldest: any = null;
     let oldestTime = Date.now();
     
     this.cache.forEach((value, key) => {
@@ -514,7 +514,7 @@ export class AdvancedOSINTService {
   private getNewestEntry(): any {
     if (this.cache.size === 0) return null;
     
-    let newest = null;
+    let newest: any = null;
     let newestTime = 0;
     
     this.cache.forEach((value, key) => {

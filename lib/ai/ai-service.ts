@@ -1,5 +1,5 @@
-import OpenAI from 'openai';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import OpenAI from 'openai';
 
 export interface AIPrediction {
   id: string;
@@ -58,15 +58,24 @@ export class AIService {
   };
 
   constructor(apiKey?: string) {
-    this.openaiApiKey = process.env.OPENAI_API_KEY!;
-    this.geminiApiKey = process.env.GEMINI_API_KEY!;
-    this.huggingfaceApiKey = process.env.HUGGINGFACE_API_KEY!;
+    // Configuration avec fallbacks pour le build
+    this.openaiApiKey = process.env.OPENAI_API_KEY || 'placeholder-key';
+    this.geminiApiKey = process.env.GEMINI_API_KEY || 'placeholder-key';
+    this.huggingfaceApiKey = process.env.HUGGINGFACE_API_KEY || 'placeholder-key';
 
-    this.openai = new OpenAI({
-      apiKey: apiKey || this.openaiApiKey,
-    });
+    // Vérifier si les clés API sont valides
+    const isOpenAIConfigured = this.openaiApiKey && this.openaiApiKey !== 'placeholder-key';
+    const isGeminiConfigured = this.geminiApiKey && this.geminiApiKey !== 'placeholder-key';
 
-    this.gemini = new GoogleGenerativeAI(this.geminiApiKey);
+    if (isOpenAIConfigured) {
+      this.openai = new OpenAI({
+        apiKey: apiKey || this.openaiApiKey,
+      });
+    }
+
+    if (isGeminiConfigured) {
+      this.gemini = new GoogleGenerativeAI(this.geminiApiKey);
+    }
   }
 
   // Générer une prédiction avec OpenAI

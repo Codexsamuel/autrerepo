@@ -6,7 +6,14 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholde
 // Créer le client Supabase seulement si les variables sont configurées
 let supabase: any = null;
 
-if (supabaseUrl && supabaseAnonKey && supabaseUrl !== 'https://placeholder.supabase.co' && supabaseAnonKey !== 'placeholder-key') {
+// Vérifier si nous sommes en mode build ou si les variables sont valides
+const isValidConfig = supabaseUrl && 
+                     supabaseAnonKey && 
+                     supabaseUrl !== 'https://placeholder.supabase.co' && 
+                     supabaseAnonKey !== 'placeholder-key' &&
+                     typeof window !== 'undefined'; // Éviter l'erreur pendant le build
+
+if (isValidConfig) {
   try {
     supabase = createClient(supabaseUrl, supabaseAnonKey);
   } catch (error) {

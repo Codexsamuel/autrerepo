@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { createClient } from '@supabase/supabase-js';
+import axios from 'axios';
 
 // Types pour la surveillance immobilière
 export interface PropertyActivity {
@@ -66,10 +66,23 @@ export interface SecurityAlert {
 }
 
 class RealEstateMonitoringService {
-  private supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
+  private supabase: any = null;
+
+  constructor() {
+    // Configuration Supabase avec fallbacks pour le build
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-key';
+    
+    // Vérifier si la configuration est valide
+    const isSupabaseConfigured = supabaseUrl && 
+                                 supabaseKey && 
+                                 supabaseUrl !== 'https://placeholder.supabase.co' && 
+                                 supabaseKey !== 'placeholder-key';
+    
+    if (isSupabaseConfigured) {
+      this.supabase = createClient(supabaseUrl, supabaseKey);
+    }
+  }
 
   // Enregistrer une activité
   async logActivity(activity: Omit<PropertyActivity, 'id' | 'timestamp' | 'riskScore' | 'flagged'>) {

@@ -31,12 +31,36 @@ export class OneWinAPI {
   private session: OneWinSession;
 
   constructor() {
+    // Configuration avec fallbacks pour le build
+    const sessionId = process.env.SESSION_ID_1WIN || 'placeholder-session-id';
+    const token = process.env.TOKEN_1WIN || 'placeholder-token';
+    const thxGuid = process.env.THX_GUID_1WIN || 'placeholder-thx-guid';
+    const tmxGuid = process.env.TMX_GUID_1WIN || 'placeholder-tmx-guid';
+    const jsSessionUser = process.env.HJSESSIONUSER_1WIN || 'placeholder-js-session-user';
+
+    // Vérifier si la configuration est valide
+    const isConfigured = sessionId && 
+                         token && 
+                         thxGuid && 
+                         tmxGuid && 
+                         jsSessionUser &&
+                         sessionId !== 'placeholder-session-id' &&
+                         token !== 'placeholder-token' &&
+                         thxGuid !== 'placeholder-thx-guid' &&
+                         tmxGuid !== 'placeholder-tmx-guid' &&
+                         jsSessionUser !== 'placeholder-js-session-user';
+
+    if (!isConfigured) {
+      console.warn('1WIN API non configurée, service désactivé');
+      return;
+    }
+
     this.session = {
-      sessionId: process.env.SESSION_ID_1WIN!,
-      token: process.env.TOKEN_1WIN!,
-      thxGuid: process.env.THX_GUID_1WIN!,
-      tmxGuid: process.env.TMX_GUID_1WIN!,
-      jsSessionUser: process.env.HJSESSIONUSER_1WIN!,
+      sessionId,
+      token,
+      thxGuid,
+      tmxGuid,
+      jsSessionUser,
     };
 
     this.client = axios.create({

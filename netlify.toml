@@ -1,5 +1,5 @@
 [build]
-  command = "npm ci && npm run build:netlify"
+  command = "npm run prebuild:netlify && npm ci && npm run build:netlify && npm run postbuild:netlify"
   publish = ".next"
   functions = "netlify/functions"
 

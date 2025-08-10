@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { createClient } from '@supabase/supabase-js';
+import axios from 'axios';
 
 // Configuration des APIs des prestataires
 const BOOKING_API_CONFIG = {
@@ -91,10 +91,23 @@ export interface NotificationData {
 }
 
 class BookingIntegrationService {
-  private supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
+  private supabase: any = null;
+
+  constructor() {
+    // Configuration Supabase avec fallbacks pour le build
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-key';
+    
+    // Vérifier si la configuration est valide
+    const isSupabaseConfigured = supabaseUrl && 
+                                 supabaseKey && 
+                                 supabaseUrl !== 'https://placeholder.supabase.co' && 
+                                 supabaseKey !== 'placeholder-key';
+    
+    if (isSupabaseConfigured) {
+      this.supabase = createClient(supabaseUrl, supabaseKey);
+    }
+  }
 
   // Synchronisation avec Booking.com
   async syncBookingCom() {

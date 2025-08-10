@@ -1,8 +1,14 @@
 import { supabase } from '@/lib/supabase/client'
 
-// Configuration Supabase
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+// Configuration Supabase avec fallbacks pour le build
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key'
+
+// Vérifier si la configuration est valide
+const isSupabaseConfigured = supabaseUrl && 
+                             supabaseAnonKey && 
+                             supabaseUrl !== 'https://placeholder.supabase.co' && 
+                             supabaseAnonKey !== 'placeholder-key'
 
 // Types TypeScript pour la base de données
 export interface User {
@@ -412,6 +418,7 @@ export const useDatabase = () => {
 export const databaseConfig = {
   url: supabaseUrl,
   anonKey: supabaseAnonKey,
+  isConfigured: isSupabaseConfigured,
   options: {
     auth: {
       autoRefreshToken: true,

@@ -1,7 +1,14 @@
 import { supabase } from '@/lib/supabase/client'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+// Configuration Supabase avec fallbacks pour le build
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-key'
+
+// Vérifier si la configuration est valide
+const isSupabaseConfigured = supabaseUrl && 
+                             supabaseKey && 
+                             supabaseUrl !== 'https://placeholder.supabase.co' && 
+                             supabaseKey !== 'placeholder-key'
 
 // Types pour les entreprises
 export interface Company {
@@ -394,6 +401,12 @@ export const databaseService = {
 
 // Script de création des tables (à exécuter une fois)
 export const createTables = async () => {
+  // Vérifier si Supabase est configuré
+  if (!isSupabaseConfigured) {
+    console.warn('Supabase non configuré, création des tables ignorée')
+    return false
+  }
+
   const tables = [
     // Table des entreprises
     `CREATE TABLE IF NOT EXISTS companies (

@@ -19,7 +19,7 @@
     "build:netlify:alt": "./scripts/netlify-build.sh",
     "build:netlify:robust": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build --no-lint",
     "build:netlify:simple": "next build --no-lint",
-    "build:netlify:secure": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production NETLIFY=true DEBUG_SELF_REFERENCE_FIXER=true next build --no-lint",
+    "build:netlify:secure": "./scripts/netlify-build-secure.sh",
     "build:netlify:ultra-secure": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production NETLIFY=true DEBUG_SELF_REFERENCE_FIXER=true next build --no-lint",
     "build:netlify:fixed": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production NETLIFY=true next build --no-lint --no-mangling",
     "build:netlify:enhanced": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production NETLIFY=true WEBPACK_SELF_FIXER=true next build --no-lint --no-mangling",
@@ -29,7 +29,6 @@
     "build:netlify:no-plugin": "DISABLE_SELF_REFERENCE_FIXER=1 NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build --no-lint",
     "build:netlify:optimized": "./scripts/netlify-build-optimized.sh",
     "build:netlify:emergency": "./scripts/netlify-build-emergency.sh",
-    "build:netlify:secure": "./scripts/netlify-build-secure.sh",
     "test:secure-build": "echo '🧪 Test local du build sécurisé...' && ./scripts/netlify-build-secure.sh",
     "test:secure-build:local": "echo '🧪 Test local du build sécurisé (mode local)...' && NODE_ENV=development ./scripts/netlify-build-secure.sh",
     "test:plugin": "node scripts/test-self-reference-fixer.js",
@@ -128,7 +127,8 @@
   "devDependencies": {
     "eslint": "^8",
     "eslint-config-next": "15.3.4",
-    "ignore-loader": "^0.1.2"
+    "ignore-loader": "^0.1.2",
+    "string-replace-loader": "^3.2.0"
   },
   "engines": {
     "node": "18.x"

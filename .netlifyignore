@@ -1,48 +1,78 @@
-# Fichiers Python et backend
+# EXCLUSION COMPLÈTE DES FICHIERS PYTHON ET BACKEND
+# Fichiers Python
 *.py
 *.pyc
+*.pyo
+*.pyd
 __pycache__/
+*.so
+*.egg
+*.egg-info/
+*.whl
+
+# Environnements Python
 venv/
 env/
-.env
-.env.local
-.env.production
+.venv/
+.env/
+pythonenv*/
+.python-version
+runtime.txt
 
-# Dépendances Python (exclure complètement)
+# Dépendances Python
 requirements.txt
 requirements_*.txt
 Pipfile
 Pipfile.lock
-runtime.txt
-.python-version
+poetry.lock
+setup.py
+setup.cfg
+pyproject.toml
+MANIFEST.in
 
-# Dossiers backend
+# Dossiers backend complets
 backend/
 api-backup/
 nova-ia-commercial/
 sentinel-zero/
+api/
+
+# Fichiers de configuration Python
+.pylintrc
+.flake8
+tox.ini
+pytest.ini
+coverage.xml
+.coverage
+.pytest_cache/
 
 # Fichiers de développement
 *.log
 *.tmp
+*.temp
 temp/
 temp-sw/
 node_modules/
 
 # Fichiers de configuration locaux
+.env
 .env.local
 .env.development
 .env.test
+.env.production
 
 # Fichiers de cache
 .cache/
 .next/
 dist/
 build/
+out/
 
 # Fichiers de test
 coverage/
 .nyc_output/
+tests/
+test_*.py
 
 # Fichiers de documentation
 docs/
@@ -54,9 +84,26 @@ scripts/
 kube/
 migrations/
 database/
+workflows/
 
 # Fichiers temporaires
 *.backup
 *.bak
 *.swp
-*.swo 
+*.swo
+*.orig
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+
+# Exclure tous les fichiers Python dans tous les sous-dossiers
+**/*.py
+**/__pycache__/
+**/venv/
+**/env/
+**/requirements.txt
+**/Pipfile
+**/setup.py 

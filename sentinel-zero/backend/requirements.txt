@@ -1,0 +1,14 @@
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6
+aiohttp==3.9.1
+yara-python==4.3.1
+psutil==5.9.6
+dnspython==2.4.2
+python-whois==0.8.0
+nmap-python==0.7.1
+requests==2.31.0
+cryptography==41.0.8

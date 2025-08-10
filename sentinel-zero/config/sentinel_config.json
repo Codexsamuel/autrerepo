@@ -1,0 +1,45 @@
+{
+  "sentinel_zero": {
+    "version": "1.0.0",
+    "name": "Sentinel Zero",
+    "description": "Agent Red Team IA ultra-avancé pour la cybersécurité souveraine",
+    "author": "DL Solutions",
+    "license": "Military",
+    "security": {
+      "authentication_levels": 5,
+      "master_code": "0987612345",
+      "admin_id": "DL-SUPER-01",
+      "red_button_phrase": "i am sentinel",
+      "biometric_voice_hash": "b5945c46c8a2d3e1f7b9a4c6d8e2f1a3b5c7d9e4f2a6b8c1d5e7f3a9b2c4d6e8f0",
+      "biometric_fp_hash": "a3b5d6887c2e4f1a9b6c3d8e5f2a7b4c1d9e6f3a8b5c2d7e4f1a6b3c9d5e2f8a7b4c1"
+    },
+    "modules": {
+      "recon": {
+        "enabled": true,
+        "description": "Module de reconnaissance passive et active"
+      },
+      "sql_injection": {
+        "enabled": true,
+        "description": "Module d'injection SQL automatisé"
+      },
+      "xss": {
+        "enabled": true,
+        "description": "Module de test et exploitation XSS"
+      },
+      "brute_force": {
+        "enabled": true,
+        "description": "Module de force brute sur endpoints"
+      },
+      "osint": {
+        "enabled": true,
+        "description": "Module d'intelligence open source"
+      }
+    },
+    "deployment": {
+      "frontend_port": 3000,
+      "backend_port": 8000,
+      "docker": true,
+      "production_ready": true
+    }
+  }
+}

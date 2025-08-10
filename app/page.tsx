@@ -99,81 +99,43 @@ export default function HomePage() {
     {
       name: "Jean Martin",
       role: "CTO, InnovCorp",
-      content: "Excellente expertise technique et accompagnement de qualité.",
+      content: "Une équipe professionnelle qui livre des résultats exceptionnels.",
       rating: 5,
       avatar: "/images/testimonials/jean.jpg"
     },
     {
       name: "Sophie Bernard",
-      role: "Directrice Marketing, GrowthCo",
-      content: "Les résultats dépassent nos attentes. Très professionnel !",
+      role: "Directrice Marketing, GrowthLab",
+      content: "Leur expertise en IA a révolutionné notre stratégie digitale.",
       rating: 5,
       avatar: "/images/testimonials/sophie.jpg"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Section Hero avec Vidéo Background */}
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900">
+      {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Video Background */}
-        <div className="absolute inset-0 z-0">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover opacity-30"
-            poster="/images/hero-poster.jpg"
-          >
-            <source src="/videos/hero-background.mp4" type="video/mp4" />
-            <source src="/videos/hero-background.webm" type="video/webm" />
-          </video>
-          <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-purple-900/30 to-black/50"></div>
-        </div>
-
-        {/* Contenu Hero */}
-        <div className="relative z-10 text-center text-white px-4 max-w-6xl mx-auto">
-          <div className="mb-8">
-            <div className="text-8xl md:text-9xl mb-4 animate-pulse">🚀</div>
-            <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient">
-              DL Solutions
-            </h1>
-            <p className="text-2xl md:text-3xl mb-4 text-gray-200 font-light">
-              Écosystème Digital Complet
-            </p>
-            <p className="text-xl md:text-2xl mb-8 text-gray-300">
-              Davy & Lucie - Innovation & Excellence
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
-            <Link href="/nova-ia">
-              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-lg px-8 py-4 rounded-full shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-105">
-                <Brain className="mr-3 h-6 w-6" />
-                NovaIA - Intelligence Artificielle
-                <ArrowRight className="ml-3 h-5 w-5" />
-              </Button>
-            </Link>
+        <div className="absolute inset-0 bg-black/50 z-10"></div>
+        <div className="relative z-20 text-center text-white px-4 max-w-6xl mx-auto">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            DL Solutions
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
+            Écosystème Digital Ultra-Avancé avec IA Souveraine, Solutions Innovantes et Transformation Numérique
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/services">
-              <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black text-lg px-8 py-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-105">
+              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                 Découvrir Nos Services
-                <ArrowRight className="ml-3 h-5 w-5" />
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-          </div>
-
-          {/* Stats Rapides */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2 flex items-center justify-center">
-                  {stat.icon}
-                  <span className="ml-2">{stat.number}</span>
-                </div>
-                <p className="text-sm md:text-base text-gray-300">{stat.label}</p>
-              </div>
-            ))}
+            <Link href="/contact">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-gray-900">
+                Nous Contacter
+              </Button>
+            </Link>
           </div>
         </div>
 
@@ -183,52 +145,48 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Section Vidéos Présentations */}
+      {/* Section Écosystème des Agents IA */}
       <section className="py-20 px-4 bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Découvrez Nos Solutions
+              Écosystème des Agents IA Ultra-Avancés
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Des vidéos présentations pour comprendre nos technologies et innovations
+              Découvrez nos agents IA souverains et autonomes
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {videos.map((video, index) => (
-              <div key={video.id} className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 overflow-hidden hover:transform hover:scale-105 transition-all duration-300">
-                <div className="relative">
-                  <img 
-                    src={video.thumbnail} 
-                    alt={video.title}
-                    className="w-full h-48 object-cover"
-                    onError={(e) => {
-                      e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Crect width='400' height='200' fill='%23666'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='16'%3E%3C/tspan%3E%3C/svg%3E";
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                    <Button 
-                      size="lg" 
-                      className="bg-white/20 hover:bg-white/30 text-white rounded-full p-4"
-                      onClick={() => setIsPlaying(!isPlaying)}
-                    >
-                      {isPlaying ? <Pause className="h-8 w-8" /> : <Play className="h-8 w-8" />}
-                    </Button>
-                  </div>
-                  <div className="absolute top-4 right-4 bg-black/60 text-white px-2 py-1 rounded text-sm">
-                    {video.duration}
-                  </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-white mb-2">{video.title}</h3>
-                  <p className="text-gray-300 mb-4">{video.description}</p>
-                  <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">
-                    Regarder la Vidéo
-                  </Button>
-                </div>
-              </div>
-            ))}
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            {/* Sentinel Zero Card */}
+            <div className="bg-gradient-to-r from-red-900/50 to-red-800/50 backdrop-blur-sm p-8 rounded-2xl border border-red-500/30 hover:transform hover:scale-105 transition-all duration-300">
+              <div className="text-4xl mb-4">🛡️</div>
+              <h3 className="text-xl font-semibold text-white mb-4">Sentinel Zero</h3>
+              <p className="text-gray-300 mb-4">
+                Agent Red Team IA ultra-avancé pour la cybersécurité souveraine. 
+                Authentification 5 niveaux, modules d'attaque, protocole Red Button.
+              </p>
+              <Link href="/sentinel-zero">
+                <Button className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800">
+                  Accès Sentinel Zero
+                </Button>
+              </Link>
+            </div>
+
+            {/* NovaAgent AI Commercial Card */}
+            <div className="bg-gradient-to-r from-blue-900/50 to-blue-800/50 backdrop-blur-sm p-8 rounded-2xl border border-blue-500/30 hover:transform hover:scale-105 transition-all duration-300">
+              <div className="text-4xl mb-4">💼</div>
+              <h3 className="text-xl font-semibold text-white mb-4">NovaAgent AI Commercial</h3>
+              <p className="text-gray-300 mb-4">
+                Agent IA commercial et communication digitale. Gestion des réseaux sociaux, 
+                analyse de tendances, recommandations stratégiques.
+              </p>
+              <Link href="/nova-ia-commercial">
+                <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800">
+                  Accès NovaAgent AI
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -241,146 +199,130 @@ export default function HomePage() {
               Nos Services
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Des solutions complètes pour transformer votre entreprise
+              Solutions complètes pour la transformation numérique de votre entreprise
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
-              <div key={index} className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:transform hover:scale-105 transition-all duration-300">
-                <div className={`w-16 h-16 bg-gradient-to-r ${service.color} rounded-2xl flex items-center justify-center text-white mb-6`}>
+              <div key={index} className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:transform hover:scale-105 transition-all duration-300">
+                <div className={`w-16 h-16 bg-gradient-to-r ${service.color} rounded-2xl flex items-center justify-center mb-4`}>
                   {service.icon}
                 </div>
-                <h3 className="text-2xl font-semibold text-white mb-4">{service.title}</h3>
-                <p className="text-gray-300 mb-6">{service.description}</p>
-                <ul className="space-y-2 mb-6">
-                  {service.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-center text-gray-300">
+                <h3 className="text-xl font-semibold text-white mb-3">{service.title}</h3>
+                <p className="text-gray-300 mb-4">{service.description}</p>
+                <ul className="space-y-2">
+                  {service.features.map((feature, featureIndex) => (
+                    <li key={featureIndex} className="flex items-center text-sm text-gray-300">
                       <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
                       {feature}
                     </li>
                   ))}
                 </ul>
-                <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">
-                  En savoir plus
-                </Button>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Section NovaIA - Univers IA Ultra-Avancé */}
-      <section className="py-20 px-4 bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900">
+      {/* Section Statistiques */}
+      <section className="py-20 px-4 bg-gradient-to-r from-blue-900 to-purple-900">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <div className="text-8xl mb-6 animate-pulse">🧠</div>
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">NovaIA - Centre d'Intelligence Artificielle</h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Chiffres Clés
+            </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Découvrez notre écosystème d'agents IA ultra-avancé avec protocoles A2A/MCP et système de battle ELO
+              Notre impact et notre expertise en chiffres
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-            {/* Battle Arena Card */}
-            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:transform hover:scale-105 transition-all duration-300">
-              <div className="text-4xl mb-4">⚔️</div>
-              <h3 className="text-xl font-semibold text-white mb-4">Battle Arena</h3>
-              <p className="text-gray-300 mb-4">
-                Faites s'affronter vos agents IA préférés dans notre arène de compétition
-              </p>
-              <Link href="/nova-ia/battle">
-                <Button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600">
-                  Lancer un Battle
-                </Button>
-              </Link>
-            </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                    {stat.icon}
+                  </div>
+                </div>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stat.number}</div>
+                <p className="text-sm md:text-base text-gray-300">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            {/* Protocoles Avancés Card */}
-            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:transform hover:scale-105 transition-all duration-300">
-              <div className="text-4xl mb-4">🌐</div>
-              <h3 className="text-xl font-semibold text-white mb-4">Protocoles Avancés</h3>
-              <p className="text-gray-300 mb-4">
-                Communication inter-agents A2A et gestion de contexte MCP
-              </p>
-              <Link href="/nova-ia/protocols">
-                <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">
-                  Explorer les Protocoles
-                </Button>
-              </Link>
-            </div>
-
-            {/* Agents IA Card */}
-            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:transform hover:scale-105 transition-all duration-300">
-              <div className="text-4xl mb-4">🤖</div>
-              <h3 className="text-xl font-semibold text-white mb-4">Agents IA</h3>
-              <p className="text-gray-300 mb-4">
-                12 agents spécialisés avec précision 87-96% et système ELO
-              </p>
-              <Link href="/nova-ia">
-                <Button className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600">
-                  Découvrir les Agents
-                </Button>
-              </Link>
-            </div>
-
-            {/* DroneBuilder IA Card */}
-            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:transform hover:scale-105 transition-all duration-300">
-              <div className="text-4xl mb-4">🚁</div>
-              <h3 className="text-xl font-semibold text-white mb-4">DroneBuilder IA</h3>
-              <p className="text-gray-300 mb-4">
-                Générateur de drones militaires avec firmware, G-code et missions tactiques
-              </p>
-              <Link href="/nova-ia/drone-builder">
-                <Button className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600">
-                  Créer un Drone
-                </Button>
-              </Link>
-            </div>
+      {/* Section Vidéos Présentations */}
+      <section className="py-20 px-4 bg-gradient-to-r from-purple-900 to-blue-900">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Découvrez Nos Solutions
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Des vidéos présentations pour comprendre nos technologies et innovations
+            </p>
           </div>
 
-          <div className="text-center">
-            <Link href="/nova-ia">
-              <Button size="lg" className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white text-lg px-8 py-4 rounded-full shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-105">
-                <Brain className="mr-3 h-6 w-6" />
-                Accéder à NovaIA
-                <ArrowRight className="ml-3 h-5 w-5" />
-              </Button>
-            </Link>
+          <div className="grid md:grid-cols-3 gap-8">
+            {videos.map((video, index) => (
+              <div key={video.id} className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20">
+                <div className="relative mb-4">
+                  <img 
+                    src={video.thumbnail} 
+                    alt={video.title}
+                    className="w-full h-48 object-cover rounded-lg"
+                  />
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <Button 
+                      size="lg" 
+                      variant="ghost" 
+                      className="text-white hover:bg-white/20"
+                      onClick={() => setIsPlaying(!isPlaying)}
+                    >
+                      {isPlaying ? <Pause className="h-8 w-8" /> : <Play className="h-8 w-8" />}
+                    </Button>
+                  </div>
+                  <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-sm">
+                    {video.duration}
+                  </div>
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2">{video.title}</h3>
+                <p className="text-gray-300 text-sm">{video.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Section Témoignages */}
-      <section className="py-20 px-4 bg-gradient-to-r from-blue-900 to-purple-900">
+      <section className="py-20 px-4 bg-gradient-to-r from-indigo-900 to-purple-900">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
               Ce que disent nos clients
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Découvrez les témoignages de nos clients satisfaits
+              Témoignages de nos clients satisfaits
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:transform hover:scale-105 transition-all duration-300">
+              <div key={index} className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20">
                 <div className="flex items-center mb-4">
                   <img 
                     src={testimonial.avatar} 
                     alt={testimonial.name}
                     className="w-12 h-12 rounded-full mr-4"
-                    onError={(e) => {
-                      e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%23666'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='16'%3E%3C/tspan%3E%3C/svg%3E";
-                    }}
                   />
                   <div>
-                    <h4 className="text-white font-semibold">{testimonial.name}</h4>
-                    <p className="text-gray-300 text-sm">{testimonial.role}</p>
+                    <h4 className="text-lg font-semibold text-white">{testimonial.name}</h4>
+                    <p className="text-gray-400 text-sm">{testimonial.role}</p>
                   </div>
                 </div>
-                <p className="text-gray-300 mb-4 italic">"{testimonial.content}"</p>
+                <p className="text-gray-300 mb-4">{testimonial.content}</p>
                 <div className="flex">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
@@ -392,27 +334,25 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Section Contact */}
-      <section className="py-20 px-4 bg-gradient-to-r from-purple-900 to-blue-900">
+      {/* Section CTA */}
+      <section className="py-20 px-4 bg-gradient-to-r from-blue-900 to-indigo-900">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Prêt à Transformer Votre Entreprise ?
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Prêt à transformer votre entreprise ?
           </h2>
           <p className="text-xl text-gray-300 mb-8">
-            Contactez-nous pour discuter de vos projets et découvrir nos solutions
+            Contactez-nous dès aujourd'hui pour discuter de vos projets et découvrir comment nos solutions peuvent vous aider.
           </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Link href="/nova-ia">
-              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-lg px-8 py-4 rounded-full shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-105">
-                <Brain className="mr-3 h-6 w-6" />
-                Essayer NovaIA
-                <ArrowRight className="ml-3 h-5 w-5" />
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/contact">
+              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                Commencer Maintenant
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <Link href="/contact">
-              <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black text-lg px-8 py-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-105">
-                Nous Contacter
-                <ArrowRight className="ml-3 h-5 w-5" />
+            <Link href="/services">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-gray-900">
+                Voir Nos Services
               </Button>
             </Link>
           </div>

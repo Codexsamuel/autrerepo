@@ -1,10 +1,10 @@
 'use client';
 
-import { useSession } from '@/components/providers/SessionProvider';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Crown, Star } from 'lucide-react';
-import { ReactNode, useEffect, useState } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Crown, Star } from "lucide-react";
+import { useSession } from "@/components/providers/SessionProvider";
 
 interface SubscriptionGuardProps {
   children: ReactNode;
@@ -18,25 +18,16 @@ export function SubscriptionGuard({
   fallback 
 }: SubscriptionGuardProps) {
   const [isClient, setIsClient] = useState(false);
-  const [sessionData, setSessionData] = useState<any>(null);
+  const { hasSubscription, setShowSubscriptionModal } = useSession();
 
   useEffect(() => {
     setIsClient(true);
-    try {
-      const { hasSubscription, setShowSubscriptionModal } = useSession();
-      setSessionData({ hasSubscription, setShowSubscriptionModal });
-    } catch (error) {
-      // Ignore useSession error during SSR
-      setSessionData({ hasSubscription: true, setShowSubscriptionModal: () => {} });
-    }
   }, []);
 
   // During SSR or before client hydration, render children
-  if (!isClient || !sessionData) {
+  if (!isClient) {
     return <>{children}</>;
   }
-
-  const { hasSubscription, setShowSubscriptionModal } = sessionData;
 
   if (!hasSubscription) {
     if (fallback) {
@@ -117,8 +108,7 @@ export function SubscriptionGuard({
               className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
               size="lg"
             >
-              <Crown className="w-5 h-5 mr-2" />
-              Souscrire maintenant
+              Choisir un Plan
             </Button>
           </CardContent>
         </Card>

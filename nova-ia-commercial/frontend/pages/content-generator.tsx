@@ -1,5 +1,16 @@
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+
+interface GeneratedContent {
+  text: string;
+  hashtags: string[];
+  character_count: number;
+  estimated_engagement: number;
+  platform_optimizations: {
+    hashtag_count: string;
+    caption_length: string;
+  };
+}
 
 const ContentGenerator: React.FC = () => {
   const [contentType, setContentType] = useState('text');
@@ -7,7 +18,7 @@ const ContentGenerator: React.FC = () => {
   const [targetAudience, setTargetAudience] = useState('business');
   const [tone, setTone] = useState('professional');
   const [keywords, setKeywords] = useState('');
-  const [generatedContent, setGeneratedContent] = useState(null);
+  const [generatedContent, setGeneratedContent] = useState<GeneratedContent | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
   const contentTypes = [
@@ -210,14 +221,14 @@ const ContentGenerator: React.FC = () => {
               <div>
                 <label className="block text-white font-medium mb-2">Texte</label>
                 <div className="bg-white/10 rounded-lg p-4 text-white">
-                  {generatedContent.text}
+                  {generatedContent?.text}
                 </div>
               </div>
 
               <div>
                 <label className="block text-white font-medium mb-2">Hashtags</label>
                 <div className="flex flex-wrap gap-2">
-                  {generatedContent.hashtags.map((hashtag, index) => (
+                  {generatedContent?.hashtags?.map((hashtag, index) => (
                     <span key={index} className="px-3 py-1 bg-blue-500 text-white rounded-full text-sm">
                       #{hashtag}
                     </span>
@@ -229,13 +240,13 @@ const ContentGenerator: React.FC = () => {
                 <div>
                   <label className="block text-white font-medium mb-2">Caractères</label>
                   <div className="bg-white/10 rounded-lg p-3 text-white text-center">
-                    {generatedContent.character_count}
+                    {generatedContent?.character_count}
                   </div>
                 </div>
                 <div>
                   <label className="block text-white font-medium mb-2">Engagement estimé</label>
                   <div className="bg-white/10 rounded-lg p-3 text-white text-center">
-                    {(generatedContent.estimated_engagement * 100).toFixed(1)}%
+                    {(generatedContent?.estimated_engagement * 100).toFixed(1)}%
                   </div>
                 </div>
                 <div>

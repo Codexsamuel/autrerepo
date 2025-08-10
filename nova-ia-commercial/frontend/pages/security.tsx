@@ -1,10 +1,41 @@
-import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+
+interface SecurityData {
+  user: {
+    username: string;
+    role: string;
+    permissions: string[];
+    last_login: string;
+    session_duration: string;
+  };
+  system: {
+    status: string;
+    last_scan: string;
+    threats_detected: number;
+    vulnerabilities: number;
+    security_score: number;
+  };
+  ai_limits: {
+    current_level: string;
+    validation_required: boolean;
+    autonomy_mode: boolean;
+  };
+}
+
+interface ActivityLog {
+  id: number;
+  timestamp: string;
+  action: string;
+  user: string;
+  ip_address: string;
+  status: string;
+}
 
 const Security: React.FC = () => {
-  const [securityData, setSecurityData] = useState(null);
-  const [userPermissions, setUserPermissions] = useState([]);
-  const [activityLogs, setActivityLogs] = useState([]);
+  const [securityData, setSecurityData] = useState<SecurityData | null>(null);
+  const [userPermissions, setUserPermissions] = useState<string[]>([]);
+  const [activityLogs, setActivityLogs] = useState<ActivityLog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const mockSecurityData = {
@@ -74,7 +105,7 @@ const Security: React.FC = () => {
     }, 2000);
   }, []);
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
       case 'success': return 'text-green-400';
       case 'warning': return 'text-yellow-400';
@@ -84,7 +115,7 @@ const Security: React.FC = () => {
     }
   };
 
-  const getStatusIcon = (status) => {
+  const getStatusIcon = (status: string) => {
     switch (status) {
       case 'success': return '✅';
       case 'warning': return '⚠️';
@@ -94,7 +125,7 @@ const Security: React.FC = () => {
     }
   };
 
-  if (isLoading) {
+  if (isLoading || !securityData) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 flex items-center justify-center">
         <div className="text-center">

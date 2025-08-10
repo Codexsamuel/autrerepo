@@ -1,10 +1,29 @@
-import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+
+interface SocialAccount {
+  id: number;
+  platform: string;
+  username: string;
+  followers: number;
+  engagement_rate: number;
+  status: string;
+  last_post: string;
+  optimization_score: number;
+}
+
+interface OptimizationResult {
+  platform: string;
+  optimization_score: number;
+  recommendations: string[];
+  automated_actions: string[];
+  estimated_improvement: string;
+}
 
 const SocialManager: React.FC = () => {
-  const [accounts, setAccounts] = useState([]);
-  const [selectedAccount, setSelectedAccount] = useState(null);
-  const [optimizationResults, setOptimizationResults] = useState(null);
+  const [accounts, setAccounts] = useState<SocialAccount[]>([]);
+  const [selectedAccount, setSelectedAccount] = useState<SocialAccount | null>(null);
+  const [optimizationResults, setOptimizationResults] = useState<OptimizationResult | null>(null);
   const [isOptimizing, setIsOptimizing] = useState(false);
 
   const mockAccounts = [
@@ -44,9 +63,12 @@ const SocialManager: React.FC = () => {
     setAccounts(mockAccounts);
   }, []);
 
-  const handleOptimizeAccount = async (accountId) => {
+  const handleOptimizeAccount = async (accountId: number) => {
     setIsOptimizing(true);
-    setSelectedAccount(accounts.find(acc => acc.id === accountId));
+    const account = accounts.find(acc => acc.id === accountId);
+    if (account) {
+      setSelectedAccount(account);
+    }
     
     // Simulation d'optimisation
     setTimeout(() => {
@@ -73,7 +95,7 @@ const SocialManager: React.FC = () => {
     }, 3000);
   };
 
-  const platforms = {
+  const platforms: Record<string, { icon: string; color: string }> = {
     instagram: { icon: '📸', color: 'bg-gradient-to-r from-purple-500 to-pink-500' },
     tiktok: { icon: '🎵', color: 'bg-gradient-to-r from-black to-gray-800' },
     linkedin: { icon: '💼', color: 'bg-gradient-to-r from-blue-500 to-blue-600' },

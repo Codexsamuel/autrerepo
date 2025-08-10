@@ -1,9 +1,26 @@
-import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+
+interface Campaign {
+  id: number;
+  name: string;
+  type: string;
+  status: string;
+  platforms: string[];
+  budget: number;
+  duration_days: number;
+  start_date: string;
+  end_date: string;
+  current_reach: number;
+  current_engagement: number;
+  target_reach: number;
+  target_engagement: number;
+  progress: number;
+}
 
 const Campaigns: React.FC = () => {
-  const [campaigns, setCampaigns] = useState([]);
-  const [selectedCampaign, setSelectedCampaign] = useState(null);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
 
@@ -69,7 +86,7 @@ const Campaigns: React.FC = () => {
     { id: 'traffic', label: 'Trafic', icon: '🚀', color: 'bg-orange-500' }
   ];
 
-  const platforms = {
+  const platforms: Record<string, { icon: string; color: string }> = {
     instagram: { icon: '📸', color: 'bg-gradient-to-r from-purple-500 to-pink-500' },
     tiktok: { icon: '🎵', color: 'bg-gradient-to-r from-black to-gray-800' },
     linkedin: { icon: '💼', color: 'bg-gradient-to-r from-blue-500 to-blue-600' },
@@ -77,7 +94,7 @@ const Campaigns: React.FC = () => {
     youtube: { icon: '📺', color: 'bg-gradient-to-r from-red-500 to-red-600' }
   };
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
       case 'active': return 'bg-green-500';
       case 'scheduled': return 'bg-yellow-500';
@@ -87,14 +104,22 @@ const Campaigns: React.FC = () => {
     }
   };
 
-  const handleCreateCampaign = async (campaignData) => {
+  const handleCreateCampaign = async (campaignData: Partial<Campaign>) => {
     setIsCreating(true);
     
     // Simulation de création
     setTimeout(() => {
-      const newCampaign = {
+      const newCampaign: Campaign = {
         id: campaigns.length + 1,
-        ...campaignData,
+        name: campaignData.name || '',
+        type: campaignData.type || '',
+        platforms: campaignData.platforms || [],
+        budget: campaignData.budget || 0,
+        duration_days: campaignData.duration_days || 0,
+        start_date: campaignData.start_date || '',
+        end_date: campaignData.end_date || '',
+        target_reach: campaignData.target_reach || 0,
+        target_engagement: campaignData.target_engagement || 0,
         status: 'scheduled',
         current_reach: 0,
         current_engagement: 0,

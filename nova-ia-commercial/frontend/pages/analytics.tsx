@@ -1,8 +1,37 @@
-import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+
+interface AnalyticsData {
+  overview: {
+    total_reach: number;
+    total_engagement: number;
+    total_followers: number;
+    growth_rate: number;
+  };
+  platforms: {
+    name: string;
+    reach: number;
+    engagement: number;
+    followers: number;
+    growth: number;
+  }[];
+  trends: {
+    name: string;
+    value: number;
+    change: number;
+    trend: 'up' | 'down';
+  }[];
+  topContent: {
+    title: string;
+    platform: string;
+    reach: number;
+    engagement: number;
+    type: string;
+  }[];
+}
 
 const Analytics: React.FC = () => {
-  const [analyticsData, setAnalyticsData] = useState(null);
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState('7d');
   const [isLoading, setIsLoading] = useState(true);
 
@@ -48,25 +77,25 @@ const Analytics: React.FC = () => {
         name: 'Engagement',
         value: 0.068,
         change: 0.15,
-        trend: 'up'
+        trend: 'up' as const
       },
       {
         name: 'Reach',
         value: 125000,
         change: 0.22,
-        trend: 'up'
+        trend: 'up' as const
       },
       {
         name: 'Followers',
         value: 95000,
         change: 0.18,
-        trend: 'up'
+        trend: 'up' as const
       },
       {
         name: 'Conversion',
         value: 0.025,
         change: -0.05,
-        trend: 'down'
+        trend: 'down' as const
       }
     ],
     topContent: [
@@ -102,7 +131,7 @@ const Analytics: React.FC = () => {
     }, 2000);
   }, [selectedPeriod]);
 
-  if (isLoading) {
+  if (isLoading || !analyticsData) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 flex items-center justify-center">
         <div className="text-center">
@@ -148,7 +177,7 @@ const Analytics: React.FC = () => {
 
         {/* Vue d'ensemble */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {analyticsData.overview && Object.entries(analyticsData.overview).map(([key, value]) => (
+          {analyticsData?.overview && Object.entries(analyticsData.overview).map(([key, value]) => (
             <motion.div
               key={key}
               initial={{ opacity: 0, y: 20 }}
@@ -186,7 +215,7 @@ const Analytics: React.FC = () => {
           <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20">
             <h2 className="text-xl font-semibold text-white mb-6">Performance par Plateforme</h2>
             <div className="space-y-4">
-              {analyticsData.platforms.map((platform, index) => (
+              {analyticsData?.platforms?.map((platform, index) => (
                 <motion.div
                   key={platform.name}
                   initial={{ opacity: 0, x: -20 }}
@@ -222,7 +251,7 @@ const Analytics: React.FC = () => {
           <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20">
             <h2 className="text-xl font-semibold text-white mb-6">Tendances</h2>
             <div className="space-y-4">
-              {analyticsData.trends.map((trend, index) => (
+              {analyticsData?.trends?.map((trend, index) => (
                 <motion.div
                   key={trend.name}
                   initial={{ opacity: 0, x: 20 }}
@@ -259,7 +288,7 @@ const Analytics: React.FC = () => {
         <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20">
           <h2 className="text-xl font-semibold text-white mb-6">Contenu Performant</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {analyticsData.topContent.map((content, index) => (
+            {analyticsData?.topContent?.map((content, index) => (
               <motion.div
                 key={content.title}
                 initial={{ opacity: 0, y: 20 }}

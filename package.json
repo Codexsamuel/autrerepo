@@ -21,6 +21,7 @@
     "build:netlify:simple": "next build --no-lint",
     "build:netlify:debug": "./scripts/netlify-build-debug.sh",
     "build:netlify:no-plugin": "DISABLE_SELF_REFERENCE_FIXER=1 NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build --no-lint",
+    "build:netlify:optimized": "./scripts/netlify-build-optimized.sh",
     "build:netlify:emergency": "./scripts/netlify-build-emergency.sh",
     "build:api-only": "next build --no-lint --no-mangling --api-only",
     "build:frontend-only": "mv app/api app/api.disabled && next build --no-lint --no-mangling && mv app/api.disabled app/api",

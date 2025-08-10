@@ -36,6 +36,15 @@ const nextConfig = {
       };
     }
     
+    // Exclure le Service Worker du build pour éviter l'erreur "self is not defined"
+    config.module.rules.push({
+      test: /sw\.js$/,
+      type: 'asset/resource',
+      generator: {
+        filename: 'static/[name][ext]'
+      }
+    });
+    
     // Optimisation des chunks - désactivée pour Netlify
     if (process.env.NETLIFY) {
       config.optimization.splitChunks = {

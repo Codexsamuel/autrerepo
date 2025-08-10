@@ -11,7 +11,7 @@
     "type-check": "tsc --noEmit",
     "build:vercel": "next build",
     "vercel-build": "mv tsconfig.json tsconfig.json.backup && next build --no-lint && mv tsconfig.json.backup tsconfig.json",
-    "build:netlify": "NODE_ENV=production next build --no-lint",
+    "build:netlify": "next build --no-lint",
     "build:api-only": "next build --no-lint --no-mangling --api-only",
     "build:frontend-only": "mv app/api app/api.disabled && next build --no-lint --no-mangling && mv app/api.disabled app/api",
     "build:core-only": "mv app/admin app/admin.disabled && next build --no-lint --no-mangling && mv app/admin.disabled app/api",
@@ -96,14 +96,14 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.9.2",
     "vaul": "^1.1.2",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "tailwindcss": "^3.3.0",
+    "autoprefixer": "^10.0.1",
+    "postcss": "^8"
   },
   "devDependencies": {
-    "autoprefixer": "^10.0.1",
     "eslint": "^8",
-    "eslint-config-next": "15.3.4",
-    "postcss": "^8",
-    "tailwindcss": "^3.3.0"
+    "eslint-config-next": "15.3.4"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -41,7 +41,8 @@
     "deploy:hybrid": "echo '🚀 Déploiement hybride: Frontend sur Netlify, APIs sur Vercel' && echo '1. Déployer les APIs sur Vercel avec: vercel --prod' && echo '2. Mettre à jour netlify.toml avec l'URL Vercel' && echo '3. Déployer le frontend sur Netlify'",
     "deploy:vercel": "echo '🔧 Déploiement des APIs sur Vercel...' && vercel --prod",
     "deploy:netlify": "echo '🌐 Déploiement du frontend sur Netlify...' && echo 'Utilisez: git push origin main'",
-    "build:netlify:ultra-simple": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production NETLIFY=true next build"
+    "build:netlify:ultra-simple": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production NETLIFY=true next build",
+    "build:netlify:compatible": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production NETLIFY=true next build --debug"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
@@ -132,7 +133,7 @@
     "string-replace-loader": "^3.2.0"
   },
   "engines": {
-    "node": "18.x"
+    "node": ">=20.0.0"
   },
   "overrides": {
     "undici": "^6.21.0"

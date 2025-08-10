@@ -92,7 +92,7 @@ const nextConfig = {
           }
           
           apply(compiler) {
-            // Hook pour traiter les chunks après leur génération
+            // Hook pour traiter les assets après leur génération
             compiler.hooks.afterEmit.tap('VendorsSelfReferenceFixer', (compilation) => {
               if (this.options.debug) {
                 console.log('🔧 VendorsSelfReferenceFixer: Traitement des chunks vendors...');
@@ -231,6 +231,133 @@ const nextConfig = {
       }
     } else {
       console.log('🚫 SelfReferenceFixer plugin désactivé par variable d\'environnement');
+    }
+
+    // NOUVEAU: Plugin pour traiter les références 'self' de manière plus efficace
+    if (process.env.NETLIFY) {
+      try {
+        // Essayer d'utiliser le plugin spécialisé Netlify
+        const NetlifySelfFixerPlugin = require('./lib/webpack-plugins/netlify-self-fixer');
+        
+        if (NetlifySelfFixerPlugin && typeof NetlifySelfFixerPlugin === 'function') {
+          config.plugins.push(new NetlifySelfFixerPlugin({
+            replaceWith: 'undefined',
+            debug: process.env.DEBUG_SELF_REFERENCE_FIXER === 'true',
+            aggressive: true
+          }));
+          console.log('✅ NetlifySelfFixerPlugin ajouté avec succès');
+        } else {
+          // Fallback vers le plugin inline si le plugin externe n'est pas disponible
+          class SelfReferenceFixerV2 {
+            constructor() {
+              this.processedFiles = 0;
+              this.totalReplacements = 0;
+            }
+            
+            apply(compiler) {
+              // Hook pour traiter les assets après leur génération
+              compiler.hooks.afterEmit.tap('SelfReferenceFixerV2', (compilation) => {
+                console.log('🔧 SelfReferenceFixerV2: Traitement des assets...');
+                
+                // Traiter tous les assets JavaScript
+                for (const [filename, asset] of Object.entries(compilation.assets)) {
+                  if (filename.endsWith('.js')) {
+                    try {
+                      // Vérifier si l'asset a une méthode source() disponible
+                      if (asset && typeof asset.source === 'function') {
+                        let source = asset.source();
+                        
+                        // Remplacer toutes les références à 'self' par 'undefined'
+                        if (source.includes('self')) {
+                          const beforeCount = (source.match(/\bself\b/g) || []).length;
+                          source = source.replace(/\bself\b/g, 'undefined');
+                          const afterCount = (source.match(/\bself\b/g) || []).length;
+                          const replacements = beforeCount - afterCount;
+                          
+                          if (replacements > 0) {
+                            // Mettre à jour l'asset
+                            compilation.assets[filename] = {
+                              source: () => source,
+                              size: () => source.length,
+                            };
+                            
+                            this.processedFiles++;
+                            this.totalReplacements += replacements;
+                            console.log(`🔧 SelfReferenceFixerV2: Traité ${filename} (${replacements} remplacements)`);
+                          }
+                        }
+                      }
+                    } catch (error) {
+                      console.log(`⚠️ Erreur lors du traitement de ${filename}:`, error.message);
+                    }
+                  }
+                }
+                
+                console.log(`✅ SelfReferenceFixerV2: Traitement terminé - ${this.processedFiles} fichiers traités, ${this.totalReplacements} remplacements effectués`);
+              });
+            }
+          }
+          
+          config.plugins.push(new SelfReferenceFixerV2());
+          console.log('✅ SelfReferenceFixerV2 plugin inline ajouté (fallback)');
+        }
+      } catch (error) {
+        console.warn('⚠️ Impossible de charger NetlifySelfFixerPlugin, utilisation du plugin inline:', error.message);
+        
+        // Plugin inline de secours
+        class SelfReferenceFixerV2 {
+          constructor() {
+            this.processedFiles = 0;
+            this.totalReplacements = 0;
+          }
+          
+          apply(compiler) {
+            // Hook pour traiter les assets après leur génération
+            compiler.hooks.afterEmit.tap('SelfReferenceFixerV2', (compilation) => {
+              console.log('🔧 SelfReferenceFixerV2: Traitement des assets...');
+              
+              // Traiter tous les assets JavaScript
+              for (const [filename, asset] of Object.entries(compilation.assets)) {
+                if (filename.endsWith('.js')) {
+                  try {
+                    // Vérifier si l'asset a une méthode source() disponible
+                    if (asset && typeof asset.source === 'function') {
+                      let source = asset.source();
+                      
+                      // Remplacer toutes les références à 'self' par 'undefined'
+                      if (source.includes('self')) {
+                        const beforeCount = (source.match(/\bself\b/g) || []).length;
+                        source = source.replace(/\bself\b/g, 'undefined');
+                        const afterCount = (source.match(/\bself\b/g) || []).length;
+                        const replacements = beforeCount - afterCount;
+                        
+                        if (replacements > 0) {
+                          // Mettre à jour l'asset
+                          compilation.assets[filename] = {
+                            source: () => source,
+                            size: () => source.length,
+                          };
+                          
+                          this.processedFiles++;
+                          this.totalReplacements += replacements;
+                          console.log(`🔧 SelfReferenceFixerV2: Traité ${filename} (${replacements} remplacements)`);
+                        }
+                      }
+                    }
+                  } catch (error) {
+                    console.log(`⚠️ Erreur lors du traitement de ${filename}:`, error.message);
+                  }
+                }
+              }
+              
+              console.log(`✅ SelfReferenceFixerV2: Traitement terminé - ${this.processedFiles} fichiers traités, ${this.totalReplacements} remplacements effectués`);
+            });
+          }
+        }
+        
+        config.plugins.push(new SelfReferenceFixerV2());
+        console.log('✅ SelfReferenceFixerV2 plugin inline ajouté (secours)');
+      }
     }
     
     return config;

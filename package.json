@@ -21,6 +21,8 @@
     "build:netlify:simple": "next build --no-lint",
     "build:netlify:secure": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production NETLIFY=true DEBUG_SELF_REFERENCE_FIXER=true next build --no-lint",
     "build:netlify:ultra-secure": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production NETLIFY=true DEBUG_SELF_REFERENCE_FIXER=true next build --no-lint",
+    "build:netlify:fixed": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production NETLIFY=true next build --no-lint --no-mangling",
+    "build:netlify:minimal": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production NETLIFY=true USE_ALTERNATIVE_WEBPACK=true next build --no-lint --no-mangling --no-optimize-packages",
     "build:netlify:debug": "./scripts/netlify-build-debug.sh",
     "build:netlify:no-plugin": "DISABLE_SELF_REFERENCE_FIXER=1 NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build --no-lint",
     "build:netlify:optimized": "./scripts/netlify-build-optimized.sh",

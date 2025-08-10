@@ -6,6 +6,13 @@ const nextConfig = {
   experimental: {
     optimizeCss: false,
     optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
+    // Configuration spécifique pour Netlify
+    ...(process.env.NETLIFY && {
+      serverComponentsExternalPackages: [],
+      // Désactiver les fonctionnalités qui peuvent causer des problèmes avec 'self'
+      workerThreads: false,
+      cpus: 1,
+    }),
   },
   
   // Optimisations de performance
@@ -29,15 +36,6 @@ const nextConfig = {
   
   // Configuration spécifique pour Netlify
   ...(process.env.NETLIFY && {
-    // Désactiver certaines fonctionnalités qui peuvent causer des problèmes
-    experimental: {
-      ...nextConfig.experimental,
-      serverComponentsExternalPackages: [],
-      // Désactiver les fonctionnalités qui peuvent causer des problèmes avec 'self'
-      workerThreads: false,
-      cpus: 1,
-    },
-    
     // Configuration des headers de sécurité
     async headers() {
       return [

@@ -91,7 +91,7 @@ const nextConfig = {
         if (SelfReferenceFixerPlugin && typeof SelfReferenceFixerPlugin === 'function') {
           config.plugins.push(new SelfReferenceFixerPlugin({
             replaceWith: 'undefined',
-            debug: process.env.NODE_ENV === 'development'
+            debug: process.env.DEBUG_SELF_REFERENCE_FIXER === 'true' || process.env.NODE_ENV === 'development'
           }));
           console.log('✅ SelfReferenceFixer plugin ajouté avec succès');
         } else {

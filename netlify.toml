@@ -16,38 +16,4 @@
   build = 900
   functions = 900
 
-# Configuration DNS pour les domaines personnalisés
-[[redirects]]
-  from = "https://dlsolutionssarl.tech/*"
-  to = "https://davyetlue.netlify.app/:splat"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "https://www.dlsolutionssarl.tech/*"
-  to = "https://davyetlue.netlify.app/:splat"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "https://daveandlucesolutions.com/*"
-  to = "https://davyetlue.netlify.app/:splat"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "https://www.daveandlucesolutions.com/*"
-  to = "https://davyetlue.netlify.app/:splat"
-  status = 301
-  force = true
-
-# Configuration des en-têtes de sécurité
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-
  

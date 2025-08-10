@@ -1,2 +1,6 @@
-# Redirections générales pour SPA Next.js
+# Redirections simples sans boucle
+/www.dlsolutionssarl.tech/* https://dlsolutionssarl.tech/:splat 301!
+/www.daveandlucesolutions.com/* https://dlsolutionssarl.tech/:splat 301!
+
+# Fallback pour SPA
 /*    /index.html   200 

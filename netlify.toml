@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build:netlify:fixed"
+  command = "npm run build:netlify:with-cleanup"
   publish = ".next"
   functions = "netlify/functions"
 
@@ -15,6 +15,8 @@
   NETLIFY = "true"
   NODE_ENV = "production"
   NEXT_PUBLIC_NETLIFY = "1"
+  WEBPACK_SELF_FIXER = "true"
+  DEBUG_SELF_REFERENCE_FIXER = "true"
   # Optimisations pour Netlify
   NEXT_SHARP_PATH = "/opt/buildhome/.npm-global/lib/node_modules/sharp"
 

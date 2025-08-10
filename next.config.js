@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-const SelfReferenceFixerPlugin = require('./lib/webpack-plugins/self-reference-fixer');
-
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
@@ -27,174 +25,27 @@ const nextConfig = {
     unoptimized: true, // Pour éviter les erreurs de build
   },
   
-  // Optimisation des bundles
+  // Configuration webpack simplifiée pour Netlify
   webpack: (config, { isServer, dev }) => {
     if (isServer) {
-      // Exclure complètement les service workers du build serveur
-      config.module.rules.push({
-        test: /\.(sw\.js|workbox-.*\.js)$/,
-        use: 'ignore-loader'
-      });
-      
-      // Ignorer complètement les fichiers service worker
-      config.plugins.push(
-        new (require('webpack').IgnorePlugin)({
-          resourceRegExp: /\.(sw\.js|workbox-.*\.js)$/,
-          contextRegExp: /.*/
-        })
-      );
-      
-      // Ignorer les modules qui utilisent des APIs client-side
-      config.plugins.push(
-        new (require('webpack').IgnorePlugin)({
-          resourceRegExp: /^(localStorage|sessionStorage|navigator|document|window|self|globalThis|global)$/,
-          contextRegExp: /.*/
-        })
-      );
-      
-      // Gérer les modules qui utilisent 'self' ou 'window' côté serveur
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        'self': false,
-        'window': false,
-        'document': false,
-        'navigator': false,
-        'localStorage': false,
-        'sessionStorage': false,
-        'indexedDB': false,
-        'crypto': false,
-        'WebSocket': false,
-        'fetch': false,
-        'Headers': false,
-        'Request': false,
-        'Response': false,
-        'URL': false,
-        'URLSearchParams': false,
-        'FormData': false,
-        'FileReader': false,
-        'Blob': false,
-        'File': false,
-        'Image': false,
-        'Audio': false,
-        'Video': false,
-        'Canvas': false,
-        'WebGLRenderingContext': false,
-        'WebGL2RenderingContext': false,
-        'AudioContext': false,
-        'MediaStream': false,
-        'MediaRecorder': false,
-        'RTCPeerConnection': false,
-        'RTCDataChannel': false,
-        'BroadcastChannel': false,
-        'SharedWorker': false,
-        'Worker': false,
-        'ServiceWorker': false,
-        'Notification': false,
-        'PushManager': false,
-        'SyncManager': false,
-        'BackgroundSyncManager': false,
-        'PaymentRequest': false,
-        'PaymentResponse': false,
-        'PaymentAddress': false,
-        'PaymentMethodChangeEvent': false,
-        'PaymentRequestUpdateEvent': false,
-        'PaymentRequestEvent': false,
-        'PaymentHandlerResponse': false,
-        'PaymentHandlerWindow': false,
-        'PaymentInstruments': false,
-        'PaymentManager': false
-      };
-      
-      // Ajouter un plugin pour gérer les erreurs de 'self' et 'window'
-      config.plugins.push(
-        new (require('webpack').DefinePlugin)({
-          'typeof self': '"undefined"',
-          'typeof window': '"undefined"',
-          'typeof document': '"undefined"',
-          'typeof navigator': '"undefined"',
-          'typeof localStorage': '"undefined"',
-          'typeof sessionStorage': '"undefined"',
-          'typeof indexedDB': '"undefined"',
-          'typeof crypto': '"undefined"',
-          'typeof WebSocket': '"undefined"',
-          'typeof fetch': '"undefined"',
-          'typeof Headers': '"undefined"',
-          'typeof Request': '"undefined"',
-          'typeof Response': '"undefined"',
-          'typeof URL': '"undefined"',
-          'typeof URLSearchParams': '"undefined"',
-          'typeof FormData': '"undefined"',
-          'typeof FileReader': '"undefined"',
-          'typeof Blob': '"undefined"',
-          'typeof File': '"undefined"',
-          'typeof Image': '"undefined"',
-          'typeof Audio': '"undefined"',
-          'typeof Video': '"undefined"',
-          'typeof Canvas': '"undefined"',
-          'typeof WebGLRenderingContext': '"undefined"',
-          'typeof WebGL2RenderingContext': '"undefined"',
-          'typeof AudioContext': '"undefined"',
-          'typeof MediaStream': '"undefined"',
-          'typeof MediaRecorder': '"undefined"',
-          'typeof RTCPeerConnection': '"undefined"',
-          'typeof RTCDataChannel': '"undefined"',
-          'typeof BroadcastChannel': '"undefined"',
-          'typeof SharedWorker': '"undefined"',
-          'typeof Worker': '"undefined"',
-          'typeof ServiceWorker': '"undefined"',
-          'typeof Notification': '"undefined"',
-          'typeof PaymentRequest': '"undefined"',
-          'typeof PaymentResponse': '"undefined"',
-          'typeof PaymentAddress': '"undefined"',
-          'typeof PaymentMethodChangeEvent': '"undefined"',
-          'typeof PaymentRequestUpdateEvent': '"undefined"',
-          'typeof PaymentRequestEvent': '"undefined"',
-          'typeof PaymentHandlerResponse': '"undefined"',
-          'typeof PaymentHandlerWindow': '"undefined"',
-          'typeof PaymentInstruments': '"undefined"',
-          'typeof PaymentManager': '"undefined"',
-          // Ajouter des fallbacks supplémentaires pour éviter l'erreur 'self'
-          'self': 'undefined',
-          'globalThis': 'undefined',
-          'global': 'undefined'
-        })
-      );
-      
-      // Exclure les fichiers service worker du bundle serveur
-      config.externals = config.externals || [];
-      config.externals.push({
-        'sw.js': 'commonjs sw.js',
-        'workbox-*.js': 'commonjs workbox-*.js'
-      });
-      
-      // Utiliser le plugin personnalisé pour corriger les références à 'self'
-      config.plugins.push(new SelfReferenceFixerPlugin());
-      
-      // Ajouter un plugin pour ignorer complètement les fichiers service worker
-      config.plugins.push(
-        new (require('webpack').IgnorePlugin)({
-          resourceRegExp: /sw\.js|workbox-.*\.js/,
-          contextRegExp: /.*/
-        })
-      );
-      
-    } else {
-      // Configuration côté client
+      // Configuration côté serveur simplifiée
       config.resolve.fallback = {
         ...config.resolve.fallback,
         fs: false,
         net: false,
         tls: false,
       };
-      
-      // S'assurer que les service workers sont inclus côté client
-      config.module.rules.push({
-        test: /\.(sw\.js|workbox-.*\.js)$/,
-        type: 'asset/resource'
-      });
+    } else {
+      // Configuration côté client simplifiée
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+      };
     }
     
-    // Optimisation des chunks - désactivée pour Netlify
+    // Optimisation des chunks pour Netlify
     if (process.env.NETLIFY) {
       config.optimization.splitChunks = {
         chunks: 'all',
@@ -206,6 +57,52 @@ const nextConfig = {
           },
         },
       };
+    }
+
+    // Configuration webpack alternative pour éviter les erreurs
+    if (process.env.USE_ALTERNATIVE_WEBPACK === 'true') {
+      console.log('🔧 Utilisation de la configuration webpack alternative');
+      
+      // Désactiver les optimisations problématiques
+      config.optimization.minimize = false;
+      config.optimization.minimizer = [];
+      
+      // Configuration minimale
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+        crypto: false,
+        stream: false,
+        path: false,
+        os: false,
+      };
+      
+      return config;
+    }
+
+    // Ajouter le plugin SelfReferenceFixer de manière sécurisée
+    if (!process.env.DISABLE_SELF_REFERENCE_FIXER) {
+      try {
+        const SelfReferenceFixerPlugin = require('./lib/webpack-plugins/self-reference-fixer');
+        
+        // Vérifier que le plugin est valide avant de l'ajouter
+        if (SelfReferenceFixerPlugin && typeof SelfReferenceFixerPlugin === 'function') {
+          config.plugins.push(new SelfReferenceFixerPlugin({
+            replaceWith: 'undefined',
+            debug: process.env.NODE_ENV === 'development'
+          }));
+          console.log('✅ SelfReferenceFixer plugin ajouté avec succès');
+        } else {
+          console.warn('⚠️ SelfReferenceFixer plugin non valide, ignoré');
+        }
+      } catch (error) {
+        console.warn('⚠️ Impossible de charger SelfReferenceFixer plugin:', error.message);
+        // Continuer sans le plugin plutôt que de faire échouer le build
+      }
+    } else {
+      console.log('🚫 SelfReferenceFixer plugin désactivé par variable d\'environnement');
     }
     
     return config;

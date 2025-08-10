@@ -1,45 +1,44 @@
 #!/bin/bash
 
-# Script de build Netlify robuste pour éviter l'erreur 'self is not defined'
-# Ce script déplace temporairement tous les fichiers service worker pendant le build
+# Script de build Netlify simplifié et robuste
+# Ce script exécute le build Next.js avec des options optimisées pour Netlify
 
 set -e
 
 echo "🚀 Démarrage du build Netlify..."
 
-# Créer le répertoire temporaire pour les service workers
-echo "🔧 Préparation de l'environnement de build..."
-mkdir -p temp-sw
-
-# Déplacer tous les fichiers service worker
-echo "📦 Déplacement des fichiers service worker..."
-find public -name "sw*.js" -exec mv {} temp-sw/ \; 2>/dev/null || true
-find public -name "workbox*.js" -exec mv {} temp-sw/ \; 2>/dev/null || true
-find public -name "*sw*.js" -exec mv {} temp-sw/ \; 2>/dev/null || true
-find public -name "*workbox*" -exec mv {} temp-sw/ \; 2>/dev/null || true
-
-# Vérifier qu'aucun fichier service worker ne reste
-echo "🔍 Vérification des fichiers restants..."
-if find public -name "*workbox*" -o -name "*sw*.js" | grep -q .; then
-    echo "⚠️ Des fichiers service worker sont encore présents:"
-    find public -name "*workbox*" -o -name "*sw*.js"
-    echo "🗑️ Suppression forcée..."
-    find public -name "*workbox*" -o -name "*sw*.js" -delete
-else
-    echo "✅ Tous les fichiers service worker ont été déplacés"
+# Vérifier que nous sommes dans le bon répertoire
+if [ ! -f "package.json" ]; then
+    echo "❌ Erreur: package.json non trouvé. Assurez-vous d'être dans le répertoire racine du projet."
+    exit 1
 fi
 
-# Lister le contenu du répertoire temporaire
-echo "📋 Fichiers déplacés:"
-ls -la temp-sw/ 2>/dev/null || echo "Aucun fichier service worker trouvé"
+# Nettoyer les caches et builds précédents
+echo "🧹 Nettoyage des caches..."
+rm -rf .next
+rm -rf .swc
+rm -rf node_modules/.cache
 
-# Exécuter le build Next.js
+# Vérifier les dépendances
+echo "📦 Vérification des dépendances..."
+npm list --depth=0 || echo "⚠️ Certaines dépendances peuvent être manquantes"
+
+# Exécuter le build Next.js avec des options optimisées
 echo "🏗️ Exécution du build Next.js..."
-NEXT_TELEMETRY_DISABLED=1 next build --no-lint --debug
+export NEXT_TELEMETRY_DISABLED=1
+export NODE_ENV=production
 
-# Restaurer les fichiers service worker
-echo "🔄 Restauration des service workers..."
-mv temp-sw/* public/ 2>/dev/null || true
-rmdir temp-sw 2>/dev/null || true
+# Build avec options de débogage et sans linting
+next build --no-lint --debug
 
-echo "✅ Build terminé avec succès!" 
+# Vérifier que le build a réussi
+if [ -d ".next" ]; then
+    echo "✅ Build terminé avec succès!"
+    echo "📁 Contenu du répertoire .next:"
+    ls -la .next/
+else
+    echo "❌ Erreur: Le build a échoué - répertoire .next non trouvé"
+    exit 1
+fi
+
+echo "🎉 Build Netlify terminé avec succès!" 

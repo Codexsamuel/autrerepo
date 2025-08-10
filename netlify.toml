@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build:netlify:with-cleanup"
+  command = "npm run build:netlify:ultra-simple"
   publish = ".next"
   functions = "netlify/functions"
 
@@ -7,14 +7,14 @@
   skip_processing = false
 
 [build.environment]
-  NODE_VERSION = "20"
-  NPM_FLAGS = "--legacy-peer-deps --force"
-  NODE_OPTIONS = "--max-old-space-size=4096 --max-semi-space-size=512"
+  NODE_VERSION = "20.19.4"
+  NPM_FLAGS = "--legacy-peer-deps"
+  NODE_OPTIONS = "--max-old-space-size=4096"
   NEXT_TELEMETRY_DISABLED = "1"
   NPM_CONFIG_PRODUCTION = "false"
   NETLIFY = "true"
   NODE_ENV = "production"
-  NEXT_PUBLIC_NETLIFY = "1"
+  NEXT_PUBLIC_NETLIFY = "true"
   WEBPACK_SELF_FIXER = "true"
   DEBUG_SELF_REFERENCE_FIXER = "true"
   # Optimisations pour Netlify

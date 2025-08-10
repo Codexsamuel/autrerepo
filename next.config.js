@@ -8,7 +8,7 @@ const nextConfig = {
     optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
     // Configuration spécifique pour Netlify
     ...(process.env.NETLIFY && {
-      serverComponentsExternalPackages: [],
+      serverExternalPackages: [],
       // Désactiver les fonctionnalités qui peuvent causer des problèmes avec 'self'
       workerThreads: false,
       cpus: 1,

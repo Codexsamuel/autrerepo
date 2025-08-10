@@ -1,290 +1,401 @@
 "use client";
 
-import Script from 'next/script';
 import { useEffect } from 'react';
+import Head from 'next/head';
 
 interface AdvancedSEOProps {
-  pageType?: 'website' | 'article' | 'product' | 'organization';
-  pageTitle?: string;
-  pageDescription?: string;
-  pageUrl?: string;
-  pageImage?: string;
-  organizationName?: string;
-  organizationLogo?: string;
-  organizationAddress?: {
-    street: string;
-    city: string;
-    region: string;
-    country: string;
-    postalCode: string;
+  title: string;
+  description: string;
+  keywords: string[];
+  canonicalUrl: string;
+  ogImage: string;
+  ogImageAlt: string;
+  ogType: 'website' | 'article' | 'product' | 'profile';
+  twitterCard: 'summary' | 'summary_large_image' | 'app' | 'player';
+  article?: {
+    publishedTime: string;
+    modifiedTime: string;
+    author: string;
+    section: string;
+    tags: string[];
   };
-  organizationContact?: {
-    phone: string;
-    email: string;
+  product?: {
+    name: string;
+    description: string;
+    price: number;
+    currency: string;
+    availability: 'in stock' | 'out of stock' | 'preorder';
+    brand: string;
+    category: string;
+    images: string[];
   };
-  breadcrumbs?: Array<{
+  organization: {
     name: string;
     url: string;
-  }>;
+    logo: string;
+    description: string;
+    address: {
+      street: string;
+      city: string;
+      region: string;
+      postalCode: string;
+      country: string;
+    };
+    contact: {
+      phone: string;
+      email: string;
+      fax?: string;
+    };
+    social: {
+      facebook?: string;
+      twitter?: string;
+      linkedin?: string;
+      instagram?: string;
+      youtube?: string;
+    };
+  };
+  locale: string;
+  alternateLocales?: string[];
+  noindex?: boolean;
+  nofollow?: boolean;
+  noarchive?: boolean;
+  nosnippet?: boolean;
+  maxImagePreview?: 'none' | 'standard' | 'large';
+  maxVideoPreview?: number;
+  maxSnippet?: number;
 }
 
-export function AdvancedSEO({
-  pageType = 'website',
-  pageTitle = 'DL Solutions - Écosystème Digital Complet',
-  pageDescription = 'DL Solutions - Écosystème digital complet avec CRM, ERP, boutique internationale, formations professionnelles, et solutions sectorielles. Services premium avec livraison au Cameroun.',
-  pageUrl = 'https://dlsolutions.com',
-  pageImage = 'https://dlsolutions.com/images/og-dl-solutions.jpg',
-  organizationName = 'DL Solutions',
-  organizationLogo = 'https://dlsolutions.com/images/icon-192x192.svg',
-  organizationAddress = {
-    street: 'École de Police',
-    city: 'Yaoundé',
-    region: 'Centre',
-    country: 'Cameroun',
-    postalCode: '00000'
-  },
-  organizationContact = {
-    phone: '+237-XXX-XXX-XXX',
-    email: 'contact@dlsolutions.com'
-  },
-  breadcrumbs = []
+export default function AdvancedSEO({
+  title,
+  description,
+  keywords,
+  canonicalUrl,
+  ogImage,
+  ogImageAlt,
+  ogType,
+  twitterCard,
+  article,
+  product,
+  organization,
+  locale,
+  alternateLocales,
+  noindex = false,
+  nofollow = false,
+  noarchive = false,
+  nosnippet = false,
+  maxImagePreview = 'large',
+  maxVideoPreview = -1,
+  maxSnippet = -1
 }: AdvancedSEOProps) {
   
-  // Structured Data pour l'organisation
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": organizationName,
-    "alternateName": ["DL Solutions", "DL"],
-    "url": pageUrl,
-    "logo": {
-      "@type": "ImageObject",
-      "url": organizationLogo,
-      "width": 192,
-      "height": 192
-    },
-    "description": pageDescription,
-    "foundingDate": "2024",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": organizationAddress.street,
-      "addressLocality": organizationAddress.city,
-      "addressRegion": organizationAddress.region,
-      "addressCountry": organizationAddress.country,
-      "postalCode": organizationAddress.postalCode
-    },
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": organizationContact.phone,
-      "contactType": "customer service",
-      "email": organizationContact.email,
-      "availableLanguage": ["French", "English"]
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 3.848033,
-      "longitude": 11.502075
-    },
-    "sameAs": [
-      "https://linkedin.com/company/dl-solutions",
-      "https://facebook.com/dlsolutions",
-      "https://twitter.com/dlsolutions"
-    ],
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Services DL Solutions",
-      "itemListElement": [
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "CRM Solutions",
-            "description": "Solutions de gestion de la relation client"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Formations Professionnelles",
-            "description": "Formations certifiantes en technologies digitales"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Boutique Internationale",
-            "description": "Boutique en ligne avec produits du monde entier"
-          }
-        }
-      ]
-    }
-  };
-
-  // Structured Data pour le site web
-  const websiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": organizationName,
-    "url": pageUrl,
-    "description": pageDescription,
-    "inLanguage": ["fr", "en", "es"],
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": `${pageUrl}/search?q={search_term_string}`
-      },
-      "query-input": "required name=search_term_string"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": organizationName,
-      "logo": {
-        "@type": "ImageObject",
-        "url": organizationLogo
-      }
-    }
-  };
-
-  // Structured Data pour les breadcrumbs
-  const breadcrumbSchema = breadcrumbs.length > 0 ? {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": breadcrumbs.map((item, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "name": item.name,
-      "item": item.url
-    }))
-  } : null;
-
-  // Structured Data pour la page
-  const pageSchema = {
-    "@context": "https://schema.org",
-    "@type": pageType === 'article' ? 'Article' : pageType === 'product' ? 'Product' : 'WebPage',
-    "name": pageTitle,
-    "description": pageDescription,
-    "url": pageUrl,
-    "image": pageImage,
-    "publisher": {
-      "@type": "Organization",
-      "name": organizationName,
-      "logo": {
-        "@type": "ImageObject",
-        "url": organizationLogo
-      }
-    },
-    "mainEntity": {
-      "@type": "Organization",
-      "name": organizationName
-    }
-  };
-
   useEffect(() => {
-    // Ajouter les meta tags dynamiques
-    const addMetaTags = () => {
-      // Meta tags pour les réseaux sociaux
-      const metaTags = [
-        { property: 'og:title', content: pageTitle },
-        { property: 'og:description', content: pageDescription },
-        { property: 'og:url', content: pageUrl },
-        { property: 'og:image', content: pageImage },
-        { property: 'og:type', content: pageType },
-        { property: 'og:site_name', content: organizationName },
-        { name: 'twitter:title', content: pageTitle },
-        { name: 'twitter:description', content: pageDescription },
-        { name: 'twitter:image', content: pageImage },
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'author', content: organizationName },
-        { name: 'robots', content: 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' },
-        { name: 'googlebot', content: 'index, follow' },
-        { name: 'geo.region', content: 'CM' },
-        { name: 'geo.placename', content: 'Yaoundé, Cameroun' },
-        { name: 'geo.position', content: '3.848033;11.502075' },
-        { name: 'ICBM', content: '3.848033, 11.502075' }
-      ];
+    // Mise à jour dynamique des meta tags
+    updateMetaTags();
+    
+    // Ajout des données structurées
+    addStructuredData();
+    
+    // Ajout des meta tags de performance
+    addPerformanceMetaTags();
+    
+    // Ajout des meta tags d'accessibilité
+    addAccessibilityMetaTags();
+    
+    // Ajout des meta tags de sécurité
+    addSecurityMetaTags();
+    
+  }, [title, description, keywords, canonicalUrl, ogImage]);
 
-      metaTags.forEach(tag => {
-        const meta = document.createElement('meta');
-        if (tag.property) {
-          meta.setAttribute('property', tag.property);
-        }
-        if (tag.name) {
-          meta.setAttribute('name', tag.name);
-        }
-        meta.setAttribute('content', tag.content);
-        document.head.appendChild(meta);
+  const updateMetaTags = () => {
+    // Meta tags de base
+    updateMetaTag('title', title);
+    updateMetaTag('description', description);
+    updateMetaTag('keywords', keywords.join(', '));
+    updateMetaTag('author', organization.name);
+    updateMetaTag('canonical', canonicalUrl);
+    
+    // Meta tags de contrôle des robots
+    const robots = [];
+    if (noindex) robots.push('noindex');
+    if (nofollow) robots.push('nofollow');
+    if (noarchive) robots.push('noarchive');
+    if (nosnippet) robots.push('nosnippet');
+    if (robots.length === 0) robots.push('index', 'follow');
+    
+    updateMetaTag('robots', robots.join(', '));
+    updateMetaTag('googlebot', robots.join(', '));
+    updateMetaTag('bingbot', robots.join(', '));
+    
+    // Meta tags de performance
+    updateMetaTag('max-image-preview', maxImagePreview);
+    if (maxVideoPreview >= 0) updateMetaTag('max-video-preview', maxVideoPreview.toString());
+    if (maxSnippet >= 0) updateMetaTag('max-snippet', maxSnippet.toString());
+    
+    // Open Graph
+    updateMetaTag('og:title', title);
+    updateMetaTag('og:description', description);
+    updateMetaTag('og:image', ogImage);
+    updateMetaTag('og:image:alt', ogImageAlt);
+    updateMetaTag('og:url', canonicalUrl);
+    updateMetaTag('og:type', ogType);
+    updateMetaTag('og:site_name', organization.name);
+    updateMetaTag('og:locale', locale);
+    updateMetaTag('og:image:width', '1200');
+    updateMetaTag('og:image:height', '630');
+    
+    // Twitter Cards
+    updateMetaTag('twitter:card', twitterCard);
+    updateMetaTag('twitter:site', organization.social.twitter || '@dlsolutions');
+    updateMetaTag('twitter:creator', organization.social.twitter || '@dlsolutions');
+    updateMetaTag('twitter:title', title);
+    updateMetaTag('twitter:title', title);
+    updateMetaTag('twitter:description', description);
+    updateMetaTag('twitter:image', ogImage);
+    updateMetaTag('twitter:image:alt', ogImageAlt);
+    
+    // Locales alternatives
+    if (alternateLocales && alternateLocales.length > 0) {
+      alternateLocales.forEach(altLocale => {
+        const link = document.createElement('link');
+        link.rel = 'alternate';
+        link.hreflang = altLocale;
+        link.href = canonicalUrl.replace(locale, altLocale);
+        document.head.appendChild(link);
       });
+    }
+  };
+
+  const updateMetaTag = (name: string, content: string) => {
+    let element = document.querySelector(`meta[name="${name}"]`) || 
+                 document.querySelector(`meta[property="${name}"]`);
+    
+    if (element) {
+      element.setAttribute('content', content);
+    } else {
+      const meta = document.createElement('meta');
+      if (name.startsWith('og:')) {
+        meta.setAttribute('property', name);
+      } else if (name.startsWith('twitter:')) {
+        meta.setAttribute('name', name);
+      } else {
+        meta.setAttribute('name', name);
+      }
+      meta.setAttribute('content', content);
+      document.head.appendChild(meta);
+    }
+  };
+
+  const addPerformanceMetaTags = () => {
+    const performanceTags = [
+      { name: 'viewport', content: 'width=device-width, initial-scale=1, shrink-to-fit=no' },
+      { name: 'theme-color', content: '#2563eb' },
+      { name: 'msapplication-TileColor', content: '#2563eb' },
+      { name: 'apple-mobile-web-app-capable', content: 'yes' },
+      { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
+      { name: 'apple-mobile-web-app-title', content: organization.name },
+      { name: 'format-detection', content: 'telephone=no' },
+      { name: 'mobile-web-app-capable', content: 'yes' },
+      { name: 'application-name', content: organization.name }
+    ];
+
+    performanceTags.forEach(tag => {
+      updateMetaTag(tag.name, tag.content);
+    });
+  };
+
+  const addAccessibilityMetaTags = () => {
+    const accessibilityTags = [
+      { name: 'language', content: locale },
+      { name: 'distribution', content: 'global' },
+      { name: 'rating', content: 'general' },
+      { name: 'revisit-after', content: '7 days' },
+      { name: 'generator', content: 'Next.js' },
+      { name: 'creator', content: organization.name },
+      { name: 'publisher', content: organization.name }
+    ];
+
+    accessibilityTags.forEach(tag => {
+      updateMetaTag(tag.name, tag.content);
+    });
+  };
+
+  const addSecurityMetaTags = () => {
+    const securityTags = [
+      { name: 'referrer', content: 'strict-origin-when-cross-origin' },
+      { name: 'x-frame-options', content: 'SAMEORIGIN' },
+      { name: 'x-content-type-options', content: 'nosniff' },
+      { name: 'x-xss-protection', content: '1; mode=block' },
+      { name: 'permissions-policy', content: 'camera=(), microphone=(), geolocation=()' }
+    ];
+
+    securityTags.forEach(tag => {
+      updateMetaTag(tag.name, tag.content);
+    });
+  };
+
+  const addStructuredData = () => {
+    // Supprimer les anciennes données structurées
+    const existingScripts = document.querySelectorAll('script[type="application/ld+json"]');
+    existingScripts.forEach(script => script.remove());
+
+    // Données structurées de base
+    const baseData = {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": title,
+      "description": description,
+      "url": canonicalUrl,
+      "inLanguage": locale,
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": organization.name,
+        "url": organization.url,
+        "description": organization.description
+      },
+      "about": {
+        "@type": "Organization",
+        "name": organization.name,
+        "url": organization.url,
+        "logo": organization.logo,
+        "description": organization.description,
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": organization.address.street,
+          "addressLocality": organization.address.city,
+          "addressRegion": organization.address.region,
+          "postalCode": organization.address.postalCode,
+          "addressCountry": organization.address.country
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": organization.contact.phone,
+          "email": organization.contact.email,
+          "contactType": "customer service",
+          "availableLanguage": ["French", "English"]
+        },
+        "sameAs": Object.values(organization.social).filter(Boolean)
+      }
     };
 
-    addMetaTags();
-  }, [pageTitle, pageDescription, pageUrl, pageImage, pageType, organizationName]);
+    // Ajouter les données d'article si disponibles
+    if (article) {
+      baseData["@type"] = "Article";
+      baseData["datePublished"] = article.publishedTime;
+      baseData["dateModified"] = article.modifiedTime;
+      baseData["author"] = {
+        "@type": "Person",
+        "name": article.author
+      };
+      baseData["articleSection"] = article.section;
+      baseData["keywords"] = article.tags.join(', ');
+    }
+
+    // Ajouter les données de produit si disponibles
+    if (product) {
+      baseData["mainEntity"] = {
+        "@type": "Product",
+        "name": product.name,
+        "description": product.description,
+        "brand": {
+          "@type": "Brand",
+          "name": product.brand
+        },
+        "category": product.category,
+        "offers": {
+          "@type": "Offer",
+          "price": product.price.toString(),
+          "priceCurrency": product.currency,
+          "availability": `https://schema.org/${product.availability.replace(' ', '')}`,
+          "seller": {
+            "@type": "Organization",
+            "name": organization.name,
+            "url": organization.url
+          }
+        },
+        "image": product.images
+      };
+    }
+
+    // Ajouter les données de navigation
+    const breadcrumbData = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Accueil",
+          "item": organization.url
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": title,
+          "item": canonicalUrl
+        }
+      ]
+    };
+
+    // Ajouter les deux scripts de données structurées
+    const script1 = document.createElement('script');
+    script1.type = 'application/ld+json';
+    script1.textContent = JSON.stringify(baseData);
+    document.head.appendChild(script1);
+
+    const script2 = document.createElement('script');
+    script2.type = 'application/ld+json';
+    script2.textContent = JSON.stringify(breadcrumbData);
+    document.head.appendChild(script2);
+  };
 
   return (
-    <>
-      {/* Structured Data JSON-LD */}
-      <Script
-        id="organization-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(organizationSchema)
-        }}
-      />
+    <Head>
+      {/* Meta tags de base */}
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <meta name="keywords" content={keywords.join(', ')} />
+      <meta name="author" content={organization.name} />
       
-      <Script
-        id="website-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(websiteSchema)
-        }}
-      />
+      {/* Canonical URL */}
+      <link rel="canonical" href={canonicalUrl} />
       
-      <Script
-        id="page-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(pageSchema)
-        }}
-      />
+      {/* Locale */}
+      <link rel="alternate" hrefLang={locale} href={canonicalUrl} />
       
-      {breadcrumbSchema && (
-        <Script
-          id="breadcrumb-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(breadcrumbSchema)
-          }}
-        />
-      )}
-
-      {/* Google Analytics Enhanced Ecommerce */}
-      <Script
-        id="ga-enhanced-ecommerce"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            if (typeof gtag !== 'undefined') {
-              gtag('config', 'GA_MEASUREMENT_ID', {
-                page_title: '${pageTitle}',
-                page_location: '${pageUrl}',
-                custom_map: {
-                  'custom_dimension1': 'page_type',
-                  'custom_dimension2': 'organization'
-                }
-              });
-              
-              gtag('event', 'page_view', {
-                page_title: '${pageTitle}',
-                page_location: '${pageUrl}',
-                custom_dimension1: '${pageType}',
-                custom_dimension2: '${organizationName}'
-              });
-            }
-          `
-        }}
-      />
-    </>
+      {/* Préchargement des ressources critiques */}
+      <link rel="preload" href={ogImage} as="image" />
+      <link rel="dns-prefetch" href="//www.google-analytics.com" />
+      <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+      <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+      <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+      
+      {/* Favicon et icônes */}
+      <link rel="icon" href="/favicon.ico" />
+      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+      <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+      <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+      <link rel="manifest" href="/manifest.json" />
+      
+      {/* Microsoft Tiles */}
+      <meta name="msapplication-config" content="/browserconfig.xml" />
+      <meta name="msapplication-TileImage" content="/mstile-144x144.png" />
+      
+      {/* PWA */}
+      <meta name="mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+      <meta name="apple-mobile-web-app-title" content={organization.name} />
+      
+      {/* Performance */}
+      <meta name="format-detection" content="telephone=no" />
+      <meta name="theme-color" content="#2563eb" />
+      <meta name="color-scheme" content="light dark" />
+      
+      {/* Accessibilité */}
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+      <meta name="generator" content="Next.js" />
+      <meta name="creator" content={organization.name} />
+      <meta name="publisher" content={organization.name} />
+    </Head>
   );
-} 
+}

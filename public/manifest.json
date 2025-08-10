@@ -1,79 +1,131 @@
 {
-  "name": "DL Solutions - Plateforme de Simulation de Drones",
+  "name": "DL Solutions - Écosystème Digital Ultra-Avancé",
   "short_name": "DL Solutions",
-  "description": "Plateforme professionnelle de simulation de drones avec IA avancée, réalité virtuelle et analytics en temps réel",
+  "description": "Écosystème digital ultra-avancé avec IA souveraine, CRM, ERP, métavers et solutions innovantes au Cameroun",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#3b82f6",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "fr",
   "dir": "ltr",
-  "categories": ["business", "productivity", "technology", "education"],
+  "categories": [
+    "business",
+    "productivity",
+    "utilities",
+    "finance",
+    "education",
+    "entertainment"
+  ],
   "icons": [
     {
-      "src": "/images/logos/logo-dl.png",
+      "src": "/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/images/logos/logo-dl.png",
+      "src": "/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/images/logos/logo-dl.png",
-      "sizes": "1024x1024",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
     }
   ],
   "screenshots": [
     {
-      "src": "/images/screenshots/drone-simulator.png",
+      "src": "/screenshots/novacore-dashboard.png",
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Simulateur de Drones DL Solutions"
+      "label": "Tableau de bord NovaCore CRM/ERP"
     },
     {
-      "src": "/images/screenshots/investor-demo.png",
+      "src": "/screenshots/novaworld-metaverse.png",
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Démo Investisseurs"
+      "label": "NovaWorld - Métavers et IA"
+    },
+    {
+      "src": "/screenshots/dl-style-ecommerce.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "DL-Style - E-commerce"
     }
   ],
   "shortcuts": [
     {
-      "name": "Simulateur Drones",
-      "short_name": "Simulateur",
-      "description": "Accéder au simulateur de drones",
-      "url": "/drone-simulator",
+      "name": "NovaCore CRM",
+      "short_name": "NovaCore",
+      "description": "Accéder rapidement au CRM NovaCore",
+      "url": "/novacore",
       "icons": [
         {
-          "src": "/images/logos/logo-dl.png",
+          "src": "/icons/novacore-icon.png",
           "sizes": "96x96"
         }
       ]
     },
     {
-      "name": "Démo Investisseurs",
-      "short_name": "Démo",
-      "description": "Voir la démo pour investisseurs",
-      "url": "/investor-demo",
+      "name": "NovaWorld IA",
+      "short_name": "NovaWorld",
+      "description": "Accéder à NovaWorld IA et Métavers",
+      "url": "/novaworld",
       "icons": [
         {
-          "src": "/images/logos/logo-dl.png",
+          "src": "/icons/novaworld-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Tarifs",
+      "short_name": "Tarifs",
+      "description": "Voir nos tarifs et plans",
+      "url": "/novacore/pricing",
+      "icons": [
+        {
+          "src": "/icons/pricing-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Contact",
+      "short_name": "Contact",
+      "description": "Nous contacter",
+      "url": "/contact",
+      "icons": [
+        {
+          "src": "/icons/contact-icon.png",
           "sizes": "96x96"
         }
       ]
     }
   ],
-  "related_applications": [],
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://dlsolutionssarl.tech"
+    }
+  ],
   "prefer_related_applications": false,
   "edge_side_panel": {
     "preferred_width": 400
@@ -81,10 +133,69 @@
   "launch_handler": {
     "client_mode": "navigate-existing"
   },
+  "handle_links": "preferred",
   "protocol_handlers": [
     {
-      "protocol": "web+dl",
-      "url": "/?protocol=%s"
+      "protocol": "web+novacore",
+      "url": "/novacore?action=%s"
+    },
+    {
+      "protocol": "web+novaworld",
+      "url": "/novaworld?action=%s"
     }
-  ]
+  ],
+  "file_handlers": [
+    {
+      "action": "/file-handler",
+      "accept": {
+        "application/pdf": [".pdf"],
+        "image/*": [".png", ".jpg", ".jpeg", ".gif", ".webp"],
+        "text/*": [".txt", ".md", ".html", ".css", ".js"]
+      }
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "files",
+          "accept": ["image/*", "application/pdf", "text/*"]
+        }
+      ]
+    }
+  },
+  "permissions": [
+    "notifications",
+    "geolocation",
+    "camera",
+    "microphone",
+    "storage"
+  ],
+  "features": [
+    "Cross Platform",
+    "fast",
+    "simple",
+    "responsive",
+    "offline",
+    "push notifications",
+    "background sync",
+    "file handling",
+    "share target",
+    "protocol handling",
+    "shortcuts",
+    "edge side panel"
+  ],
+  "developer": {
+    "name": "DL Solutions SARL",
+    "url": "https://dlsolutionssarl.tech"
+  },
+  "version": "2.0.0",
+  "minimum_version": "1.0.0",
+  "generated": "2025-01-27T12:00:00Z"
 } 

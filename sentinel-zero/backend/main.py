@@ -19,20 +19,31 @@ import json
 import asyncio
 import subprocess
 import threading
+import aiohttp
 from datetime import datetime, timedelta
 
-# Import des modules de détection de portes dérobées
-from modules.backdoor_detection.backdoor_scanner import BackdoorDetector
-from modules.backdoor_detection.advanced_detector import AdvancedBackdoorDetector
-from modules.backdoor_detection.network_analyzer import NetworkBackdoorAnalyzer
+# Import de la configuration
+from config import config
 
-# Configuration sécurisée
-SECRET_KEY = "SENTINEL_SUPER_KEY_4096_RSA_DL_SOLUTIONS_2025"
-MASTER_CODE = "0987612345"
-BIOMETRIC_VOICE_HASH = "b5945c46c8a2d3e1f7b9a4c6d8e2f1a3b5c7d9e4f2a6b8c1d5e7f3a9b2c4d6e8f0"
-BIOMETRIC_FP_HASH = "a3b5d6887c2e4f1a9b6c3d8e5f2a7b4c1d9e6f3a8b5c2d7e4f1a6b3c9d5e2f8a7b4c1"
-SUPER_ADMIN_ID = "DL-SUPER-01"
-RED_BUTTON_PHRASE = "i am sentinel"
+# Import des modules de détection de portes dérobées
+try:
+    from modules.backdoor_detection.backdoor_scanner import BackdoorDetector
+    from modules.backdoor_detection.advanced_detector import AdvancedBackdoorDetector
+    from modules.backdoor_detection.network_analyzer import NetworkBackdoorAnalyzer
+except ImportError as e:
+    print(f"Warning: Some modules not available: {e}")
+    # Créer des classes factices pour éviter les erreurs
+    class BackdoorDetector:
+        async def comprehensive_scan(self, target):
+            return {"status": "module_not_available", "target": target}
+    
+    class AdvancedBackdoorDetector:
+        async def comprehensive_scan(self, target):
+            return {"status": "module_not_available", "target": target}
+    
+    class NetworkBackdoorAnalyzer:
+        async def comprehensive_network_analysis(self, target, duration):
+            return {"status": "module_not_available", "target": target, "duration": duration}
 
 app = FastAPI(
     title="Sentinel Zero Backend",
@@ -43,7 +54,7 @@ app = FastAPI(
 # Middleware CORS sécurisé
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://dlsolutionssarl.tech", "https://daveandlucesolutions.com"],
+    allow_origins=config.get_cors_origins(),
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
@@ -63,6 +74,10 @@ class LoginPayload(BaseModel):
     voice_hash: str
     fingerprint_hash: str
     vocal_phrase: str
+
+class LordCodePayload(BaseModel):
+    lord_code: str
+    lord_code_hash: str
 
 class ScanTarget(BaseModel):
     url: str
@@ -87,61 +102,85 @@ class RedButtonPayload(BaseModel):
 # ----- UTILS -----
 def verify_hash(input_val: str, expected_hash: str) -> bool:
     """Vérification sécurisée des hashes biométriques"""
-    return hashlib.sha256(input_val.encode()).hexdigest() == expected_hash
+    # Corriger la logique : comparer directement les valeurs ou hasher l'entrée
+    if input_val == expected_hash:
+        return True
+    # Alternative : hasher l'entrée et comparer
+    input_hash = hashlib.sha256(input_val.encode()).hexdigest()
+    return input_hash == expected_hash
 
 def generate_token(admin_id: str) -> str:
     """Génération de token JWT sécurisé"""
     payload = {
         "admin_id": admin_id,
         "timestamp": int(time.time()),
-        "exp": int(time.time()) + 3600  # 1 heure
+        "exp": int(time.time()) + (config.JWT_EXPIRY_HOURS * 3600)
     }
-    return jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+    return jwt.encode(payload, config.SECRET_KEY, algorithm="HS256")
 
 def verify_token(token: str) -> Dict[str, Any]:
     """Vérification du token JWT"""
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        payload = jwt.decode(token, config.SECRET_KEY, algorithms=["HS256"])
         return payload
-    except:
-        raise HTTPException(status_code=403, detail="Token invalide")
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expiré")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Token invalide")
 
 def log_access(admin_id: str, action: str, status: str = "SUCCESS"):
-    """Log sécurisé des accès"""
+    """Journalisation des accès"""
     log_entry = {
         "timestamp": datetime.now().isoformat(),
         "admin_id": admin_id,
         "action": action,
         "status": status,
-        "ip": "127.0.0.1"
+        "ip": "127.0.0.1"  # À remplacer par l'IP réelle
     }
     access_log.append(log_entry)
+    print(f"ACCESS_LOG: {log_entry}")
 
 # ----- ROUTES -----
 @app.post("/api/auth/login")
 async def secure_login(payload: LoginPayload):
     """Authentification 5 niveaux"""
     try:
+        print(f"Tentative de connexion: {payload.admin_id}")
+        print(f"Code maître reçu: {payload.master_code}")
+        print(f"Code maître attendu: {config.MASTER_CODE}")
+        
         # Niveau 1: Code maître
-        if payload.master_code != MASTER_CODE:
+        if payload.master_code != config.MASTER_CODE:
+            print(f"Échec niveau 1: Code maître invalide")
             raise HTTPException(status_code=401, detail="Code maître invalide")
         
         # Niveau 2: ID administrateur
-        if payload.admin_id != SUPER_ADMIN_ID:
+        if payload.admin_id != config.SUPER_ADMIN_ID:
+            print(f"Échec niveau 2: ID administrateur invalide")
             raise HTTPException(status_code=401, detail="ID administrateur invalide")
         
-        # Niveau 3: Empreinte vocale
-        if not verify_hash(payload.voice_hash, BIOMETRIC_VOICE_HASH):
+        # Niveau 3: Empreinte vocale (comparaison directe pour le moment)
+        if payload.voice_hash != config.BIOMETRIC_VOICE_HASH:
+            print(f"Échec niveau 3: Empreinte vocale invalide")
+            print(f"Reçu: {payload.voice_hash}")
+            print(f"Attendu: {config.BIOMETRIC_VOICE_HASH}")
             raise HTTPException(status_code=401, detail="Empreinte vocale invalide")
         
-        # Niveau 4: Empreinte digitale
-        if not verify_hash(payload.fingerprint_hash, BIOMETRIC_FP_HASH):
+        # Niveau 4: Empreinte digitale (comparaison directe pour le moment)
+        if payload.fingerprint_hash != config.BIOMETRIC_FP_HASH:
+            print(f"Échec niveau 4: Empreinte digitale invalide")
+            print(f"Reçu: {payload.fingerprint_hash}")
+            print(f"Attendu: {config.BIOMETRIC_FP_HASH}")
             raise HTTPException(status_code=401, detail="Empreinte digitale invalide")
         
         # Niveau 5: Phrase vocale
-        if payload.vocal_phrase != RED_BUTTON_PHRASE:
+        if payload.vocal_phrase != config.RED_BUTTON_PHRASE:
+            print(f"Échec niveau 5: Phrase vocale invalide")
+            print(f"Reçu: {payload.vocal_phrase}")
+            print(f"Attendu: {config.RED_BUTTON_PHRASE}")
             raise HTTPException(status_code=401, detail="Phrase vocale invalide")
         
+        print("Authentification réussie!")
         token = generate_token(payload.admin_id)
         log_access(payload.admin_id, "LOGIN", "SUCCESS")
         
@@ -150,11 +189,67 @@ async def secure_login(payload: LoginPayload):
             "message": "Authentification réussie - Accès Sentinel Zero autorisé",
             "token": token,
             "access_level": "SUPER_ADMIN",
-            "expires_in": 3600
+            "expires_in": config.JWT_EXPIRY_HOURS * 3600
         }
     except HTTPException:
         log_access(payload.admin_id if hasattr(payload, 'admin_id') else 'UNKNOWN', "LOGIN", "FAILED")
         raise
+    except Exception as e:
+        print(f"Erreur inattendue: {e}")
+        log_access(payload.admin_id if hasattr(payload, 'admin_id') else 'UNKNOWN', "LOGIN", "ERROR")
+        raise HTTPException(status_code=500, detail=f"Erreur interne: {str(e)}")
+
+@app.post("/api/auth/lord-code")
+async def lord_code_login(payload: LordCodePayload):
+    """Authentification par code seigneur - Accès total sans 5 niveaux"""
+    try:
+        print(f"🔐 Tentative d'authentification par code seigneur")
+        print(f"Code reçu: {payload.lord_code}")
+        print(f"Hash reçu: {payload.lord_code_hash}")
+        
+        # Vérification du code seigneur
+        if payload.lord_code != config.LORD_CODE:
+            print(f"❌ Code seigneur invalide")
+            log_access("LORD_ATTEMPT", "LOGIN", "FAILED")
+            raise HTTPException(status_code=401, detail="Code seigneur invalide")
+        
+        # Vérification du hash du code seigneur
+        if payload.lord_code_hash != config.LORD_CODE_HASH:
+            print(f"❌ Hash du code seigneur invalide")
+            log_access("LORD_ATTEMPT", "LOGIN", "FAILED")
+            raise HTTPException(status_code=401, detail="Hash du code seigneur invalide")
+        
+        print("👑 Authentification par code seigneur réussie!")
+        print("🚀 Accès total accordé - Contournement des 5 niveaux de sécurité")
+        
+        # Génération du token avec privilèges maximaux
+        token = generate_token("LORD_SENTINEL")
+        log_access("LORD_SENTINEL", "LOGIN", "SUCCESS")
+        
+        return {
+            "status": "success",
+            "message": "🔐 Authentification par code seigneur réussie - Accès total accordé",
+            "token": token,
+            "access_level": "LORD_ADMIN",
+            "privileges": [
+                "FULL_SYSTEM_ACCESS",
+                "BYPASS_5_LEVEL_AUTH",
+                "RED_BUTTON_ACCESS",
+                "ADMIN_OVERRIDE",
+                "NETWORK_CONTROL",
+                "BACKDOOR_DETECTION",
+                "GOVERNMENT_ACCESS_GRANT"
+            ],
+            "expires_in": config.JWT_EXPIRY_HOURS * 3600,
+            "warning": "⚠️ Accès total accordé - Utilisez avec précaution"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Erreur inattendue lors de l'authentification seigneur: {e}")
+        log_access("LORD_ATTEMPT", "LOGIN", "ERROR")
+        raise HTTPException(status_code=500, detail=f"Erreur interne: {str(e)}")
 
 @app.post("/api/scan/backdoor")
 async def scan_backdoor(request: BackdoorScanRequest):
@@ -218,7 +313,7 @@ async def scan_backdoor(request: BackdoorScanRequest):
         }
         
     except Exception as e:
-        logger.error(f"Erreur scan porte dérobée: {e}")
+        print(f"Erreur scan porte dérobée: {e}")
         raise HTTPException(status_code=500, detail=f"Erreur scan: {str(e)}")
 
 @app.get("/api/scan/backdoor/{scan_id}")

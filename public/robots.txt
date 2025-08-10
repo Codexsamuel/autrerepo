@@ -1,0 +1,137 @@
+User-agent: *
+Allow: /
+Allow: /portfolio
+Allow: /portfolio/batobaye
+Allow: /services
+Allow: /a-propos
+Allow: /contact
+Allow: /dl-style
+Allow: /novaworld
+Allow: /novacore
+Allow: /novacore/pricing
+Allow: /marketing-digital
+Allow: /e-commerce
+Allow: /formations
+Allow: /capacites-techniques
+Allow: /devis
+Allow: /rendez-vous
+Allow: /solutions
+Allow: /solutions/immobilier
+Allow: /solutions/hospitalier
+Allow: /solutions/banque
+Allow: /solutions/assurance
+Allow: /nova-ia
+Allow: /sentinel-zero
+Allow: /quantum-intelligence
+Allow: /trading
+Allow: /trading-charts
+Allow: /drones
+Allow: /dl-transport
+Allow: /dl-immobilier
+
+# Pages sensibles non indexées
+Disallow: /admin
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /novacore/checkout
+Disallow: /sign-in
+Disallow: /sign-up
+Disallow: /dashboard
+Disallow: /intranet
+
+# Règles spéciales pour Googlebot
+User-agent: Googlebot
+Allow: /
+Allow: /portfolio
+Allow: /portfolio/batobaye
+Allow: /services
+Allow: /a-propos
+Allow: /contact
+Allow: /dl-style
+Allow: /novaworld
+Allow: /novacore
+Allow: /novacore/pricing
+Allow: /marketing-digital
+Allow: /e-commerce
+Allow: /formations
+Allow: /capacites-techniques
+Allow: /devis
+Allow: /rendez-vous
+Allow: /solutions
+Allow: /solutions/immobilier
+Allow: /solutions/hospitalier
+Allow: /solutions/banque
+Allow: /solutions/assurance
+Allow: /nova-ia
+Allow: /sentinel-zero
+Allow: /quantum-intelligence
+Allow: /trading
+Allow: /trading-charts
+Allow: /drones
+Allow: /dl-transport
+Allow: /dl-immobilier
+
+Disallow: /admin
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /novacore/checkout
+Disallow: /sign-in
+Disallow: /sign-up
+Disallow: /dashboard
+Disallow: /intranet
+
+# Règles pour Bingbot
+User-agent: Bingbot
+Allow: /
+Allow: /portfolio
+Allow: /portfolio/batobaye
+Allow: /services
+Allow: /a-propos
+Allow: /contact
+Allow: /dl-style
+Allow: /novaworld
+Allow: /novacore
+Allow: /novacore/pricing
+Allow: /marketing-digital
+Allow: /e-commerce
+Allow: /formations
+Allow: /capacites-techniques
+Allow: /devis
+Allow: /rendez-vous
+Allow: /solutions
+Allow: /solutions/immobilier
+Allow: /solutions/hospitalier
+Allow: /solutions/banque
+Allow: /solutions/assurance
+Allow: /nova-ia
+Allow: /sentinel-zero
+Allow: /quantum-intelligence
+Allow: /trading
+Allow: /trading-charts
+Allow: /drones
+Allow: /dl-transport
+Allow: /dl-immobilier
+
+Disallow: /admin
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /novacore/checkout
+Disallow: /sign-in
+Disallow: /sign-up
+Disallow: /dashboard
+Disallow: /intranet
+
+# Délai de crawl pour éviter la surcharge
+Crawl-delay: 1
+
+# Sitemap principal
+Sitemap: https://dlsolutionssarl.tech/sitemap.xml
+
+# Host principal
+Host: https://dlsolutionssarl.tech 

@@ -1,0 +1,274 @@
+apiVersion: admission.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: opa-validating-webhook
+  labels:
+    app: opa
+    component: security
+    security: high
+    environment: production
+    role: policy-enforcer
+  annotations:
+    security_level: high
+    audit_enabled: "true"
+    log_level: info
+    gdpr_compliant: "true"
+    disaster_recovery_plan: "dr-plan-001"
+    backup_schedule: "daily"
+    encryption_at_rest: "true"
+    rate_limit_enabled: "true"
+    approval_required: "false"
+webhooks:
+- name: validating-webhook.openpolicyagent.org
+  rules:
+  - operations: ["CREATE", "UPDATE"]
+    apiGroups: [""]
+    apiVersions: ["v1"]
+    resources: ["pods", "services", "secrets", "configmaps", "persistentvolumeclaims"]
+  - operations: ["CREATE", "UPDATE"]
+    apiGroups: ["apps"]
+    apiVersions: ["v1"]
+    resources: ["deployments", "replicasets", "statefulsets", "daemonsets"]
+  - operations: ["CREATE", "UPDATE"]
+    apiGroups: ["networking.k8s.io"]
+    apiVersions: ["v1"]
+    resources: ["networkpolicies", "ingresses"]
+  - operations: ["CREATE", "UPDATE"]
+    apiGroups: ["rbac.authorization.k8s.io"]
+    apiVersions: ["v1"]
+    resources: ["roles", "rolebindings", "clusterroles", "clusterrolebindings"]
+  - operations: ["CREATE", "UPDATE"]
+    apiGroups: ["storage.k8s.io"]
+    apiVersions: ["v1"]
+    resources: ["storageclasses", "persistentvolumes"]
+  - operations: ["CREATE", "UPDATE"]
+    apiGroups: ["batch"]
+    apiVersions: ["v1"]
+    resources: ["jobs", "cronjobs"]
+  - operations: ["CREATE", "UPDATE"]
+    apiGroups: ["autoscaling"]
+    apiVersions: ["v2"]
+    resources: ["horizontalpodautoscalers"]
+  clientConfig:
+    service:
+      namespace: opa-system
+      name: opa
+      path: /v1/admit
+      port: 8181
+    caBundle: ${CA_BUNDLE}
+  admissionReviewVersions: ["v1"]
+  sideEffects: None
+  timeoutSeconds: 10
+  failurePolicy: Fail
+  matchPolicy: Equivalent
+  namespaceSelector:
+    matchExpressions:
+    - key: security
+      operator: In
+      values:
+      - high
+      - medium
+  objectSelector:
+    matchExpressions:
+    - key: security
+      operator: In
+      values:
+      - high
+      - medium
+---
+apiVersion: admission.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: opa-mutating-webhook
+  labels:
+    app: opa
+    component: security
+    security: high
+    environment: production
+    role: policy-enforcer
+  annotations:
+    security_level: high
+    audit_enabled: "true"
+    log_level: info
+    gdpr_compliant: "true"
+    disaster_recovery_plan: "dr-plan-001"
+    backup_schedule: "daily"
+    encryption_at_rest: "true"
+    rate_limit_enabled: "true"
+    approval_required: "false"
+webhooks:
+- name: mutating-webhook.openpolicyagent.org
+  rules:
+  - operations: ["CREATE", "UPDATE"]
+    apiGroups: [""]
+    apiVersions: ["v1"]
+    resources: ["pods"]
+  - operations: ["CREATE", "UPDATE"]
+    apiGroups: ["apps"]
+    apiVersions: ["v1"]
+    resources: ["deployments", "statefulsets", "daemonsets"]
+  clientConfig:
+    service:
+      namespace: opa-system
+      name: opa
+      path: /v1/mutate
+      port: 8181
+    caBundle: ${CA_BUNDLE}
+  admissionReviewVersions: ["v1"]
+  sideEffects: None
+  timeoutSeconds: 10
+  failurePolicy: Ignore
+  matchPolicy: Equivalent
+  namespaceSelector:
+    matchExpressions:
+    - key: security
+      operator: In
+      values:
+      - high
+      - medium
+  objectSelector:
+    matchExpressions:
+    - key: security
+      operator: In
+      values:
+      - high
+      - medium
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: opa-secrets
+  namespace: opa-system
+  labels:
+    app: opa
+    component: security
+    security: high
+    environment: production
+    role: policy-enforcer
+  annotations:
+    security_level: high
+    audit_enabled: "true"
+    log_level: info
+    gdpr_compliant: "true"
+    disaster_recovery_plan: "dr-plan-001"
+    backup_schedule: "daily"
+    encryption_at_rest: "true"
+    rate_limit_enabled: "true"
+    approval_required: "false"
+type: Opaque
+data:
+  bearer-token: ${OPA_BEARER_TOKEN_B64}
+  ca-cert: ${CA_CERT_B64}
+  tls-cert: ${TLS_CERT_B64}
+  tls-key: ${TLS_KEY_B64}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: opa-network-policy
+  namespace: opa-system
+  labels:
+    app: opa
+    component: security
+    security: high
+    environment: production
+    role: policy-enforcer
+  annotations:
+    security_level: high
+    audit_enabled: "true"
+    log_level: info
+    gdpr_compliant: "true"
+    disaster_recovery_plan: "dr-plan-001"
+    backup_schedule: "daily"
+    encryption_at_rest: "true"
+    rate_limit_enabled: "true"
+    approval_required: "false"
+spec:
+  podSelector:
+    matchLabels:
+      app: opa
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: kube-system
+    ports:
+    - protocol: TCP
+      port: 8181
+    - protocol: TCP
+      port: 8182
+    - protocol: TCP
+      port: 8183
+  - from:
+    - podSelector:
+        matchLabels:
+          app: kube-apiserver
+    ports:
+    - protocol: TCP
+      port: 8181
+    - protocol: TCP
+      port: 8182
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: kube-system
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 6443
+  - to:
+    - podSelector:
+        matchLabels:
+          app: kube-apiserver
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 6443
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+---
+apiVersion: v1
+kind: ServiceMonitor
+metadata:
+  name: opa-monitor
+  namespace: opa-system
+  labels:
+    app: opa
+    component: security
+    security: high
+    environment: production
+    role: policy-enforcer
+    release: prometheus
+  annotations:
+    security_level: high
+    audit_enabled: "true"
+    log_level: info
+    gdpr_compliant: "true"
+    disaster_recovery_plan: "dr-plan-001"
+    backup_schedule: "daily"
+    encryption_at_rest: "true"
+    rate_limit_enabled: "true"
+    approval_required: "false"
+spec:
+  selector:
+    matchLabels:
+      app: opa
+  endpoints:
+  - port: metrics
+    interval: 30s
+    scrapeTimeout: 10s
+    path: /metrics
+    honorLabels: true
+  namespaceSelector:
+    matchNames:
+    - opa-system 

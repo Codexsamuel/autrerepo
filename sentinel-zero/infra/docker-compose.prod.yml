@@ -1,0 +1,370 @@
+version: "3.8"
+
+services:
+  # === NOVABOT (Orchestrateur) ===
+  novabot:
+    build:
+      context: ../services/novabot
+      dockerfile: Dockerfile
+    container_name: sentinel-novabot
+    ports:
+      - "8001:8001"
+    environment:
+      - NOVA_ENV=production
+      - NOVA_SECRET_KEY=${NOVA_SECRET_KEY}
+      - NOVA_DB_URL=${NOVA_DB_URL}
+      - NOVA_REDIS_URL=${NOVA_REDIS_URL}
+      - NOVA_JWT_SECRET=${NOVA_JWT_SECRET}
+    volumes:
+      - ../services/novabot:/app
+      - sentinel_logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - sentinel-network
+    depends_on:
+      - sentinel-database
+      - sentinel-redis
+
+  # === SENTINEL CORE (Moteur principal) ===
+  sentinel-core:
+    build:
+      context: ../services/sentinel-core
+      dockerfile: Dockerfile
+    container_name: sentinel-core-engine
+    ports:
+      - "8002:8002"
+    environment:
+      - SENTINEL_ENV=production
+      - SENTINEL_SECRET_KEY=${SENTINEL_SECRET_KEY}
+      - SENTINEL_DB_URL=${SENTINEL_DB_URL}
+      - SENTINEL_REDIS_URL=${SENTINEL_REDIS_URL}
+      - SENTINEL_ELASTIC_URL=${SENTINEL_ELASTIC_URL}
+      - SENTINEL_VECTOR_DB_URL=${SENTINEL_VECTOR_DB_URL}
+    volumes:
+      - ../services/sentinel-core:/app
+      - sentinel_logs:/app/logs
+      - sentinel_data:/app/data
+    restart: unless-stopped
+    networks:
+      - sentinel-network
+    depends_on:
+      - sentinel-database
+      - sentinel-redis
+      - sentinel-elasticsearch
+      - sentinel-vector-db
+
+  # === INGESTION & CAPTEURS ===
+  sentinel-ingestion:
+    build:
+      context: ../services/sentinel-core/ingestion
+      dockerfile: Dockerfile
+    container_name: sentinel-ingestion
+    environment:
+      - INGESTION_ENV=production
+      - INGESTION_SECRET_KEY=${INGESTION_SECRET_KEY}
+      - INGESTION_KAFKA_URL=${INGESTION_KAFKA_URL}
+      - INGESTION_DB_URL=${INGESTION_DB_URL}
+    volumes:
+      - ../services/sentinel-core/ingestion:/app
+      - sentinel_logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - sentinel-network
+    depends_on:
+      - sentinel-kafka
+      - sentinel-database
+
+  # === DÉTECTION & CORRÉLATION ===
+  sentinel-detection:
+    build:
+      context: ../services/sentinel-core/detect
+      dockerfile: Dockerfile
+    container_name: sentinel-detection
+    environment:
+      - DETECTION_ENV=production
+      - DETECTION_SECRET_KEY=${DETECTION_SECRET_KEY}
+      - DETECTION_ELASTIC_URL=${DETECTION_ELASTIC_URL}
+      - DETECTION_VECTOR_DB_URL=${DETECTION_VECTOR_DB_URL}
+    volumes:
+      - ../services/sentinel-core/detect:/app
+      - sentinel_logs:/app/logs
+      - sentinel_data:/app/data
+    restart: unless-stopped
+    networks:
+      - sentinel-network
+    depends_on:
+      - sentinel-elasticsearch
+      - sentinel-vector-db
+
+  # === SOAR (Orchestration de réponse) ===
+  sentinel-soar:
+    build:
+      context: ../services/sentinel-core/soar
+      dockerfile: Dockerfile
+    container_name: sentinel-soar
+    environment:
+      - SOAR_ENV=production
+      - SOAR_SECRET_KEY=${SOAR_SECRET_KEY}
+      - SOAR_DB_URL=${SOAR_DB_URL}
+      - SOAR_REDIS_URL=${SOAR_REDIS_URL}
+      - SOAR_FIREWALL_API=${SOAR_FIREWALL_API}
+      - SOAR_EDR_API=${SOAR_EDR_API}
+    volumes:
+      - ../services/sentinel-core/soar:/app
+      - sentinel_logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - sentinel-network
+    depends_on:
+      - sentinel-database
+      - sentinel-redis
+
+  # === RENSEIGNEMENT & OSINT ===
+  sentinel-intel:
+    build:
+      context: ../services/sentinel-core/intel
+      dockerfile: Dockerfile
+    container_name: sentinel-intel
+    environment:
+      - INTEL_ENV=production
+      - INTEL_SECRET_KEY=${INTEL_SECRET_KEY}
+      - INTEL_DB_URL=${INTEL_DB_URL}
+      - INTEL_PROXY_URL=${INTEL_PROXY_URL}
+    volumes:
+      - ../services/sentinel-core/intel:/app
+      - sentinel_logs:/app/logs
+      - sentinel_data:/app/data
+    restart: unless-stopped
+    networks:
+      - sentinel-network
+    depends_on:
+      - sentinel-database
+
+  # === SANDBOX & HONEYPOTS ===
+  sentinel-sandbox:
+    build:
+      context: ../services/sentinel-core/sandbox
+      dockerfile: Dockerfile
+    container_name: sentinel-sandbox
+    environment:
+      - SANDBOX_ENV=production
+      - SANDBOX_SECRET_KEY=${SANDBOX_SECRET_KEY}
+      - SANDBOX_DB_URL=${SANDBOX_DB_URL}
+      - SANDBOX_ISOLATED_NETWORK=true
+    volumes:
+      - ../services/sentinel-core/sandbox:/app
+      - sentinel_logs:/app/logs
+      - sentinel_data:/app/data
+    restart: unless-stopped
+    networks:
+      - sentinel-sandbox-network
+    depends_on:
+      - sentinel-database
+
+  # === BASE DE DONNÉES PRINCIPALE ===
+  sentinel-database:
+    image: postgres:15-alpine
+    container_name: sentinel-database
+    environment:
+      - POSTGRES_DB=sentinel_zero
+      - POSTGRES_USER=sentinel_admin
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
+    volumes:
+      - sentinel_data:/var/lib/postgresql/data
+      - ../database/init:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+    networks:
+      - sentinel-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sentinel_admin -d sentinel_zero"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # === REDIS (Cache & Queue) ===
+  sentinel-redis:
+    image: redis:7-alpine
+    container_name: sentinel-redis
+    command: redis-server --requirepass ${REDIS_PASSWORD} --maxmemory 512mb --maxmemory-policy allkeys-lru
+    volumes:
+      - sentinel_redis:/data
+    restart: unless-stopped
+    networks:
+      - sentinel-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # === KAFKA (Streaming temps réel) ===
+  sentinel-kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: sentinel-kafka
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=sentinel-zookeeper:2181
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://sentinel-kafka:29092,PLAINTEXT_HOST://localhost:9092
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
+      - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
+    ports:
+      - "9092:9092"
+    volumes:
+      - sentinel_kafka:/var/lib/kafka/data
+    restart: unless-stopped
+    networks:
+      - sentinel-network
+    depends_on:
+      - sentinel-zookeeper
+
+  sentinel-zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: sentinel-zookeeper
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIME=2000
+    volumes:
+      - sentinel_zookeeper:/var/lib/zookeeper/data
+      - sentinel_zookeeper:/var/lib/zookeeper/log
+    restart: unless-stopped
+    networks:
+      - sentinel-network
+
+  # === ELASTICSEARCH (Recherche & Analytics) ===
+  sentinel-elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: sentinel-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - xpack.security.http.ssl.enabled=false
+    volumes:
+      - sentinel_elastic:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    restart: unless-stopped
+    networks:
+      - sentinel-network
+    healthcheck:
+      test:
+        ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # === VECTOR DATABASE (pgvector) ===
+  sentinel-vector-db:
+    image: pgvector/pgvector:pg15
+    container_name: sentinel-vector-db
+    environment:
+      - POSTGRES_DB=sentinel_vectors
+      - POSTGRES_USER=vector_admin
+      - POSTGRES_PASSWORD=${VECTOR_DB_PASSWORD}
+    volumes:
+      - sentinel_vector:/var/lib/postgresql/data
+      - ../database/vector_init:/docker-entrypoint-initdb.d
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+    networks:
+      - sentinel-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vector_admin -d sentinel_vectors"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # === GRAFANA (Monitoring) ===
+  sentinel-grafana:
+    image: grafana/grafana:10.2.0
+    container_name: sentinel-grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    ports:
+      - "3001:3000"
+    volumes:
+      - sentinel_grafana:/var/lib/grafana
+      - ../config/grafana/provisioning:/etc/grafana/provisioning
+    restart: unless-stopped
+    networks:
+      - sentinel-network
+    depends_on:
+      - sentinel-prometheus
+
+  # === PROMETHEUS (Métriques) ===
+  sentinel-prometheus:
+    image: prom/prometheus:latest
+    container_name: sentinel-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ../config/prometheus:/etc/prometheus
+      - sentinel_prometheus:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--storage.tsdb.retention.time=200h"
+      - "--web.enable-lifecycle"
+    restart: unless-stopped
+    networks:
+      - sentinel-network
+
+  # === NGINX (Reverse Proxy) ===
+  sentinel-nginx:
+    image: nginx:alpine
+    container_name: sentinel-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ../config/nginx:/etc/nginx
+      - ../config/ssl:/etc/nginx/ssl
+      - ../config/nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - novabot
+      - sentinel-core
+    restart: unless-stopped
+    networks:
+      - sentinel-network
+
+networks:
+  sentinel-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+  sentinel-sandbox-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+    internal: true
+
+volumes:
+  sentinel_data:
+    driver: local
+  sentinel_redis:
+    driver: local
+  sentinel_kafka:
+    driver: local
+  sentinel_zookeeper:
+    driver: local
+  sentinel_elastic:
+    driver: local
+  sentinel_vector:
+    driver: local
+  sentinel_grafana:
+    driver: local
+  sentinel_prometheus:
+    driver: local
+  sentinel_logs:
+    driver: local

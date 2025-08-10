@@ -1,0 +1,320 @@
+# === ROLES ET PERMISSIONS SENTINEL ZERO ===
+
+---
+# Service Account pour NovaBot
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: novabot-sa
+  namespace: sentinel-zero
+  labels:
+    app: novabot
+    component: orchestrator
+---
+# Service Account pour Sentinel Core
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sentinel-core-sa
+  namespace: sentinel-zero
+  labels:
+    app: sentinel-core
+    component: engine
+---
+# Service Account pour SOAR
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sentinel-soar-sa
+  namespace: sentinel-zero
+  labels:
+    app: sentinel-soar
+    component: response
+---
+# Service Account pour Sandbox (isolé)
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sentinel-sandbox-sa
+  namespace: sentinel-sandbox
+  labels:
+    app: sentinel-sandbox
+    component: analysis
+    isolation: critical
+
+---
+# Cluster Role pour NovaBot (orchestrateur)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: novabot-cluster-role
+  labels:
+    app: novabot
+    scope: cluster
+rules:
+  # Lecture des ressources cluster
+  - apiGroups: [""]
+    resources: ["nodes", "namespaces", "pods"]
+    verbs: ["get", "list", "watch"]
+  # Gestion des secrets et configmaps
+  - apiGroups: [""]
+    resources: ["secrets", "configmaps"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  # Gestion des services et endpoints
+  - apiGroups: [""]
+    resources: ["services", "endpoints"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  # Gestion des deployments et pods
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets", "pods"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  # Gestion des network policies
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["networkpolicies"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+---
+# Cluster Role pour Sentinel Core (moteur)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sentinel-core-cluster-role
+  labels:
+    app: sentinel-core
+    scope: cluster
+rules:
+  # Lecture des ressources cluster
+  - apiGroups: [""]
+    resources: ["nodes", "namespaces", "pods"]
+    verbs: ["get", "list", "watch"]
+  # Gestion des secrets et configmaps
+  - apiGroups: [""]
+    resources: ["secrets", "configmaps"]
+    verbs: ["get", "list", "watch"]
+  # Gestion des services
+  - apiGroups: [""]
+    resources: ["services"]
+    verbs: ["get", "list", "watch"]
+  # Gestion des deployments
+  - apiGroups: ["apps"]
+    resources: ["deployments", "pods"]
+    verbs: ["get", "list", "watch"]
+
+---
+# Cluster Role pour SOAR (orchestration de réponse)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sentinel-soar-cluster-role
+  labels:
+    app: sentinel-soar
+    scope: cluster
+rules:
+  # Lecture des ressources cluster
+  - apiGroups: [""]
+    resources: ["nodes", "namespaces", "pods"]
+    verbs: ["get", "list", "watch"]
+  # Gestion des secrets et configmaps
+  - apiGroups: [""]
+    resources: ["secrets", "configmaps"]
+    verbs: ["get", "list", "watch"]
+  # Gestion des services et endpoints
+  - apiGroups: [""]
+    resources: ["services", "endpoints"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  # Gestion des deployments et pods
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets", "pods"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  # Gestion des network policies
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["networkpolicies"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+---
+# Cluster Role pour Sandbox (analyse isolée)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sentinel-sandbox-cluster-role
+  labels:
+    app: sentinel-sandbox
+    scope: cluster
+    isolation: critical
+rules:
+  # Lecture limitée des ressources
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+  # Gestion des secrets et configmaps (limité au namespace)
+  - apiGroups: [""]
+    resources: ["secrets", "configmaps"]
+    verbs: ["get", "list", "watch"]
+  # Gestion des services (limité au namespace)
+  - apiGroups: [""]
+    resources: ["services"]
+    verbs: ["get", "list", "watch"]
+
+---
+# Cluster Role Binding pour NovaBot
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: novabot-cluster-role-binding
+  labels:
+    app: novabot
+    scope: cluster
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: novabot-cluster-role
+subjects:
+- kind: ServiceAccount
+  name: novabot-sa
+  namespace: sentinel-zero
+
+---
+# Cluster Role Binding pour Sentinel Core
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: sentinel-core-cluster-role-binding
+  labels:
+    app: sentinel-core
+    scope: cluster
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: sentinel-core-cluster-role
+subjects:
+- kind: ServiceAccount
+  name: sentinel-core-sa
+  namespace: sentinel-zero
+
+---
+# Cluster Role Binding pour SOAR
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: sentinel-soar-cluster-role-binding
+  labels:
+    app: sentinel-soar
+    scope: cluster
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: sentinel-soar-cluster-role
+subjects:
+- kind: ServiceAccount
+  name: sentinel-soar-sa
+  namespace: sentinel-zero
+
+---
+# Cluster Role Binding pour Sandbox
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: sentinel-sandbox-cluster-role-binding
+  labels:
+    app: sentinel-sandbox
+    scope: cluster
+    isolation: critical
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: sentinel-sandbox-cluster-role
+subjects:
+- kind: ServiceAccount
+  name: sentinel-sandbox-sa
+  namespace: sentinel-sandbox
+
+---
+# Role pour les analystes de sécurité
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: security-analyst-role
+  namespace: sentinel-zero
+  labels:
+    role: security-analyst
+    scope: namespace
+rules:
+  # Lecture des logs et métriques
+  - apiGroups: [""]
+    resources: ["pods/log"]
+    verbs: ["get", "list"]
+  # Lecture des configmaps
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "list", "watch"]
+  # Lecture des secrets (limité)
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "list"]
+    resourceNames: ["sentinel-config", "api-keys"]
+
+---
+# Role pour les administrateurs
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: security-admin-role
+  namespace: sentinel-zero
+  labels:
+    role: security-admin
+    scope: namespace
+rules:
+  # Toutes les permissions dans le namespace
+  - apiGroups: [""]
+    resources: ["*"]
+    verbs: ["*"]
+  - apiGroups: ["apps"]
+    resources: ["*"]
+    verbs: ["*"]
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["*"]
+    verbs: ["*"]
+
+---
+# Role Binding pour les analystes
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: security-analyst-role-binding
+  namespace: sentinel-zero
+  labels:
+    role: security-analyst
+    scope: namespace
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: security-analyst-role
+subjects:
+- kind: User
+  name: analyst1@novabot.ai
+  apiGroup: rbac.authorization.k8s.io
+- kind: User
+  name: analyst2@novabot.ai
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# Role Binding pour les administrateurs
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: security-admin-role-binding
+  namespace: sentinel-zero
+  labels:
+    role: security-admin
+    scope: namespace
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: security-admin-role
+subjects:
+- kind: User
+  name: admin@novabot.ai
+  apiGroup: rbac.authorization.k8s.io
+- kind: User
+  name: superadmin@novabot.ai
+  apiGroup: rbac.authorization.k8s.io 

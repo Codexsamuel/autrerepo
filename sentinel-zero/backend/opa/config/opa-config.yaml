@@ -1,0 +1,55 @@
+# Configuration OPA pour Sentinel Zero
+# Open Policy Agent Configuration
+
+# Configuration des bundles
+bundles:
+  sentinel-security:
+    service: sentinel-opa
+    resource: /bundles/sentinel-security
+    persist: true
+    polling:
+      min_delay_seconds: 60
+      max_delay_seconds: 120
+
+# Configuration des services
+services:
+  sentinel-opa:
+    url: http://localhost:8181
+    credentials:
+      bearer:
+        token: ${OPA_BEARER_TOKEN}
+
+# Configuration des décisions
+decision_logs:
+  service: sentinel-opa
+  reporting:
+    min_delay_seconds: 30
+    max_delay_seconds: 60
+  include_revision: true
+  include_decision_id: true
+
+# Configuration des métriques
+metrics:
+  service: sentinel-opa
+  prefix: sentinel_security
+
+# Configuration des plugins
+plugins:
+  sentinel-security:
+    enabled: true
+    config:
+      policies_path: /policies
+      cache_size: 1000
+      validation_mode: strict
+
+# Configuration des labels
+labels:
+  sentinel-version: "1.0.0"
+  environment: "production"
+  security-level: "high"
+
+# Configuration des annotations
+annotations:
+  security-policy: "sentinel-zero"
+  compliance-framework: "ISO27001, SOC2, GDPR"
+  audit-enabled: "true" 

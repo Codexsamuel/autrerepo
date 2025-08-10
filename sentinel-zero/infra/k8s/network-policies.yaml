@@ -1,0 +1,596 @@
+# === NETWORK POLICIES SENTINEL ZERO ===
+# Isolation réseau et sécurité des communications
+
+---
+# Network Policy pour NovaBot (orchestrateur)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: novabot-network-policy
+  namespace: sentinel-zero
+  labels:
+    app: novabot
+    security: high
+spec:
+  podSelector:
+    matchLabels:
+      app: novabot
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Accès depuis l'extérieur (API)
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: sentinel-zero
+    ports:
+    - protocol: TCP
+      port: 8001
+    - protocol: TCP
+      port: 443
+  # Accès depuis le frontend
+  - from:
+    - podSelector:
+        matchLabels:
+          app: sentinel-frontend
+    ports:
+    - protocol: TCP
+      port: 8001
+  egress:
+  # Accès à la base de données
+  - to:
+    - podSelector:
+        matchLabels:
+          app: sentinel-database
+    ports:
+    - protocol: TCP
+      port: 5432
+  # Accès à Redis
+  - to:
+    - podSelector:
+        matchLabels:
+          app: sentinel-redis
+    ports:
+    - protocol: TCP
+      port: 6379
+  # Accès à Elasticsearch
+  - to:
+    - podSelector:
+        matchLabels:
+          app: sentinel-elasticsearch
+    ports:
+    - protocol: TCP
+      port: 9200
+  # Accès à la Vector DB
+  - to:
+    - podSelector:
+        matchLabels:
+          app: sentinel-vector-db
+    ports:
+    - protocol: TCP
+      port: 5432
+
+---
+# Network Policy pour Sentinel Core (moteur)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sentinel-core-network-policy
+  namespace: sentinel-zero
+  labels:
+    app: sentinel-core
+    security: high
+spec:
+  podSelector:
+    matchLabels:
+      app: sentinel-core
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Accès depuis NovaBot
+  - from:
+    - podSelector:
+        matchLabels:
+          app: novabot
+    ports:
+    - protocol: TCP
+      port: 8002
+  # Accès depuis l'ingestion
+  - from:
+    - podSelector:
+        matchLabels:
+          app: sentinel-ingestion
+    ports:
+    - protocol: TCP
+      port: 8002
+  egress:
+  # Accès à la base de données
+  - to:
+    - podSelector:
+        matchLabels:
+          app: sentinel-database
+    ports:
+    - protocol: TCP
+      port: 5432
+  # Accès à Redis
+  - to:
+    - podSelector:
+        matchLabels:
+          app: sentinel-redis
+    ports:
+    - protocol: TCP
+      port: 6379
+  # Accès à Elasticsearch
+  - to:
+    - podSelector:
+        matchLabels:
+          app: sentinel-elasticsearch
+    ports:
+    - protocol: TCP
+      port: 9200
+  # Accès à la Vector DB
+  - to:
+    - podSelector:
+        matchLabels:
+          app: sentinel-vector-db
+    ports:
+    - protocol: TCP
+      port: 5432
+
+---
+# Network Policy pour SOAR (orchestration de réponse)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sentinel-soar-network-policy
+  namespace: sentinel-zero
+  labels:
+    app: sentinel-soar
+    security: critical
+spec:
+  podSelector:
+    matchLabels:
+      app: sentinel-soar
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Accès depuis NovaBot
+  - from:
+    - podSelector:
+        matchLabels:
+          app: novabot
+    ports:
+    - protocol: TCP
+      port: 8003
+  # Accès depuis Sentinel Core
+  - from:
+    - podSelector:
+        matchLabels:
+          app: sentinel-core
+    ports:
+    - protocol: TCP
+      port: 8003
+  egress:
+  # Accès à la base de données
+  - to:
+    - podSelector:
+        matchLabels:
+          app: sentinel-database
+    ports:
+    - protocol: TCP
+      port: 5432
+  # Accès à Redis
+  - to:
+    - podSelector:
+        matchLabels:
+          app: sentinel-redis
+    ports:
+    - protocol: TCP
+      port: 6379
+  # Accès aux APIs externes (firewall, EDR, WAF)
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 80
+
+---
+# Network Policy pour Ingestion (capteurs)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sentinel-ingestion-network-policy
+  namespace: sentinel-zero
+  labels:
+    app: sentinel-ingestion
+    security: high
+spec:
+  podSelector:
+    matchLabels:
+      app: sentinel-ingestion
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Accès depuis NovaBot
+  - from:
+    - podSelector:
+        matchLabels:
+          app: novabot
+    ports:
+    - protocol: TCP
+      port: 8004
+  egress:
+  # Accès à Kafka
+  - to:
+    - podSelector:
+        matchLabels:
+          app: sentinel-kafka
+    ports:
+    - protocol: TCP
+      port: 9092
+  # Accès à la base de données
+  - to:
+    - podSelector:
+        matchLabels:
+          app: sentinel-database
+    ports:
+    - protocol: TCP
+      port: 5432
+  # Accès aux sources externes (logs, SIEM, etc.)
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 80
+    - protocol: TCP
+      port: 514  # Syslog
+    - protocol: TCP
+      port: 6514 # Syslog over TLS
+
+---
+# Network Policy pour Détection
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sentinel-detection-network-policy
+  namespace: sentinel-zero
+  labels:
+    app: sentinel-detection
+    security: high
+spec:
+  podSelector:
+    matchLabels:
+      app: sentinel-detection
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Accès depuis NovaBot
+  - from:
+    - podSelector:
+        matchLabels:
+          app: novabot
+    ports:
+    - protocol: TCP
+      port: 8005
+  egress:
+  # Accès à Elasticsearch
+  - to:
+    - podSelector:
+        matchLabels:
+          app: sentinel-elasticsearch
+    ports:
+    - protocol: TCP
+      port: 9200
+  # Accès à la Vector DB
+  - to:
+    - podSelector:
+        matchLabels:
+          app: sentinel-vector-db
+    ports:
+    - protocol: TCP
+      port: 5432
+  # Accès à Redis
+  - to:
+    - podSelector:
+        matchLabels:
+          app: sentinel-redis
+    ports:
+    - protocol: TCP
+      port: 6379
+
+---
+# Network Policy pour Intelligence (OSINT)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sentinel-intel-network-policy
+  namespace: sentinel-zero
+  labels:
+    app: sentinel-intel
+    security: medium
+spec:
+  podSelector:
+    matchLabels:
+      app: sentinel-intel
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Accès depuis NovaBot
+  - from:
+    - podSelector:
+        matchLabels:
+          app: novabot
+    ports:
+    - protocol: TCP
+      port: 8006
+  egress:
+  # Accès à la base de données
+  - to:
+    - podSelector:
+        matchLabels:
+          app: sentinel-database
+    ports:
+    - protocol: TCP
+      port: 5432
+  # Accès aux sources OSINT externes
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 80
+  # Accès au proxy (si configuré)
+  - to:
+    - podSelector:
+        matchLabels:
+          app: sentinel-proxy
+    ports:
+    - protocol: TCP
+      port: 8080
+
+---
+# Network Policy pour Sandbox (analyse isolée)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sentinel-sandbox-network-policy
+  namespace: sentinel-sandbox
+  labels:
+    app: sentinel-sandbox
+    security: critical
+    isolation: air-gapped
+spec:
+  podSelector:
+    matchLabels:
+      app: sentinel-sandbox
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Accès depuis NovaBot (limité)
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: sentinel-zero
+    ports:
+    - protocol: TCP
+      port: 8007
+  egress:
+  # Accès UNIQUEMENT à la base de données
+  - to:
+    - podSelector:
+        matchLabels:
+          app: sentinel-database
+    ports:
+    - protocol: TCP
+      port: 5432
+  # AUCUN accès réseau externe
+  # AUCUN accès aux autres services
+
+---
+# Network Policy pour Base de Données
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sentinel-database-network-policy
+  namespace: sentinel-zero
+  labels:
+    app: sentinel-database
+    security: critical
+spec:
+  podSelector:
+    matchLabels:
+      app: sentinel-database
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Accès depuis les services autorisés
+  - from:
+    - podSelector:
+        matchLabels:
+          app: novabot
+    ports:
+    - protocol: TCP
+      port: 5432
+  - from:
+    - podSelector:
+        matchLabels:
+          app: sentinel-core
+    ports:
+    - protocol: TCP
+      port: 5432
+  - from:
+    - podSelector:
+        matchLabels:
+          app: sentinel-soar
+    ports:
+    - protocol: TCP
+      port: 5432
+  - from:
+    - podSelector:
+        matchLabels:
+          app: sentinel-ingestion
+    ports:
+    - protocol: TCP
+      port: 5432
+  - from:
+    - podSelector:
+        matchLabels:
+          app: sentinel-intel
+    ports:
+    - protocol: TCP
+      port: 5432
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: sentinel-sandbox
+    ports:
+    - protocol: TCP
+      port: 5432
+  egress:
+  # Aucun accès sortant pour la DB
+
+---
+# Network Policy pour Redis
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sentinel-redis-network-policy
+  namespace: sentinel-zero
+  labels:
+    app: sentinel-redis
+    security: high
+spec:
+  podSelector:
+    matchLabels:
+      app: sentinel-redis
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Accès depuis les services autorisés
+  - from:
+    - podSelector:
+        matchLabels:
+          app: novabot
+    ports:
+    - protocol: TCP
+      port: 6379
+  - from:
+    - podSelector:
+        matchLabels:
+          app: sentinel-core
+    ports:
+    - protocol: TCP
+      port: 6379
+  - from:
+    - podSelector:
+        matchLabels:
+          app: sentinel-soar
+    ports:
+    - protocol: TCP
+      port: 6379
+  - from:
+    - podSelector:
+        matchLabels:
+          app: sentinel-detection
+    ports:
+    - protocol: TCP
+      port: 6379
+  egress:
+  # Aucun accès sortant pour Redis
+
+---
+# Network Policy pour Elasticsearch
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sentinel-elasticsearch-network-policy
+  namespace: sentinel-zero
+  labels:
+    app: sentinel-elasticsearch
+    security: high
+spec:
+  podSelector:
+    matchLabels:
+      app: sentinel-elasticsearch
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Accès depuis les services autorisés
+  - from:
+    - podSelector:
+        matchLabels:
+          app: novabot
+    ports:
+    - protocol: TCP
+      port: 9200
+  - from:
+    - podSelector:
+        matchLabels:
+          app: sentinel-core
+    ports:
+    - protocol: TCP
+      port: 9200
+  - from:
+    - podSelector:
+        matchLabels:
+          app: sentinel-detection
+    ports:
+    - protocol: TCP
+      port: 9200
+  egress:
+  # Aucun accès sortant pour Elasticsearch
+
+---
+# Network Policy pour Vector DB
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sentinel-vector-db-network-policy
+  namespace: sentinel-zero
+  labels:
+    app: sentinel-vector-db
+    security: high
+spec:
+  podSelector:
+    matchLabels:
+      app: sentinel-vector-db
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Accès depuis les services autorisés
+  - from:
+    - podSelector:
+        matchLabels:
+          app: novabot
+    ports:
+    - protocol: TCP
+      port: 5432
+  - from:
+    - podSelector:
+        matchLabels:
+          app: sentinel-core
+    ports:
+    - protocol: TCP
+      port: 5432
+  - from:
+    - podSelector:
+        matchLabels:
+          app: sentinel-detection
+    ports:
+    - protocol: TCP
+      port: 5432
+  egress:
+  # Aucun accès sortant pour Vector DB 

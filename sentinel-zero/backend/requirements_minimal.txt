@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic
+PyJWT
+requests
+aiohttp
+opencv-python
+numpy
+scikit-image
+pillow
+python-multipart 

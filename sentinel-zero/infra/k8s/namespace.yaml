@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sentinel-zero
+  labels:
+    name: sentinel-zero
+    security: high
+    environment: production
+  annotations:
+    description: "Sentinel Zero - Plateforme de cybersécurité défensive"
+    owner: "NovaBot Security Team"
+    contact: "security@novabot.ai"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sentinel-sandbox
+  labels:
+    name: sentinel-sandbox
+    security: critical
+    environment: isolated
+    purpose: "sandbox-analysis"
+  annotations:
+    description: "Réseau isolé pour analyse de malware et honeypots"
+    isolation: "air-gapped"
+    network-policy: "deny-all-except-db" 

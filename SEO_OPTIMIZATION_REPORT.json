@@ -1,0 +1,31 @@
+{
+  "generated": "2025-08-10T19:25:38.514Z",
+  "baseUrl": "https://dlsolutionssarl.tech",
+  "organization": {
+    "name": "DL Solutions",
+    "url": "https://dlsolutionssarl.tech",
+    "logo": "/images/logos/logo-dl.png",
+    "description": "Écosystème digital ultra-avancé avec IA souveraine et solutions innovantes"
+  },
+  "pages": [
+    "novacore/pricing",
+    "novacore/checkout",
+    "novaworld",
+    "sentinel-zero"
+  ],
+  "seoScore": 100,
+  "recommendations": [
+    "Créer un robots.txt dynamique avec Next.js",
+    "Implémenter la génération automatique des métadonnées pour toutes les pages",
+    "Ajouter des données structurées pour les produits et services",
+    "Optimiser les images avec des formats modernes (WebP, AVIF)",
+    "Implémenter le lazy loading pour les images"
+  ],
+  "nextSteps": [
+    "Soumettre le sitemap à Google Search Console",
+    "Configurer Google Analytics 4",
+    "Vérifier la vitesse de chargement avec PageSpeed Insights",
+    "Tester la compatibilité mobile",
+    "Optimiser les images et les ressources"
+  ]
+}

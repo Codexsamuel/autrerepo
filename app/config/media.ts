@@ -141,23 +141,13 @@ export const heroSlides = [
 
 export const teamMembers = [
   {
-    name: "Directeur Général",
-    role: "Vision Stratégique",
-    image: mediaConfig.team.directeur
-  },
-  {
-    name: "Mascotte",
-    role: "Représentation de la Marque",
-    image: mediaConfig.team.mascotte
-  },
-  {
     name: "Samuel OBAM DAY",
-    role: "Expert Gestion & Optimisation Parcours Client, Concepteur Logiciel",
+    role: "Co-Fondateur & Directeur des Opérations",
     image: mediaConfig.team.samuel
   },
   {
     name: "NGA SABINE LUCIE",
-    role: "Expert Gestion des Finances",
+    role: "Co-Fondatrice & Directrice des Relations",
     image: mediaConfig.team.lucie
   },
   {
@@ -167,7 +157,7 @@ export const teamMembers = [
   },
   {
     name: "FRANCK Marien BECKAM",
-    role: "Adjoint Technique, Photographe & Monteur Graphique",
+    role: "Adjoint Technique",
     image: mediaConfig.team.franck
   }
 ];

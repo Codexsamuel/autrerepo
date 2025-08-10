@@ -7,6 +7,16 @@ export default function AppointmentPopup() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', reason: '', date: '' });
   const [submitted, setSubmitted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  
+  // Écouter les clics sur le bouton déclencheur
+  useEffect(() => {
+    const triggerButton = document.querySelector('[data-appointment-trigger]');
+    if (triggerButton) {
+      const handleTriggerClick = () => setOpen(true);
+      triggerButton.addEventListener('click', handleTriggerClick);
+      return () => triggerButton.removeEventListener('click', handleTriggerClick);
+    }
+  }, []);
 
   useEffect(() => {
     // Vérifier si les cookies sont acceptés
@@ -52,7 +62,10 @@ export default function AppointmentPopup() {
         </button>
       )}
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+        <div 
+          data-appointment-popup
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+        >
           <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md relative">
             <button onClick={() => setOpen(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700">✕</button>
             <h3 className="text-2xl font-bold mb-4 text-center">Prendre rendez-vous</h3>

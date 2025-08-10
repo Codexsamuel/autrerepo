@@ -187,6 +187,15 @@ export default function PricingSection() {
 
                 {/* Bouton */}
                 <Button
+                  onClick={() => {
+                    if (plan.name === 'Starter') {
+                      window.location.href = '/sign-up?plan=starter';
+                    } else if (plan.name === 'Professional') {
+                      window.location.href = '/sign-up?plan=professional';
+                    } else if (plan.name === 'Enterprise') {
+                      window.location.href = '/contact?plan=enterprise';
+                    }
+                  }}
                   className={`w-full py-3 text-lg font-semibold ${
                     plan.popular
                       ? 'bg-blue-600 hover:bg-blue-700 text-white'
@@ -239,10 +248,26 @@ export default function PricingSection() {
               Nos experts sont là pour vous accompagner dans votre transformation digitale
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="outline" size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+              <Button 
+                onClick={() => window.location.href = '/devis'}
+                variant="outline" 
+                size="lg" 
+                className="bg-white text-blue-600 hover:bg-gray-100"
+              >
                 Demander un devis
               </Button>
-              <Button variant="outline" size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+              <Button 
+                onClick={() => {
+                  // Ouvrir le popup de prise de RDV
+                  const appointmentButton = document.querySelector('[data-appointment-trigger]');
+                  if (appointmentButton) {
+                    (appointmentButton as HTMLElement).click();
+                  }
+                }}
+                variant="outline" 
+                size="lg" 
+                className="bg-white text-blue-600 hover:bg-gray-100"
+              >
                 Prendre rendez-vous
               </Button>
             </div>

@@ -1,0 +1,29 @@
+# Configuration SOPS pour Sentinel Zero
+# Chiffrement des secrets avec clés publiques des administrateurs
+
+creation_rules:
+  # Règle pour les secrets de production
+  - path_regex: \.env\.prod$
+    age: >-
+      age1ql3z7hjy54pw3hyww5ayynfg8zqgvc9w3z2paw33lj7jr0fgg8lqxr7m6j
+      age1k0m5hm4j0m2kp3m2y4kp3m2y4kp3m2y4kp3m2y4kp3m2y4kp3m2y4kp3m2y4
+
+  # Règle pour les secrets de développement
+  - path_regex: \.env\.dev$
+    age: >-
+      age1ql3z7hjy54pw3hyww5ayynfg8zqgvc9w3z2paw33lj7jr0fgg8lqxr7m6j
+
+  # Règle pour les clés privées
+  - path_regex: \.key$
+    age: >-
+      age1ql3z7hjy54pw3hyww5ayynfg8zqgvc9w3z2paw33lj7jr0fgg8lqxr7m6j
+
+  # Règle pour les certificats
+  - path_regex: \.crt$|\.pem$
+    age: >-
+      age1ql3z7hjy54pw3hyww5ayynfg8zqgvc9w3z2paw33lj7jr0fgg8lqxr7m6j
+
+  # Règle pour les configurations sensibles
+  - path_regex: config/.*\.yaml$|config/.*\.yml$
+    age: >-
+      age1ql3z7hjy54pw3hyww5ayynfg8zqgvc9w3z2paw33lj7jr0fgg8lqxr7m6j 

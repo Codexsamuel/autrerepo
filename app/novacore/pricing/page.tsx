@@ -1,11 +1,11 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Check } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Check } from "lucide-react"
-
 
 
 interface PricingTier {
@@ -135,10 +135,25 @@ export default function PricingPage() {
               </ul>
             </CardContent>
             <CardFooter>
-              <Button
-                className="w-full"
-                variant={tier.popular ? "default" : "outline"}
-              >tier.buttonText</Button>
+              {tier.name === 'Enterprise' ? (
+                <Link href="/contact?plan=enterprise&source=novacore" className="w-full">
+                  <Button
+                    className="w-full"
+                    variant={tier.popular ? "default" : "outline"}
+                  >
+                    {tier.buttonText}
+                  </Button>
+                </Link>
+              ) : (
+                <Link href={`/novacore/checkout?plan=${tier.name.toLowerCase()}`} className="w-full">
+                  <Button
+                    className="w-full"
+                    variant={tier.popular ? "default" : "outline"}
+                  >
+                    {tier.buttonText}
+                  </Button>
+                </Link>
+              )}
             </CardFooter>
           </Card>
         ))}

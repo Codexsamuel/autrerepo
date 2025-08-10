@@ -1,0 +1,434 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: opa-config
+  namespace: opa-system
+  labels:
+    app: opa
+    component: security
+    security: high
+    environment: production
+    role: policy-enforcer
+  annotations:
+    security_level: high
+    audit_enabled: "true"
+    log_level: info
+    gdpr_compliant: "true"
+    disaster_recovery_plan: "dr-plan-001"
+    backup_schedule: "daily"
+    encryption_at_rest: "true"
+    rate_limit_enabled: "true"
+    approval_required: "false"
+data:
+  opa-config.yaml: |
+    # Configuration OPA pour Sentinel Zero
+    # Open Policy Agent Configuration
+    
+    # Configuration des bundles
+    bundles:
+      sentinel-security:
+        service: sentinel-opa
+        resource: /bundles/sentinel-security
+        persist: true
+        polling:
+          min_delay_seconds: 60
+          max_delay_seconds: 120
+    
+    # Configuration des services
+    services:
+      sentinel-opa:
+        url: http://localhost:8181
+        credentials:
+          bearer:
+            token: ${OPA_BEARER_TOKEN}
+    
+    # Configuration des décisions
+    decision_logs:
+      service: sentinel-opa
+      reporting:
+        min_delay_seconds: 30
+        max_delay_seconds: 60
+      include_revision: true
+      include_decision_id: true
+    
+    # Configuration des métriques
+    metrics:
+      service: sentinel-opa
+      prefix: sentinel_security
+    
+    # Configuration des plugins
+    plugins:
+      sentinel-security:
+        enabled: true
+        config:
+          policies_path: /policies
+          cache_size: 1000
+          validation_mode: strict
+    
+    # Configuration des labels
+    labels:
+      sentinel-version: "1.0.0"
+      environment: "production"
+      security-level: "high"
+    
+    # Configuration des annotations
+    annotations:
+      security-policy: "sentinel-zero"
+      compliance-framework: "ISO27001, SOC2, GDPR"
+      audit-enabled: "true"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: opa-policies
+  namespace: opa-system
+  labels:
+    app: opa
+    component: security
+    security: high
+    environment: production
+    role: policy-enforcer
+  annotations:
+    security_level: high
+    audit_enabled: "true"
+    log_level: info
+    gdpr_compliant: "true"
+    disaster_recovery_plan: "dr-plan-001"
+    backup_schedule: "daily"
+    encryption_at_rest: "true"
+    rate_limit_enabled: "true"
+    approval_required: "false"
+data:
+  sentinel.security.rego: |
+    # === POLITIQUES DE SÉCURITÉ SENTINEL ZERO ===
+    # Contrôles automatisés pour la conformité et la sécurité
+    
+    import future.keywords.if
+    import future.keywords.in
+    
+    # === RÈGLES DE BASE ===
+    
+    # Vérifier que tous les pods ont des labels de sécurité
+    deny[msg] {
+        input.kind == "Pod"
+        not input.metadata.labels.security
+        msg := sprintf("Pod %v must have security label", [input.metadata.name])
+    }
+    
+    # Vérifier que tous les pods ont des annotations de sécurité
+    deny[msg] {
+        input.kind == "Pod"
+        not input.metadata.annotations.security_level
+        msg := sprintf("Pod %v must have security_level annotation", [input.metadata.name])
+    }
+    
+    # === RÈGLES DE RESSOURCES ===
+    
+    # Limiter les ressources CPU et mémoire
+    deny[msg] {
+        input.kind == "Pod"
+        container := input.spec.containers[_]
+        not container.resources.limits.cpu
+        msg := sprintf("Container %v must have CPU limits", [container.name])
+    }
+    
+    deny[msg] {
+        input.kind == "Pod"
+        container := input.spec.containers[_]
+        not container.resources.limits.memory
+        msg := sprintf("Container %v must have memory limits", [container.name])
+    }
+    
+    # Empêcher les pods privilégiés
+    deny[msg] {
+        input.kind == "Pod"
+        container := input.spec.containers[_]
+        container.securityContext.privileged == true
+        msg := sprintf("Container %v cannot run in privileged mode", [container.name])
+    }
+    
+    # Empêcher l'escalade de privilèges
+    deny[msg] {
+        input.kind == "Pod"
+        container := input.spec.containers[_]
+        container.securityContext.allowPrivilegeEscalation == true
+        msg := sprintf("Container %v cannot allow privilege escalation", [container.name])
+    }
+    
+    # === RÈGLES DE RÉSEAU ===
+    
+    # Vérifier que tous les services ont des NetworkPolicies
+    deny[msg] {
+        input.kind == "Service"
+        not input.metadata.labels.app
+        msg := sprintf("Service %v must have app label for NetworkPolicy", [input.metadata.name])
+    }
+    
+    # === RÈGLES DE SECRETS ===
+    
+    # Empêcher les secrets en clair dans les variables d'environnement
+    deny[msg] {
+        input.kind == "Pod"
+        container := input.spec.containers[_]
+        env := container.env[_]
+        env.name == "PASSWORD"
+        env.value
+        msg := sprintf("Container %v cannot have PASSWORD in plain text", [container.name])
+    }
+    
+    deny[msg] {
+        input.kind == "Pod"
+        container := input.spec.containers[_]
+        env := container.env[_]
+        env.name == "SECRET_KEY"
+        env.value
+        msg := sprintf("Container %v cannot have SECRET_KEY in plain text", [container.name])
+    }
+    
+    # === RÈGLES DE VOLUMES ===
+    
+    # Empêcher les volumes hostPath
+    deny[msg] {
+        input.kind == "Pod"
+        volume := input.spec.volumes[_]
+        volume.hostPath
+        msg := sprintf("Pod %v cannot use hostPath volumes", [input.metadata.name])
+    }
+    
+    # === RÈGLES DE SÉCURITÉ CONTEXT ===
+    
+    # Vérifier que tous les pods ont un securityContext
+    deny[msg] {
+        input.kind == "Pod"
+        not input.spec.securityContext
+        msg := sprintf("Pod %v must have securityContext", [input.metadata.name])
+    }
+    
+    # Empêcher l'exécution en tant que root
+    deny[msg] {
+        input.kind == "Pod"
+        container := input.spec.containers[_]
+        container.securityContext.runAsUser == 0
+        msg := sprintf("Container %v cannot run as root (UID 0)", [container.name])
+    }
+    
+    # === RÈGLES DE LABELS ===
+    
+    # Vérifier les labels obligatoires
+    required_labels := {"app", "component", "security"}
+    
+    deny[msg] {
+        input.kind == "Pod"
+        missing := required_labels - object.keys(input.metadata.labels)
+        count(missing) > 0
+        msg := sprintf("Pod %v missing required labels: %v", [input.metadata.name, missing])
+    }
+    
+    # === RÈGLES DE NAMESPACE ===
+    
+    # Empêcher la création de pods dans le namespace kube-system
+    deny[msg] {
+        input.kind == "Pod"
+        input.metadata.namespace == "kube-system"
+        input.metadata.name != "kube-apiserver"
+        input.metadata.name != "kube-controller-manager"
+        input.metadata.name != "kube-scheduler"
+        input.metadata.name != "etcd"
+        msg := sprintf("Cannot create pods in kube-system namespace: %v", [input.metadata.name])
+    }
+    
+    # === RÈGLES DE SENTINEL SPÉCIFIQUES ===
+    
+    # Vérifier que les pods Sentinel ont les bonnes annotations
+    deny[msg] {
+        input.kind == "Pod"
+        input.metadata.labels.app == "sentinel-core"
+        not input.metadata.annotations.isolation_level
+        msg := sprintf("Sentinel Core pod %v must have isolation_level annotation", [input.metadata.name])
+    }
+    
+    # Vérifier que les pods SOAR ont des approbations
+    deny[msg] {
+        input.kind == "Pod"
+        input.metadata.labels.app == "sentinel-soar"
+        not input.metadata.annotations.approval_required
+        msg := sprintf("SOAR pod %v must have approval_required annotation", [input.metadata.name])
+    }
+    
+    # === RÈGLES DE COMPLIANCE ===
+    
+    # Vérifier la conformité GDPR
+    deny[msg] {
+        input.kind == "Pod"
+        container := input.spec.containers[_]
+        env := container.env[_]
+        env.name == "PII_DATA"
+        env.value == "true"
+        not input.metadata.annotations.gdpr_compliant
+        msg := sprintf("Container %v processing PII must be GDPR compliant", [container.name])
+    }
+    
+    # === RÈGLES DE MONITORING ===
+    
+    # Vérifier que tous les pods ont des health checks
+    deny[msg] {
+        input.kind == "Pod"
+        container := input.spec.containers[_]
+        not container.livenessProbe
+        msg := sprintf("Container %v must have livenessProbe", [container.name])
+    }
+    
+    deny[msg] {
+        input.kind == "Pod"
+        container := input.spec.containers[_]
+        not container.readinessProbe
+        msg := sprintf("Container %v must have readinessProbe", [container.name])
+    }
+    
+    # === RÈGLES DE BACKUP ===
+    
+    # Vérifier que les bases de données ont des annotations de backup
+    deny[msg] {
+        input.kind == "Pod"
+        input.metadata.labels.app == "sentinel-database"
+        not input.metadata.annotations.backup_schedule
+        msg := sprintf("Database pod %v must have backup_schedule annotation", [input.metadata.name])
+    }
+    
+    # === RÈGLES DE CHIFFREMENT ===
+    
+    # Vérifier que les communications sensibles utilisent TLS
+    deny[msg] {
+        input.kind == "Pod"
+        container := input.spec.containers[_]
+        env := container.env[_]
+        env.name == "API_ENDPOINT"
+        not startswith(env.value, "https://")
+        msg := sprintf("Container %v API endpoint must use HTTPS", [container.name])
+    }
+    
+    # === RÈGLES D'AUDIT ===
+    
+    # Vérifier que tous les pods ont des annotations d'audit
+    deny[msg] {
+        input.kind == "Pod"
+        not input.metadata.annotations.audit_enabled
+        msg := sprintf("Pod %v must have audit_enabled annotation", [input.metadata.name])
+    }
+    
+    # === RÈGLES DE QUARANTAINE ===
+    
+    # Empêcher les pods avec des vulnérabilités connues
+    deny[msg] {
+        input.kind == "Pod"
+        input.metadata.annotations.vulnerability_scan == "failed"
+        msg := sprintf("Pod %v cannot be deployed with failed vulnerability scan", [input.metadata.name])
+    }
+    
+    # === RÈGLES DE ROTATION ===
+    
+    # Vérifier que les secrets ont des dates d'expiration
+    deny[msg] {
+        input.kind == "Secret"
+        not input.metadata.annotations.expiration_date
+        msg := sprintf("Secret %v must have expiration_date annotation", [input.metadata.name])
+    }
+    
+    # === RÈGLES DE SEGREGATION ===
+    
+    # Empêcher les pods de production et de développement dans le même namespace
+    deny[msg] {
+        input.kind == "Pod"
+        input.metadata.labels.environment == "production"
+        input.metadata.labels.environment == "development"
+        msg := sprintf("Pod %v cannot have both production and development labels", [input.metadata.name])
+    }
+    
+    # === RÈGLES DE RATE LIMITING ===
+    
+    # Vérifier que les APIs ont des limites de taux
+    deny[msg] {
+        input.kind == "Pod"
+        input.metadata.labels.app == "novabot"
+        not input.metadata.annotations.rate_limit_enabled
+        msg := sprintf("NovaBot pod %v must have rate limiting enabled", [input.metadata.name])
+    }
+    
+    # === RÈGLES DE LOGGING ===
+    
+    # Vérifier que tous les pods ont des configurations de logging
+    deny[msg] {
+        input.kind == "Pod"
+        not input.metadata.annotations.log_level
+        msg := sprintf("Pod %v must have log_level annotation", [input.metadata.name])
+    }
+    
+    # === RÈGLES DE CHIFFREMENT AU REPOS ===
+    
+    # Vérifier que les bases de données ont le chiffrement au repos
+    deny[msg] {
+        input.kind == "Pod"
+        input.metadata.labels.app == "sentinel-database"
+        not input.metadata.annotations.encryption_at_rest
+        msg := sprintf("Database pod %v must have encryption at rest", [input.metadata.name])
+    }
+    
+    # === RÈGLES DE SÉGRÉGATION DES DUTIES ===
+    
+    # Empêcher les pods avec des rôles multiples
+    deny[msg] {
+        input.kind == "Pod"
+        input.metadata.labels.role == "admin"
+        input.metadata.labels.role == "analyst"
+        msg := sprintf("Pod %v cannot have multiple roles", [input.metadata.name])
+    }
+    
+    # === RÈGLES DE RÉCUPÉRATION ===
+    
+    # Vérifier que les services critiques ont des plans de récupération
+    deny[msg] {
+        input.kind == "Pod"
+        input.metadata.labels.app == "sentinel-core"
+        not input.metadata.annotations.disaster_recovery_plan
+        msg := sprintf("Critical service %v must have disaster recovery plan", [input.metadata.name])
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: opa-system-main
+  namespace: opa-system
+  labels:
+    app: opa
+    component: security
+    security: high
+    environment: production
+    role: policy-enforcer
+  annotations:
+    security_level: high
+    audit_enabled: "true"
+    log_level: info
+    gdpr_compliant: "true"
+    disaster_recovery_plan: "dr-plan-001"
+    backup_schedule: "daily"
+    encryption_at_rest: "true"
+    rate_limit_enabled: "true"
+    approval_required: "false"
+data:
+  main: |
+    package system
+    
+    import data.kubernetes.admission
+    
+    main = {
+      "apiVersion": "admission.k8s.io/v1",
+      "kind": "AdmissionReview",
+      "response": response
+    }
+    
+    response = {
+      "allowed": false,
+      "status": {
+        "message": "denied by default"
+      }
+    } 

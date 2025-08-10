@@ -10,9 +10,9 @@ import MediaSection from '@/components/media-section';
 import ContextualHelp from '@/components/onboarding/ContextualHelp';
 import PrivacyMessage from '@/components/privacy-message';
 import TestimonialsSection from '@/components/testimonials-section';
+import HeroCarousel from '@/components/ui/HeroCarousel';
 import MarqueeBanner from '@/components/ui/MarqueeBanner';
 import PricingSection from '@/components/ui/PricingSection';
-import HeroCarousel from '@/components/ui/HeroCarousel';
 import { Button } from "@/components/ui/button";
 import WhatsAppButton from '@/components/whatsapp-button';
 import {
@@ -22,7 +22,6 @@ import {
     TrendingUp
 } from "lucide-react";
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
 export default function HomePage() {
   const handleButtonClick = (destination: string) => {
@@ -61,11 +60,12 @@ export default function HomePage() {
               <p className="text-gray-300 mb-4">
                 Faites s'affronter vos agents IA préférés dans notre arène de compétition
               </p>
-              <Link href="/nova-ia/battle">
-                <Button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600">
-                  Lancer un Battle
-                </Button>
-              </Link>
+              <Button 
+                onClick={() => window.location.href = '/nova-ia'}
+                className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600"
+              >
+                Lancer un Battle
+              </Button>
             </div>
 
             {/* Protocoles A2A/MCP */}
@@ -158,11 +158,12 @@ export default function HomePage() {
               <p className="text-gray-600 mb-4">
                 Applications web modernes et performantes avec les dernières technologies
               </p>
-              <Link href="/services/web">
-                <Button className="w-full bg-green-600 hover:bg-green-700">
-                  En savoir plus
-                </Button>
-              </Link>
+              <Button 
+                onClick={() => window.location.href = '/contact?service=web'}
+                className="w-full bg-green-600 hover:bg-green-700"
+              >
+                En savoir plus
+              </Button>
             </div>
 
             {/* Service 3 */}
@@ -179,11 +180,12 @@ export default function HomePage() {
               <p className="text-gray-600 mb-4">
                 Accompagnement complet dans votre transformation digitale
               </p>
-              <Link href="/services/transformation">
-                <Button className="w-full bg-purple-600 hover:bg-purple-700">
-                  En savoir plus
-                </Button>
-              </Link>
+              <Button 
+                onClick={() => window.location.href = '/contact?service=transformation'}
+                className="w-full bg-purple-600 hover:bg-purple-700"
+              >
+                En savoir plus
+              </Button>
             </div>
           </div>
         </div>
@@ -197,22 +199,63 @@ export default function HomePage() {
               Notre Équipe
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Des experts passionnés par l'innovation et la technologie
+              Une équipe de fondateurs visionnaires et d'experts techniques dédiés
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {teamMembers.map((member, index) => (
-              <div key={index} className="bg-white p-6 rounded-2xl shadow-lg text-center">
-                <img
-                  src={member.image}
-                  alt={member.name}
-                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
-                />
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{member.name}</h3>
-                <p className="text-gray-600">{member.role}</p>
-              </div>
-            ))}
+          {/* Organigramme - Co-fondateurs en haut */}
+          <div className="mb-16">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-semibold text-gray-700 mb-2">Direction</h3>
+              <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto"></div>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+              {teamMembers.slice(0, 2).map((member, index) => (
+                <div key={index} className="bg-white p-8 rounded-2xl shadow-xl text-center border-2 border-transparent hover:border-blue-200 transition-all duration-300">
+                  <div className="relative mb-6">
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-blue-100"
+                    />
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
+                      <span className="text-white text-sm font-bold">★</span>
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">{member.name}</h3>
+                  <p className="text-lg text-blue-600 font-semibold mb-4">{member.role}</p>
+                  <div className="w-16 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Ligne de connexion */}
+          <div className="flex justify-center mb-16">
+            <div className="w-1 h-16 bg-gradient-to-r from-blue-600 to-purple-600"></div>
+          </div>
+
+          {/* Équipe technique en bas */}
+          <div>
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-semibold text-gray-700 mb-2">Équipe Technique</h3>
+              <div className="w-24 h-1 bg-gradient-to-r from-green-600 to-teal-600 mx-auto"></div>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+              {teamMembers.slice(2).map((member, index) => (
+                <div key={index} className="bg-white p-6 rounded-xl shadow-lg text-center border border-gray-100 hover:shadow-xl transition-all duration-300">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-20 h-20 rounded-full mx-auto mb-4 object-cover border-2 border-green-100"
+                  />
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
+                  <p className="text-gray-600">{member.role}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -285,6 +328,20 @@ export default function HomePage() {
       <PrivacyMessage />
       <WhatsAppButton />
       <ContextualHelp />
+      
+      {/* Bouton déclencheur caché pour le popup de RDV */}
+      <button 
+        data-appointment-trigger 
+        className="hidden"
+        onClick={() => {
+          const appointmentPopup = document.querySelector('[data-appointment-popup]');
+          if (appointmentPopup) {
+            (appointmentPopup as HTMLElement).style.display = 'flex';
+          }
+        }}
+      >
+        Déclencher RDV
+      </button>
     </div>
   );
 }

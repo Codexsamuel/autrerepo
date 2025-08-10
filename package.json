@@ -42,7 +42,8 @@
     "deploy:vercel": "echo '🔧 Déploiement des APIs sur Vercel...' && vercel --prod",
     "deploy:netlify": "echo '🌐 Déploiement du frontend sur Netlify...' && echo 'Utilisez: git push origin main'",
     "build:netlify:ultra-simple": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production NETLIFY=true next build",
-    "build:netlify:compatible": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production NETLIFY=true next build --debug"
+    "build:netlify:compatible": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production NETLIFY=true next build --debug",
+    "build:netlify:no-python": "./scripts/netlify-build-no-python.sh"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

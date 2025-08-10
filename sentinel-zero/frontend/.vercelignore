@@ -2,6 +2,7 @@
 .next/
 out/
 dist/
+build/
 
 # Dependencies
 node_modules/
@@ -28,4 +29,38 @@ coverage/
 # Test files
 __tests__/
 *.test.*
-*.spec.* 
+*.spec.*
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+*.md
+docs/
+
+# Scripts
+scripts/
+migrations/
+
+# Other projects
+../nova-ia-commercial/
+../app/
+../components/
+../lib/
+../hooks/
+../middleware/
+../prisma/
+../database/
+../migrations/
+../scripts/
+../docs/
+../templates/
+../workflows/
+../netlify/
+../src/
+../styles/
+../types/
+../uploads/
+../backups/
+../venv/ 

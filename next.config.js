@@ -1,7 +1,6 @@
 const nextConfig = {
   // Configuration de base
   reactStrictMode: true,
-  swcMinify: false, // Désactiver SWC pour éviter les conflits
   
   // Configuration expérimentale simplifiée
   experimental: {
@@ -34,10 +33,10 @@ const nextConfig = {
     unoptimized: true, // Pour éviter les erreurs de build
   },
   
-  // Configuration webpack simplifiée
+  // Configuration webpack minimale
   webpack: (config, { isServer, dev }) => {
     if (process.env.NETLIFY) {
-      console.log('🔧 Configuration webpack simplifiée pour Netlify...');
+      console.log('🔧 Configuration webpack minimale pour Netlify...');
       
       // Ajouter le polyfill self en entrée
       if (!isServer) {
@@ -46,24 +45,6 @@ const nextConfig = {
           'self-polyfill': './lib/polyfills/self-polyfill.js',
         };
       }
-      
-      // Règle simple pour remplacer 'self' par 'globalThis'
-      config.module.rules.push({
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'string-replace-loader',
-          options: {
-            multiple: [
-              {
-                search: /\bself\b/g,
-                replace: 'globalThis',
-                flags: 'g',
-              },
-            ],
-          },
-        },
-      });
     }
     
     return config;

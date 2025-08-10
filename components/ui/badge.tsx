@@ -1,8 +1,8 @@
 "use client";
 
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "@/lib/utils"
+import { HTMLAttributes } from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
   "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
@@ -16,48 +16,26 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
         outline: "text-foreground",
-        success: "border-transparent bg-green-500 text-white hover:bg-green-600",
-        warning: "border-transparent bg-yellow-500 text-white hover:bg-yellow-600",
-        info: "border-transparent bg-blue-500 text-white hover:bg-blue-600",
-        premium: "border-transparent bg-gradient-to-r from-purple-500 to-pink-500 text-white",
-        ai: "border-transparent bg-gradient-to-r from-blue-500 to-cyan-500 text-white",
-        blockchain: "border-transparent bg-gradient-to-r from-orange-500 to-red-500 text-white",
-        cybersecurity: "border-transparent bg-gradient-to-r from-red-500 to-purple-500 text-white",
-      },
-      size: {
-        default: "h-6 px-2.5 py-0.5 text-xs",
-        sm: "h-5 px-2 py-0.5 text-xs",
-        lg: "h-8 px-3 py-1 text-sm",
-        xl: "h-10 px-4 py-1.5 text-base",
+        success:
+          "border-transparent bg-green-100 text-green-800 hover:bg-green-200",
+        info:
+          "border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200",
+        warning:
+          "border-transparent bg-yellow-100 text-yellow-800 hover:bg-yellow-200",
       },
     },
     defaultVariants: {
       variant: "default",
-      size: "default",
     },
   }
-)
+);
 
-export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {
-  icon?: React.ReactNode
-  pulse?: boolean
-}
+export interface BadgeProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof badgeVariants> {}
 
-function Badge({ className, variant, size, icon, pulse, children, ...props }: BadgeProps) {
+function Badge({ className, variant, ...props }: BadgeProps) {
   return (
-    <div
-      className={cn(badgeVariants({ variant, size, className }))}
-      {...props}
-    >
-      {icon && <span className="mr-1.5">{icon}</span>}
-      {children}
-      {pulse && (
-        <span className="ml-1.5 h-2 w-2 rounded-full bg-current animate-pulse" />
-      )}
-    </div>
-  )
+    <div className={cn(badgeVariants({ variant }), className)} {...props} />
+  );
 }
 
-export { Badge, badgeVariants } 
+export { Badge, badgeVariants }; 

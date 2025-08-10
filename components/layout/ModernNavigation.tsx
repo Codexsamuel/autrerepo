@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import LanguageSelector from '@/components/ui/language-selector';
 import { useLanguage } from '@/hooks/useLanguage';
 import { getTranslation } from '@/lib/i18n/translations';
-import { Bot, Brain, Briefcase, Building, ChevronDown, Home, Info, Menu, Phone, Rocket, Search, Settings, TrendingUp, Truck, X } from 'lucide-react';
+import { Bot, Brain, Briefcase, Building, ChevronDown, Home, Info, Menu, Phone, Rocket, Search, Settings, Shield, TrendingUp, Truck, Users, X } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -33,6 +33,8 @@ export default function ModernNavigation({ className = '' }: ModernNavigationPro
     { name: 'Drones', href: '/drones', icon: Rocket, highlight: true },
     { name: 'ULTRA AI Bot', href: '/ultra-ai-bot', icon: Bot, highlight: true },
     { name: 'Comparaison Bots', href: '/bots-comparison', icon: TrendingUp, highlight: true },
+    { name: 'Sentinel Zero', href: '/sentinel-zero', icon: Shield, highlight: true },
+    { name: 'Agent Communication', href: '/agent-communication', icon: Users, highlight: true },
     { name: t.navigation.about, href: '/a-propos', icon: Info },
     { name: 'NovaCore', href: '/novacore', icon: Settings, dataOnboarding: 'novacore' },
     { name: t.navigation.intranet, href: '/intranet', icon: Building },
@@ -65,7 +67,7 @@ export default function ModernNavigation({ className = '' }: ModernNavigationPro
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-lg ${className}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-lg ${className}`}>
       <div className="container mx-auto px-4 lg:px-6 py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -131,12 +133,12 @@ export default function ModernNavigation({ className = '' }: ModernNavigationPro
                   <ChevronDown className="w-3 h-3" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 mt-2">
+              <DropdownMenuContent align="end" className="w-56 mt-2 z-[9999] bg-white border border-gray-200 shadow-xl rounded-lg">
                 {navigationItems.map((item) => (
                   <DropdownMenuItem key={item.href} asChild>
                     <Link 
                       href={item.href} 
-                      className="flex items-center space-x-3 p-3 hover:bg-blue-50"
+                      className="flex items-center space-x-3 p-3 hover:bg-blue-50 rounded-md transition-colors duration-200"
                       {...(item.dataOnboarding ? { 'data-onboarding': item.dataOnboarding } : {})}
                     >
                       <item.icon className="w-4 h-4 text-gray-500" />
@@ -187,7 +189,7 @@ export default function ModernNavigation({ className = '' }: ModernNavigationPro
                   <Search className="w-5 h-5 text-gray-600" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-80 mt-2 p-4">
+              <DropdownMenuContent align="end" className="w-80 mt-2 p-4 bg-white border border-gray-200 shadow-lg">
                 <form onSubmit={handleSearch} className="space-y-3">
                   <Input
                     type="text"
@@ -210,12 +212,12 @@ export default function ModernNavigation({ className = '' }: ModernNavigationPro
                   <Menu className="w-5 h-5 text-gray-600" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-64 mt-2">
+              <DropdownMenuContent align="end" className="w-64 mt-2 bg-white border border-gray-200 shadow-xl rounded-lg z-[9999]">
                 {navigationItems.map((item) => (
                   <DropdownMenuItem key={item.href} asChild>
                     <Link 
                       href={item.href} 
-                      className="flex items-center space-x-3 p-3 hover:bg-blue-50"
+                      className="flex items-center space-x-3 p-3 hover:bg-blue-50 rounded-md transition-colors duration-200"
                       {...(item.dataOnboarding ? { 'data-onboarding': item.dataOnboarding } : {})}
                     >
                       <item.icon className="w-4 h-4 text-gray-500" />

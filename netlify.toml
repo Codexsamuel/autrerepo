@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build:netlify:compatible"
+  command = "npm run build:netlify"
   publish = ".next"
   functions = "netlify/functions"
 

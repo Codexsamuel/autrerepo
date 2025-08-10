@@ -9,16 +9,15 @@
 [build.environment]
   NODE_VERSION = "20"
   NPM_FLAGS = "--legacy-peer-deps --force"
-  NODE_OPTIONS = "--max-old-space-size=4096"
+  NODE_OPTIONS = "--max-old-space-size=4096 --max-semi-space-size=512"
   NEXT_TELEMETRY_DISABLED = "1"
   NPM_CONFIG_PRODUCTION = "false"
   NETLIFY = "true"
   NODE_ENV = "production"
-  NEXT_PUBLIC_NETLIFY = "true"
+  NEXT_PUBLIC_NETLIFY = "1"
   DISABLE_SELF_REFERENCE_FIXER = "1"
   # Optimisations pour Netlify
   NEXT_SHARP_PATH = "/opt/buildhome/.npm-global/lib/node_modules/sharp"
-  NODE_OPTIONS = "--max-old-space-size=4096 --max-semi-space-size=512"
 
 # Optimisations de build
 [build.optimization]

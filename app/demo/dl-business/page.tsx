@@ -1,53 +1,45 @@
 "use client"
 
-import { useState } from "react"
-import Link from "next/link"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { Progress } from "@/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { AiInsights, Campaign as CampaignType, AiActivity, FormData } from '../../types/config'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { 
-  ArrowLeft, 
-  Bot, 
-  Brain, 
-  Search, 
-  Settings, 
-  ShoppingCart,
-  Camera,
-  Video,
-  TrendingUp,
-  Users,
-  Target,
-  Zap,
-  BarChart3,
-  Download,
-  Upload,
-  Sparkles,
-  Rocket,
-  CheckCircle,
-  AlertTriangle,
-  Clock,
-  DollarSign,
-  Plus,
-  Activity,
-  Lightbulb,
-  Megaphone,
-  Palette,
-  Code,
-  Monitor,
-  Film,
-  ImageIcon,
-  Building2,
-  Globe,
-  LineChart,
-  Phone
+import { Textarea } from "@/components/ui/textarea"
+import {
+    Activity,
+    AlertTriangle,
+    ArrowLeft,
+    BarChart3,
+    Bot,
+    Brain,
+    Camera,
+    CheckCircle,
+    Clock,
+    Code,
+    DollarSign,
+    Download,
+    Film,
+    ImageIcon,
+    Lightbulb,
+    Megaphone,
+    Monitor,
+    Palette,
+    Plus,
+    Rocket,
+    Sparkles,
+    Target,
+    TrendingUp,
+    Upload,
+    Users,
+    Video,
+    Zap
 } from "lucide-react"
+import Link from "next/link"
+import { useState } from "react"
+import { AiActivity, AiInsights, Campaign as CampaignType, FormData } from '../../types/config'
 
 export default function BusinessPage() {
   const [activeTab, setActiveTab] = useState("dashboard")
@@ -257,11 +249,11 @@ export default function BusinessPage() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="icon" asChild>
-                <a href="/sign-in">
+              <Link href="/sign-in">
+                <Button variant="ghost" size="icon">
                   <ArrowLeft className="h-5 w-5" />
-                </a>
-              </Button>
+                </Button>
+              </Link>
               <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-blue-200 flex items-center justify-center bg-white shadow-md">
                 <img src="/images/novacore-logo.svg" alt="NovaCore Logo" className="h-10 w-10 object-contain" />
               </div>

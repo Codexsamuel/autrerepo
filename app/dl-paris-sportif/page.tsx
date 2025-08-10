@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Brain, Calendar, DollarSign, Play, Target, TrendingDown, TrendingUp, Trophy } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 
@@ -138,9 +139,11 @@ export default function DLParisSportifPage() {
               <Button variant="outline" className="border-green-200 text-green-700">
                 Connexion
               </Button>
-              <Button className="bg-gradient-to-r from-green-600 to-blue-600" asChild>
-                <a href="/">Retour DL Solutions</a>
-              </Button>
+              <Link href="/">
+                <Button className="bg-gradient-to-r from-green-600 to-blue-600">
+                  Retour DL Solutions
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

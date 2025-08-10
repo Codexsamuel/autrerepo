@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, ArrowRight, CheckCircle, Mail, Shield } from "lucide-react";
+import Link from "next/link";
 import type { FormEvent } from "react";
 import { useState } from "react";
 
@@ -40,9 +41,11 @@ export default function ForgotPassword() {
               réception et suivez les instructions.
             </p>
             <div className="space-y-3">
-              <Button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600" asChild>
-                <a href="/novacore/auth/signin">Retour à la connexion</a>
-              </Button>
+              <Link href="/novacore/auth/signin">
+                <Button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600">
+                  Retour à la connexion
+                </Button>
+              </Link>
               <Button variant="outline" className="w-full" onClick={() => setIsEmailSent(false)}>
                 Renvoyer l'email
               </Button>
@@ -63,12 +66,12 @@ export default function ForgotPassword() {
           <Card className="bg-white/95 backdrop-blur-xl border-0 shadow-2xl">
             <CardContent className="p-8">
               <div className="text-center mb-8">
-                <Button variant="ghost" className="text-gray-600 hover:text-gray-800 mb-6" asChild>
-                  <a href="/novacore/auth/signin">
+                <Link href="/novacore/auth/signin">
+                  <Button variant="ghost" className="text-gray-600 hover:text-gray-800 mb-6">
                     <ArrowLeft className="h-4 w-4 mr-2" />
                     Retour à la connexion
-                  </a>
-                </Button>
+                  </Button>
+                </Link>
 
                 <div className="flex items-center justify-center mb-8">
                   <img src="/images/dl-logo.jpg" alt="DL Solutions Logo" className="h-8 w-8 object-contain rounded-full" />

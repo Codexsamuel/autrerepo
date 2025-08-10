@@ -1,75 +1,132 @@
-# 📱 Guide de Déploiement Google Play Store - DL Solutions
+# 🚀 Guide de Déploiement Hybride - DL Solutions Platform
 
-## 🚀 Déploiement Automatique
+## 📋 Vue d'ensemble
+Ce projet utilise une **architecture hybride** :
+- **Frontend** : Déployé sur Netlify (dlsolutionssarl.tech)
+- **APIs** : Déployées sur Vercel (serverless functions)
 
-### 1. Prérequis
-- Compte Google Play Console (25$)
-- Node.js 16+
-- Java 11+
-- Android Studio
+## 🎯 Avantages de cette approche
+- ✅ **Netlify** : Excellent pour le frontend statique, CDN global, déploiement automatique
+- ✅ **Vercel** : Optimisé pour les APIs Next.js, serverless functions, performance
+- ✅ **Séparation des préoccupations** : Frontend et backend indépendants
+- ✅ **Scalabilité** : Chaque partie peut évoluer séparément
 
-### 2. Build Automatique
+## 🔧 Configuration actuelle
+
+### 1. Netlify (Frontend)
+- **Domaine** : dlsolutionssarl.tech
+- **Build** : `npm run build:netlify`
+- **Publish** : `.next` directory
+- **Redirects** : APIs → Vercel
+
+### 2. Vercel (APIs)
+- **Build** : `npm run build:api-only`
+- **Runtime** : Node.js 18.x
+- **CORS** : Configuré pour dlsolutionssarl.tech
+
+## 🚀 Étapes de déploiement
+
+### Étape 1 : Déployer les APIs sur Vercel
+
 ```bash
-# Exécuter le script de build
-./build-apk.sh
+# Installer Vercel CLI si pas déjà fait
+npm i -g vercel
+
+# Se connecter à Vercel
+vercel login
+
+# Déployer les APIs
+vercel --prod
+
+# Noter l'URL de déploiement (ex: https://dl-solutions-api.vercel.app)
 ```
 
-### 3. Upload sur Google Play Console
+### Étape 2 : Mettre à jour la configuration Netlify
 
-1. **Créer une nouvelle application**
-   - Nom: DL Solutions
-   - Langue par défaut: Français
-   - Application ou jeu: Application
-   - Gratuit ou payant: Gratuit
+1. **Modifier `netlify.toml`** :
+```toml
+[[redirects]]
+  from = "/api/*"
+  to = "https://VOTRE_URL_VERCEL.vercel.app/api/:splat"
+  status = 200
+  force = true
+```
 
-2. **Remplir les informations de l'app**
-   - Titre: DL Solutions
-   - Description courte: Solutions digitales innovantes
-   - Description complète: (voir app-assets/play-store-content.json)
+2. **Remplacer `VOTRE_URL_VERCEL`** par l'URL obtenue à l'étape 1
 
-3. **Uploader l'APK**
-   - Fichier: app-release.apk
-   - Version: 1.0.0
-   - Notes de version: Première version
+### Étape 3 : Déployer le frontend sur Netlify
 
-4. **Configurer le contenu**
-   - Catégorie: Business
-   - Tags: digital, solutions, crm, erp, formation
-   - Classification du contenu: Tout public
+```bash
+# Commiter les changements
+git add .
+git commit -m "Configuration hybride: APIs sur Vercel, frontend sur Netlify"
+git push origin main
 
-5. **Prix et disponibilité**
-   - Prix: Gratuit
-   - Pays: Tous les pays
-   - Disponibilité: Disponible
+# Netlify se déploiera automatiquement
+```
 
-6. **Confidentialité**
-   - Politique de confidentialité: https://dlsolutions.com/privacy
-   - Données collectées: Minimales (analytics)
+## 🔍 Vérification du déploiement
 
-### 4. Assets Requis
+### Test des APIs
+```bash
+# Tester une API
+curl https://VOTRE_URL_VERCEL.vercel.app/api/scrape-supabase
 
-#### Icônes
-- 512x512 (Play Store)
-- 192x192 (App)
+# Vérifier les CORS
+curl -H "Origin: https://dlsolutionssarl.tech" \
+     -H "Access-Control-Request-Method: POST" \
+     -H "Access-Control-Request-Headers: Content-Type" \
+     -X OPTIONS \
+     https://VOTRE_URL_VERCEL.vercel.app/api/scrape-supabase
+```
 
-#### Captures d'écran (minimum 2)
-- 1280x720 (tablette)
-- 1080x1920 (téléphone)
+### Test du frontend
+1. Visiter https://dlsolutionssarl.tech
+2. Vérifier que les appels API fonctionnent
+3. Contrôler la console du navigateur pour les erreurs CORS
 
-#### Feature Graphic
-- 1024x500
+## 🛠️ Scripts utiles
 
-### 5. Publication
-1. Vérifier tous les champs
-2. Soumettre pour examen
-3. Attendre validation (1-3 jours)
-4. Publication automatique
+```bash
+# Voir le guide de déploiement
+npm run deploy:hybrid
 
-## 🎯 URLs Importantes
-- **Google Play Console**: https://play.google.com/console
-- **Manifest PWA**: https://dlsolutions.com/manifest.json
-- **Site web**: https://dlsolutions.com
+# Déployer sur Vercel
+npm run deploy:vercel
 
-## 📞 Support
-- Email: support@dlsolutions.com
-- Documentation: https://dlsolutions.com/docs
+# Déployer sur Netlify
+npm run deploy:netlify
+
+# Build pour Netlify
+npm run build:netlify
+
+# Build pour Vercel (APIs uniquement)
+npm run build:api-only
+```
+
+## 🔧 Résolution des problèmes
+
+### Erreur CORS
+- Vérifier que l'URL dans `vercel-api.json` correspond à votre domaine Netlify
+- Contrôler que les headers CORS sont bien configurés
+
+### APIs non accessibles
+- Vérifier que l'URL de redirection dans `netlify.toml` est correcte
+- Contrôler que Vercel est bien déployé et accessible
+
+### Build échoue
+- Utiliser `npm run build:netlify` pour Netlify
+- Utiliser `npm run build:api-only` pour Vercel
+- Vérifier que `next.config.js` a les bonnes configurations
+
+## 📚 Ressources
+- [Documentation Netlify](https://docs.netlify.com/)
+- [Documentation Vercel](https://vercel.com/docs)
+- [Next.js Deployment](https://nextjs.org/docs/deployment)
+
+## 🆘 Support
+En cas de problème :
+1. Vérifier les logs de build sur Netlify et Vercel
+2. Contrôler la console du navigateur
+3. Tester les APIs directement avec curl/Postman
+4. Vérifier la configuration des domaines et DNS

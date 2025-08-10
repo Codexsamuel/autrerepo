@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Award, Eye, Heart, Lightbulb, Shield, Star, Target, Users } from "lucide-react";
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'À Propos - DL Solutions | Davy & Lucie Solutions SARL',
@@ -86,12 +87,16 @@ export default function AboutPage() {
                 </a>
               </nav>
               <div className="hidden lg:flex items-center space-x-4">
-                <Button variant="outline" className="border-teal-200 text-teal-700" asChild>
-                  <a href="/devis">Devis IA</a>
-                </Button>
-                <Button className="bg-gradient-to-r from-teal-600 to-blue-600" asChild>
-                  <a href="/sign-in">NovaCore</a>
-                </Button>
+                <Link href="/devis">
+                  <Button variant="outline" className="border-teal-200 text-teal-700">
+                    Devis IA
+                  </Button>
+                </Link>
+                <Link href="/sign-in">
+                  <Button className="bg-gradient-to-r from-teal-600 to-blue-600">
+                    NovaCore
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
@@ -270,15 +275,17 @@ export default function AboutPage() {
                 Découvrez comment DL Solutions peut transformer votre entreprise avec nos solutions innovantes.
               </p>
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Button size="lg" className="bg-white text-teal-600 hover:bg-gray-100" asChild>
-                  <a href="/contact">
+                <Link href="/contact">
+                  <Button size="lg" className="bg-white text-teal-600 hover:bg-gray-100">
                     Nous contacter
                     <ArrowRight className="ml-2 h-6 w-6" />
-                  </a>
-                </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10" asChild>
-                  <a href="/services">Découvrir nos services</a>
-                </Button>
+                  </Button>
+                </Link>
+                <Link href="/services">
+                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                    Découvrir nos services
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

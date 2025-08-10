@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, Heart, Star, Zap, FlameIcon as Fire, Users, Eye } from "lucide-react"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowLeft, Eye, FlameIcon as Fire, Heart, Star, Users, Zap } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 
 
@@ -155,12 +156,12 @@ export default function VentesFlashPage() {
       <header className="bg-white shadow-lg border-b">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            <Button variant="ghost" asChild>
-              <a href="/dl-style" className="flex items-center">
+            <Link href="/dl-style">
+              <Button variant="ghost" className="flex items-center">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Retour à la boutique
-              </a>
-            </Button>
+              </Button>
+            </Link>
             <div className="flex items-center space-x-2">
               <Zap className="h-6 w-6 text-orange-500" />
               <span className="font-bold text-xl">Ventes Flash</span>
@@ -269,9 +270,11 @@ export default function VentesFlashPage() {
                         <Button size="icon" variant="secondary">
                           <Heart className="h-4 w-4" />
                         </Button>
-                        <Button className="bg-orange-500 hover:bg-orange-600" asChild>
-                          <a href={`/dl-style/produit/${deal.id}`}>Voir le deal</a>
-                        </Button>
+                        <Link href={`/dl-style/produit/${deal.id}`}>
+                          <Button className="bg-orange-500 hover:bg-orange-600">
+                            Voir le deal
+                          </Button>
+                        </Link>
                       </div>
                     </div>
 
@@ -337,15 +340,14 @@ export default function VentesFlashPage() {
                         </div>
                       </div>
 
-                      <Button
-                        className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-lg py-4"
-                        asChild
-                      >
-                        <a href={`/dl-style/produit/${deal.id}`}>
+                      <Link href={`/dl-style/produit/${deal.id}`}>
+                        <Button
+                          className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-lg py-4"
+                        >
                           <Zap className="h-5 w-5 mr-2" />
                           Acheter maintenant
-                        </a>
-                      </Button>
+                        </Button>
+                      </Link>
                     </div>
                   </CardContent>
                 </Card>

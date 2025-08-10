@@ -10,18 +10,13 @@ const SESSION_TIMEOUT = 3 * 60 * 1000; // 3 minutes
 
 export function SessionTimer() {
   const [isClient, setIsClient] = useState(false);
-  const [sessionData, setSessionData] = useState<any>(null);
   const [timeLeft, setTimeLeft] = useState<number>(0);
+
+  // Appeler useSession directement
+  const sessionData = useSession();
 
   useEffect(() => {
     setIsClient(true);
-    try {
-      const { isAuthenticated, sessionStartTime } = useSession();
-      setSessionData({ isAuthenticated, sessionStartTime });
-    } catch (error) {
-      // Ignore useSession error during SSR
-      setSessionData({ isAuthenticated: false, sessionStartTime: null });
-    }
   }, []);
 
   useEffect(() => {

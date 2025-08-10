@@ -1,26 +1,27 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+    ArrowLeft,
+    Bot,
+    CloudRain,
+    DollarSign,
+    Droplets,
+    MapPin,
+    Package,
+    Sprout,
+    Sun,
+    Thermometer,
+    Tractor,
+    TrendingUp,
+    Users,
+    Wind,
+    Zap
+} from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { 
-  Zap, 
-  Bot, 
-  TrendingUp, 
-  ArrowLeft, 
-  Sprout, 
-  MapPin, 
-  CloudRain, 
-  Tractor, 
-  Package, 
-  DollarSign, 
-  Users, 
-  Thermometer, 
-  Droplets, 
-  Wind, 
-  Sun 
-} from "lucide-react"
 
 export default function NovaAgricultureERP() {
   const [activeTab, setActiveTab] = useState("dashboard")
@@ -81,12 +82,12 @@ export default function NovaAgricultureERP() {
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Button variant="outline" size="sm" asChild>
-                <a href="/sign-in">
+              <Link href="/sign-in">
+                <Button variant="outline" size="sm">
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Retour
-                </a>
-              </Button>
+                </Button>
+              </Link>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
                   <Sprout className="h-6 w-6 text-white" />

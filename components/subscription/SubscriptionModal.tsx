@@ -117,7 +117,7 @@ export default function SubscriptionModal({
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
+    if (file && typeof window !== 'undefined') {
       setLogoFile(file);
       const reader = new FileReader();
       reader.onload = (e) => {

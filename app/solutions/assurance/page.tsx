@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { supabase } from '@/lib/supabase/client';
 
@@ -49,8 +48,8 @@ export default function AssuranceDashboard() {
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Dashboard Assurance</h1>
         <div className="flex gap-2">
-          <Button asChild><Link href="/solutions/assurance/polices/nouveau">Nouvelle Police</Link></Button>
-          <Button asChild variant="outline"><Link href="/solutions/assurance/clients/nouveau">Nouveau Client</Link></Button>
+          <Link href="/solutions/assurance/polices/nouveau" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Nouvelle Police</Link>
+          <Link href="/solutions/assurance/clients/nouveau" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">Nouveau Client</Link>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

@@ -205,7 +205,7 @@ export default function PackagesPage() {
                     >
                       <div className="flex justify-between items-center">
                         <span>{category.name}</span>
-                        <Badge variant="secondary">category.count</Badge>
+                        <Badge variant="secondary">{category.count}</Badge>
                       </div>
                     </button>
                   ))}
@@ -248,9 +248,11 @@ export default function PackagesPage() {
               <CardContent className="p-6">
                 <h3 className="font-semibold text-lg mb-2">Offre Spéciale</h3>
                 <p className="text-orange-100 mb-4">Jusqu'à -30% sur une sélection de packages</p>
-                <Button variant="secondary" className="w-full hover:bg-white/90 transition-colors" asChild>
-                  <Link href="/dl-travel/offres-speciales">Voir les offres</Link>
-                </Button>
+                <Link href="/dl-travel/offres-speciales">
+                  <Button variant="secondary" className="w-full hover:bg-white/90 transition-colors">
+                    Voir les offres
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </div>
@@ -350,15 +352,18 @@ export default function PackagesPage() {
                     </div>
 
                     <div className="flex gap-2">
-                      <Button variant="outline" className="flex-1 hover:bg-blue-50 transition-colors" asChild>
-                        <Link href={`/dl-travel/packages/${pkg.id}`}>Voir détails</Link>
-                      </Button>
-                      <Button
-                        className="flex-1 bg-gradient-to-r from-blue-600 to-orange-500 hover:from-blue-700 hover:to-orange-600 transform hover:scale-105 transition-all duration-200"
-                        asChild
-                      >
-                        <Link href={`/dl-travel/packages/${pkg.id}/reservation`}>Réserver</Link>
-                      </Button>
+                      <Link href={`/dl-travel/packages/${pkg.id}`}>
+                        <Button variant="outline" className="flex-1 hover:bg-blue-50 transition-colors">
+                          Voir détails
+                        </Button>
+                      </Link>
+                      <Link href={`/dl-travel/packages/${pkg.id}/reservation`}>
+                        <Button
+                          className="flex-1 bg-gradient-to-r from-blue-600 to-orange-500 hover:from-blue-700 hover:to-orange-600 transform hover:scale-105 transition-all duration-200"
+                        >
+                          Réserver
+                        </Button>
+                      </Link>
                     </div>
                   </CardContent>
                 </Card>

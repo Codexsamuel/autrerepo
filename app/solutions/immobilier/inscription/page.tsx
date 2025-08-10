@@ -18,7 +18,7 @@ export default function InscriptionPage() {
 
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (file) {
+    if (file && typeof window !== 'undefined') {
       const reader = new FileReader()
       reader.onloadend = () => {
         setLogoPreview(reader.result as string)

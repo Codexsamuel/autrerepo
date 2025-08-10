@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { Header } from '@/components/layout/header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Play, CheckCircle, Lock, Clock, BookOpen, Video, FileText, HelpCircle, Award, ChevronRight, ChevronDown, Star, Users, Calendar, Target, Trophy, Download, Share2, Bookmark } from 'lucide-react';
 import { notFound } from 'next/navigation';

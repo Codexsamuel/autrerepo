@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, ArrowRight, Check, Eye, EyeOff, Lock, Mail, Phone, Shield, User } from "lucide-react";
+import Link from "next/link";
 import type { FormEvent } from "react";
 import { useState } from "react";
 
@@ -55,12 +56,12 @@ export default function NovaCorSignUp() {
         <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Side - Features */}
           <div className="text-center lg:text-left">
-            <Button variant="ghost" className="text-white/80 hover:text-white mb-8" asChild>
-              <a href="/">
+            <Link href="/">
+              <Button variant="ghost" className="text-white/80 hover:text-white mb-8">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Retour au site
-              </a>
-            </Button>
+              </Button>
+            </Link>
 
             <div className="flex items-center justify-center mb-8">
               <img src="/images/dl-logo.jpg" alt="DL Solutions Logo" className="h-12 w-12 object-contain rounded-full" />

@@ -1,0 +1,25 @@
+# Exclure les APIs (gérées par Vercel)
+app/api/
+lib/ai/
+lib/scraper/
+lib/services/
+
+# Exclure les fichiers de développement
+node_modules/
+.next/
+.env*
+*.log
+.DS_Store
+
+# Exclure les sous-projets
+nova-ia-commercial/
+sentinel-zero/
+
+# Exclure la documentation
+docs/
+*.md
+README*
+
+# Exclure les scripts
+scripts/
+migrations/ 

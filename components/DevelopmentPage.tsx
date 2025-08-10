@@ -1,7 +1,6 @@
 "use client";
 
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
     Clock,
@@ -86,26 +85,29 @@ export default function DevelopmentPage({
               <CardTitle>Actions rapides</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Button asChild className="w-full" variant="outline">
-                <Link href="/">
-                  <Home className="h-4 w-4 mr-2" />
-                  Retour à l'accueil
-                </Link>
-              </Button>
+              <Link 
+                href="/"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full"
+              >
+                <Home className="h-4 w-4 mr-2" />
+                Retour à l'accueil
+              </Link>
               
-              <Button asChild className="w-full" variant="outline">
-                <Link href="/contact">
-                  <Mail className="h-4 w-4 mr-2" />
-                  Nous contacter
-                </Link>
-              </Button>
+              <Link 
+                href="/contact"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full"
+              >
+                <Mail className="h-4 w-4 mr-2" />
+                Nous contacter
+              </Link>
 
-              <Button asChild className="w-full" variant="outline">
-                <Link href="/services">
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Voir nos services
-                </Link>
-              </Button>
+              <Link 
+                href="/services"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full"
+              >
+                <ExternalLink className="h-4 w-4 mr-2" />
+                Voir nos services
+              </Link>
 
               {relatedPages.length > 0 && (
                 <div className="pt-4 border-t">
@@ -136,18 +138,20 @@ export default function DevelopmentPage({
                 Contactez-nous directement pour discuter de vos besoins spécifiques et obtenir un devis personnalisé.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button asChild className="bg-blue-600 hover:bg-blue-700">
-                  <Link href="tel:+237694341586">
-                    <Phone className="h-4 w-4 mr-2" />
-                    +237 694 341 586
-                  </Link>
-                </Button>
-                <Button asChild variant="outline">
-                  <Link href="mailto:sobam@daveandlucesolutions.com">
-                    <Mail className="h-4 w-4 mr-2" />
-                    sobam@daveandlucesolutions.com
-                  </Link>
-                </Button>
+                <Link 
+                  href="tel:+237694341586"
+                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700 h-10 px-4 py-2"
+                >
+                  <Phone className="h-4 w-4 mr-2" />
+                  +237 694 341 586
+                </Link>
+                <Link 
+                  href="mailto:sobam@daveandlucesolutions.com"
+                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+                >
+                  <Mail className="h-4 w-4 mr-2" />
+                  sobam@daveandlucesolutions.com
+                </Link>
               </div>
             </div>
           </CardContent>

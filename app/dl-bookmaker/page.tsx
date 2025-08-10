@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -47,11 +48,11 @@ export default function DLBookmakerPage() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="icon" asChild>
-                <a href="/novacore">
+              <Link href="/novacore">
+                <Button variant="ghost" size="icon">
                   <ArrowLeft className="h-5 w-5" />
-                </a>
-              </Button>
+                </Button>
+              </Link>
               <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-green-200 flex items-center justify-center bg-white shadow-md">
                 <Trophy className="h-6 w-6 text-green-600" />
               </div>

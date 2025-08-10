@@ -149,12 +149,12 @@ export default function OrdersPage() {
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Button variant="outline" size="sm" asChild>
-                <Link href="/demo/dl-commerce">
+              <Link href="/demo/dl-commerce">
+                <Button variant="outline" size="sm">
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Retour
-                </Link>
-              </Button>
+                </Button>
+              </Link>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                   <Package className="h-6 w-6 text-blue-600" />
@@ -283,11 +283,11 @@ export default function OrdersPage() {
                         <td className="p-4 font-medium">{order.total}</td>
                         <td className="p-4 text-right">
                           <div className="flex justify-end gap-2">
-                            <Button size="icon" variant="ghost" asChild>
-                              <Link href={`/demo/dl-commerce/commandes/${order.id}`}>
+                            <Link href={`/demo/dl-commerce/commandes/${order.id}`}>
+                              <Button size="icon" variant="ghost">
                                 <Eye className="h-4 w-4" />
-                              </Link>
-                            </Button>
+                              </Button>
+                            </Link>
                             <Button size="icon" variant="ghost">
                               <Printer className="h-4 w-4" />
                             </Button>

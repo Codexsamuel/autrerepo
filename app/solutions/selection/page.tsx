@@ -208,26 +208,19 @@ export default function CRMSSelectionPage() {
                       ))}
                     </div>
                     <div className="flex space-x-2">
-                      <Button 
-                        size="sm" 
-                        className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                        asChild
+                      <Link 
+                        href={module.demo}
+                        className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white h-9 px-3 flex-1"
                       >
-                        <Link href={module.demo}>
-                          Voir la démo
-                          <ArrowRight className="w-3 h-3 ml-1" />
-                        </Link>
-                      </Button>
-                      <Button 
-                        size="sm" 
-                        variant="outline"
-                        className="flex-1"
-                        asChild
+                        Voir la démo
+                        <ArrowRight className="w-3 h-3 ml-1" />
+                      </Link>
+                      <Link 
+                        href={`/solutions/${module.id}`}
+                        className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 flex-1"
                       >
-                        <Link href={`/solutions/${module.id}`}>
-                          Détails
-                        </Link>
-                      </Button>
+                        Détails
+                      </Link>
                     </div>
                   </CardContent>
                 </Card>
@@ -249,11 +242,12 @@ export default function CRMSSelectionPage() {
                 <Zap className="w-5 h-5 mr-2" />
                 Commencer maintenant
               </Button>
-              <Button size="lg" variant="outline" asChild>
-                <Link href="/contact">
-                  Parler à un expert
-                </Link>
-              </Button>
+              <Link 
+                href="/contact"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-11 px-8"
+              >
+                Parler à un expert
+              </Link>
             </div>
           </div>
         </main>

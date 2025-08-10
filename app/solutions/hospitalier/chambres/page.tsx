@@ -45,7 +45,7 @@ export default function ChambresList() {
     <div className="container mx-auto p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Chambres d'hôtel</h1>
-        <Button asChild><Link href="/solutions/hospitalier/chambres/nouveau">Nouvelle chambre</Link></Button>
+        <Link href="/solutions/hospitalier/chambres/nouveau" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Nouvelle chambre</Link>
       </div>
       <input
         className="border rounded px-3 py-2 mb-4 w-full"
@@ -69,9 +69,7 @@ export default function ChambresList() {
                 <div className="mb-2">Statut : <span className="font-bold">{room.status}</span></div>
                 <div className="mb-2 text-xs text-gray-400">Créée le {new Date(room.created_at).toLocaleDateString()}</div>
                 <div className="flex gap-2 mt-2">
-                  <Button asChild size="sm" variant="outline">
-                    <Link href={`/solutions/hospitalier/chambres/${room.id}`}>Éditer</Link>
-                  </Button>
+                  <Link href={`/solutions/hospitalier/chambres/${room.id}`} className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">Éditer</Link>
                   <Button size="sm" variant="destructive" onClick={() => handleDelete(room.id)}>Supprimer</Button>
                 </div>
               </CardContent>

@@ -14,6 +14,7 @@ import {
     Eye,
     FileText,
     Globe,
+    HardDrive,
     Key,
     Lock,
     Network,
@@ -484,7 +485,7 @@ export default function SentinelZeroPage() {
         >
           {[
             { label: 'CPU', value: systemMetrics.cpu, icon: <Cpu className="h-6 w-6" />, color: 'from-blue-500 to-blue-600' },
-            { label: 'Mémoire', value: systemMetrics.memory, icon: <Memory className="h-6 w-6" />, color: 'from-green-500 to-green-600' },
+            { label: 'Mémoire', value: systemMetrics.memory, icon: <HardDrive className="h-6 w-6" />, color: 'from-green-500 to-green-600' },
             { label: 'Réseau', value: systemMetrics.network, icon: <Network className="h-6 w-6" />, color: 'from-purple-500 to-purple-600' },
             { label: 'Sécurité', value: systemMetrics.security, icon: <ShieldCheck className="h-6 w-6" />, color: 'from-red-500 to-red-600' }
           ].map((metric, index) => (

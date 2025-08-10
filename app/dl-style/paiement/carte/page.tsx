@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { ArrowLeft, CreditCard, Lock, Shield, CheckCircle, AlertCircle } from "lucide-react"
-
-
+import Link from "next/link"
 
 interface CardData {
   number: string
@@ -119,12 +118,18 @@ export default function CardPaymentPage() {
             <h2 className="text-2xl font-bold text-green-700 mb-4">Paiement réussi !</h2>
             <p className="text-gray-600 mb-6">Votre commande a été confirmée</p>
             <div className="space-y-4">
-              <Button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600" asChild>
-                <a href="/dl-style/commande-confirmee">Voir ma commande</a>
-              </Button>
-              <Button variant="outline" className="w-full" asChild>
-                <a href="/dl-style">Continuer mes achats</a>
-              </Button>
+              <Link 
+                href="/dl-style/commande-confirmee"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 h-10 px-4 py-2 w-full"
+              >
+                Voir ma commande
+              </Link>
+              <Link 
+                href="/dl-style"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full"
+              >
+                Continuer mes achats
+              </Link>
             </div>
           </CardContent>
         </Card>
@@ -138,12 +143,13 @@ export default function CardPaymentPage() {
       <header className="bg-white shadow-lg border-b">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            <Button variant="ghost" asChild>
-              <a href="/dl-style/checkout" className="flex items-center">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Retour au checkout
-              </a>
-            </Button>
+            <Link 
+              href="/dl-style/checkout"
+              className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Retour au checkout
+            </Link>
             <div className="flex items-center space-x-2">
               <Lock className="h-5 w-5 text-green-600" />
               <span className="font-semibold">Paiement Sécurisé</span>

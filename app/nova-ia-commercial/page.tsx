@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
 import { Brain, TrendingUp, Users, MessageSquare, BarChart3, Settings, Zap, Target, Eye, Shield, Activity, Wifi, Globe, Star, ArrowRight, Play, Pause } from "lucide-react";
 import { motion, AnimatePresence } from 'framer-motion';
 

@@ -1,10 +1,11 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { AlertCircle, ArrowLeft, CheckCircle, MessageSquare, Shield, Smartphone } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { ArrowLeft, Smartphone, Shield, CheckCircle, AlertCircle, MessageSquare } from "lucide-react"
 
 
 
@@ -67,12 +68,16 @@ export default function OrangeMoneyPaymentPage() {
             <h2 className="text-2xl font-bold text-green-700 mb-4">Paiement Orange Money réussi !</h2>
             <p className="text-gray-600 mb-6">Votre commande a été confirmée</p>
             <div className="space-y-4">
-              <Button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600" asChild>
-                <a href="/dl-style/commande-confirmee">Voir ma commande</a>
-              </Button>
-              <Button variant="outline" className="w-full" asChild>
-                <a href="/dl-style">Continuer mes achats</a>
-              </Button>
+              <Link href="/dl-style/commande-confirmee">
+                <Button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600">
+                  Voir ma commande
+                </Button>
+              </Link>
+              <Link href="/dl-style">
+                <Button variant="outline" className="w-full">
+                  Continuer mes achats
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>
@@ -86,12 +91,12 @@ export default function OrangeMoneyPaymentPage() {
       <header className="bg-white shadow-lg border-b">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            <Button variant="ghost" asChild>
-              <a href="/dl-style/checkout" className="flex items-center">
+            <Link href="/dl-style/checkout">
+              <Button variant="ghost" className="flex items-center">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Retour au checkout
-              </a>
-            </Button>
+              </Button>
+            </Link>
             <div className="flex items-center space-x-2">
               <img src="/images/orange-money.png" alt="Orange Money" className="h-6" />
               <span className="font-semibold">Orange Money</span>

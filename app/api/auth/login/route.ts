@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Configuration pour éviter le pré-rendu
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 // Super Admin par défaut
 const SUPER_ADMIN = {
   email: 'sobam@daveandlucesolutions.com',
@@ -22,8 +26,8 @@ export async function POST(request: NextRequest) {
         role: SUPER_ADMIN.role
       };
 
-      // Créer un token simple (en production, utiliser JWT)
-      const token = btoa(`${user.id}:${Date.now()}:${user.email}`);
+      // Créer un token simple avec Buffer (compatible côté serveur)
+      const token = Buffer.from(`${user.id}:${Date.now()}:${user.email}`).toString('base64');
 
       return NextResponse.json({
         success: true,

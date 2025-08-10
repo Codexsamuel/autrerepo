@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Configuration pour éviter le pré-rendu
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function POST(request: NextRequest) {
   try {
     const { email, password, name } = await request.json();
@@ -28,8 +32,8 @@ export async function POST(request: NextRequest) {
       role: 'user' as const
     };
 
-    // Créer un token simple
-    const token = btoa(`${user.id}:${Date.now()}:${user.email}`);
+    // Créer un token simple avec Buffer (compatible côté serveur)
+    const token = Buffer.from(`${user.id}:${Date.now()}:${user.email}`).toString('base64');
 
     return NextResponse.json({
       success: true,

@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Configuration pour éviter le pré-rendu
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 // Types pour l'API Amazon
 interface AmazonProduct {
   id: string;

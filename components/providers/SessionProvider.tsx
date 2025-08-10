@@ -39,53 +39,76 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   const [sessionStartTime, setSessionStartTime] = useState<number | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const pathname = usePathname();
 
-  // Vérifier l'authentification au chargement
+  // Vérifier que nous sommes côté client
   useEffect(() => {
-    const savedUser = localStorage.getItem('currentUser');
-    const savedSubscription = localStorage.getItem('userSubscription');
-    
-    if (savedUser) {
-      setIsAuthenticated(true);
-    }
-    
-    if (savedSubscription) {
-      setHasSubscription(true);
-    }
+    setIsClient(true);
   }, []);
+
+  // Vérifier l'authentification au chargement (seulement côté client)
+  useEffect(() => {
+    if (!isClient) return;
+    
+    try {
+      const savedUser = localStorage.getItem('currentUser');
+      const savedSubscription = localStorage.getItem('userSubscription');
+      
+      if (savedUser) {
+        setIsAuthenticated(true);
+      }
+      
+      if (savedSubscription) {
+        setHasSubscription(true);
+      }
+    } catch (error) {
+      console.warn('localStorage not available:', error);
+    }
+  }, [isClient]);
 
   // Démarrer le timer de session
   useEffect(() => {
-    if (!isAuthenticated && pathname && !EXEMPT_PATHS.includes(pathname)) {
-      const startTime = Date.now();
-      setSessionStartTime(startTime);
+    if (!isClient || !isAuthenticated || !pathname || EXEMPT_PATHS.includes(pathname)) return;
+    
+    const startTime = Date.now();
+    setSessionStartTime(startTime);
+    
+    try {
       localStorage.setItem('sessionStartTime', startTime.toString());
+    } catch (error) {
+      console.warn('localStorage not available:', error);
     }
-  }, [pathname, isAuthenticated]);
+  }, [pathname, isAuthenticated, isClient]);
 
   // Vérifier le timeout de session
   useEffect(() => {
-    if (!isAuthenticated && sessionStartTime && pathname && !EXEMPT_PATHS.includes(pathname)) {
-      const checkTimeout = () => {
-        const currentTime = Date.now();
-        const elapsed = currentTime - sessionStartTime;
-        
-        if (elapsed >= SESSION_TIMEOUT) {
-          setShowAuthModal(true);
-        }
-      };
+    if (!isClient || !isAuthenticated || !sessionStartTime || !pathname || EXEMPT_PATHS.includes(pathname)) return;
+    
+    const checkTimeout = () => {
+      const currentTime = Date.now();
+      const elapsed = currentTime - sessionStartTime;
+      
+      if (elapsed >= SESSION_TIMEOUT) {
+        setShowAuthModal(true);
+      }
+    };
 
-      const interval = setInterval(checkTimeout, 1000);
-      return () => clearInterval(interval);
-    }
-  }, [isAuthenticated, sessionStartTime, pathname]);
+    const interval = setInterval(checkTimeout, 1000);
+    return () => clearInterval(interval);
+  }, [isAuthenticated, sessionStartTime, pathname, isClient]);
 
   const login = (userData: any) => {
     setIsAuthenticated(true);
     setSessionStartTime(null);
-    localStorage.setItem('currentUser', JSON.stringify(userData));
-    localStorage.removeItem('sessionStartTime');
+    
+    try {
+      localStorage.setItem('currentUser', JSON.stringify(userData));
+      localStorage.removeItem('sessionStartTime');
+    } catch (error) {
+      console.warn('localStorage not available:', error);
+    }
+    
     setShowAuthModal(false);
   };
 
@@ -93,14 +116,25 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     setIsAuthenticated(false);
     setHasSubscription(false);
     setSessionStartTime(null);
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('userSubscription');
-    localStorage.removeItem('sessionStartTime');
+    
+    try {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('userSubscription');
+      localStorage.removeItem('sessionStartTime');
+    } catch (error) {
+      console.warn('localStorage not available:', error);
+    }
   };
 
   const subscribe = (plan: string) => {
     setHasSubscription(true);
-    localStorage.setItem('userSubscription', JSON.stringify({ plan, date: new Date().toISOString() }));
+    
+    try {
+      localStorage.setItem('userSubscription', JSON.stringify({ plan, date: new Date().toISOString() }));
+    } catch (error) {
+      console.warn('localStorage not available:', error);
+    }
+    
     setShowSubscriptionModal(false);
   };
 
@@ -116,6 +150,15 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     logout,
     subscribe,
   };
+
+  // Ne pas rendre les modals côté serveur
+  if (!isClient) {
+    return (
+      <SessionContext.Provider value={value}>
+        {children}
+      </SessionContext.Provider>
+    );
+  }
 
   return (
     <SessionContext.Provider value={value}>

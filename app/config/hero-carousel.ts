@@ -98,6 +98,28 @@ export const heroCarouselConfig: HeroMediaItem[] = [
     description: 'Vidéo de présentation de nos services et de notre expertise',
     category: 'Présentation',
     tags: ['Vidéo', 'Présentation', 'Services', 'Expertise']
+  },
+  {
+    id: 'best-shot-1',
+    type: 'image',
+    url: 'https://res.cloudinary.com/dko5sommz/image/upload/v1754855919/WhatsApp_Image_2025-08-10_at_21.49.27_i0dlrs.jpg',
+    alt: 'DL Solutions - Meilleure Prise Photographique #1',
+    title: 'Excellence Photographique',
+    subtitle: 'Une de nos meilleures réalisations',
+    description: 'Découvrez l\'excellence de notre cadreur professionnel à travers ses meilleures prises',
+    category: 'Photographie',
+    tags: ['Photographie', 'Professionnel', 'Excellence', 'Cadreur']
+  },
+  {
+    id: 'best-shot-2',
+    type: 'image',
+    url: 'https://res.cloudinary.com/dko5sommz/image/upload/v1754855895/WhatsApp_Image_2025-08-10_at_21.49.28_1_srbxxr.jpg',
+    alt: 'DL Solutions - Meilleure Prise Photographique #2',
+    title: 'Créativité et Technique',
+    subtitle: 'Excellence dans chaque cliché',
+    description: 'L\'alliance parfaite entre créativité artistique et maîtrise technique',
+    category: 'Photographie',
+    tags: ['Photographie', 'Créativité', 'Technique', 'Art']
   }
 ];
 

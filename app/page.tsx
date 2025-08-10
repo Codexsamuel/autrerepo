@@ -13,6 +13,7 @@ import TestimonialsSection from '@/components/testimonials-section';
 import HeroCarousel from '@/components/ui/HeroCarousel';
 import MarqueeBanner from '@/components/ui/MarqueeBanner';
 import PricingSection from '@/components/ui/PricingSection';
+import OurServicesSection from '@/components/ui/OurServicesSection';
 import { Button } from "@/components/ui/button";
 import WhatsAppButton from '@/components/whatsapp-button';
 import {
@@ -108,6 +109,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Section Nos Services en Vidéo */}
+      <OurServicesSection />
 
       {/* Section Services Premium */}
       <section className="py-20 px-4 bg-white">

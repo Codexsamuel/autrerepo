@@ -172,12 +172,57 @@ const nextConfig = {
           if (SelfReferenceFixerPlugin && typeof SelfReferenceFixerPlugin === 'function') {
             config.plugins.push(new SelfReferenceFixerPlugin({
               replaceWith: 'undefined',
-              debug: process.env.DEBUG_SELF_REFERENCE_FIXER === 'true' || process.env.NODE_ENV === 'development'
+              debug: process.env.DEBUG_SELF_REFERENCE_FIXER === 'true' || process.env.NODE_ENV === 'development',
+              aggressive: true // Activer le mode agressif
             }));
-            console.log('✅ SelfReferenceFixer plugin original ajouté avec succès');
+            console.log('✅ SelfReferenceFixer plugin original ajouté avec succès (mode agressif activé)');
           }
         } catch (error) {
           console.log('ℹ️ Plugin SelfReferenceFixer original non disponible, utilisation du plugin inline uniquement');
+        }
+        
+        // Ajouter un plugin de débogage pour Netlify
+        if (process.env.NETLIFY && process.env.DEBUG_SELF_REFERENCE_FIXER === 'true') {
+          class NetlifyDebugPlugin {
+            apply(compiler) {
+              compiler.hooks.afterEmit.tap('NetlifyDebugPlugin', (compilation) => {
+                console.log('🔍 NetlifyDebugPlugin: Analyse des assets générés...');
+                console.log(`📁 Nombre total d'assets: ${Object.keys(compilation.assets).length}`);
+                
+                // Lister tous les assets JavaScript
+                const jsAssets = Object.keys(compilation.assets).filter(name => name.endsWith('.js'));
+                console.log(`📄 Assets JavaScript: ${jsAssets.length}`);
+                
+                // Vérifier spécifiquement les vendors
+                const vendorAssets = jsAssets.filter(name => name.includes('vendors') || name.includes('chunk'));
+                console.log(`🏪 Assets vendors/chunks: ${vendorAssets.length}`);
+                vendorAssets.forEach(name => {
+                  console.log(`  - ${name}`);
+                });
+                
+                // Vérifier le contenu des vendors pour les références 'self'
+                vendorAssets.forEach(name => {
+                  try {
+                    const asset = compilation.assets[name];
+                    if (asset && typeof asset.source === 'function') {
+                      const source = asset.source();
+                      const selfCount = (source.match(/\bself\b/g) || []).length;
+                      if (selfCount > 0) {
+                        console.log(`⚠️ ${name} contient encore ${selfCount} références à 'self'`);
+                      } else {
+                        console.log(`✅ ${name} ne contient aucune référence à 'self'`);
+                      }
+                    }
+                  } catch (error) {
+                    console.log(`❌ Erreur lors de l'analyse de ${name}:`, error.message);
+                  }
+                });
+              });
+            }
+          }
+          
+          config.plugins.push(new NetlifyDebugPlugin());
+          console.log('✅ NetlifyDebugPlugin ajouté pour le débogage');
         }
         
       } catch (error) {

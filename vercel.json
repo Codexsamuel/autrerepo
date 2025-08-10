@@ -3,7 +3,6 @@
   "buildCommand": "cd sentinel-zero/frontend && npm install && npm run build",
   "installCommand": "cd sentinel-zero/frontend && npm install",
   "outputDirectory": "sentinel-zero/frontend/.next",
-  "rootDirectory": "sentinel-zero/frontend",
   "headers": [
     {
       "source": "/(.*)",

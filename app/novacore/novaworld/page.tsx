@@ -19,7 +19,8 @@ import {
     TrendingUp,
     UserPlus,
     Users,
-    Zap
+    Zap,
+    Brain
 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -461,24 +462,44 @@ export default function NovaWorldPage() {
 
             {/* Réseau */}
             <TabsContent value="network" className="space-y-6">
-              {/* Lien vers les fonctionnalités avancées */}
-              <Card className="border-0 shadow-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-                <CardContent className="p-6">
-                  <div className="text-center">
-                    <h3 className="text-xl font-bold mb-2">🚀 Découvrez les Nouvelles Fonctionnalités</h3>
-                    <p className="text-blue-100 mb-4">
-                      NovaWorld dispose maintenant de capacités avancées : paiements sécurisés, chat en temps réel et cartographie interactive
-                    </p>
-                    <a 
-                      href="/novacore/novaworld/advanced-features" 
-                      className="inline-flex items-center px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-slate-100 transition-colors"
-                    >
-                      <Zap className="w-4 h-4 mr-2" />
-                      Explorer les Fonctionnalités Avancées
-                    </a>
-                  </div>
-                </CardContent>
-              </Card>
+              {/* Liens vers les fonctionnalités avancées */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card className="border-0 shadow-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+                  <CardContent className="p-6">
+                    <div className="text-center">
+                      <h3 className="text-xl font-bold mb-2">🚀 Fonctionnalités Avancées</h3>
+                      <p className="text-blue-100 mb-4">
+                        Paiements sécurisés, chat en temps réel et cartographie interactive
+                      </p>
+                      <a 
+                        href="/novacore/novaworld/advanced-features" 
+                        className="inline-flex items-center px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-slate-100 transition-colors"
+                      >
+                        <Zap className="w-4 h-4 mr-2" />
+                        Explorer
+                      </a>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card className="border-0 shadow-lg bg-gradient-to-r from-slate-800 to-purple-900 text-white">
+                  <CardContent className="p-6">
+                    <div className="text-center">
+                      <h3 className="text-xl font-bold mb-2">⚡ Enterprise++</h3>
+                      <p className="text-slate-200 mb-4">
+                        IA sémantique, audit inviolable, rappels intelligents et plus encore
+                      </p>
+                      <a 
+                        href="/novacore/novaworld/enterprise-plus" 
+                        className="inline-flex items-center px-6 py-3 bg-white text-slate-800 font-semibold rounded-lg hover:bg-slate-100 transition-colors"
+                      >
+                        <Brain className="w-4 h-4 mr-2" />
+                        Découvrir
+                      </a>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
               <h2 className="text-2xl font-bold">Votre réseau</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

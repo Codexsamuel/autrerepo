@@ -1,510 +1,594 @@
-"use client";
+'use client';
 
-import BettingHistory from '@/components/betting/BettingHistory';
-import LiveChat from '@/components/chat/LiveChat';
-import PushNotifications from '@/components/notifications/PushNotifications';
-import ReferralSystem from '@/components/referral/ReferralSystem';
-import ThemeToggle from '@/components/theme/ThemeToggle';
-import { Badge } from '@/components/ui/badge';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useBookmakerData } from '@/hooks/useBookmakerData';
-import { Activity, Gift, Play, RefreshCw, Target, Trophy, Users, Wifi, WifiOff, Zap } from 'lucide-react';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { 
+  Trophy, 
+  TrendingUp, 
+  Clock, 
+  Users, 
+  Target, 
+  Zap, 
+  Star,
+  Play,
+  Pause,
+  DollarSign,
+  TrendingDown,
+  Calendar,
+  MapPin,
+  Activity,
+  BarChart3,
+  Award,
+  Gift,
+  Shield,
+  RefreshCw,
+  Plus,
+  Minus
+} from 'lucide-react';
+
+interface Match {
+  id: string;
+  homeTeam: string;
+  awayTeam: string;
+  homeScore?: number;
+  awayScore?: number;
+  time: string;
+  status: 'upcoming' | 'live' | 'finished';
+  league: string;
+  odds: {
+    home: number;
+    draw: number;
+    away: number;
+  };
+  boost?: number;
+  isLive: boolean;
+}
+
+interface Bet {
+  id: string;
+  matchId: string;
+  type: 'home' | 'draw' | 'away';
+  amount: number;
+  odds: number;
+  potentialWin: number;
+  status: 'pending' | 'won' | 'lost';
+  timestamp: Date;
+}
 
 export default function DLBookmakerPage() {
-  const {
-    data,
-    loading,
-    error,
-    lastUpdate,
-    isOnline,
-    isUpdating,
-    refresh,
-    search,
-    filterMatches,
-    boosts,
-    liveMatches,
-    comboBets,
-    bonuses,
-    missions,
-    ranking
-  } = useBookmakerData({ autoRefresh: true, refreshInterval: 30000 });
+  const [matches, setMatches] = useState<Match[]>([]);
+  const [userBets, setUserBets] = useState<Bet[]>([]);
+  const [selectedMatches, setSelectedMatches] = useState<string[]>([]);
+  const [betAmount, setBetAmount] = useState(1000);
+  const [isLoading, setIsLoading] = useState(true);
+  const [stats, setStats] = useState({
+    totalBets: 0,
+    successRate: 0,
+    totalWinnings: 0,
+    averageOdds: 0
+  });
 
-  const [query, setQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState('matches');
-  const [showChat, setShowChat] = useState(false);
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showHistory, setShowHistory] = useState(false);
-  const [showReferral, setShowReferral] = useState(false);
-  const [filteredMatches, setFilteredMatches] = useState<any[]>([]);
-
-  const handleSearch = async () => {
-    if (!query.trim()) return;
-    const results = await search(query);
-    setSearchResults(results);
-  };
-
-  // Charger les matchs filtrés
+  // Simuler le chargement des données
   useEffect(() => {
-    const loadFilteredMatches = async () => {
-      try {
-        const matches = await filterMatches({
-          sport: 'all',
-          league: 'all',
-          status: 'all'
-        });
-        setFilteredMatches(matches || []);
-      } catch (err) {
-        console.error('Erreur lors du filtrage des matchs:', err);
-        setFilteredMatches([]);
-      }
+    const loadData = async () => {
+      setIsLoading(true);
+      
+      // Simuler un délai de chargement
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Données simulées de matchs
+      const mockMatches: Match[] = [
+        {
+          id: '1',
+          homeTeam: 'Manchester United',
+          awayTeam: 'Liverpool',
+          time: '20:45',
+          status: 'upcoming',
+          league: 'Premier League',
+          odds: { home: 2.50, draw: 3.20, away: 2.80 },
+          boost: 1.5,
+          isLive: false
+        },
+        {
+          id: '2',
+          homeTeam: 'Real Madrid',
+          awayTeam: 'Barcelona',
+          homeScore: 1,
+          awayScore: 0,
+          time: '75\'',
+          status: 'live',
+          league: 'La Liga',
+          odds: { home: 1.80, draw: 3.50, away: 4.20 },
+          isLive: true
+        },
+        {
+          id: '3',
+          homeTeam: 'PSG',
+          awayTeam: 'Bayern Munich',
+          homeScore: 2,
+          awayScore: 2,
+          time: 'FT',
+          status: 'finished',
+          league: 'Champions League',
+          odds: { home: 2.10, draw: 3.30, away: 3.40 },
+          isLive: false
+        },
+        {
+          id: '4',
+          homeTeam: 'Arsenal',
+          awayTeam: 'Chelsea',
+          time: '22:00',
+          status: 'upcoming',
+          league: 'Premier League',
+          odds: { home: 2.20, draw: 3.10, away: 3.30 },
+          boost: 2.0,
+          isLive: false
+        },
+        {
+          id: '5',
+          homeTeam: 'Juventus',
+          awayTeam: 'AC Milan',
+          time: '21:00',
+          status: 'upcoming',
+          league: 'Serie A',
+          odds: { home: 2.40, draw: 3.00, away: 3.10 },
+          isLive: false
+        }
+      ];
+
+      setMatches(mockMatches);
+      
+      // Statistiques simulées
+      setStats({
+        totalBets: 47,
+        successRate: 68.2,
+        totalWinnings: 125000,
+        averageOdds: 2.85
+      });
+      
+      setIsLoading(false);
     };
 
-    loadFilteredMatches();
-  }, [filterMatches]);
+    loadData();
+  }, []);
+
+  const handleBetSelection = (matchId: string, type: 'home' | 'draw' | 'away') => {
+    if (selectedMatches.includes(`${matchId}-${type}`)) {
+      setSelectedMatches(prev => prev.filter(id => id !== `${matchId}-${type}`));
+    } else {
+      setSelectedMatches(prev => [...prev, `${matchId}-${type}`]);
+    }
+  };
+
+  const calculatePotentialWin = () => {
+    if (selectedMatches.length === 0) return 0;
+    
+    let totalOdds = 1;
+    selectedMatches.forEach(selection => {
+      const [matchId, type] = selection.split('-');
+      const match = matches.find(m => m.id === matchId);
+      if (match) {
+        const odds = match.odds[type as keyof typeof match.odds];
+        totalOdds *= odds;
+      }
+    });
+    
+    return betAmount * totalOdds;
+  };
+
+  const placeBet = () => {
+    if (selectedMatches.length === 0) return;
+    
+    const newBets: Bet[] = selectedMatches.map(selection => {
+      const [matchId, type] = selection.split('-');
+      const match = matches.find(m => m.id === matchId);
+      const odds = match?.odds[type as keyof typeof match.odds] || 1;
+      
+      return {
+        id: Date.now().toString(),
+        matchId,
+        type: type as 'home' | 'draw' | 'away',
+        amount: betAmount / selectedMatches.length,
+        odds,
+        potentialWin: (betAmount / selectedMatches.length) * odds,
+        status: 'pending',
+        timestamp: new Date()
+      };
+    });
+    
+    setUserBets(prev => [...prev, ...newBets]);
+    setSelectedMatches([]);
+    setBetAmount(1000);
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'live': return 'bg-red-500';
+      case 'upcoming': return 'bg-blue-500';
+      case 'finished': return 'bg-gray-500';
+      default: return 'bg-gray-500';
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'live': return 'EN DIRECT';
+      case 'upcoming': return 'À VENIR';
+      case 'finished': return 'TERMINÉ';
+      default: return status;
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
+          <h2 className="text-xl text-white font-semibold">Chargement des matchs...</h2>
+          <p className="text-gray-300">Récupération des cotes en temps réel</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <div className="space-y-6">
-        {/* Header avec thème */}
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <div className="flex items-center gap-4">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              DL Bookmaker
-            </h1>
-            <div className="flex items-center gap-2">
-              <ThemeToggle />
-              <Button
-                variant={isOnline ? "default" : "destructive"}
-                size="sm"
-                className="flex items-center gap-2"
-              >
-                {isOnline ? <Wifi className="h-4 w-4" /> : <WifiOff className="h-4 w-4" />}
-                {isOnline ? 'Connecté' : 'Déconnecté'}
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900">
+      {/* Header */}
+      <div className="bg-black bg-opacity-50 border-b border-gray-700 p-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-white flex items-center">
+                <Trophy className="w-8 h-8 mr-3 text-yellow-400" />
+                DL Bookmaker
+              </h1>
+              <p className="text-gray-300 mt-2">Paris sportifs premium avec cotes exclusives</p>
+            </div>
+            <div className="flex items-center space-x-4">
+              <Badge variant="secondary" className="bg-green-600 text-white">
+                <Activity className="w-4 h-4 mr-2" />
+                {matches.filter(m => m.isLive).length} en direct
+              </Badge>
+              <Button variant="outline" className="border-gray-600 text-white hover:bg-gray-700">
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Actualiser
               </Button>
             </div>
           </div>
-          
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowChat(!showChat)}
-              className="flex items-center gap-2"
-            >
-              <Users className="h-4 w-4" />
-              Chat
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowNotifications(!showNotifications)}
-              className="flex items-center gap-2"
-            >
-              <Target className="h-4 w-4" />
-              Notifications
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowHistory(!showHistory)}
-              className="flex items-center gap-2"
-            >
-              <Activity className="h-4 w-4" />
-              Historique
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowReferral(!showReferral)}
-              className="flex items-center gap-2"
-            >
-              <Gift className="h-4 w-4" />
-              Parrainage
-            </Button>
-            <Button
-              onClick={refresh}
-              disabled={isUpdating}
-              className="flex items-center gap-2"
-            >
-              <RefreshCw className={`h-4 w-4 ${isUpdating ? 'animate-spin' : ''}`} />
-              {isUpdating ? 'Actualisation...' : 'Actualiser'}
-            </Button>
-          </div>
-        </div>
-
-        {/* Statut et dernière mise à jour */}
-        <div className="flex items-center justify-between text-sm text-gray-600">
-          <div className="flex items-center gap-4">
-            <span>Dernière mise à jour: {lastUpdate?.toLocaleTimeString('fr-FR')}</span>
-            <span>•</span>
-            <span>{data?.stats?.totalMatches || 0} matchs disponibles</span>
-            <span>•</span>
-            <span>{liveMatches?.length || 0} matchs en direct</span>
-          </div>
-          <Link href="/novacore/dl-bookmaker/nouveau" className="text-blue-600 hover:text-blue-700">
-            Nouveau pari →
-          </Link>
-        </div>
-
-        {/* Onglets */}
-        <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg">
-          {[
-            { id: 'matches', label: 'Matchs', icon: Play },
-            { id: 'live', label: 'En Direct', icon: Activity },
-            { id: 'boosts', label: 'Boosts', icon: Zap },
-            { id: 'bonuses', label: 'Bonus', icon: Gift },
-            { id: 'missions', label: 'Missions', icon: Target },
-            { id: 'ranking', label: 'Classement', icon: Trophy }
-          ].map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <Button
-                key={tab.id}
-                variant={activeTab === tab.id ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setActiveTab(tab.id)}
-                className="flex items-center gap-2"
-              >
-                <Icon className="h-4 w-4" />
-                {tab.label}
-              </Button>
-            );
-          })}
-        </div>
-
-        {/* Contenu principal */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Colonne principale */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Matchs */}
-            {activeTab === 'matches' && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Play className="h-5 w-5" />
-                    Matchs à venir
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {filteredMatches?.slice(0, 10).map((match: any) => (
-                      <div key={match.id} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-4">
-                            <div className="text-center">
-                              <div className="text-sm font-semibold">{match.teams[0]}</div>
-                              <div className="text-xs text-gray-500">vs</div>
-                              <div className="text-sm font-semibold">{match.teams[1]}</div>
-                            </div>
-                            <div className="text-center">
-                              <div className="text-sm text-gray-600">{match.league}</div>
-                              <div className="text-xs text-gray-500">{match.date}</div>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-4">
-                            <div className="text-center">
-                              <div className="text-lg font-bold text-blue-600">{match.odds.home}</div>
-                              <div className="text-xs text-gray-500">1</div>
-                            </div>
-                            <div className="text-center">
-                              <div className="text-lg font-bold text-gray-600">{match.odds.draw}</div>
-                              <div className="text-xs text-gray-500">X</div>
-                            </div>
-                            <div className="text-center">
-                              <div className="text-lg font-bold text-red-600">{match.odds.away}</div>
-                              <div className="text-xs text-gray-500">2</div>
-                            </div>
-                            <Button size="sm" variant="outline">
-                              Parier
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Matchs en direct */}
-            {activeTab === 'live' && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Activity className="h-5 w-5 text-red-600" />
-                    Matchs en Direct
-                    <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {liveMatches?.map((match: any) => (
-                      <div key={match.id} className="border border-red-200 rounded-lg p-4 bg-red-50">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-4">
-                            <div className="text-center">
-                              <div className="text-sm font-semibold">{match.teams[0]}</div>
-                              <div className="text-xs text-red-600 font-bold">{match.score?.[0] || 0}</div>
-                            </div>
-                            <div className="text-center">
-                              <div className="text-sm text-gray-600">{match.league}</div>
-                              <div className="text-xs text-red-600 font-bold">{match.minute || 0}'</div>
-                            </div>
-                            <div className="text-center">
-                              <div className="text-sm font-semibold">{match.teams[1]}</div>
-                              <div className="text-xs text-red-600 font-bold">{match.score?.[1] || 0}</div>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-4">
-                            <div className="text-center">
-                              <div className="text-lg font-bold text-blue-600">{match.liveOdds?.home || match.odds.home}</div>
-                              <div className="text-xs text-gray-500">1</div>
-                            </div>
-                            <div className="text-center">
-                              <div className="text-lg font-bold text-gray-600">{match.liveOdds?.draw || match.odds.draw}</div>
-                              <div className="text-xs text-gray-500">X</div>
-                            </div>
-                            <div className="text-center">
-                              <div className="text-lg font-bold text-red-600">{match.liveOdds?.away || match.odds.away}</div>
-                              <div className="text-xs text-gray-500">2</div>
-                            </div>
-                            <Button size="sm" className="bg-red-600 hover:bg-red-700">
-                              Parier Live
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Boosts */}
-            {activeTab === 'boosts' && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Zap className="h-5 w-5 text-yellow-600" />
-                    Cotes Boostées
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {boosts?.map((boost: any) => (
-                      <div key={boost.id} className="border border-yellow-200 rounded-lg p-4 bg-yellow-50">
-                        <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-semibold">{boost.description}</h4>
-                          <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-300">
-                            +{boost.boostValue}%
-                          </Badge>
-                        </div>
-                        <div className="text-sm text-gray-600 mb-3">
-                          Cote boostée: <span className="font-bold text-yellow-600">{boost.boostedOdds}</span>
-                        </div>
-                        <Button size="sm" className="w-full bg-yellow-600 hover:bg-yellow-700">
-                          Utiliser ce boost
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Bonus */}
-            {activeTab === 'bonuses' && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Gift className="h-5 w-5 text-green-600" />
-                    Bonus et Freebets
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {bonuses?.map((bonus: any) => (
-                      <div key={bonus.id} className="border border-green-200 rounded-lg p-4 bg-green-50">
-                        <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-semibold">{bonus.description}</h4>
-                          <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300">
-                            {bonus.value}€
-                          </Badge>
-                        </div>
-                        <div className="text-sm text-gray-600 mb-3">
-                          Statut: <span className="font-bold text-green-600">{bonus.status}</span>
-                        </div>
-                        <Button size="sm" className="w-full bg-green-600 hover:bg-green-700">
-                          Récupérer
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Missions */}
-            {activeTab === 'missions' && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Target className="h-5 w-5 text-purple-600" />
-                    Missions Quotidiennes
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {missions?.map((mission: any) => (
-                      <div key={mission.id} className="border rounded-lg p-4">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h4 className="font-semibold">{mission.title}</h4>
-                            <p className="text-sm text-gray-600">{mission.description}</p>
-                            <div className="flex items-center gap-2 mt-2">
-                              <div className="w-full bg-gray-200 rounded-full h-2">
-                                <div 
-                                  className="bg-purple-500 h-2 rounded-full transition-all duration-300"
-                                  style={{ width: `${(mission.progress / mission.target) * 100}%` }}
-                                ></div>
-                              </div>
-                              <span className="text-xs text-gray-500">
-                                {mission.progress}/{mission.target}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <div className="text-lg font-bold text-purple-600">+{mission.reward}€</div>
-                            <Button size="sm" variant="outline" disabled={mission.progress < mission.target}>
-                              {mission.progress >= mission.target ? 'Récupérer' : 'En cours'}
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Classement */}
-            {activeTab === 'ranking' && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Trophy className="h-5 w-5 text-yellow-600" />
-                    Classement des Parieurs
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {ranking?.map((user: any, index: number) => (
-                      <div key={user.id} className="flex items-center gap-4 p-3 border rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <div className="text-center">
-                            <div className={`text-lg font-bold ${
-                              index === 0 ? 'text-yellow-600' : 
-                              index === 1 ? 'text-gray-600' : 
-                              index === 2 ? 'text-orange-600' : 'text-gray-500'
-                            }`}>
-                              #{index + 1}
-                            </div>
-                            {index < 3 && (
-                              <Trophy className={`h-4 w-4 mx-auto ${
-                                index === 0 ? 'text-yellow-600' : 
-                                index === 1 ? 'text-gray-600' : 'text-orange-600'
-                              }`} />
-                            )}
-                          </div>
-                          <div>
-                            <div className="font-semibold">{user.username}</div>
-                            <div className="text-sm text-gray-500">{user.winRate}% de réussite</div>
-                          </div>
-                        </div>
-                        <div className="ml-auto text-right">
-                          <div className="text-lg font-bold text-green-600">+{user.totalWinnings}€</div>
-                          <div className="text-sm text-gray-500">{user.totalBets} paris</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Chat en direct */}
-            {showChat && <LiveChat />}
-
-            {/* Notifications */}
-            {showNotifications && <PushNotifications />}
-
-            {/* Historique */}
-            {showHistory && <BettingHistory />}
-
-            {/* Parrainage */}
-            {showReferral && <ReferralSystem />}
-
-            {/* Stats rapides */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Statistiques</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex justify-between">
-                  <span>Total paris</span>
-                  <span className="font-semibold">{data?.stats?.totalBets || 0}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Taux de réussite</span>
-                  <span className="font-semibold text-green-600">{(data?.stats?.averageOdds || 0).toFixed(1)}%</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Gains totaux</span>
-                  <span className="font-semibold text-green-600">+{(data?.stats?.totalBets || 0).toFixed(2)}€</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Cote moyenne</span>
-                  <span className="font-semibold">{(data?.stats?.averageOdds || 0).toFixed(2)}</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Paris combinés populaires */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Combinés Populaires</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {comboBets?.slice(0, 3).map((combo: any) => (
-                    <div key={combo.id} className="border rounded-lg p-3">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-sm">Combiné {combo.bets.length} matchs</h4>
-                        <Badge variant="outline" className="text-xs">
-                          {combo.combinedOdds}
-                        </Badge>
-                      </div>
-                      <div className="text-xs text-gray-600 mb-2">
-                        Gain potentiel: {combo.potentialWin}€
-                      </div>
-                      <Button size="sm" className="w-full text-xs">
-                        Reproduire
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
         </div>
       </div>
-    </>
+
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          
+          {/* Sidebar Gauche - Statistiques */}
+          <div className="lg:col-span-1 space-y-6">
+            {/* Statistiques Utilisateur */}
+            <Card className="bg-gray-800 border-gray-700 text-white">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center">
+                  <BarChart3 className="w-5 h-5 mr-2 text-blue-400" />
+                  Mes Statistiques
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-300">Total paris</span>
+                  <span className="font-semibold text-white">{stats.totalBets}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-300">Taux de réussite</span>
+                  <span className="font-semibold text-green-400">{stats.successRate}%</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-300">Gains totaux</span>
+                  <span className="font-semibold text-green-400">+{stats.totalWinnings.toLocaleString()} FCFA</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-300">Cote moyenne</span>
+                  <span className="font-semibold text-white">{stats.averageOdds}</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Boosts Disponibles */}
+            <Card className="bg-gray-800 border-gray-700 text-white">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center">
+                  <Zap className="w-5 h-5 mr-2 text-yellow-400" />
+                  Boosts Actifs
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {matches.filter(m => m.boost).map(match => (
+                  <div key={match.id} className="flex items-center justify-between p-2 bg-gray-700 rounded">
+                    <div className="text-sm">
+                      <p className="font-medium">{match.homeTeam} vs {match.awayTeam}</p>
+                      <p className="text-gray-400 text-xs">{match.league}</p>
+                    </div>
+                    <Badge className="bg-yellow-600 text-black font-bold">
+                      x{match.boost}
+                    </Badge>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* Missions Quotidiennes */}
+            <Card className="bg-gray-800 border-gray-700 text-white">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center">
+                  <Target className="w-5 h-5 mr-2 text-purple-400" />
+                  Missions
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="p-2 bg-gray-700 rounded">
+                  <p className="text-sm font-medium">5 paris gagnants</p>
+                  <p className="text-gray-400 text-xs">Récompense: 5000 FCFA</p>
+                  <div className="w-full bg-gray-600 rounded-full h-2 mt-2">
+                    <div className="bg-purple-500 h-2 rounded-full" style={{ width: '60%' }}></div>
+                  </div>
+                </div>
+                <div className="p-2 bg-gray-700 rounded">
+                  <p className="text-sm font-medium">Pariez sur 3 ligues</p>
+                  <p className="text-gray-400 text-xs">Récompense: 3000 FCFA</p>
+                  <div className="w-full bg-gray-600 rounded-full h-2 mt-2">
+                    <div className="bg-purple-500 h-2 rounded-full" style={{ width: '40%' }}></div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Contenu Principal - Matchs */}
+          <div className="lg:col-span-3">
+            <Tabs defaultValue="matches" className="w-full">
+              <TabsList className="grid w-full grid-cols-4 bg-gray-800 border-gray-700">
+                <TabsTrigger value="matches" className="text-white data-[state=active]:bg-blue-600">
+                  Matchs
+                </TabsTrigger>
+                <TabsTrigger value="live" className="text-white data-[state=active]:bg-red-600">
+                  En Direct
+                </TabsTrigger>
+                <TabsTrigger value="bets" className="text-white data-[state=active]:bg-green-600">
+                  Mes Paris
+                </TabsTrigger>
+                <TabsTrigger value="history" className="text-white data-[state=active]:bg-gray-600">
+                  Historique
+                </TabsTrigger>
+              </TabsList>
+
+              {/* Onglet Matchs */}
+              <TabsContent value="matches" className="mt-6">
+                <div className="space-y-4">
+                  {matches.map(match => (
+                    <Card key={match.id} className="bg-gray-800 border-gray-700 text-white">
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center space-x-3">
+                            <div className={`w-3 h-3 rounded-full ${getStatusColor(match.status)}`}></div>
+                            <span className="text-sm text-gray-400">{getStatusText(match.status)}</span>
+                            <Badge variant="outline" className="border-gray-600 text-gray-300">
+                              {match.league}
+                            </Badge>
+                            {match.boost && (
+                              <Badge className="bg-yellow-600 text-black font-bold">
+                                BOOST x{match.boost}
+                              </Badge>
+                            )}
+                          </div>
+                          <div className="text-right">
+                            <p className="text-sm text-gray-400">{match.time}</p>
+                            {match.isLive && (
+                              <p className="text-xs text-red-400 font-medium">EN DIRECT</p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-4 mb-4">
+                          <div className="text-center">
+                            <h3 className="font-semibold text-lg">{match.homeTeam}</h3>
+                            {match.homeScore !== undefined && (
+                              <p className="text-2xl font-bold text-blue-400">{match.homeScore}</p>
+                            )}
+                          </div>
+                          <div className="text-center flex items-center justify-center">
+                            <span className="text-gray-400 text-sm">VS</span>
+                          </div>
+                          <div className="text-center">
+                            <h3 className="font-semibold text-lg">{match.awayTeam}</h3>
+                            {match.awayScore !== undefined && (
+                              <p className="text-2xl font-bold text-blue-400">{match.awayScore}</p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-3">
+                          {(['home', 'draw', 'away'] as const).map((type) => {
+                            const isSelected = selectedMatches.includes(`${match.id}-${type}`);
+                            const odds = match.odds[type];
+                            const label = type === 'home' ? '1' : type === 'draw' ? 'X' : '2';
+                            
+                            return (
+                              <button
+                                key={type}
+                                onClick={() => handleBetSelection(match.id, type)}
+                                className={`p-3 rounded-lg border-2 transition-all ${
+                                  isSelected
+                                    ? 'border-blue-500 bg-blue-600 text-white'
+                                    : 'border-gray-600 hover:border-gray-500 bg-gray-700 text-gray-300'
+                                }`}
+                              >
+                                <div className="text-center">
+                                  <p className="text-sm font-medium">{label}</p>
+                                  <p className="text-lg font-bold">{odds}</p>
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+
+              {/* Onglet En Direct */}
+              <TabsContent value="live" className="mt-6">
+                <div className="space-y-4">
+                  {matches.filter(m => m.isLive).map(match => (
+                    <Card key={match.id} className="bg-red-900 border-red-700 text-white">
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center space-x-3">
+                            <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+                            <span className="text-sm text-red-200">EN DIRECT</span>
+                            <Badge className="bg-red-600 text-white">
+                              {match.time}
+                            </Badge>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-4 mb-4">
+                          <div className="text-center">
+                            <h3 className="font-semibold text-lg">{match.homeTeam}</h3>
+                            <p className="text-3xl font-bold text-white">{match.homeScore}</p>
+                          </div>
+                          <div className="text-center flex items-center justify-center">
+                            <span className="text-red-200 text-lg font-bold">-</span>
+                          </div>
+                          <div className="text-center">
+                            <h3 className="font-semibold text-lg">{match.awayTeam}</h3>
+                            <p className="text-3xl font-bold text-white">{match.awayScore}</p>
+                          </div>
+                        </div>
+
+                        <div className="text-center">
+                          <p className="text-red-200 text-sm">Match en cours - Cotes mises à jour en temps réel</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                  
+                  {matches.filter(m => m.isLive).length === 0 && (
+                    <Card className="bg-gray-800 border-gray-700 text-white">
+                      <CardContent className="p-8 text-center">
+                        <Clock className="w-16 h-16 text-gray-500 mx-auto mb-4" />
+                        <h3 className="text-xl font-semibold mb-2">Aucun match en direct</h3>
+                        <p className="text-gray-400">Revenez plus tard pour des matchs en direct</p>
+                      </CardContent>
+                    </Card>
+                  )}
+                </div>
+              </TabsContent>
+
+              {/* Onglet Mes Paris */}
+              <TabsContent value="bets" className="mt-6">
+                <div className="space-y-4">
+                  {userBets.length === 0 ? (
+                    <Card className="bg-gray-800 border-gray-700 text-white">
+                      <CardContent className="p-8 text-center">
+                        <Target className="w-16 h-16 text-gray-500 mx-auto mb-4" />
+                        <h3 className="text-xl font-semibold mb-2">Aucun pari actif</h3>
+                        <p className="text-gray-400">Commencez à parier sur les matchs disponibles</p>
+                      </CardContent>
+                    </Card>
+                  ) : (
+                    userBets.map(bet => {
+                      const match = matches.find(m => m.id === bet.matchId);
+                      return (
+                        <Card key={bet.id} className="bg-gray-800 border-gray-700 text-white">
+                          <CardContent className="p-4">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="font-medium">{match?.homeTeam} vs {match?.awayTeam}</p>
+                                <p className="text-sm text-gray-400">
+                                  Pari: {bet.type === 'home' ? '1' : bet.type === 'draw' ? 'X' : '2'} 
+                                  @ {bet.odds} | {bet.amount.toLocaleString()} FCFA
+                                </p>
+                              </div>
+                              <div className="text-right">
+                                <p className="text-lg font-bold text-green-400">
+                                  +{bet.potentialWin.toLocaleString()} FCFA
+                                </p>
+                                <Badge 
+                                  className={`${
+                                    bet.status === 'won' ? 'bg-green-600' : 
+                                    bet.status === 'lost' ? 'bg-red-600' : 'bg-yellow-600'
+                                  }`}
+                                >
+                                  {bet.status === 'won' ? 'GAGNÉ' : 
+                                   bet.status === 'lost' ? 'PERDU' : 'EN COURS'}
+                                </Badge>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      );
+                    })
+                  )}
+                </div>
+              </TabsContent>
+
+              {/* Onglet Historique */}
+              <TabsContent value="history" className="mt-6">
+                <Card className="bg-gray-800 border-gray-700 text-white">
+                  <CardContent className="p-8 text-center">
+                    <BarChart3 className="w-16 h-16 text-gray-500 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold mb-2">Historique des paris</h3>
+                    <p className="text-gray-400">Consultez vos performances passées et analyses</p>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+
+        {/* Zone de Paris Combiné */}
+        {selectedMatches.length > 0 && (
+          <div className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 p-4">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div>
+                    <p className="text-white text-sm">Paris sélectionnés: {selectedMatches.length}</p>
+                    <p className="text-gray-400 text-xs">Gain potentiel: {calculatePotentialWin().toLocaleString()} FCFA</p>
+                  </div>
+                  <Input
+                    type="number"
+                    value={betAmount}
+                    onChange={(e) => setBetAmount(Number(e.target.value))}
+                    placeholder="Montant du pari"
+                    className="w-32 bg-gray-800 border-gray-600 text-white"
+                  />
+                  <span className="text-gray-400">FCFA</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setSelectedMatches([])}
+                    className="border-gray-600 text-white hover:bg-gray-700"
+                  >
+                    Annuler
+                  </Button>
+                  <Button 
+                    onClick={placeBet}
+                    className="bg-green-600 hover:bg-green-700 text-white"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Placer le pari
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 } 

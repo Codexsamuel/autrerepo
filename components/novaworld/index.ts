@@ -16,4 +16,9 @@ export { NovaWorldCommunication } from './communication/NovaWorldCommunication';
 export { CommunicationWidget } from './communication/CommunicationWidget';
 
 // Abonnements premium
-export { PremiumSubscription } from './premium/PremiumSubscription'; 
+export { PremiumSubscription } from './premium/PremiumSubscription';
+
+// Nouveaux composants avancés
+export { default as CinetPayIntegration } from './payments/CinetPayIntegration';
+export { default as NovaWorldChat } from './chat/NovaWorldChat';
+export { default as NovaWorldMap } from './map/NovaWorldMap'; 

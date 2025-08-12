@@ -21,6 +21,8 @@ import {
 export default function SentinelZero() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showLogin, setShowLogin] = useState(true);
+  const [showSeigneurBypass, setShowSeigneurBypass] = useState(false);
+  const [seigneurCode, setSeigneurCode] = useState('');
   const [loginData, setLoginData] = useState({
     master_code: '',
     admin_id: '',
@@ -29,6 +31,20 @@ export default function SentinelZero() {
     vocal_phrase: ''
   });
   const [scanResults, setScanResults] = useState(null);
+
+  // Code Seigneur pour bypasser complètement les 5 niveaux
+  const SEIGNEUR_MASTER_CODE = 'SEIGNEUR-OMEGA-2025';
+
+  const handleSeigneurBypass = () => {
+    if (seigneurCode === SEIGNEUR_MASTER_CODE) {
+      setIsAuthenticated(true);
+      setShowLogin(false);
+      setShowSeigneurBypass(false);
+      alert('🚀 BYPASS SEIGNEUR ACTIVÉ - Accès direct au système !');
+    } else {
+      alert('❌ Code Seigneur incorrect !');
+    }
+  };
 
   const handleLogin = async () => {
     try {
@@ -75,6 +91,64 @@ export default function SentinelZero() {
     }
   };
 
+  if (showSeigneurBypass) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-black via-purple-900 to-black flex items-center justify-center p-4">
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="bg-black/40 backdrop-blur-lg rounded-xl p-8 border border-purple-500/30 max-w-md w-full"
+        >
+          <div className="text-center mb-8">
+            <Shield className="w-16 h-16 text-purple-500 mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-white mb-2">
+              🚀 BYPASS SEIGNEUR
+            </h1>
+            <p className="text-gray-300">
+              Accès direct au système - Bypass des 5 niveaux de sécurité
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            <div className="bg-purple-500/10 border border-purple-500/20 rounded-lg p-4">
+              <p className="text-purple-300 text-sm text-center">
+                <strong>Code Seigneur :</strong> SEIGNEUR-OMEGA-2025
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-purple-300 mb-2">
+                <Zap className="w-4 h-4 inline mr-2" />
+                Code Seigneur
+              </label>
+              <input
+                type="password"
+                value={seigneurCode}
+                onChange={(e) => setSeigneurCode(e.target.value)}
+                className="w-full px-4 py-3 rounded-lg bg-black/50 border border-purple-500/50 focus:border-purple-400 focus:outline-none text-white placeholder-gray-400"
+                placeholder="Entrez le code seigneur"
+              />
+            </div>
+
+            <button
+              onClick={handleSeigneurBypass}
+              className="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-lg hover:from-purple-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-black transition-all"
+            >
+              🚀 ACTIVER BYPASS SEIGNEUR
+            </button>
+
+            <button
+              onClick={() => setShowSeigneurBypass(false)}
+              className="w-full py-2 px-4 bg-gray-600/50 text-gray-300 rounded-lg hover:bg-gray-600/70 transition-all"
+            >
+              ← Retour à l'authentification standard
+            </button>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
   if (showLogin) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-black via-red-900 to-black flex items-center justify-center p-4">
@@ -91,6 +165,21 @@ export default function SentinelZero() {
             <p className="text-gray-300">
               Agent Red Team IA Ultra-Avancé
             </p>
+          </div>
+
+          {/* Bouton Bypass Seigneur */}
+          <div className="mb-6">
+            <button
+              onClick={() => setShowSeigneurBypass(true)}
+              className="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-lg hover:from-purple-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-black transition-all mb-4"
+            >
+              🚀 BYPASS SEIGNEUR - Accès Direct
+            </button>
+            <div className="text-center">
+              <p className="text-xs text-gray-400">
+                Bypass complet des 5 niveaux de sécurité
+              </p>
+            </div>
           </div>
 
           <div className="space-y-4">

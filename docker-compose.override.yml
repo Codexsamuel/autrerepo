@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  app:
+    environment:
+      - RAPIDAPI_KEY=0a9f369c5emsh0c62e1fe4db2cd4p1a5adbjsn05a8f9f14d02
+      - NEXT_PUBLIC_API_MODE=docker
+      - NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+      - PYTHONPATH=/app/backend
+      - PYTHON_VERSION=3.11

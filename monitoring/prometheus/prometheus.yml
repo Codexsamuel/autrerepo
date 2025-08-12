@@ -1,0 +1,248 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  scrape_timeout: 10s
+
+rule_files:
+  - "novaia_rules.yml"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+scrape_configs:
+  # Prometheus lui-même
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    scrape_interval: 15s
+
+  # NovaIA Agents API
+  - job_name: 'novaia-agents-api'
+    static_configs:
+      - targets: ['agents-api:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+    honor_labels: true
+
+  # NovaIA Control API
+  - job_name: 'novaia-control-api'
+    static_configs:
+      - targets: ['control-api:4000']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+    honor_labels: true
+
+  # NovaIA Frontend Apps
+  - job_name: 'novaia-frontend'
+    static_configs:
+      - targets: 
+        - 'marketplace:3000'
+        - 'novacore:3001'
+        - 'battle-arena:3002'
+        - 'agent-lab:3003'
+    metrics_path: '/api/metrics'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # PostgreSQL
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres:5432']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # Redis
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # Ollama
+  - job_name: 'ollama'
+    static_configs:
+      - targets: ['ollama:11434']
+    metrics_path: '/api/metrics'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # Node Exporter (système)
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    scrape_interval: 15s
+    scrape_timeout: 10s
+
+  # cAdvisor (conteneurs Docker)
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+    scrape_timeout: 10s
+
+  # Blackbox Exporter (vérification des endpoints)
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - 'http://marketplace:3000'
+        - 'http://novacore:3001'
+        - 'http://battle-arena:3002'
+        - 'http://agent-lab:3003'
+        - 'http://agents-api:8000/health'
+        - 'http://control-api:4000/health'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox:9115
+
+  # Service Discovery pour les agents dynamiques
+  - job_name: 'novaia-agents-discovery'
+    consul_sd_configs:
+      - server: 'consul:8500'
+        services: ['novaia-agent']
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    metrics_path: '/metrics'
+    relabel_configs:
+      - source_labels: [__meta_consul_service]
+        target_label: agent_service
+      - source_labels: [__meta_consul_tags]
+        target_label: agent_tags
+        regex: '.*'
+        replacement: '$1'
+
+# Configuration des alertes
+alerting_rules:
+  - name: novaia_alerts
+    rules:
+      - alert: AgentsAPIDown
+        expr: up{job="novaia-agents-api"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "NovaIA Agents API est arrêté"
+          description: "L'API des agents n'est plus accessible depuis plus d'1 minute"
+
+      - alert: ControlAPIDown
+        expr: up{job="novaia-control-api"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "NovaIA Control API est arrêté"
+          description: "L'API de contrôle n'est plus accessible depuis plus d'1 minute"
+
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Taux d'erreur élevé"
+          description: "Plus de 10% d'erreurs 5xx sur les 5 dernières minutes"
+
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Temps de réponse élevé"
+          description: "95% des requêtes prennent plus de 2 secondes"
+
+      - alert: DatabaseConnectionIssues
+        expr: up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Problème de connexion à la base de données"
+          description: "PostgreSQL n'est plus accessible"
+
+      - alert: RedisConnectionIssues
+        expr: up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Problème de connexion à Redis"
+          description: "Redis n'est plus accessible"
+
+      - alert: OllamaServiceDown
+        expr: up{job="ollama"} == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Service Ollama arrêté"
+          description: "Le service de modèles IA n'est plus accessible"
+
+      - alert: HighMemoryUsage
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes > 0.9
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Utilisation mémoire élevée"
+          description: "Plus de 90% de la mémoire est utilisée"
+
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Utilisation CPU élevée"
+          description: "Plus de 80% du CPU est utilisé"
+
+      - alert: DiskSpaceLow
+        expr: (node_filesystem_size_bytes - node_filesystem_free_bytes) / node_filesystem_size_bytes > 0.9
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Espace disque faible"
+          description: "Plus de 90% de l'espace disque est utilisé"
+
+# Configuration des métriques personnalisées NovaIA
+metric_relabel_configs:
+  - source_labels: [__name__]
+    regex: 'novaia_(.*)'
+    target_label: novaia_metric
+    replacement: '$1'
+  
+  - source_labels: [__name__]
+    regex: 'agent_(.*)'
+    target_label: agent_metric
+    replacement: '$1'
+  
+  - source_labels: [__name__]
+    regex: 'battle_(.*)'
+    target_label: battle_metric
+    replacement: '$1'
+  
+  - source_labels: [__name__]
+    regex: 'rag_(.*)'
+    target_label: rag_metric
+    replacement: '$1'
+
+# Configuration des étiquettes globales
+global_labels:
+  environment: "novaia"
+  version: "1.0.0"
+  deployment: "docker-compose" 

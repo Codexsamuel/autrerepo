@@ -1,0 +1,82 @@
+{
+  "domains": {
+    "dlsolutionssarl.tech": {
+      "name": "Domaine Technologique",
+      "focus": "Solutions technologiques, IA, drones, novacore, trading, scraping",
+      "robots_file": "robots-tech.txt",
+      "sitemap": "https://dlsolutionssarl.tech/sitemap-tech.xml",
+      "host": "https://dlsolutionssarl.tech",
+      "crawl_delay": 0.5,
+      "priority_content": [
+        "/tech/",
+        "/ai/",
+        "/novacore/",
+        "/drones/",
+        "/sentinel-zero/",
+        "/quantum-intelligence/",
+        "/trading/",
+        "/advanced-intelligence/",
+        "/ultra-ai/",
+        "/nova-ia/",
+        "/scraping-demo/",
+        "/scraping-multi-market/"
+      ],
+      "keywords": [
+        "intelligence artificielle",
+        "drones",
+        "novacore",
+        "trading",
+        "scraping",
+        "technologie",
+        "innovation"
+      ]
+    },
+    "daveandlucesolutions.com": {
+      "name": "Domaine Principal",
+      "focus": "Solutions business générales, immobilier, transport, style, marketing",
+      "robots_file": "robots-main.txt",
+      "sitemap": "https://daveandlucesolutions.com/sitemap-main.xml",
+      "host": "https://daveandlucesolutions.com",
+      "crawl_delay": 1,
+      "priority_content": [
+        "/portfolio/",
+        "/services/",
+        "/immobilier/",
+        "/transport/",
+        "/dl-style/",
+        "/marketing-digital/",
+        "/formations/",
+        "/solutions/"
+      ],
+      "keywords": [
+        "immobilier",
+        "transport",
+        "style",
+        "marketing",
+        "formations",
+        "solutions business"
+      ]
+    }
+  },
+  "common_disallow": [
+    "/admin/",
+    "/api/",
+    "/_next/",
+    "/private/",
+    "/temp/",
+    "/novacore/checkout",
+    "/sign-in/",
+    "/sign-up/",
+    "/dashboard/",
+    "/intranet/",
+    "/test-",
+    "/test-env/"
+  ],
+  "seo_strategy": {
+    "description": "Écosystème DL Solutions avec deux domaines spécialisés pour optimiser le référencement selon les requêtes utilisateur",
+    "cross_domain_linking": true,
+    "canonical_urls": true,
+    "hreflang": true,
+    "structured_data": true
+  }
+} 

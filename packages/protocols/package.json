@@ -1,0 +1,30 @@
+{
+  "name": "@novaia/protocols",
+  "version": "1.0.0",
+  "description": "NovaIA Protocols - Schémas A2A/MCP et protobuf pour l'interopérabilité",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc --noEmit",
+    "proto:generate": "protoc --plugin=protoc-gen-ts_proto --ts_proto_out=src/generated --ts_proto_opt=esModuleInterop=true --proto_path=src/proto src/proto/*.proto"
+  },
+  "dependencies": {
+    "protobufjs": "^7.2.5",
+    "ws": "^8.14.2",
+    "nats": "^2.19.0",
+    "zeromq": "^5.3.8",
+    "uuid": "^9.0.1",
+    "crypto": "^1.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "eslint": "^8.55.0",
+    "@types/uuid": "^9.0.7",
+    "@types/ws": "^8.5.10",
+    "ts-proto": "^1.156.0"
+  }
+} 

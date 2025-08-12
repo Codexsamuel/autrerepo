@@ -1,0 +1,50 @@
+{
+  "name": "novaia",
+  "version": "1.0.0",
+  "description": "NovaIA - Plateforme d'agents IA offline-first, optimisée Windows (CUDA/DirectML) et prête pour le cloud privé",
+  "private": true,
+  "packageManager": "pnpm@9.7.0",
+  "workspaces": [
+    "apps/*",
+    "services/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "clean": "turbo run clean",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f",
+    "ollama:pull": "curl http://localhost:11434/api/pull -d '{\"name\":\"llama3.1:8b-instruct-q4_K_M\"}' && curl http://localhost:11434/api/pull -d '{\"name\":\"nomic-embed-text\"}'",
+    "setup": "pnpm install && pnpm docker:up && sleep 10 && pnpm ollama:pull"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.10",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "offline",
+    "local-llm",
+    "rag",
+    "marketplace",
+    "battle-arena",
+    "novacore",
+    "windows",
+    "cuda",
+    "directml"
+  ],
+  "author": "NovaIA Team",
+  "license": "MIT"
+} 

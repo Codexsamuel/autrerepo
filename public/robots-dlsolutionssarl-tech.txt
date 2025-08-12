@@ -1,0 +1,146 @@
+# Robots.txt pour dlsolutionssarl.tech - Domaine Technologique
+# Optimisé pour le contenu tech, IA, drones, novacore
+
+User-agent: *
+Allow: /
+
+# Contenu technologique prioritaire
+Allow: /tech/
+Allow: /ai/
+Allow: /novacore/
+Allow: /drones/
+Allow: /sentinel-zero/
+Allow: /quantum-intelligence/
+Allow: /trading/
+Allow: /trading-charts/
+Allow: /advanced-intelligence/
+Allow: /advanced-scraping-demo/
+Allow: /ai-chatbot/
+Allow: /ultra-ai/
+Allow: /ultra-ai-bot/
+Allow: /nova-ia/
+Allow: /nova-ia-commercial/
+Allow: /metaverse-blockchain/
+Allow: /drone-business/
+Allow: /drone-simulator/
+Allow: /drones-3d/
+Allow: /drones-presentation/
+Allow: /industrial-products/
+Allow: /scraping-demo/
+Allow: /scraping-multi-market/
+Allow: /test-advanced-ai/
+Allow: /test-production-scraping/
+Allow: /test-scraping/
+
+# Pages sensibles non indexées
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /novacore/checkout
+Disallow: /sign-in/
+Disallow: /sign-up/
+Disallow: /dashboard/
+Disallow: /intranet/
+Disallow: /test-/
+Disallow: /test-env/
+
+# Règles spéciales pour Googlebot
+User-agent: Googlebot
+Allow: /
+Allow: /tech/
+Allow: /ai/
+Allow: /novacore/
+Allow: /drones/
+Allow: /sentinel-zero/
+Allow: /quantum-intelligence/
+Allow: /trading/
+Allow: /trading-charts/
+Allow: /advanced-intelligence/
+Allow: /advanced-scraping-demo/
+Allow: /ai-chatbot/
+Allow: /ultra-ai/
+Allow: /ultra-ai-bot/
+Allow: /nova-ia/
+Allow: /nova-ia-commercial/
+Allow: /metaverse-blockchain/
+Allow: /drone-business/
+Allow: /drone-simulator/
+Allow: /drones-3d/
+Allow: /drones-presentation/
+Allow: /industrial-products/
+Allow: /scraping-demo/
+Allow: /scraping-multi-market/
+Allow: /test-advanced-ai/
+Allow: /test-production-scraping/
+Allow: /test-scraping/
+
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /novacore/checkout
+Disallow: /sign-in/
+Disallow: /sign-up/
+Disallow: /dashboard/
+Disallow: /intranet/
+Disallow: /test-/
+Disallow: /test-env/
+
+# Règles pour Bingbot
+User-agent: Bingbot
+Allow: /
+Allow: /tech/
+Allow: /ai/
+Allow: /novacore/
+Allow: /drones/
+Allow: /sentinel-zero/
+Allow: /quantum-intelligence/
+Allow: /trading/
+Allow: /trading-charts/
+Allow: /advanced-intelligence/
+Allow: /advanced-scraping-demo/
+Allow: /ai-chatbot/
+Allow: /ultra-ai/
+Allow: /ultra-ai-bot/
+Allow: /nova-ia/
+Allow: /nova-ia-commercial/
+Allow: /metaverse-blockchain/
+Allow: /drone-business/
+Allow: /drone-simulator/
+Allow: /drones-3d/
+Allow: /drones-presentation/
+Allow: /industrial-products/
+Allow: /scraping-demo/
+Allow: /scraping-multi-market/
+Allow: /test-advanced-ai/
+Allow: /test-production-scraping/
+Allow: /test-scraping/
+
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /novacore/checkout
+Disallow: /sign-in/
+Disallow: /sign-up/
+Disallow: /dashboard/
+Disallow: /intranet/
+Disallow: /test-/
+Disallow: /test-env/
+
+# Délai de crawl optimisé pour le contenu tech
+Crawl-delay: 0.5
+
+# Sitemap spécifique au domaine tech
+Sitemap: https://dlsolutionssarl.tech/sitemap-tech.xml
+
+# Host principal - Domaine technologique
+Host: https://dlsolutionssarl.tech
+
+# Instructions pour les moteurs de recherche
+# Ce domaine se concentre sur les solutions technologiques
+# Priorité aux contenus : IA, drones, novacore, trading, scraping 

@@ -72,3 +72,4 @@ temp-sw/
 # Environment files in subprojects
 */frontend/.env*
 !*/frontend/.env.example
+.env.backup

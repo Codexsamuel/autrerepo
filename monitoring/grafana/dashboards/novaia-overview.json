@@ -1,0 +1,432 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "NovaIA - Vue d'ensemble",
+    "tags": ["novaia", "ai", "agents", "monitoring"],
+    "style": "dark",
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "État des Services NovaIA",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "up{job=~\"novaia-.*\"}",
+            "legendFormat": "{{job}} - {{instance}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "steps": [
+                {"color": "red", "value": null},
+                {"color": "green", "value": 1}
+              ]
+            }
+          }
+        },
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+      },
+      {
+        "id": 2,
+        "title": "Agents Actifs",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "novaia_agents_active_total",
+            "legendFormat": "Agents Actifs"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "unit": "short"
+          }
+        },
+        "gridPos": {"h": 8, "w": 6, "x": 12, "y": 0}
+      },
+      {
+        "id": 3,
+        "title": "Requêtes par Minute",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(novaia_requests_total[1m])",
+            "legendFormat": "{{job}} - {{method}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "unit": "reqps"
+          }
+        },
+        "gridPos": {"h": 8, "w": 6, "x": 18, "y": 0}
+      },
+      {
+        "id": 4,
+        "title": "Latence RAG (95e percentile)",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(novaia_rag_duration_seconds_bucket[5m]))",
+            "legendFormat": "Latence RAG 95p"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "unit": "s"
+          }
+        },
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+      },
+      {
+        "id": 5,
+        "title": "Utilisation GPU/CPU",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "100 - (avg by(instance) (irate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
+            "legendFormat": "CPU {{instance}}"
+          },
+          {
+            "expr": "nvidia_gpu_utilization",
+            "legendFormat": "GPU {{gpu}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "unit": "percent",
+            "min": 0,
+            "max": 100
+          }
+        },
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
+      },
+      {
+        "id": 6,
+        "title": "Mémoire Utilisée",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100",
+            "legendFormat": "Mémoire {{instance}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "unit": "percent",
+            "min": 0,
+            "max": 100
+          }
+        },
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16}
+      },
+      {
+        "id": 7,
+        "title": "Taux d'Erreur",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(novaia_requests_total{status=~\"5..\"}[5m]) / rate(novaia_requests_total[5m]) * 100",
+            "legendFormat": "Erreurs 5xx {{job}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "unit": "percent",
+            "min": 0,
+            "max": 100
+          }
+        },
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16}
+      },
+      {
+        "id": 8,
+        "title": "Performance des Agents",
+        "type": "table",
+        "targets": [
+          {
+            "expr": "novaia_agent_performance",
+            "legendFormat": "{{agent_name}}"
+          }
+        ],
+        "transformations": [
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Time": true,
+                "__name__": true,
+                "job": true,
+                "instance": true
+              },
+              "renameByName": {
+                "agent_name": "Agent",
+                "avg_response_time": "Temps Réponse (ms)",
+                "success_rate": "Taux Succès (%)",
+                "total_requests": "Total Requêtes"
+              }
+            }
+          }
+        ],
+        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 24}
+      },
+      {
+        "id": 9,
+        "title": "Statistiques Battle Arena",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "novaia_battle_matches_total",
+            "legendFormat": "Total Matchs"
+          },
+          {
+            "expr": "novaia_battle_agents_registered",
+            "legendFormat": "Agents Enregistrés"
+          },
+          {
+            "expr": "novaia_battle_elo_avg",
+            "legendFormat": "Rating ELO Moyen"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            }
+          }
+        },
+        "gridPos": {"h": 8, "w": 8, "x": 0, "y": 32}
+      },
+      {
+        "id": 10,
+        "title": "Utilisation Base de Données",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "pg_stat_database_xact_commit + pg_stat_database_xact_rollback",
+            "legendFormat": "Transactions {{datname}}"
+          },
+          {
+            "expr": "pg_stat_database_tup_fetch",
+            "legendFormat": "Lignes Lues {{datname}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            }
+          }
+        },
+        "gridPos": {"h": 8, "w": 8, "x": 8, "y": 32}
+      },
+      {
+        "id": 11,
+        "title": "Utilisation Redis",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "redis_memory_used_bytes / redis_memory_max_bytes * 100",
+            "legendFormat": "Mémoire Utilisée (%)"
+          },
+          {
+            "expr": "redis_connected_clients",
+            "legendFormat": "Clients Connectés"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "unit": "percent"
+          }
+        },
+        "gridPos": {"h": 8, "w": 8, "x": 16, "y": 32}
+      },
+      {
+        "id": 12,
+        "title": "Modèles Ollama Chargés",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "ollama_models_loaded",
+            "legendFormat": "Modèles Chargés"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            }
+          }
+        },
+        "gridPos": {"h": 8, "w": 8, "x": 0, "y": 40}
+      },
+      {
+        "id": 13,
+        "title": "Latence des Modèles",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(ollama_inference_duration_seconds_bucket[5m]))",
+            "legendFormat": "Latence 95p {{model}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "unit": "s"
+          }
+        },
+        "gridPos": {"h": 8, "w": 12, "x": 8, "y": 40}
+      },
+      {
+        "id": 14,
+        "title": "Top Agents par Rating ELO",
+        "type": "table",
+        "targets": [
+          {
+            "expr": "topk(10, novaia_agent_elo_rating)",
+            "legendFormat": "{{agent_name}}"
+          }
+        ],
+        "transformations": [
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Time": true,
+                "__name__": true,
+                "job": true,
+                "instance": true
+              },
+              "renameByName": {
+                "agent_name": "Agent",
+                "novaia_agent_elo_rating": "Rating ELO",
+                "category": "Catégorie"
+              }
+            }
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 20, "y": 40}
+      },
+      {
+        "id": 15,
+        "title": "Alertes Actives",
+        "type": "alertlist",
+        "targets": [],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            }
+          }
+        },
+        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 48}
+      }
+    ],
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "templating": {
+      "list": [
+        {
+          "name": "job",
+          "type": "query",
+          "query": "label_values(up, job)",
+          "refresh": 2,
+          "includeAll": true,
+          "multi": true
+        },
+        {
+          "name": "instance",
+          "type": "query",
+          "query": "label_values(up{job=~\"$job\"}, instance)",
+          "refresh": 2,
+          "includeAll": true,
+          "multi": true
+        },
+        {
+          "name": "agent_category",
+          "type": "query",
+          "query": "label_values(novaia_agent_info, category)",
+          "refresh": 2,
+          "includeAll": true,
+          "multi": true
+        }
+      ]
+    },
+    "annotations": {
+      "list": [
+        {
+          "name": "Déploiements",
+          "datasource": "Prometheus",
+          "expr": "changes(novaia_deployment_version[5m]) > 0",
+          "iconColor": "blue",
+          "titleFormat": "Nouveau déploiement détecté",
+          "textFormat": "Version {{novaia_deployment_version}} déployée"
+        }
+      ]
+    },
+    "refresh": "30s",
+    "schemaVersion": 30,
+    "version": 1,
+    "links": [
+      {
+        "title": "Prometheus",
+        "url": "http://prometheus:9090",
+        "targetBlank": true
+      },
+      {
+        "title": "AlertManager",
+        "url": "http://alertmanager:9093",
+        "targetBlank": true
+      },
+      {
+        "title": "Grafana",
+        "url": "http://grafana:3000",
+        "targetBlank": true
+      }
+    ]
+  }
+} 

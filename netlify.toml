@@ -1,7 +1,8 @@
 [build]
-  command = "npm run build:netlify:no-python"
+  command = "npm run build:netlify:hybrid"
   publish = ".next"
   functions = "netlify/functions"
+  # Configuration pour build hybride : frontend sur Netlify, backend séparé
 
 [build.environment]
   NODE_VERSION = "20.19.4"
@@ -13,15 +14,13 @@
   # Optimisations pour la performance
   NEXT_TELEMETRY_DISABLED = "1"
   NODE_ENV = "production"
-  # Désactiver complètement l'installation Python
+  # Configuration hybride : frontend sur Netlify, backend séparé
   SKIP_PYTHON_DEPS = "true"
-  PYTHON_VERSION = ""
-  PIP_CACHE_DIR = ""
-  VIRTUAL_ENV = ""
-  PYTHONPATH = ""
-  # Forcer l'utilisation de Node.js uniquement
   USE_NODE = "true"
   USE_PYTHON = "false"
+  # Variables pour l'API backend séparée
+  NEXT_PUBLIC_BACKEND_URL = "https://your-backend-domain.com"
+  NEXT_PUBLIC_API_MODE = "hybrid"
 
 # Configuration des timeouts
 [build.timeout]

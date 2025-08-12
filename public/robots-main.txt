@@ -1,0 +1,177 @@
+# Robots.txt pour daveandlucesolutions.com - Domaine Principal
+# Optimisé pour les solutions business, immobilier, transport, style
+
+User-agent: *
+Allow: /
+
+# Contenu business prioritaire
+Allow: /portfolio/
+Allow: /services/
+Allow: /a-propos/
+Allow: /contact/
+Allow: /dl-style/
+Allow: /novaworld/
+Allow: /marketing-digital/
+Allow: /e-commerce/
+Allow: /formations/
+Allow: /capacites-techniques/
+Allow: /devis/
+Allow: /rendez-vous/
+Allow: /solutions/
+Allow: /solutions/immobilier/
+Allow: /solutions/hospitalier/
+Allow: /solutions/banque/
+Allow: /solutions/assurance/
+Allow: /dl-transport/
+Allow: /dl-immobilier/
+Allow: /location-vehicules/
+Allow: /transport/
+Allow: /immobilier/
+Allow: /drone-business/
+Allow: /commercial-document-generator/
+Allow: /presentation-generator/
+Allow: /price-alerts/
+Allow: /investor-demo/
+Allow: /portfolio/
+Allow: /portfolio/batobaye/
+Allow: /services/
+Allow: /a-propos/
+Allow: /contact/
+Allow: /dl-style/
+Allow: /novaworld/
+Allow: /marketing-digital/
+Allow: /e-commerce/
+Allow: /formations/
+Allow: /capacites-techniques/
+Allow: /devis/
+Allow: /rendez-vous/
+Allow: /solutions/
+Allow: /solutions/immobilier/
+Allow: /solutions/hospitalier/
+Allow: /solutions/banque/
+Allow: /solutions/assurance/
+Allow: /dl-transport/
+Allow: /dl-immobilier/
+Allow: /location-vehicules/
+Allow: /transport/
+Allow: /immobilier/
+Allow: /drone-business/
+Allow: /commercial-document-generator/
+Allow: /presentation-generator/
+Allow: /price-alerts/
+Allow: /investor-demo/
+
+# Pages sensibles non indexées
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /novacore/checkout
+Disallow: /sign-in/
+Disallow: /sign-up/
+Disallow: /dashboard/
+Disallow: /intranet/
+Disallow: /test-/
+Disallow: /test-env/
+
+# Règles spéciales pour Googlebot
+User-agent: Googlebot
+Allow: /
+Allow: /portfolio/
+Allow: /services/
+Allow: /a-propos/
+Allow: /contact/
+Allow: /dl-style/
+Allow: /novaworld/
+Allow: /marketing-digital/
+Allow: /e-commerce/
+Allow: /formations/
+Allow: /capacites-techniques/
+Allow: /devis/
+Allow: /rendez-vous/
+Allow: /solutions/
+Allow: /solutions/immobilier/
+Allow: /solutions/hospitalier/
+Allow: /solutions/banque/
+Allow: /solutions/assurance/
+Allow: /dl-transport/
+Allow: /dl-immobilier/
+Allow: /location-vehicules/
+Allow: /transport/
+Allow: /immobilier/
+Allow: /drone-business/
+Allow: /commercial-document-generator/
+Allow: /presentation-generator/
+Allow: /price-alerts/
+Allow: /investor-demo/
+
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /novacore/checkout
+Disallow: /sign-in/
+Disallow: /sign-up/
+Disallow: /dashboard/
+Disallow: /intranet/
+Disallow: /test-/
+Disallow: /test-env/
+
+# Règles pour Bingbot
+User-agent: Bingbot
+Allow: /
+Allow: /portfolio/
+Allow: /services/
+Allow: /a-propos/
+Allow: /contact/
+Allow: /dl-style/
+Allow: /novaworld/
+Allow: /marketing-digital/
+Allow: /e-commerce/
+Allow: /formations/
+Allow: /capacites-techniques/
+Allow: /devis/
+Allow: /rendez-vous/
+Allow: /solutions/
+Allow: /solutions/immobilier/
+Allow: /solutions/hospitalier/
+Allow: /solutions/banque/
+Allow: /solutions/assurance/
+Allow: /dl-transport/
+Allow: /dl-immobilier/
+Allow: /location-vehicules/
+Allow: /transport/
+Allow: /immobilier/
+Allow: /drone-business/
+Allow: /commercial-document-generator/
+Allow: /presentation-generator/
+Allow: /price-alerts/
+Allow: /investor-demo/
+
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /novacore/checkout
+Disallow: /sign-in/
+Disallow: /sign-up/
+Disallow: /dashboard/
+Disallow: /intranet/
+Disallow: /test-/
+Disallow: /test-env/
+
+# Délai de crawl standard pour le contenu business
+Crawl-delay: 1
+
+# Sitemap principal
+Sitemap: https://daveandlucesolutions.com/sitemap-main.xml
+
+# Host principal - Domaine principal
+Host: https://daveandlucesolutions.com
+
+# Instructions pour les moteurs de recherche
+# Ce domaine se concentre sur les solutions business générales
+# Priorité aux contenus : immobilier, transport, style, marketing, formations 

@@ -1,44 +1,68 @@
 version: "3.8"
+
 services:
-  sentinel:
+  # Service principal hybride
+  app:
     build: .
-    container_name: sentinel_zero_ai
     ports:
-      - "8080:8080"
+      - "3000:3000" # Frontend Next.js
+      - "8000:8000" # Backend Python
     environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - SUPABASE_URL=${SUPABASE_URL}
-      - SUPABASE_KEY=${SUPABASE_KEY}
-      - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
-      - VECTOR_DB_PATH=./vectors
       - NODE_ENV=production
+      - PYTHONPATH=/app/backend
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
-    restart: always
+    restart: unless-stopped
     networks:
-      - sentinel_net
-    security_opt:
-      - no-new-privileges:true
+      - app-network
 
-  novacore-dashboard:
-    build: ./frontend
-    container_name: novacore_dashboard
-    ports:
-      - "3000:3000"
+  # Base de données (optionnelle)
+  postgres:
+    image: postgres:15
     environment:
-      - NEXT_PUBLIC_API_URL=http://sentinel:8080
-      - NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}
-      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_KEY}
-    depends_on:
-      - sentinel
-    restart: always
+      POSTGRES_DB: novacore
+      POSTGRES_USER: novacore_user
+      POSTGRES_PASSWORD: novacore_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     networks:
-      - sentinel_net
+      - app-network
+    restart: unless-stopped
+
+  # Redis pour le cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # Nginx pour le reverse proxy
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - app
+    networks:
+      - app-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
 
 networks:
-  sentinel_net:
+  app-network:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 172.20.0.0/16

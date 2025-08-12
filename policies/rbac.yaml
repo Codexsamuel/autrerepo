@@ -1,0 +1,377 @@
+# =============================================================================
+# NOVAIA - Politiques RBAC (Role-Based Access Control)
+# =============================================================================
+
+# Définition des rôles et leurs permissions
+roles:
+  # Super administrateur - Accès complet
+  super_admin:
+    name: "Super Administrateur"
+    description: "Accès complet à toutes les fonctionnalités"
+    allow: ["*"]
+    deny: []
+    inherits: []
+    
+  # Administrateur système
+  system_admin:
+    name: "Administrateur Système"
+    description: "Gestion complète du système et des utilisateurs"
+    allow:
+      - "system:*"
+      - "users:*"
+      - "policies:*"
+      - "monitoring:*"
+      - "agents:*"
+      - "fleet:*"
+      - "datasets:*"
+      - "marketplace:*"
+    deny:
+      - "billing:delete"
+      - "audit:delete"
+    inherits: ["operator", "viewer"]
+    
+  # Administrateur de sécurité
+  security_admin:
+    name: "Administrateur Sécurité"
+    description: "Gestion de la sécurité et conformité"
+    allow:
+      - "security:*"
+      - "policies:*"
+      - "audit:*"
+      - "compliance:*"
+      - "encryption:*"
+      - "monitoring:security"
+    deny: []
+    inherits: ["viewer"]
+    
+  # Opérateur - Utilisateur avancé
+  operator:
+    name: "Opérateur"
+    description: "Utilisateur avancé avec accès aux agents et outils"
+    allow:
+      - "agents:read"
+      - "agents:run"
+      - "agents:create"
+      - "agents:update"
+      - "agents:delete"
+      - "fleet:read"
+      - "fleet:monitor"
+      - "fleet:control"
+      - "datasets:read"
+      - "datasets:create"
+      - "datasets:update"
+      - "marketplace:read"
+      - "marketplace:install"
+      - "tools:use"
+      - "rag:query"
+      - "embeddings:create"
+      - "playbooks:run"
+      - "monitoring:read"
+      - "monitoring:metrics"
+    deny:
+      - "secrets:*"
+      - "policies:*"
+      - "system:*"
+      - "users:*"
+      - "billing:*"
+    inherits: ["viewer"]
+    
+  # Développeur d'agents
+  agent_developer:
+    name: "Développeur d'Agents"
+    description: "Création et modification d'agents IA"
+    allow:
+      - "agents:read"
+      - "agents:create"
+      - "agents:update"
+      - "agents:test"
+      - "agents:publish"
+      - "blueprints:read"
+      - "blueprints:create"
+      - "blueprints:update"
+      - "tools:read"
+      - "tools:use"
+      - "datasets:read"
+      - "datasets:create"
+      - "marketplace:read"
+      - "marketplace:publish"
+    deny:
+      - "agents:delete"
+      - "agents:deploy_production"
+      - "secrets:*"
+      - "policies:*"
+    inherits: ["viewer"]
+    
+  # Analyste de données
+  data_analyst:
+    name: "Analyste de Données"
+    description: "Analyse et exploration des données"
+    allow:
+      - "datasets:read"
+      - "datasets:create"
+      - "datasets:update"
+      - "datasets:analyze"
+      - "rag:query"
+      - "embeddings:create"
+      - "embeddings:query"
+      - "analytics:read"
+      - "analytics:create"
+      - "visualizations:create"
+      - "agents:read"
+      - "agents:run"
+    deny:
+      - "datasets:delete"
+      - "secrets:*"
+      - "policies:*"
+    inherits: ["viewer"]
+    
+  # Utilisateur business
+  business_user:
+    name: "Utilisateur Business"
+    description: "Utilisation des agents pour tâches métier"
+    allow:
+      - "agents:read"
+      - "agents:run"
+      - "marketplace:read"
+      - "marketplace:install"
+      - "rag:query"
+      - "tools:use"
+      - "reports:read"
+      - "reports:create"
+      - "dashboards:read"
+    deny:
+      - "agents:create"
+      - "agents:update"
+      - "agents:delete"
+      - "datasets:create"
+      - "datasets:update"
+      - "datasets:delete"
+      - "secrets:*"
+      - "policies:*"
+    inherits: ["viewer"]
+    
+  # Lecteur - Accès en lecture seule
+  viewer:
+    name: "Lecteur"
+    description: "Accès en lecture seule aux ressources publiques"
+    allow:
+      - "dashboards:read"
+      - "agents:read"
+      - "marketplace:read"
+      - "documentation:read"
+      - "help:read"
+      - "status:read"
+    deny:
+      - "agents:run"
+      - "agents:create"
+      - "agents:update"
+      - "agents:delete"
+      - "datasets:*"
+      - "tools:*"
+      - "secrets:*"
+      - "policies:*"
+      - "system:*"
+      - "users:*"
+      - "billing:*"
+    inherits: []
+    
+  # Invité - Accès limité
+  guest:
+    name: "Invité"
+    description: "Accès très limité pour démonstration"
+    allow:
+      - "marketplace:read"
+      - "documentation:read"
+      - "help:read"
+      - "status:read"
+    deny:
+      - "agents:*"
+      - "datasets:*"
+      - "tools:*"
+      - "secrets:*"
+      - "policies:*"
+      - "system:*"
+      - "users:*"
+      - "billing:*"
+      - "monitoring:*"
+    inherits: []
+
+# Définition des permissions par ressource
+permissions:
+  # Système
+  system:
+    read: "Lecture des informations système"
+    update: "Modification de la configuration système"
+    restart: "Redémarrage des services"
+    shutdown: "Arrêt du système"
+    
+  # Utilisateurs
+  users:
+    read: "Lecture des profils utilisateurs"
+    create: "Création de nouveaux utilisateurs"
+    update: "Modification des profils"
+    delete: "Suppression d'utilisateurs"
+    impersonate: "Usurpation d'identité"
+    
+  # Agents IA
+  agents:
+    read: "Lecture des informations d'agents"
+    create: "Création de nouveaux agents"
+    update: "Modification d'agents existants"
+    delete: "Suppression d'agents"
+    run: "Exécution d'agents"
+    test: "Test d'agents"
+    publish: "Publication d'agents"
+    deploy_production: "Déploiement en production"
+    
+  # Flotte
+  fleet:
+    read: "Lecture du statut de la flotte"
+    monitor: "Surveillance de la flotte"
+    control: "Contrôle de la flotte"
+    scale: "Mise à l'échelle"
+    update: "Mise à jour de la flotte"
+    
+  # Datasets
+  datasets:
+    read: "Lecture des datasets"
+    create: "Création de datasets"
+    update: "Modification de datasets"
+    delete: "Suppression de datasets"
+    analyze: "Analyse des datasets"
+    export: "Export des datasets"
+    
+  # Marketplace
+  marketplace:
+    read: "Lecture du catalogue"
+    install: "Installation d'agents"
+    publish: "Publication d'agents"
+    review: "Évaluation d'agents"
+    
+  # Outils
+  tools:
+    read: "Lecture des outils disponibles"
+    use: "Utilisation des outils"
+    create: "Création d'outils"
+    update: "Modification d'outils"
+    
+  # RAG
+  rag:
+    query: "Requêtes RAG"
+    index: "Indexation de documents"
+    search: "Recherche vectorielle"
+    
+  # Embeddings
+  embeddings:
+    create: "Création d'embeddings"
+    query: "Requêtes d'embeddings"
+    store: "Stockage d'embeddings"
+    
+  # Monitoring
+  monitoring:
+    read: "Lecture des métriques"
+    metrics: "Accès aux métriques détaillées"
+    alerts: "Gestion des alertes"
+    security: "Monitoring de sécurité"
+    
+  # Politiques
+  policies:
+    read: "Lecture des politiques"
+    create: "Création de politiques"
+    update: "Modification de politiques"
+    delete: "Suppression de politiques"
+    
+  # Sécurité
+  security:
+    audit: "Audit de sécurité"
+    encryption: "Gestion du chiffrement"
+    compliance: "Conformité"
+    access_control: "Contrôle d'accès"
+    
+  # Audit
+  audit:
+    read: "Lecture des logs d'audit"
+    export: "Export des logs"
+    delete: "Suppression des logs"
+    
+  # Facturation
+  billing:
+    read: "Lecture des factures"
+    create: "Création de factures"
+    update: "Modification de factures"
+    delete: "Suppression de factures"
+    
+  # Rapports
+  reports:
+    read: "Lecture des rapports"
+    create: "Création de rapports"
+    update: "Modification de rapports"
+    delete: "Suppression de rapports"
+    
+  # Tableaux de bord
+  dashboards:
+    read: "Lecture des tableaux de bord"
+    create: "Création de tableaux de bord"
+    update: "Modification de tableaux de bord"
+    delete: "Suppression de tableaux de bord"
+    
+  # Documentation
+  documentation:
+    read: "Lecture de la documentation"
+    create: "Création de documentation"
+    update: "Modification de documentation"
+    delete: "Suppression de documentation"
+    
+  # Aide
+  help:
+    read: "Accès à l'aide"
+    create: "Création de tickets d'aide"
+    update: "Mise à jour de tickets"
+    
+  # Statut
+  status:
+    read: "Lecture du statut des services"
+    
+  # Playbooks
+  playbooks:
+    read: "Lecture des playbooks"
+    run: "Exécution de playbooks"
+    create: "Création de playbooks"
+    update: "Modification de playbooks"
+    
+  # Analytics
+  analytics:
+    read: "Lecture des analyses"
+    create: "Création d'analyses"
+    update: "Modification d'analyses"
+    
+  # Visualisations
+  visualizations:
+    create: "Création de visualisations"
+    update: "Modification de visualisations"
+    delete: "Suppression de visualisations"
+    
+  # Secrets
+  secrets:
+    read: "Lecture des secrets"
+    create: "Création de secrets"
+    update: "Modification de secrets"
+    delete: "Suppression de secrets"
+    
+  # Blueprints
+  blueprints:
+    read: "Lecture des blueprints"
+    create: "Création de blueprints"
+    update: "Modification de blueprints"
+    delete: "Suppression de blueprints"
+
+# Règles de résolution des conflits
+conflict_resolution:
+  # En cas de conflit entre allow et deny, deny l'emporte
+  deny_overrides_allow: true
+  
+  # Les permissions héritées peuvent être surchargées
+  inheritance_override: true
+  
+  # Vérification stricte des permissions
+  strict_mode: true 

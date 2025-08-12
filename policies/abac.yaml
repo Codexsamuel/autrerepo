@@ -1,0 +1,423 @@
+# =============================================================================
+# NOVAIA - Politiques ABAC (Attribute-Based Access Control)
+# =============================================================================
+
+# Règles basées sur les attributs et le contexte
+rules:
+  # =============================================================================
+  # SÉCURITÉ & CONFORMITÉ
+  # =============================================================================
+  
+  # Blocage des données PII sortantes
+  - name: "PII_outbound_block"
+    description: "Bloque l'export de données PII vers l'extérieur"
+    when:
+      context:
+        network: "egress"
+        destination: "external"
+      data:
+        contains_pii: true
+        pii_types: ["email", "phone", "ssn", "credit_card", "address"]
+      user:
+        role: "!super_admin"
+        clearance_level: "<high"
+    action: "block"
+    priority: 100
+    logging: "audit"
+    
+  # Double contrôle pour outils à haut risque
+  - name: "HighRisk_tool_double_check"
+    description: "Requiert une approbation pour outils à haut risque"
+    when:
+      tool:
+        risk_level: "high"
+        category: ["system", "network", "database", "encryption"]
+      user:
+        role: "!super_admin"
+        clearance_level: "<high"
+      context:
+        time:
+          hour: "!9-17"  # Hors heures de bureau
+          day: "!monday-friday"  # Hors jours ouvrables
+    action: "require_dual_control"
+    priority: 90
+    logging: "audit"
+    
+  # Contrôle d'accès basé sur la localisation
+  - name: "Geographic_access_control"
+    description: "Contrôle l'accès basé sur la localisation géographique"
+    when:
+      context:
+        location:
+          country: "!allowed_countries"
+          region: "!allowed_regions"
+        network:
+          ip_range: "!whitelisted_ips"
+      user:
+        role: "!super_admin"
+        vpn_required: true
+    action: "require_vpn"
+    priority: 80
+    logging: "security"
+    
+  # Contrôle d'accès basé sur l'heure
+  - name: "Time_based_access"
+    description: "Limite l'accès aux heures de bureau pour certains rôles"
+    when:
+      context:
+        time:
+          hour: "!9-17"
+          day: "!monday-friday"
+      user:
+        role: ["guest", "viewer", "business_user"]
+        emergency_access: false
+      resource:
+        sensitivity: "high"
+    action: "deny"
+    priority: 70
+    logging: "security"
+    
+  # =============================================================================
+  # RESSOURCES & PERFORMANCE
+  # =============================================================================
+  
+  # Limitation GPU pour utilisateurs non-privilégiés
+  - name: "GPU_resource_limitation"
+    description: "Limite l'utilisation GPU pour les utilisateurs non-privilégiés"
+    when:
+      resource:
+        type: "gpu"
+        memory_required: ">8GB"
+      user:
+        role: ["!super_admin", "!system_admin"]
+        gpu_quota: "<high"
+      context:
+        system:
+          gpu_utilization: ">80%"
+          queue_length: ">5"
+    action: "throttle"
+    priority: 60
+    parameters:
+      max_memory: "8GB"
+      max_duration: "2h"
+      queue_priority: "low"
+    logging: "metrics"
+    
+  # Quota de requêtes par utilisateur
+  - name: "User_request_quota"
+    description: "Limite le nombre de requêtes par utilisateur et par période"
+    when:
+      context:
+        time:
+          window: "1h"
+        user_requests:
+          count: ">1000"
+          rate: ">100/min"
+      user:
+        role: "!super_admin"
+        subscription_tier: "basic"
+    action: "rate_limit"
+    priority: 50
+    parameters:
+      max_requests_per_hour: 1000
+      max_requests_per_minute: 100
+      cooldown_period: "15m"
+    logging: "metrics"
+    
+  # Contrôle d'accès aux modèles LLM
+  - name: "LLM_model_access_control"
+    description: "Contrôle l'accès aux modèles LLM basé sur les permissions"
+    when:
+      resource:
+        type: "llm_model"
+        model_size: ">70B"
+        cost_per_token: ">0.001"
+      user:
+        role: ["!super_admin", "!system_admin"]
+        model_access_level: "<enterprise"
+        budget_remaining: "<1000"
+    action: "deny"
+    priority: 85
+    logging: "audit"
+    
+  # =============================================================================
+  # DONNÉES & SENSIBILITÉ
+  # =============================================================================
+  
+  # Contrôle d'accès aux données sensibles
+  - name: "Sensitive_data_access"
+    description: "Contrôle l'accès aux données sensibles et confidentielles"
+    when:
+      data:
+        classification: ["confidential", "secret", "top_secret"]
+        contains_pii: true
+        contains_business_critical: true
+      user:
+        role: ["!super_admin", "!security_admin"]
+        clearance_level: "<high"
+        data_access_level: "<high"
+        background_check: "!passed"
+        nda_signed: "!true"
+      context:
+        location:
+          environment: "!secure"
+        network:
+          encryption: "!strong"
+          vpn: "!active"
+    action: "deny"
+    priority: 95
+    logging: "audit"
+    
+  # Contrôle d'export de données
+  - name: "Data_export_control"
+    description: "Contrôle l'export de données basé sur la sensibilité"
+    when:
+      action:
+        type: "export"
+        format: ["csv", "json", "xml", "pdf"]
+        destination: "external"
+      data:
+        classification: "!public"
+        contains_pii: true
+        volume: ">1000_records"
+      user:
+        role: ["!super_admin", "!data_steward"]
+        export_permission: false
+    action: "require_approval"
+    priority: 75
+    parameters:
+      approval_level: "manager"
+      max_records: 1000
+      anonymization_required: true
+    logging: "audit"
+    
+  # =============================================================================
+  # ENVIRONNEMENT & CONTEXTE
+  # =============================================================================
+  
+  # Contrôle d'accès en mode AirGap
+  - name: "AirGap_mode_control"
+    description: "Contrôle strict en mode AirGap (aucun accès externe)"
+    when:
+      context:
+        environment: "airgap"
+        network:
+          external_access: true
+          internet_connection: true
+      user:
+        role: ["!super_admin", "!security_admin"]
+    action: "block"
+    priority: 100
+    logging: "security"
+    
+  # Contrôle d'accès en mode maintenance
+  - name: "Maintenance_mode_access"
+    description: "Limite l'accès pendant la maintenance"
+    when:
+      context:
+        system:
+          maintenance_mode: true
+          emergency_mode: false
+      user:
+        role: ["!super_admin", "!system_admin"]
+        maintenance_access: false
+    action: "deny"
+    priority: 90
+    logging: "audit"
+    
+  # Contrôle d'accès en cas d'incident
+  - name: "Incident_response_access"
+    description: "Contrôle l'accès pendant les incidents de sécurité"
+    when:
+      context:
+        security:
+          incident_active: true
+          incident_level: "high"
+          response_phase: "active"
+      user:
+        role: ["!super_admin", "!security_admin", "!incident_response_team"]
+        incident_access: false
+    action: "deny"
+    priority: 95
+    logging: "security"
+    
+  # =============================================================================
+  # UTILISATEURS & SESSIONS
+  # =============================================================================
+  
+  # Contrôle de session basé sur le risque
+  - name: "Risk_based_session_control"
+    description: "Contrôle les sessions basé sur le niveau de risque"
+    when:
+      user:
+        risk_score: ">0.7"
+        failed_logins: ">3"
+        suspicious_activity: true
+        last_password_change: ">90_days"
+      context:
+        session:
+          duration: ">8h"
+          location_changed: true
+          device_changed: true
+          multiple_sessions: true
+    action: "require_reauthentication"
+    priority: 65
+    parameters:
+      reauth_method: "mfa"
+      session_timeout: "1h"
+      max_concurrent_sessions: 1
+    logging: "security"
+    
+  # Contrôle d'accès pour nouveaux utilisateurs
+  - name: "New_user_access_control"
+    description: "Limite l'accès pour les nouveaux utilisateurs"
+    when:
+      user:
+        account_age: "<30_days"
+        first_login: true
+        training_completed: false
+        supervisor_approval: false
+      resource:
+        sensitivity: ">low"
+        risk_level: ">low"
+    action: "restrict"
+    priority: 55
+    parameters:
+      max_session_duration: "4h"
+      allowed_resources: "basic_only"
+      supervision_required: true
+    logging: "audit"
+    
+  # =============================================================================
+  # RESSOURCES SYSTÈME
+  # =============================================================================
+  
+  # Contrôle d'accès aux logs système
+  - name: "System_logs_access"
+    description: "Contrôle l'accès aux logs système et d'audit"
+    when:
+      resource:
+        type: "system_logs"
+        category: ["security", "audit", "system", "performance"]
+        retention_period: ">1_year"
+      user:
+        role: ["!super_admin", "!security_admin", "!system_admin"]
+        log_access_level: "<high"
+      context:
+        purpose: "!incident_investigation"
+        purpose: "!compliance_audit"
+        purpose: "!system_troubleshooting"
+    action: "deny"
+    priority: 80
+    logging: "audit"
+    
+  # Contrôle d'accès aux configurations système
+  - name: "System_config_access"
+    description: "Contrôle l'accès aux configurations système critiques"
+    when:
+      resource:
+        type: "system_config"
+        category: ["network", "security", "database", "authentication"]
+        critical: true
+      user:
+        role: ["!super_admin", "!system_admin"]
+        config_access_level: "<high"
+        change_approval: false
+      context:
+        environment: "production"
+        change_window: false
+        emergency: false
+    action: "deny"
+    priority: 90
+    logging: "audit"
+
+# Définition des attributs et leurs valeurs
+attributes:
+  # Rôles utilisateur
+  user_roles:
+    - "super_admin"
+    - "system_admin"
+    - "security_admin"
+    - "operator"
+    - "agent_developer"
+    - "data_analyst"
+    - "business_user"
+    - "viewer"
+    - "guest"
+    
+  # Niveaux de clearance
+  clearance_levels:
+    - "low"
+    - "medium"
+    - "high"
+    - "top_secret"
+    
+  # Niveaux de risque
+  risk_levels:
+    - "low"
+    - "medium"
+    - "high"
+    - "critical"
+    
+  # Classifications de données
+  data_classifications:
+    - "public"
+    - "internal"
+    - "confidential"
+    - "secret"
+    - "top_secret"
+    
+  # Types d'environnement
+  environments:
+    - "development"
+    - "staging"
+    - "production"
+    - "airgap"
+    - "maintenance"
+    
+  # Niveaux d'incident
+  incident_levels:
+    - "low"
+    - "medium"
+    - "high"
+    - "critical"
+    
+  # Phases de réponse
+  response_phases:
+    - "detection"
+    - "analysis"
+    - "containment"
+    - "eradication"
+    - "recovery"
+    - "post_incident"
+
+# Actions disponibles
+actions:
+  - "allow"
+  - "deny"
+  - "block"
+  - "throttle"
+  - "rate_limit"
+  - "require_approval"
+  - "require_dual_control"
+  - "require_reauthentication"
+  - "require_vpn"
+  - "restrict"
+  - "quarantine"
+  - "alert"
+  - "log"
+  - "audit"
+
+# Priorités (plus le nombre est élevé, plus la règle est prioritaire)
+priorities:
+  - 100  # Critique
+  - 95   # Très haute
+  - 90   # Haute
+  - 85   # Élevée
+  - 80   # Moyenne-haute
+  - 75   # Moyenne
+  - 70   # Moyenne-basse
+  - 65   # Basse
+  - 60   # Très basse
+  - 55   # Minimale
+  - 50   # Défaut 

@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { ScrapingProductionReady } from '@/components/scraping/ScrapingProductionReady';
+import ScrapingProductionReady from '@/components/scraping/ScrapingProductionReady';
 
 export const metadata: Metadata = {
   title: 'Scraping Production Ready - DL Solutions',

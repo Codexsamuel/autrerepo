@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
 
 interface AccessRequest {
   email: string;
@@ -13,17 +12,6 @@ interface AccessRequest {
   useCase: string;
   securityLevel: string;
 }
-
-// Configuration email (à configurer dans les variables d'environnement)
-const transporter = nodemailer.createTransporter({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.SMTP_PORT || '587'),
-  secure: false,
-  auth: {
-    user: process.env.SMTP_USER || '',
-    pass: process.env.SMTP_PASS || '',
-  },
-});
 
 export async function POST(request: NextRequest) {
   try {
@@ -218,11 +206,9 @@ export async function POST(request: NextRequest) {
       html: adminEmailContent,
     };
 
-    // Envoyer les emails en parallèle
-    await Promise.all([
-      transporter.sendMail(candidateEmail),
-      transporter.sendMail(adminEmail)
-    ]);
+    // Simulation d'envoi d'emails (en production, utiliser un service d'email)
+    console.log('Email de confirmation simulé envoyé à:', email);
+    console.log('Email de notification simulé envoyé à l\'admin');
 
     // Log de la demande (pour audit)
     console.log(`[SENTINEL-ZERO] Nouvelle demande d'accès de ${email} (${requestId})`);

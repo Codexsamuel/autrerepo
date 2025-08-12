@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-    Analytics,
+    BarChart3,
     CheckCircle,
     Crown,
     Globe,
@@ -62,7 +62,7 @@ export function PremiumSubscription() {
         'Messages directs illimités',
         'Appels audio et vidéo',
         'Accès aux groupes privés',
-        'Analytics avancés',
+        'Statistiques avancées',
         'Support prioritaire',
         'Recherche avancée'
       ],
@@ -80,7 +80,7 @@ export function PremiumSubscription() {
         'Tout Premium +',
         'Page entreprise vérifiée',
         'Recrutement illimité',
-        'Analytics entreprise',
+        'Statistiques entreprise',
         'API d\'intégration',
         'Formation équipe',
         'Gestion des rôles',
@@ -256,9 +256,9 @@ export function PremiumSubscription() {
 
             <div className="text-center p-6 bg-white rounded-lg border border-gray-200 shadow-sm">
               <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Analytics className="w-8 h-8 text-orange-600" />
+                                    <BarChart3 className="w-8 h-8 text-orange-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Analytics avancés</h3>
+                                <h3 className="font-semibold text-gray-900 mb-2">Statistiques avancées</h3>
               <p className="text-sm text-gray-600">
                 Suivez vos performances et optimisez votre présence
               </p>

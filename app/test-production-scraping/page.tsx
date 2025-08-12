@@ -1,5 +1,5 @@
+import ProductionScrapingTest from '@/components/scraping/ProductionScrapingTest';
 import { Metadata } from 'next';
-import { ProductionScrapingTest } from '@/components/scraping/ProductionScrapingTest';
 
 export const metadata: Metadata = {
   title: 'Test Production Scraping - DL Solutions',

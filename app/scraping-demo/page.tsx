@@ -1,23 +1,21 @@
-import { Metadata } from 'next';
-import { ScrapingMultiMarket } from '@/components/scraping/ScrapingMultiMarket';
-import { AdvancedScraping } from '@/components/scraping/AdvancedScraping';
-import { IndustrialScraping } from '@/components/scraping/IndustrialScraping';
+import AdvancedScraping from '@/components/scraping/AdvancedScraping';
+import IndustrialScraping from '@/components/scraping/IndustrialScraping';
+import ScrapingMultiMarket from '@/components/scraping/ScrapingMultiMarket';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Database, 
-  Globe, 
-  Factory, 
-  TrendingUp, 
-  Zap, 
-  CheckCircle, 
-  Activity,
-  BarChart3,
-  Settings,
-  Target
+import {
+    Activity,
+    BarChart3,
+    CheckCircle,
+    Database,
+    Factory,
+    Globe,
+    Settings,
+    Target
 } from 'lucide-react';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Démonstration Scraping - DL Solutions',

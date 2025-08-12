@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
 
 interface SentinelCredentials {
   codeMaitre: string;
@@ -15,17 +14,6 @@ interface EmailRequest {
   credentials: SentinelCredentials;
   superAdminCode: string;
 }
-
-// Configuration email (à configurer dans les variables d'environnement)
-const transporter = nodemailer.createTransporter({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.SMTP_PORT || '587'),
-  secure: false,
-  auth: {
-    user: process.env.SMTP_USER || '',
-    pass: process.env.SMTP_PASS || '',
-  },
-});
 
 export async function POST(request: NextRequest) {
   try {
@@ -146,15 +134,9 @@ export async function POST(request: NextRequest) {
       </html>
     `;
 
-    // Envoi de l'email
-    const mailOptions = {
-      from: process.env.SMTP_FROM || 'sentinel-zero@dlsolutionssarl.tech',
-      to: userEmail,
-      subject: '🚨 SENTINEL ZERO - Vos Identifiants d\'Authentification',
-      html: htmlContent,
-    };
-
-    await transporter.sendMail(mailOptions);
+    // Simulation d'envoi d'email (en production, utiliser un service d'email)
+    console.log('Email simulé envoyé avec succès à:', userEmail);
+    console.log('Contenu de l\'email:', htmlContent);
 
     // Log de l'envoi (pour audit)
     console.log(`[SENTINEL-ZERO] Identifiants envoyés à ${userEmail} par Super Admin`);

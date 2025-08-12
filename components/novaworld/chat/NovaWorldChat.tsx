@@ -13,10 +13,10 @@ import {
   Video, 
   MoreVertical,
   Search,
-  Online,
-  Offline,
-  Busy,
-  Away
+  Circle,
+  XCircle,
+  Clock,
+  Minus
 } from 'lucide-react';
 
 interface Message {
@@ -172,10 +172,10 @@ export default function NovaWorldChat() {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'online': return <Online className="w-3 h-3 text-green-500" />;
-      case 'busy': return <Busy className="w-3 h-3 text-red-500" />;
-      case 'away': return <Away className="w-3 h-3 text-yellow-500" />;
-      default: return <Offline className="w-3 h-3 text-gray-500" />;
+      case 'online': return <Circle className="w-3 h-3 text-green-500 fill-current" />;
+      case 'busy': return <XCircle className="w-3 h-3 text-red-500" />;
+      case 'away': return <Clock className="w-3 h-3 text-yellow-500" />;
+      default: return <Minus className="w-3 h-3 text-gray-500" />;
     }
   };
 

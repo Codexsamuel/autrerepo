@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
     Building2,
     Car,
-    GasPump,
+    Fuel,
     Globe,
     Home,
     ShoppingCart,
@@ -218,7 +218,7 @@ export default function NovaWorldServicesPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
                   <Card className="border-0 shadow-lg">
                     <CardContent className="p-6 text-center">
-                      <GasPump className="w-12 h-12 text-orange-500 mx-auto mb-4" />
+                      <Fuel className="w-12 h-12 text-orange-500 mx-auto mb-4" />
                       <h4 className="font-semibold mb-2">Gaz Domestique</h4>
                       <p className="text-sm text-gray-600">Livraison express de bouteilles de gaz</p>
                     </CardContent>

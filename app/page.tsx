@@ -16,6 +16,7 @@ import PricingSection from '@/components/ui/PricingSection';
 import OurServicesSection from '@/components/ui/OurServicesSection';
 import { Button } from "@/components/ui/button";
 import WhatsAppButton from '@/components/whatsapp-button';
+import NovaWorldPopup from '@/components/novaworld/NovaWorldPopup';
 import {
     ArrowRight,
     Brain,
@@ -332,6 +333,9 @@ export default function HomePage() {
       <PrivacyMessage />
       <WhatsAppButton />
       <ContextualHelp />
+      
+      {/* Popup NovaWorld */}
+      <NovaWorldPopup />
       
       {/* Bouton déclencheur caché pour le popup de RDV */}
       <button 

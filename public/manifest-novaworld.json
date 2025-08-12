@@ -1,0 +1,178 @@
+{
+  "name": "NovaWorld - Super App Africaine des Services",
+  "short_name": "NovaWorld",
+  "description": "Trouvez, réservez et payez des professionnels vérifiés en quelques clics. Services domestiques, artisans, experts et livraison en Afrique.",
+  "start_url": "/novacore/novaworld",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "scope": "/novacore/novaworld",
+  "lang": "fr",
+  "dir": "ltr",
+  "categories": [
+    "business",
+    "lifestyle",
+    "productivity",
+    "social",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "/icons/novaworld-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/novaworld-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/novaworld-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/novaworld-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/novaworld-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/novaworld-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/novaworld-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/novaworld-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/novaworld-home.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Page d'accueil NovaWorld - Services et fonctionnalités"
+    },
+    {
+      "src": "/screenshots/novaworld-services.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Catalogue des services NovaWorld - Ménage, artisans, experts"
+    },
+    {
+      "src": "/screenshots/novaworld-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Interface mobile NovaWorld - Design responsive et intuitif"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Services Domestiques",
+      "short_name": "Ménage",
+      "description": "Accès rapide aux services domestiques",
+      "url": "/novacore/novaworld/services?category=domestic",
+      "icons": [
+        {
+          "src": "/icons/home-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Artisans & Techniciens",
+      "short_name": "Artisans",
+      "description": "Trouvez un artisan ou technicien",
+      "url": "/novacore/novaworld/services?category=artisans",
+      "icons": [
+        {
+          "src": "/icons/wrench-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Urgence 24/7",
+      "short_name": "Urgence",
+      "description": "Service d'urgence disponible jour et nuit",
+      "url": "/novacore/novaworld/services?emergency=true",
+      "icons": [
+        {
+          "src": "/icons/alert-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.dlsolutions.novaworld",
+      "id": "com.dlsolutions.novaworld"
+    }
+  ],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "handle_links": "preferred",
+  "capture_links": "new-client",
+  "file_handlers": [
+    {
+      "action": "/novacore/novaworld/upload",
+      "accept": {
+        "image/*": [".jpg", ".jpeg", ".png", ".webp"],
+        "application/pdf": [".pdf"]
+      }
+    }
+  ],
+  "protocol_handlers": [
+    {
+      "protocol": "web+novaworld",
+      "url": "/novacore/novaworld?service=%s"
+    }
+  ],
+  "share_target": {
+    "action": "/novacore/novaworld/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "files",
+          "accept": ["image/*", "application/pdf"]
+        }
+      ]
+    }
+  }
+} 

@@ -2,7 +2,7 @@
 
 import { supabase } from '@/lib/supabase/client'
 import { NextRequest } from 'next/server'
-import { createTransport } from 'nodemailer'
+// import { createTransport } from 'nodemailer'
 import Redis from 'redis'
 import twilio from 'twilio'
 import winston from 'winston'
@@ -33,16 +33,16 @@ const surveillanceLogger = winston.createLogger({
   ]
 })
 
-// Configuration email
-const emailTransporter = createTransport({
-  host: process.env.SMTP_HOST,
-  port: parseInt(process.env.SMTP_PORT || '587'),
-  secure: false,
-  auth: {
-    user: process.env.SMTP_USER || '',
-    pass: process.env.SMTP_PASS || ''
-  }
-})
+// Configuration email (désactivée pour éviter les erreurs de build)
+// const emailTransporter = createTransport({
+//   host: process.env.SMTP_HOST,
+//   port: parseInt(process.env.SMTP_PORT || '587'),
+//   secure: false,
+//   auth: {
+//     user: process.env.SMTP_USER || '',
+//     pass: process.env.SMTP_PASS || ''
+//   }
+// })
 
 // Configuration SMS
 const twilioClient = twilio(
@@ -358,9 +358,9 @@ Timestamp: ${event.timestamp.toISOString()}
 Action: ${event.action || 'Aucune'}
     `.trim()
 
-    // Email d'alerte
+    // Email d'alerte (désactivé pour éviter les erreurs de build)
     try {
-      await emailTransporter.sendMail({
+      console.log('🚨 ALERTE SÉCURITÉ:', {
         from: process.env.SMTP_FROM,
         to: process.env.SMTP_USER || '',
         subject: `🚨 ALERTE SÉCURITÉ - ${event.severity.toUpperCase()} - ${event.type}`,

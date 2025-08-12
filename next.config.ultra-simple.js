@@ -34,16 +34,33 @@ const nextConfig = {
       tls: false,
     };
     
-    // Ignorer les erreurs de résolution de modules
+    // Configuration des alias pour résoudre les modules manquants
     config.resolve.alias = {
       ...config.resolve.alias,
-      // Rediriger les modules UI manquants vers des composants de base
-      '@/components/ui/badge': '@/components/ui/badge.tsx',
-      '@/components/ui/button': '@/components/ui/button.tsx',
-      '@/components/ui/card': '@/components/ui/card.tsx',
-      '@/components/ui/input': '@/components/ui/input.tsx',
-      '@/components/ui/tabs': '@/components/ui/tabs.tsx',
+      // Alias de base
+      '@': require('path').resolve(__dirname),
+      '@/components': require('path').resolve(__dirname, 'components'),
+      '@/components/ui': require('path').resolve(__dirname, 'components/ui'),
+      '@/lib': require('path').resolve(__dirname, 'lib'),
+      '@/app': require('path').resolve(__dirname, 'app'),
+      
+      // Alias spécifiques pour les composants UI
+      '@/components/ui/badge': require('path').resolve(__dirname, 'components/ui/badge.tsx'),
+      '@/components/ui/button': require('path').resolve(__dirname, 'components/ui/button.tsx'),
+      '@/components/ui/card': require('path').resolve(__dirname, 'components/ui/card.tsx'),
+      '@/components/ui/input': require('path').resolve(__dirname, 'components/ui/input.tsx'),
+      '@/components/ui/tabs': require('path').resolve(__dirname, 'components/ui/tabs.tsx'),
     };
+    
+    // Ignorer les erreurs de résolution de modules
+    config.resolve.modules = [
+      'node_modules',
+      '.',
+      'components',
+      'components/ui',
+      'lib',
+      'app'
+    ];
     
     return config;
   },

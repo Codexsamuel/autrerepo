@@ -41,8 +41,13 @@ EOF
                 if npm run build:netlify:ultra-simple; then
                     echo "✅ Build ultra-simple réussi"
                 else
-                    echo "❌ Échec total du build, arrêt du processus"
-                    exit 1
+                    echo "❌ Échec du build ultra-simple, tentative avec build de dernier recours..."
+                    if npm run build:netlify:last-resort; then
+                        echo "✅ Build de dernier recours réussi"
+                    else
+                        echo "❌ Échec total du build, arrêt du processus"
+                        exit 1
+                    fi
                 fi
             fi
         fi

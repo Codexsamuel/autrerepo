@@ -29,24 +29,29 @@ EOF
         echo "📱 Frontend prêt pour Netlify"
         echo "🐍 Backend Python à déployer séparément"
     else
-        echo "❌ Erreur lors du build, tentative avec build simple..."
-        if npm run build:netlify:ultra-simple; then
-            echo "✅ Build simple réussi"
+        echo "❌ Erreur lors du build, tentative avec build et dépendances..."
+        if npm run build:netlify:dependencies; then
+            echo "✅ Build avec dépendances réussi"
         else
-            echo "❌ Échec du build simple, tentative avec build d'urgence..."
-            if npm run build:netlify:emergency; then
-                echo "✅ Build d'urgence réussi"
+            echo "❌ Échec du build avec dépendances, tentative avec build simple..."
+            if npm run build:netlify:ultra-simple; then
+                echo "✅ Build simple réussi"
             else
-                echo "❌ Échec du build d'urgence, tentative avec build ultra-simple..."
-                if npm run build:netlify:ultra-simple; then
-                    echo "✅ Build ultra-simple réussi"
+                echo "❌ Échec du build simple, tentative avec build d'urgence..."
+                if npm run build:netlify:emergency; then
+                    echo "✅ Build d'urgence réussi"
                 else
-                    echo "❌ Échec du build ultra-simple, tentative avec build de dernier recours..."
-                    if npm run build:netlify:last-resort; then
-                        echo "✅ Build de dernier recours réussi"
+                    echo "❌ Échec du build d'urgence, tentative avec build ultra-simple..."
+                    if npm run build:netlify:ultra-simple; then
+                        echo "✅ Build ultra-simple réussi"
                     else
-                        echo "❌ Échec total du build, arrêt du processus"
-                        exit 1
+                        echo "❌ Échec du build ultra-simple, tentative avec build de dernier recours..."
+                        if npm run build:netlify:last-resort; then
+                            echo "✅ Build de dernier recours réussi"
+                        else
+                            echo "❌ Échec total du build, arrêt du processus"
+                            exit 1
+                        fi
                     fi
                 fi
             fi

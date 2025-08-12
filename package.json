@@ -49,6 +49,7 @@
     "build:netlify:ultra-simple": "./scripts/netlify-build-ultra-simple.sh",
     "build:netlify:emergency": "./scripts/netlify-build-emergency.sh",
     "build:netlify:last-resort": "./scripts/netlify-build-last-resort.sh",
+    "build:netlify:dependencies": "./scripts/netlify-build-dependencies.sh",
     "vercel-build": "next build"
   },
   "dependencies": {
@@ -111,6 +112,8 @@
     "lucide-react": "^0.294.0",
     "next": "15.3.4",
     "next-auth": "^4.24.5",
+    "@stripe/stripe-js": "^2.4.0",
+    "@stripe/react-stripe-js": "^2.4.0",
     "next-seo": "^6.8.0",
     "next-themes": "^0.4.6",
     "openai": "^5.12.0",

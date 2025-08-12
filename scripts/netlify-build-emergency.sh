@@ -30,17 +30,17 @@ fi
 echo "🔨 Build Next.js en mode d'urgence..."
 echo "⚠️ Utilisation de la configuration la plus simple possible"
 
-# Build avec les options les plus simples
-if next build --no-lint --no-mangling --no-export; then
+# Build avec les options les plus simples pour Next.js 15
+if next build --no-lint; then
     echo "✅ Build d'urgence réussi !"
     echo "📱 Frontend prêt pour Netlify"
     exit 0
 else
     echo "❌ Échec du build d'urgence"
-    echo "🔍 Tentative de build sans optimisation..."
+    echo "🔍 Tentative de build sans linting..."
     
-    if next build --no-lint --no-mangling --no-export --no-optimization; then
-        echo "✅ Build sans optimisation réussi !"
+    if next build --no-lint --no-mangling; then
+        echo "✅ Build sans linting réussi !"
         exit 0
     else
         echo "❌ Échec total du build"

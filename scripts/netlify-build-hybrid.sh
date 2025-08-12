@@ -37,8 +37,13 @@ EOF
             if npm run build:netlify:emergency; then
                 echo "✅ Build d'urgence réussi"
             else
-                echo "❌ Échec total du build, arrêt du processus"
-                exit 1
+                echo "❌ Échec du build d'urgence, tentative avec build ultra-simple..."
+                if npm run build:netlify:ultra-simple; then
+                    echo "✅ Build ultra-simple réussi"
+                else
+                    echo "❌ Échec total du build, arrêt du processus"
+                    exit 1
+                fi
             fi
         fi
     fi

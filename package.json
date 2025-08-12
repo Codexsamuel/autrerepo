@@ -46,6 +46,7 @@
     "build:netlify:no-python": "./scripts/netlify-build-no-python.sh",
     "build:netlify:hybrid": "./scripts/netlify-build-hybrid.sh",
     "build:netlify:emergency": "./scripts/netlify-build-emergency.sh",
+    "build:netlify:ultra-simple": "./scripts/netlify-build-ultra-simple.sh",
     "vercel-build": "next build"
   },
   "dependencies": {

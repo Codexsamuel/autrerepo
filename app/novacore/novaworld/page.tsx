@@ -20,7 +20,8 @@ import {
     UserPlus,
     Users,
     Zap,
-    Brain
+    Brain,
+    Home
 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -463,24 +464,42 @@ export default function NovaWorldPage() {
             {/* Réseau */}
             <TabsContent value="network" className="space-y-6">
               {/* Liens vers les fonctionnalités avancées */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card className="border-0 shadow-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-                  <CardContent className="p-6">
-                    <div className="text-center">
-                      <h3 className="text-xl font-bold mb-2">🚀 Fonctionnalités Avancées</h3>
-                      <p className="text-blue-100 mb-4">
-                        Paiements sécurisés, chat en temps réel et cartographie interactive
-                      </p>
-                      <a 
-                        href="/novacore/novaworld/advanced-features" 
-                        className="inline-flex items-center px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-slate-100 transition-colors"
-                      >
-                        <Zap className="w-4 h-4 mr-2" />
-                        Explorer
-                      </a>
-                    </div>
-                  </CardContent>
-                </Card>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card className="border-0 shadow-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+            <CardContent className="p-6">
+              <div className="text-center">
+                <h3 className="text-xl font-bold mb-2">🚀 Fonctionnalités Avancées</h3>
+                <p className="text-blue-100 mb-4">
+                  Paiements sécurisés, chat en temps réel et cartographie interactive
+                </p>
+                <a 
+                  href="/novacore/novaworld/advanced-features" 
+                  className="inline-flex items-center px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-slate-100 transition-colors"
+                >
+                  <Zap className="w-4 h-4 mr-2" />
+                  Explorer
+                </a>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="border-0 shadow-lg bg-gradient-to-r from-green-600 to-blue-600 text-white">
+            <CardContent className="p-6">
+              <div className="text-center">
+                <h3 className="text-xl font-bold mb-2">🏠 Services NovaWorld</h3>
+                <p className="text-green-100 mb-4">
+                  Prestations domestiques, artisans, experts et livraison vérifiés
+                </p>
+                <a 
+                  href="/novacore/novaworld/services" 
+                  className="inline-flex items-center px-6 py-3 bg-white text-green-600 font-semibold rounded-lg hover:bg-green-50 transition-colors"
+                >
+                  <Home className="w-4 h-4 mr-2" />
+                  Découvrir
+                </a>
+              </div>
+            </CardContent>
+          </Card>
                 
                 <Card className="border-0 shadow-lg bg-gradient-to-r from-slate-800 to-purple-900 text-white">
                   <CardContent className="p-6">

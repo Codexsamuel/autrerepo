@@ -10,10 +10,9 @@ import {
     Clock,
     Database,
     Download,
-    FileText,
     Globe,
-    Pause,
     Play,
+    Pause,
     RotateCcw,
     Settings,
     ShoppingCart,
@@ -33,23 +32,11 @@ interface Product {
   price: number;
   originalPrice?: number;
   currency: string;
-  image: string;
-  images: string[];
   description: string;
   brand?: string;
   category: string;
-  subcategory?: string;
   rating?: number;
   reviews?: number;
-  seller?: string;
-  sellerRating?: number;
-  location?: string;
-  shipping?: string;
-  minOrder?: number;
-  stock?: number;
-  tags: string[];
-  specifications?: Record<string, string>;
-  url: string;
   platform: string;
   scrapedAt: string;
 }
@@ -57,17 +44,12 @@ interface Product {
 interface ScrapingResult {
   platform: string;
   category: string;
-  query?: string;
   totalResults: number;
   products: Product[];
   timestamp: string;
-  metadata: {
-    scrapedFrom: string[];
-    filters: any;
-  };
 }
 
-export default function MultiMarketScrapingPage() {
+export default function ScrapingMultiMarket() {
   const [isScraping, setIsScraping] = useState(false);
   const [scrapingProgress, setScrapingProgress] = useState(0);
   const [results, setResults] = useState<ScrapingResult | null>(null);
@@ -76,11 +58,6 @@ export default function MultiMarketScrapingPage() {
   
   const [selectedPlatform, setSelectedPlatform] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState("vehicles");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [priceRange, setPriceRange] = useState([0, 2000]);
-  const [sortBy, setSortBy] = useState("relevance");
-  const [limit, setLimit] = useState(20);
-  const [country, setCountry] = useState("FR");
 
   // Simuler le chargement initial
   useEffect(() => {
@@ -104,26 +81,9 @@ export default function MultiMarketScrapingPage() {
     { value: "vehicles", label: "Véhicules", icon: Truck, color: "bg-blue-100 text-blue-800" },
     { value: "furniture", label: "Meubles", icon: Settings, color: "bg-green-100 text-green-800" },
     { value: "electronics", label: "Électronique", icon: BarChart3, color: "bg-purple-100 text-purple-800" },
-    { value: "men-clothing", label: "Vêtements Homme", icon: FileText, color: "bg-indigo-100 text-indigo-800" },
-    { value: "women-clothing", label: "Vêtements Femme", icon: FileText, color: "bg-pink-100 text-pink-800" },
+    { value: "men-clothing", label: "Vêtements Homme", icon: TrendingUp, color: "bg-indigo-100 text-indigo-800" },
+    { value: "women-clothing", label: "Vêtements Femme", icon: Zap, color: "bg-pink-100 text-pink-800" },
     { value: "accessories", label: "Accessoires", icon: Database, color: "bg-orange-100 text-orange-800" }
-  ];
-
-  const sortOptions = [
-    { value: "relevance", label: "Pertinence" },
-    { value: "price-low", label: "Prix croissant" },
-    { value: "price-high", label: "Prix décroissant" },
-    { value: "rating", label: "Note" },
-    { value: "reviews", label: "Avis" }
-  ];
-
-  const countries = [
-    { value: "FR", label: "France" },
-    { value: "US", label: "États-Unis" },
-    { value: "UK", label: "Royaume-Uni" },
-    { value: "DE", label: "Allemagne" },
-    { value: "IT", label: "Italie" },
-    { value: "ES", label: "Espagne" }
   ];
 
   const stats = [
@@ -194,7 +154,6 @@ export default function MultiMarketScrapingPage() {
       const mockResults: ScrapingResult = {
         platform: selectedPlatform,
         category: selectedCategory,
-        query: searchQuery || undefined,
         totalResults: Math.floor(Math.random() * 1000) + 100,
         products: [
           {
@@ -203,20 +162,11 @@ export default function MultiMarketScrapingPage() {
             price: 1299,
             originalPrice: 1499,
             currency: 'EUR',
-            image: '/products/iphone.jpg',
-            images: ['/products/iphone.jpg'],
             description: 'Le dernier iPhone avec puce A17 Pro et appareil photo 48MP',
             brand: 'Apple',
             category: 'Electronics',
             rating: 4.8,
             reviews: 1247,
-            seller: 'Apple Store',
-            sellerRating: 4.9,
-            location: 'France',
-            shipping: 'Gratuit',
-            stock: 50,
-            tags: ['smartphone', 'apple', '5G', 'camera'],
-            url: 'https://example.com/iphone',
             platform: 'amazon',
             scrapedAt: new Date().toISOString()
           },
@@ -225,29 +175,16 @@ export default function MultiMarketScrapingPage() {
             title: 'MacBook Pro M3 - 14"',
             price: 1999,
             currency: 'EUR',
-            image: '/products/macbook.jpg',
-            images: ['/products/macbook.jpg'],
             description: 'Ordinateur portable professionnel avec puce M3',
             brand: 'Apple',
             category: 'Electronics',
             rating: 4.9,
             reviews: 892,
-            seller: 'Apple Store',
-            sellerRating: 4.9,
-            location: 'France',
-            shipping: 'Gratuit',
-            stock: 25,
-            tags: ['laptop', 'apple', 'm3', 'professional'],
-            url: 'https://example.com/macbook',
             platform: 'amazon',
             scrapedAt: new Date().toISOString()
           }
         ],
-        timestamp: new Date().toISOString(),
-        metadata: {
-          scrapedFrom: [selectedPlatform === 'all' ? 'multiple' : selectedPlatform],
-          filters: { category: selectedCategory, limit, country }
-        }
+        timestamp: new Date().toISOString()
       };
 
       setResults(mockResults);
@@ -408,19 +345,6 @@ export default function MultiMarketScrapingPage() {
                 </select>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Recherche (optionnel)
-                </label>
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Ex: smartphone, voiture, meuble..."
-                  className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-
               <div className="flex space-x-4">
                 <Button
                   onClick={startScraping}
@@ -562,50 +486,6 @@ export default function MultiMarketScrapingPage() {
             </Card>
           </div>
         )}
-
-        {/* Fonctionnalités */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center text-slate-800 mb-12">
-            Fonctionnalités avancées
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                  <Zap className="w-6 h-6 text-blue-600" />
-                </div>
-                <CardTitle className="text-xl">Scraping en temps réel</CardTitle>
-                <CardDescription>
-                  Collectez les données les plus récentes avec une mise à jour continue
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                  <Download className="w-6 h-6 text-green-600" />
-                </div>
-                <CardTitle className="text-xl">Export multiple</CardTitle>
-                <CardDescription>
-                  Exportez vos données en JSON, CSV, Excel ou via API REST
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                  <TrendingUp className="w-6 h-6 text-purple-600" />
-                </div>
-                <CardTitle className="text-xl">Analytics avancés</CardTitle>
-                <CardDescription>
-                  Analysez les tendances et obtenez des insights sur les marchés
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </div>
-        </div>
 
         {/* CTA */}
         <div className="text-center">

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
     Database,
     Globe,
@@ -79,7 +80,7 @@ interface ScrapingSource {
   responseTime: number;
 }
 
-export default function ProductionScrapingTest() {
+export default function ScrapingProductionReady() {
   const [products, setProducts] = useState<Product[]>([]);
   const [stats, setStats] = useState<ScrapingStats>({
     totalProducts: 0,
@@ -432,11 +433,20 @@ export default function ProductionScrapingTest() {
         </Card>
 
         {/* Sources et produits */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Produits */}
-          <div>
-            <h2 className="text-2xl font-bold text-slate-800 mb-6">Produits Collectés ({products.length})</h2>
-            <div className="space-y-4">
+        <Tabs defaultValue="products" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-8">
+            <TabsTrigger value="products" className="flex items-center space-x-2">
+              <Package className="w-4 h-4" />
+              <span>Produits ({products.length})</span>
+            </TabsTrigger>
+            <TabsTrigger value="sources" className="flex items-center space-x-2">
+              <Server className="w-4 h-4" />
+              <span>Sources ({sources.length})</span>
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="products">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {products.map((product) => (
                 <Card key={product.id} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                   <CardContent className="p-6">
@@ -480,12 +490,10 @@ export default function ProductionScrapingTest() {
                 </Card>
               ))}
             </div>
-          </div>
+          </TabsContent>
 
-          {/* Sources */}
-          <div>
-            <h2 className="text-2xl font-bold text-slate-800 mb-6">Sources de Scraping ({sources.length})</h2>
-            <div className="space-y-4">
+          <TabsContent value="sources">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {sources.map((source, index) => (
                 <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                   <CardContent className="p-6">
@@ -519,8 +527,8 @@ export default function ProductionScrapingTest() {
                 </Card>
               ))}
             </div>
-          </div>
-        </div>
+          </TabsContent>
+        </Tabs>
 
         {/* CTA */}
         <div className="mt-16 text-center">

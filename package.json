@@ -45,6 +45,7 @@
     "build:netlify:compatible": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production NETLIFY=true next build --debug",
     "build:netlify:no-python": "./scripts/netlify-build-no-python.sh",
     "build:netlify:hybrid": "./scripts/netlify-build-hybrid.sh",
+    "build:netlify:emergency": "./scripts/netlify-build-emergency.sh",
     "vercel-build": "next build"
   },
   "dependencies": {

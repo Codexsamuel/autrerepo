@@ -1,11 +1,14 @@
-# Redirections simples sans boucle
-# Redirection www vers non-www pour éviter les boucles
-/www.dlsolutionssarl.tech/* https://dlsolutionssarl.tech/:splat 301!
-/www.daveandlucesolutions.com/* https://daveandlucesolutions.com/:splat 301!
+# Redirections Netlify - Configuration simple pour éviter les boucles
 
-# Redirection des domaines principaux vers le site Netlify
-/dlsolutionssarl.tech/* https://davyetlue.netlify.app/:splat 301!
-/daveandlucesolutions.com/* https://davyetlue.netlify.app/:splat 301!
+# Rediriger daveandlucesolutions.com vers dlsolutionssarl.tech (domaine principal)
+daveandlucesolutions.com/* https://dlsolutionssarl.tech/:splat 301!
+www.daveandlucesolutions.com/* https://dlsolutionssarl.tech/:splat 301!
 
-# Fallback pour SPA - IMPORTANT : pas de redirection ici
-/*    /index.html   200 
+# Rediriger www.dlsolutionssarl.tech vers dlsolutionssarl.tech
+www.dlsolutionssarl.tech/* https://dlsolutionssarl.tech/:splat 301!
+
+# Gestion des erreurs 404
+/* /404.html 404
+
+# Redirection par défaut pour SPA
+/* /index.html 200 

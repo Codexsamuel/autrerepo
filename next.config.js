@@ -28,6 +28,11 @@ const nextConfig = {
   
   // Configuration pour Netlify
   trailingSlash: process.env.NETLIFY === 'true',
+  
+  // Supprimer les redirections automatiques pour éviter les conflits avec le middleware
+  // async redirects() {
+  //   return [];
+  // },
 }
 
 module.exports = nextConfig; 

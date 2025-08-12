@@ -22,14 +22,27 @@ NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL:-https://your-backend-domain.c
 NEXT_PUBLIC_NETLIFY=true
 EOF
     
-    # Build Next.js pour le frontend
+    # Build Next.js pour le frontend avec gestion d'erreurs
     echo "🔨 Build du frontend Next.js..."
-    npm run build:netlify:compatible
-    
-    echo "✅ Build hybride terminé avec succès"
-    echo "📱 Frontend prêt pour Netlify"
-    echo "🐍 Backend Python à déployer séparément"
+    if npm run build:netlify:safe; then
+        echo "✅ Build hybride terminé avec succès"
+        echo "📱 Frontend prêt pour Netlify"
+        echo "🐍 Backend Python à déployer séparément"
+    else
+        echo "❌ Erreur lors du build, tentative avec build simple..."
+        if npm run build:netlify:ultra-simple; then
+            echo "✅ Build simple réussi"
+        else
+            echo "❌ Échec du build simple, tentative avec build d'urgence..."
+            if npm run build:netlify:emergency; then
+                echo "✅ Build d'urgence réussi"
+            else
+                echo "❌ Échec total du build, arrêt du processus"
+                exit 1
+            fi
+        fi
+    fi
 else
     echo "⚠️ Environnement local détecté, build standard..."
-    npm run build:netlify:compatible
+    npm run build:netlify:safe
 fi 

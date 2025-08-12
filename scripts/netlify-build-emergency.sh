@@ -1,42 +1,50 @@
 #!/bin/bash
 
-echo "🚨 BUILD D'URGENCE NETLIFY - Mode de survie activé"
-echo "=================================================="
+echo "🚨 BUILD D'URGENCE NETLIFY - Mode ultra-simple"
 
-# Variables d'environnement d'urgence
-export DISABLE_SELF_REFERENCE_FIXER=1
-export USE_ALTERNATIVE_WEBPACK=true
-export NEXT_TELEMETRY_DISABLED=1
-export NODE_ENV=production
+# Configuration minimale
 export NETLIFY=true
+export NODE_ENV=production
+export NEXT_TELEMETRY_DISABLED=1
+export NEXT_PUBLIC_NETLIFY=true
 
-echo "🔧 Configuration d'urgence:"
-echo "  - Plugin SelfReferenceFixer: DÉSACTIVÉ"
-echo "  - Configuration webpack: ALTERNATIVE"
-echo "  - Télémétrie: DÉSACTIVÉE"
-echo "  - Environnement: PRODUCTION"
+# Variables d'environnement essentielles
+export NEXT_PUBLIC_API_MODE=hybrid
+export NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL:-https://your-backend-domain.com}
 
-# Nettoyage des caches
-echo "🧹 Nettoyage des caches..."
-rm -rf .next
-rm -rf node_modules/.cache
-rm -rf .swc
+# Créer un fichier .env minimal
+cat > .env.production << EOF
+NEXT_PUBLIC_API_MODE=hybrid
+NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL}
+NEXT_PUBLIC_NETLIFY=true
+EOF
 
-# Installation des dépendances
+echo "🔧 Configuration minimale créée"
 echo "📦 Installation des dépendances..."
-npm ci --production=false --legacy-peer-deps --force
 
-# Build avec configuration minimale
-echo "🏗️ Build avec configuration minimale..."
-npx next build --no-lint --no-mangling --no-optimize-packages
+# Installer les dépendances si nécessaire
+if [ ! -d "node_modules" ]; then
+    npm install --production=false
+fi
 
-# Vérification du build
-if [ $? -eq 0 ]; then
-    echo "✅ BUILD RÉUSSI - Mode d'urgence"
-    echo "📁 Fichiers générés dans .next/"
-    ls -la .next/
+echo "🔨 Build Next.js en mode d'urgence..."
+echo "⚠️ Utilisation de la configuration la plus simple possible"
+
+# Build avec les options les plus simples
+if next build --no-lint --no-mangling --no-export; then
+    echo "✅ Build d'urgence réussi !"
+    echo "📱 Frontend prêt pour Netlify"
+    exit 0
 else
-    echo "❌ BUILD ÉCHOUÉ - Mode d'urgence"
-    echo "🔍 Vérification des erreurs..."
-    exit 1
+    echo "❌ Échec du build d'urgence"
+    echo "🔍 Tentative de build sans optimisation..."
+    
+    if next build --no-lint --no-mangling --no-export --no-optimization; then
+        echo "✅ Build sans optimisation réussi !"
+        exit 0
+    else
+        echo "❌ Échec total du build"
+        echo "🚨 Vérifiez la configuration et les dépendances"
+        exit 1
+    fi
 fi 

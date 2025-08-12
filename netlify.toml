@@ -31,11 +31,12 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Configuration des redirections (si nécessaire)
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  conditions = {Role = ["admin"]}
+# Supprimer les redirections automatiques pour éviter les conflits avec le middleware
+# Les redirections sont maintenant gérées par le middleware Next.js
+# [[redirects]]
+#   from = "/*"
+#   to = "/index.html"
+#   status = 200
+#   conditions = {Role = ["admin"]}
 
  

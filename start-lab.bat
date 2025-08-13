@@ -3,8 +3,8 @@ chcp 65001 >nul
 title Sentinel Zero Lab - Démarrage
 
 echo.
-echo 🚀 SENTINEL ZERO LAB - ENVIRONNEMENT DE TEST SÉCURISÉ
-echo ======================================================
+echo 🚀 SENTINEL ZERO LAB - ENVIRONNEMENT DE GUERRE CYBERNÉTIQUE
+echo =========================================================
 echo.
 
 echo 🔍 Vérification de Docker...
@@ -91,10 +91,10 @@ echo   - ./grafana - Configuration Grafana
 echo   - ./prometheus - Configuration Prometheus
 echo.
 
-echo 🚨 IMPORTANT: Ce lab est isolé et sécurisé
-echo   - Toutes les cibles sont volontairement vulnérables
-echo   - Utilisez uniquement pour l'apprentissage et les tests
-echo   - Ne jamais utiliser sur des systèmes de production
+echo 🚨 IMPORTANT: Ce lab est un environnement de guerre cybernétique
+echo   - Toutes les cibles sont opérationnelles et vulnérables
+echo   - Utilisez uniquement pour l'exécution de missions autorisées
+echo   - Environnement de production pour opérations de sécurité active
 echo.
 
 echo ✅ Lab Sentinel Zero démarré avec succès !

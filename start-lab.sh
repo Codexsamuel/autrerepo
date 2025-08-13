@@ -19,8 +19,8 @@ LAB_NAME="sentinel-zero-lab"
 # Fonctions utilitaires
 print_header() {
     echo -e "${BLUE}"
-    echo "🚀 SENTINEL ZERO LAB - ENVIRONNEMENT DE TEST SÉCURISÉ"
-    echo "====================================================="
+    echo "🚀 SENTINEL ZERO LAB - ENVIRONNEMENT DE GUERRE CYBERNÉTIQUE"
+    echo "========================================================="
     echo -e "${NC}"
 }
 
@@ -155,10 +155,10 @@ show_access_info() {
     echo "  - ./grafana - Configuration Grafana"
     echo "  - ./prometheus - Configuration Prometheus"
     echo
-    echo -e "${YELLOW}🚨 IMPORTANT: Ce lab est isolé et sécurisé${NC}"
-    echo "  - Toutes les cibles sont volontairement vulnérables"
-    echo "  - Utilisez uniquement pour l'apprentissage et les tests"
-    echo "  - Ne jamais utiliser sur des systèmes de production"
+    echo -e "${YELLOW}🚨 IMPORTANT: Ce lab est un environnement de guerre cybernétique${NC}"
+    echo "  - Toutes les cibles sont opérationnelles et vulnérables"
+    echo "  - Utilisez uniquement pour l'exécution de missions autorisées"
+    echo "  - Environnement de production pour opérations de sécurité active"
     echo
     echo -e "${GREEN}🎮 Commandes utiles:${NC}"
     echo "  - $COMPOSE_CMD -f $COMPOSE_FILE logs -f [service]"

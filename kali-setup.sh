@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🔧 Configuration de Kali Linux pour Sentinel Zero Lab..."
+echo "🔧 Configuration de Kali Linux pour Sentinel Zero - Environnement de Guerre Cybernétique..."
 
 # Mise à jour du système
 apt update -y
@@ -197,7 +197,7 @@ alias lab='cd /opt'
 
 # Fonctions Sentinel Zero
 sentinel-status() {
-    echo "🔍 Status du lab Sentinel Zero:"
+    echo "🔍 Status de l'environnement de guerre cybernétique Sentinel Zero:"
     echo "  - Tools: $TOOLS_DIR"
     echo "  - Reports: $REPORTS_DIR"
     echo "  - Wordlists: $WORDLISTS_DIR"
@@ -205,8 +205,8 @@ sentinel-status() {
 }
 
 sentinel-scan() {
-    echo "🚀 Lancement d'un scan Sentinel Zero..."
-    echo "  - Cibles disponibles:"
+    echo "🚀 Lancement d'une mission de reconnaissance Sentinel Zero..."
+    echo "  - Cibles opérationnelles:"
     echo "    * Juice Shop: http://172.20.0.2:3000"
     echo "    * DVWA: http://172.20.0.3:80"
     echo "    * Metasploitable2: 172.20.0.4"
@@ -257,18 +257,18 @@ case $TARGET in
         ;;
 esac
 
-echo "🔍 Scan de $TARGET ($IP:$PORT)..."
+echo "🚀 Mission de reconnaissance sur $TARGET ($IP:$PORT)..."
 
 # Scan de base
 nmap -sS -sV -O -p- $IP -oN "/opt/reports/${TARGET}_nmap_$(date +%Y%m%d_%H%M%S).txt"
 
 # Scan web si applicable
 if [ "$PORT" = "80" ] || [ "$PORT" = "3000" ]; then
-    echo "🌐 Scan web de $TARGET..."
+    echo "🌐 Reconnaissance web de $TARGET..."
     nikto -h "http://$IP:$PORT" -o "/opt/reports/${TARGET}_nikto_$(date +%Y%m%d_%H%M%S).txt"
 fi
 
-echo "✅ Scan terminé. Rapports dans /opt/reports/"
+echo "✅ Mission de reconnaissance terminée. Rapports dans /opt/reports/"
 EOF
 
 chmod +x /opt/scripts/sentinel-scan.sh
@@ -288,10 +288,10 @@ fi
 REPORT_DIR="/opt/reports/${TARGET}_${DATE}"
 mkdir -p "$REPORT_DIR"
 
-echo "📊 Génération du rapport pour $TARGET..."
+echo "📊 Génération du rapport de mission pour $TARGET..."
 
 # Collecte des données
-echo "🔍 Collecte des données..."
+echo "🔍 Collecte des données de mission..."
 find /opt/reports -name "*${TARGET}*" -type f -exec cp {} "$REPORT_DIR/" \;
 
 # Génération du rapport HTML
@@ -313,24 +313,24 @@ cat > "$REPORT_DIR/report.html" << HTML_EOF
 </head>
 <body>
     <div class="header">
-        <h1>🚨 Sentinel Zero Lab - Rapport de Sécurité</h1>
+        <h1>🚨 Sentinel Zero - Rapport de Mission de Guerre Cybernétique</h1>
         <h2>Target: $TARGET</h2>
         <p>Date: $(date)</p>
-        <p>Généré par: Sentinel Zero Lab Environment</p>
+        <p>Généré par: Sentinel Zero - Environnement de Guerre Cybernétique</p>
     </div>
     
     <div class="section">
-        <h3>📋 Résumé Exécutif</h3>
-        <p>Ce rapport présente les résultats des tests de sécurité effectués sur $TARGET dans l'environnement Sentinel Zero Lab.</p>
+        <h3>📋 Résumé Exécutif de Mission</h3>
+        <p>Ce rapport présente les résultats de la mission de guerre cybernétique effectuée sur $TARGET dans l'environnement Sentinel Zero.</p>
     </div>
     
     <div class="section">
-        <h3>🔍 Méthodologie</h3>
+        <h3>🔍 Méthodologie de Mission</h3>
         <ul>
-            <li>Reconnaissance réseau</li>
-            <li>Scan de vulnérabilités</li>
-            <li>Test d'intrusion</li>
-            <li>Analyse des résultats</li>
+            <li>Reconnaissance offensive</li>
+            <li>Exploitation des vulnérabilités</li>
+            <li>Pénétration active</li>
+            <li>Analyse des résultats de mission</li>
         </ul>
     </div>
     
@@ -352,17 +352,17 @@ cat >> "$REPORT_DIR/report.html" << 'HTML_EOF'
     </div>
     
     <div class="section">
-        <h3>⚠️ Recommandations</h3>
+        <h3>⚠️ Recommandations Opérationnelles</h3>
         <ul>
-            <li>Réviser et corriger toutes les vulnérabilités critiques et élevées</li>
-            <li>Implémenter une politique de sécurité robuste</li>
-            <li>Mettre en place un programme de tests de sécurité réguliers</li>
-            <li>Former le personnel aux bonnes pratiques de sécurité</li>
+            <li>Exploiter toutes les vulnérabilités critiques et élevées détectées</li>
+            <li>Implémenter des contre-mesures offensives et défensives</li>
+            <li>Mettre en place un programme de missions de sécurité continues</li>
+            <li>Former les équipes aux tactiques de guerre cybernétique</li>
         </ul>
     </div>
     
     <div class="footer">
-        <p><em>Rapport généré automatiquement par Sentinel Zero Lab Environment</em></p>
+        <p><em>Rapport généré automatiquement par Sentinel Zero - Environnement de Guerre Cybernétique</em></p>
     </div>
 </body>
 </html>
@@ -381,31 +381,31 @@ echo "export SENTINEL_LAB_HOME=/opt" >> /root/.profile
 
 # Message de fin
 echo ""
-echo "🎉 Configuration Kali Linux terminée !"
+echo "🎉 Configuration Kali Linux pour la guerre cybernétique terminée !"
 echo ""
-echo "🚀 Outils installés:"
-echo "  - Nmap, Masscan, Netcat"
-echo "  - SQLMap, Nikto, Dirb"
-echo "  - Hydra, John, Hashcat"
-echo "  - TheHarvester, Recon-ng"
-echo "  - Aircrack-ng, Wifite"
+echo "🚀 Arsenal d'outils opérationnels installés:"
+echo "  - Nmap, Masscan, Netcat (Reconnaissance réseau)"
+echo "  - SQLMap, Nikto, Dirb (Exploitation web)"
+echo "  - Hydra, John, Hashcat (Force brute)"
+echo "  - TheHarvester, Recon-ng (Intelligence)"
+echo "  - Aircrack-ng, Wifite (Sécurité WiFi)"
 echo "  - Et bien plus..."
 echo ""
-echo "📁 Dossiers créés:"
-echo "  - /opt/tools - Outils personnalisés"
-echo "  - /opt/reports - Rapports de scan"
-echo "  - /opt/wordlists - Listes de mots"
-echo "  - /opt/scripts - Scripts utilitaires"
+echo "📁 Infrastructure opérationnelle créée:"
+echo "  - /opt/tools - Arsenal personnalisé"
+echo "  - /opt/reports - Rapports de mission"
+echo "  - /opt/wordlists - Bases de données d'attaque"
+echo "  - /opt/scripts - Scripts de mission"
 echo ""
-echo "🔗 Scripts disponibles:"
-echo "  - sentinel-scan.sh <target> - Scan d'une cible"
-echo "  - sentinel-report.sh <target> - Génération de rapport"
+echo "🔗 Commandes de mission disponibles:"
+echo "  - sentinel-scan.sh <target> - Reconnaissance d'une cible"
+echo "  - sentinel-report.sh <target> - Rapport de mission"
 echo ""
-echo "🌐 Lab accessible sur le réseau 172.20.0.0/16"
-echo "📊 Dashboards: Grafana (3001), Prometheus (9090)"
+echo "🌐 Environnement de guerre accessible sur le réseau 172.20.0.0/16"
+echo "📊 Commandement: Grafana (3001), Prometheus (9090)"
 echo ""
 
 # Redémarrage des services
 systemctl restart ssh
 
-echo "✅ Installation terminée avec succès !" 
+echo "✅ Arsenal opérationnel prêt pour la mission !" 

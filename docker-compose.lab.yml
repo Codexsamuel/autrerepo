@@ -1,0 +1,209 @@
+version: '3.9'
+
+services:
+  # === LAB VULNÉRABLES ===
+  
+  # OWASP Juice Shop - Application web vulnérable
+  juice-shop:
+    image: bkimminich/juice-shop:latest
+    container_name: sentinel-juice-shop
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=unsafe
+    networks:
+      - sentinel-lab
+    labels:
+      - "sentinel.target=web-app"
+      - "sentinel.vulnerabilities=xss,sqli,csrf,xxe"
+    restart: unless-stopped
+
+  # DVWA - Damn Vulnerable Web Application
+  dvwa:
+    image: vulnerables/web-dvwa:latest
+    container_name: sentinel-dvwa
+    ports:
+      - "8080:80"
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=dvwa
+      - MYSQL_USER=dvwa
+      - MYSQL_PASSWORD=p@ssw0rd
+    networks:
+      - sentinel-lab
+    labels:
+      - "sentinel.target=web-app"
+      - "sentinel.vulnerabilities=sql-injection,xss,file-upload,command-injection"
+    restart: unless-stopped
+
+  # Metasploitable2 - Machine Linux vulnérable
+  metasploitable2:
+    image: tleemcjr/metasploitable2:latest
+    container_name: sentinel-metasploitable2
+    ports:
+      - "2222:22"  # SSH
+      - "8022:80"  # HTTP
+      - "2121:21"  # FTP
+      - "139:139"  # SMB
+      - "445:445"  # SMB
+    networks:
+      - sentinel-lab
+    labels:
+      - "sentinel.target=linux-system"
+      - "sentinel.vulnerabilities=weak-passwords,outdated-services,privilege-escalation"
+    restart: unless-stopped
+
+  # OWASP Security Shepherd - Plateforme d'apprentissage
+  security-shepherd:
+    image: owasp/security-shepherd:latest
+    container_name: sentinel-shepherd
+    ports:
+      - "8081:80"
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=securityShepherd
+    networks:
+      - sentinel-lab
+    labels:
+      - "sentinel.target=learning-platform"
+      - "sentinel.vulnerabilities=ctf-challenges,progressive-difficulty"
+    restart: unless-stopped
+
+  # Vulnerable API Lab
+  vulnerable-api:
+    image: vulhub/vulnerable-api:latest
+    container_name: sentinel-vulnerable-api
+    ports:
+      - "8082:3000"
+    networks:
+      - sentinel-lab
+    labels:
+      - "sentinel.target=api"
+      - "sentinel.vulnerabilities=api-security,authentication,authorization"
+    restart: unless-stopped
+
+  # === OUTILS DE TEST ===
+  
+  # Kali Linux avec tous les outils
+  kali-tools:
+    image: kalilinux/kali-rolling:latest
+    container_name: sentinel-kali-tools
+    ports:
+      - "8083:22"  # SSH pour accès distant
+    environment:
+      - DEBIAN_FRONTEND=noninteractive
+    volumes:
+      - ./kali-setup.sh:/tmp/setup.sh
+      - ./tools:/opt/tools
+      - ./reports:/opt/reports
+    networks:
+      - sentinel-lab
+    labels:
+      - "sentinel.tool=penetration-testing"
+      - "sentinel.capabilities=network-scanning,web-testing,wireless-testing"
+    command: >
+      bash -c "
+        chmod +x /tmp/setup.sh &&
+        /tmp/setup.sh &&
+        tail -f /dev/null
+      "
+    restart: unless-stopped
+
+  # === INFRASTRUCTURE ===
+  
+  # Base de données pour les rapports
+  postgres:
+    image: postgres:15-alpine
+    container_name: sentinel-postgres
+    environment:
+      - POSTGRES_DB=sentinel_lab
+      - POSTGRES_USER=sentinel
+      - POSTGRES_PASSWORD=sentinel123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - sentinel-lab
+    restart: unless-stopped
+
+  # Redis pour le cache et les sessions
+  redis:
+    image: redis:7-alpine
+    container_name: sentinel-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - sentinel-lab
+    restart: unless-stopped
+
+  # === MONITORING ===
+  
+  # Grafana pour les dashboards
+  grafana:
+    image: grafana/grafana:latest
+    container_name: sentinel-grafana
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=sentinel123
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - sentinel-lab
+    restart: unless-stopped
+
+  # Prometheus pour la métrique
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: sentinel-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - sentinel-lab
+    restart: unless-stopped
+
+  # === SENTINEL ZERO INTÉGRATION ===
+  
+  # API Sentinel Zero pour le lab
+  sentinel-lab-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.lab-api
+    container_name: sentinel-lab-api
+    ports:
+      - "8084:3000"
+    environment:
+      - DATABASE_URL=postgresql://sentinel:sentinel123@postgres:5432/sentinel_lab
+      - REDIS_URL=redis://redis:6379
+      - LAB_MODE=true
+    volumes:
+      - ./lab-api:/app
+      - ./reports:/app/reports
+    networks:
+      - sentinel-lab
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+
+networks:
+  sentinel-lab:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1
+
+volumes:
+  postgres_data:
+  redis_data:
+  grafana_data:
+  prometheus_data: 

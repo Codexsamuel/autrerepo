@@ -1,29 +1,22 @@
 "use client";
 
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Shield, 
-  AlertTriangle, 
-  CheckCircle, 
-  XCircle, 
-  Activity,
-  Settings,
-  Target,
-  Eye,
-  Zap,
-  Lock,
-  User,
-  Mic,
-  Fingerprint,
-  Search,
-  Bug,
-  Database,
-  Cpu,
-  Network,
-  HardDrive,
-  Trash2
+import {
+    Activity,
+    AlertTriangle,
+    Database,
+    Eye,
+    Fingerprint,
+    Lock,
+    Mic,
+    Settings,
+    Shield,
+    Target,
+    Trash2,
+    User,
+    Zap
 } from 'lucide-react';
+import { useState } from 'react';
 
 export default function SentinelZero() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);

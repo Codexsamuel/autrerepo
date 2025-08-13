@@ -48,7 +48,7 @@
     "build:netlify:last-resort": "./scripts/netlify-build-last-resort.sh",
     "build:netlify:emergency-fix": "./scripts/netlify-build-emergency-fix.sh",
     "build:netlify:ultra-simple-fix": "./scripts/netlify-build-ultra-simple-fix.sh",
-    "build:netlify:super-simple": "./scripts/netlify-build-super-simple.sh",
+    "build:netlify:super-simple": "./scripts/netlify-build-ultra-minimal.sh",
     "build:netlify:dependencies": "./scripts/netlify-build-dependencies.sh"
   },
   "dependencies": {

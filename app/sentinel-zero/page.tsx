@@ -222,7 +222,7 @@ export default function SentinelZero() {
           alerts: [
             'Tentative de connexion SSH depuis IP suspecte',
             'Fichier système modifié',
-            'Tentative d'accès non autorisé à la base de données'
+            'Tentative d acces non autorise a la base de donnees'
           ]
         }
       };

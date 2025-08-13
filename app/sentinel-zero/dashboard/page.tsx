@@ -47,6 +47,16 @@ export default function SentinelZeroDashboard() {
   // Modules d'attaque opérationnels
   const attackModules = [
     {
+      id: 'mitigation',
+      name: 'Mitigation',
+      description: 'Gestion automatique des vulnérabilités détectées',
+      status: '100%',
+      icon: ShieldCheck,
+      color: 'from-emerald-600 to-emerald-700',
+      hoverColor: 'from-emerald-700 to-emerald-800',
+      link: '/sentinel-zero/mitigation'
+    },
+    {
       id: 'reconnaissance',
       name: 'Reconnaissance',
       description: 'WHOIS, DNS, IP, HTTP headers, Port scanning',
@@ -480,7 +490,7 @@ export default function SentinelZeroDashboard() {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.1 * index }}
                   className="bg-black/30 backdrop-blur-lg rounded-xl p-4 border border-red-500/20 hover:border-red-500/50 transition-all duration-200 cursor-pointer"
-                  onClick={() => activateModule(module.id)}
+                  onClick={() => module.link ? window.location.href = module.link : activateModule(module.id)}
                 >
                   <div className="flex items-center justify-between mb-3">
                     <IconComponent className="h-6 w-6 text-red-400" />

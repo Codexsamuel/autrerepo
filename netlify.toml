@@ -1,42 +1,46 @@
 [build]
-  command = "npm run build:netlify:hybrid"
+  command = "npm run build:netlify:ultra-simple-fix"
   publish = ".next"
   functions = "netlify/functions"
-  # Configuration pour build hybride : frontend sur Netlify, backend séparé
 
 [build.environment]
-  NODE_VERSION = "20.19.4"
-  NPM_FLAGS = "--legacy-peer-deps"
-  NODE_OPTIONS = "--max-old-space-size=4096"
-  NPM_CONFIG_PRODUCTION = "false"
-  NETLIFY = "true"
-  NEXT_PUBLIC_NETLIFY = "true"
-  # Optimisations pour la performance
-  NEXT_TELEMETRY_DISABLED = "1"
   NODE_ENV = "production"
-  # Configuration hybride : frontend sur Netlify, backend séparé
-  SKIP_PYTHON_DEPS = "true"
-  USE_NODE = "true"
-  USE_PYTHON = "false"
-  # Variables pour l'API backend séparée
-  NEXT_PUBLIC_BACKEND_URL = "https://your-backend-domain.com"
-  NEXT_PUBLIC_API_MODE = "hybrid"
+  NEXT_TELEMETRY_DISABLED = "1"
+  NETLIFY = "true"
+  USE_EMERGENCY_BUILD = "true"
 
-# Configuration des timeouts
-[build.timeout]
-  build = 900
-  functions = 900
+[[redirects]]
+  from = "/api/novaprotect/*"
+  to = "/api/status"
+  status = 200
 
-# Configuration des plugins
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+[[redirects]]
+  from = "/api/ics/*"
+  to = "/api/status"
+  status = 200
 
-# Supprimer les redirections automatiques pour éviter les conflits avec le middleware
-# Les redirections sont maintenant gérées par le middleware Next.js
-# [[redirects]]
-#   from = "/*"
-#   to = "/index.html"
-#   status = 200
-#   conditions = {Role = ["admin"]}
+[[redirects]]
+  from = "/api/search/*"
+  to = "/api/status"
+  status = 200
 
- 
+[[redirects]]
+  from = "/api/reminders/*"
+  to = "/api/status"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin" 

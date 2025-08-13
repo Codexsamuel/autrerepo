@@ -2,11 +2,11 @@
 
 set -e
 
-echo "🚨 BUILD ULTRA-SIMPLE NETLIFY - Fix Supabase Key"
-echo "🔧 Configuration ultra-minimale créée"
+echo "🚨 BUILD SUPER-SIMPLE NETLIFY - Fix Supabase Key"
+echo "🔧 Configuration super-minimale créée"
 
-# Créer une configuration Next.js ultra-simple
-cat > next.config.ultra-simple.js << 'EOF'
+# Créer une configuration Next.js super-simple
+cat > next.config.js << 'EOF'
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Mode statique uniquement
@@ -105,26 +105,27 @@ EOF
 echo "📦 Vérification des dépendances..."
 npm list --depth=0 | head -10
 
-echo "🔨 Build Next.js en mode ultra-simple..."
-echo "⚠️ Configuration ultra-minimale pour éviter TOUS les problèmes"
+echo "🔨 Build Next.js en mode super-simple..."
+echo "⚠️ Configuration super-minimale pour éviter TOUS les problèmes"
 
-# Variables d'environnement
-export NEXT_CONFIG_FILE=next.config.ultra-simple.js
-export NEXT_TELEMETRY_DISABLED=1
-export NODE_ENV=production
-export NETLIFY=true
-
-# Build ultra-simple avec la variable d'environnement
-echo "🚀 Lancement du build ultra-simple..."
-echo "📁 Configuration utilisée: $NEXT_CONFIG_FILE"
+# Build super-simple
+echo "🚀 Lancement du build super-simple..."
+echo "📁 Configuration utilisée: next.config.js (remplacé)"
 next build --no-lint --no-mangling
 
 if [ $? -eq 0 ]; then
-  echo "✅ Build ultra-simple réussi !"
-  echo "📱 Frontend ultra-simple prêt pour Netlify"
+  echo "✅ Build super-simple réussi !"
+  echo "📱 Frontend super-simple prêt pour Netlify"
+  
+  # Restaurer la configuration originale
+  echo "🔄 Restauration de la configuration originale..."
+  if [ -f "next.config.js.backup" ]; then
+    mv next.config.js.backup next.config.js
+  fi
+  
   exit 0
 else
-  echo "❌ Échec du build ultra-simple"
+  echo "❌ Échec du build super-simple"
   echo "🚨 Mode de survie extrême activé..."
   
   # Dernière tentative : build sans collecte de données

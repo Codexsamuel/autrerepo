@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build:netlify:ultra-simple-fix"
+  command = "npm run build:netlify:super-simple"
   publish = ".next"
   functions = "netlify/functions"
 

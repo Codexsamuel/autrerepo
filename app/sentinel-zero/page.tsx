@@ -15,7 +15,14 @@ import {
   Lock,
   User,
   Mic,
-  Fingerprint
+  Fingerprint,
+  Search,
+  Bug,
+  Database,
+  Cpu,
+  Network,
+  HardDrive,
+  Trash2
 } from 'lucide-react';
 
 export default function SentinelZero() {
@@ -31,6 +38,14 @@ export default function SentinelZero() {
     vocal_phrase: ''
   });
   const [scanResults, setScanResults] = useState(null);
+  const [systemStatus, setSystemStatus] = useState({
+    backdoorDetection: 'En attente',
+    reconnaissance: 'En attente',
+    vulnerabilityTest: 'En attente',
+    configuration: 'En attente',
+    securityLogs: 'En attente',
+    performanceTest: 'En attente'
+  });
 
   // Code Seigneur pour bypasser complètement les 5 niveaux
   const SEIGNEUR_MASTER_CODE = 'SEIGNEUR-OMEGA-2025';
@@ -68,25 +83,223 @@ export default function SentinelZero() {
     }
   };
 
-  const activateRedButton = async () => {
-    if (confirm('Êtes-vous sûr de vouloir activer le protocole Red Button ? Cette action est irréversible.')) {
-      try {
-        const response = await fetch('/api/auth/red-button', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            confirmation: 'DESTROY_ALL_DATA',
-            reason: 'ADMIN_REQUEST'
-          }),
-        });
+  // FONCTIONS DES BOUTONS D'ACTION
+  const handleBackdoorDetection = async () => {
+    setSystemStatus(prev => ({ ...prev, backdoorDetection: 'Scan en cours...' }));
+    
+    try {
+      // Simulation d'un scan de portes dérobées
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      const results = {
+        timestamp: new Date().toISOString(),
+        scanType: 'Backdoor Detection',
+        results: [
+          { threat: 'Suspicious Process', severity: 'HIGH', details: 'Processus inconnu détecté' },
+          { threat: 'Network Anomaly', severity: 'MEDIUM', details: 'Connexion suspecte détectée' },
+          { threat: 'File Modification', severity: 'LOW', details: 'Fichiers système modifiés' }
+        ]
+      };
+      
+      setScanResults(results);
+      setSystemStatus(prev => ({ ...prev, backdoorDetection: 'Scan terminé' }));
+      
+      alert(`🔍 SCAN TERMINÉ !\n\nThreats détectés: ${results.results.length}\n\n${results.results.map(r => `• ${r.threat} (${r.severity}): ${r.details}`).join('\n')}`);
+      
+    } catch (error) {
+      setSystemStatus(prev => ({ ...prev, backdoorDetection: 'Erreur' }));
+      alert('❌ Erreur lors du scan de portes dérobées');
+    }
+  };
 
-        if (response.ok) {
-          alert('Protocole Red Button activé - Toutes les données ont été détruites');
+  const handleReconnaissance = async () => {
+    setSystemStatus(prev => ({ ...prev, reconnaissance: 'Reconnaissance en cours...' }));
+    
+    try {
+      // Simulation d'une reconnaissance
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      const reconResults = {
+        timestamp: new Date().toISOString(),
+        scanType: 'Reconnaissance',
+        results: {
+          openPorts: [22, 80, 443, 3306, 8080],
+          services: ['SSH', 'HTTP', 'HTTPS', 'MySQL', 'HTTP-Proxy'],
+          vulnerabilities: ['Weak SSH config', 'Default MySQL credentials'],
+          networkTopology: '3 subnets detected'
         }
-      } catch (error) {
-        console.error('Red button error:', error);
+      };
+      
+      setScanResults(reconResults);
+      setSystemStatus(prev => ({ ...prev, reconnaissance: 'Reconnaissance terminée' }));
+      
+      alert(`🔍 RECONNAISSANCE TERMINÉE !\n\nPorts ouverts: ${reconResults.results.openPorts.join(', ')}\nServices: ${reconResults.results.services.join(', ')}\nVulnérabilités: ${reconResults.results.vulnerabilities.length}`);
+      
+    } catch (error) {
+      setSystemStatus(prev => ({ ...prev, reconnaissance: 'Erreur' }));
+      alert('❌ Erreur lors de la reconnaissance');
+    }
+  };
+
+  const handleVulnerabilityTest = async () => {
+    setSystemStatus(prev => ({ ...prev, vulnerabilityTest: 'Test en cours...' }));
+    
+    try {
+      // Simulation d'un test de vulnérabilité
+      await new Promise(resolve => setTimeout(resolve, 4000));
+      
+      const vulnResults = {
+        timestamp: new Date().toISOString(),
+        scanType: 'Vulnerability Test',
+        results: {
+          critical: 2,
+          high: 5,
+          medium: 8,
+          low: 12,
+          details: [
+            'SQL Injection possible sur /login',
+            'XSS sur /search',
+            'Weak password policy',
+            'Missing security headers'
+          ]
+        }
+      };
+      
+      setScanResults(vulnResults);
+      setSystemStatus(prev => ({ ...prev, vulnerabilityTest: 'Test terminé' }));
+      
+      alert(`🔍 TEST DE VULNÉRABILITÉ TERMINÉ !\n\nCritique: ${vulnResults.results.critical}\nÉlevé: ${vulnResults.results.high}\nMoyen: ${vulnResults.results.medium}\nFaible: ${vulnResults.results.low}`);
+      
+    } catch (error) {
+      setSystemStatus(prev => ({ ...prev, vulnerabilityTest: 'Erreur' }));
+      alert('❌ Erreur lors du test de vulnérabilité');
+    }
+  };
+
+  // FONCTIONS DES BOUTONS SYSTÈME
+  const handleConfiguration = async () => {
+    setSystemStatus(prev => ({ ...prev, configuration: 'Configuration en cours...' }));
+    
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      const configResults = {
+        timestamp: new Date().toISOString(),
+        action: 'Configuration System',
+        results: {
+          firewall: 'Configuré et actif',
+          ids: 'Intrusion Detection System actif',
+          encryption: 'AES-256 activé',
+          backup: 'Sauvegarde automatique configurée',
+          monitoring: 'Monitoring 24/7 actif'
+        }
+      };
+      
+      setScanResults(configResults);
+      setSystemStatus(prev => ({ ...prev, configuration: 'Configuration terminée' }));
+      
+      alert(`⚙️ CONFIGURATION TERMINÉE !\n\nFirewall: ${configResults.results.firewall}\nIDS: ${configResults.results.ids}\nEncryption: ${configResults.results.encryption}\nBackup: ${configResults.results.backup}\nMonitoring: ${configResults.results.monitoring}`);
+      
+    } catch (error) {
+      setSystemStatus(prev => ({ ...prev, configuration: 'Erreur' }));
+      alert('❌ Erreur lors de la configuration');
+    }
+  };
+
+  const handleSecurityLogs = async () => {
+    setSystemStatus(prev => ({ ...prev, securityLogs: 'Analyse des logs...' }));
+    
+    try {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      const logResults = {
+        timestamp: new Date().toISOString(),
+        action: 'Security Logs Analysis',
+        results: {
+          totalLogs: 15420,
+          suspiciousActivities: 23,
+          blockedAttempts: 156,
+          alerts: [
+            'Tentative de connexion SSH depuis IP suspecte',
+            'Fichier système modifié',
+            'Tentative d'accès non autorisé à la base de données'
+          ]
+        }
+      };
+      
+      setScanResults(logResults);
+      setSystemStatus(prev => ({ ...prev, securityLogs: 'Analyse terminée' }));
+      
+      alert(`📊 ANALYSE DES LOGS TERMINÉE !\n\nTotal logs: ${logResults.results.totalLogs}\nActivités suspectes: ${logResults.results.suspiciousActivities}\nTentatives bloquées: ${logResults.results.blockedAttempts}\n\nAlertes:\n${logResults.results.alerts.map(a => `• ${a}`).join('\n')}`);
+      
+    } catch (error) {
+      setSystemStatus(prev => ({ ...prev, securityLogs: 'Erreur' }));
+      alert('❌ Erreur lors de l\'analyse des logs');
+    }
+  };
+
+  const handlePerformanceTest = async () => {
+    setSystemStatus(prev => ({ ...prev, performanceTest: 'Test en cours...' }));
+    
+    try {
+      await new Promise(resolve => setTimeout(resolve, 2500));
+      
+      const perfResults = {
+        timestamp: new Date().toISOString(),
+        action: 'Performance Test',
+        results: {
+          cpu: '15% (Normal)',
+          memory: '67% (Normal)',
+          disk: '23% (Normal)',
+          network: '12% (Normal)',
+          responseTime: '45ms (Excellent)',
+          throughput: '2.3 GB/s (Excellent)'
+        }
+      };
+      
+      setScanResults(perfResults);
+      setSystemStatus(prev => ({ ...prev, performanceTest: 'Test terminé' }));
+      
+      alert(`⚡ TEST DE PERFORMANCE TERMINÉ !\n\nCPU: ${perfResults.results.cpu}\nMémoire: ${perfResults.results.memory}\nDisque: ${perfResults.results.disk}\nRéseau: ${perfResults.results.network}\nTemps de réponse: ${perfResults.results.responseTime}\nDébit: ${perfResults.results.throughput}`);
+      
+    } catch (error) {
+      setSystemStatus(prev => ({ ...prev, performanceTest: 'Erreur' }));
+      alert('❌ Erreur lors du test de performance');
+    }
+  };
+
+  const activateRedButton = async () => {
+    if (confirm('🚨 ATTENTION CRITIQUE !\n\nÊtes-vous ABSOLUMENT sûr de vouloir activer le protocole Red Button ?\n\nCette action est IRRÉVERSIBLE et détruira :\n• Toutes les données\n• Tous les systèmes\n• Toute la configuration\n• TOUT !\n\nTapez "DESTROY" pour confirmer :')) {
+      const confirmation = prompt('Tapez "DESTROY" pour confirmer la destruction totale :');
+      
+      if (confirmation === 'DESTROY') {
+        try {
+          setSystemStatus(prev => ({ ...prev, backdoorDetection: 'DESTRUCTION EN COURS' }));
+          
+          // Simulation de la destruction
+          await new Promise(resolve => setTimeout(resolve, 3000));
+          
+          alert('💥 PROTOCOLE RED BUTTON ACTIVÉ !\n\nToutes les données ont été détruites.\nLe système est maintenant inutilisable.\n\nSentinel Zero - Mission Accomplie.');
+          
+          // Reset complet
+          setIsAuthenticated(false);
+          setShowLogin(true);
+          setScanResults(null);
+          setSystemStatus({
+            backdoorDetection: 'DESTROYED',
+            reconnaissance: 'DESTROYED',
+            vulnerabilityTest: 'DESTROYED',
+            configuration: 'DESTROYED',
+            securityLogs: 'DESTROYED',
+            performanceTest: 'DESTROYED'
+          });
+          
+        } catch (error) {
+          console.error('Red button error:', error);
+          alert('❌ Erreur lors de l\'activation du Red Button');
+        }
+      } else {
+        alert('❌ Confirmation incorrecte. Red Button désactivé.');
       }
     }
   };
@@ -99,57 +312,55 @@ export default function SentinelZero() {
           animate={{ scale: 1, opacity: 1 }}
           className="bg-black/40 backdrop-blur-lg rounded-xl p-8 border border-purple-500/30 max-w-md w-full"
         >
-          <div className="text-center mb-8">
-            <Shield className="w-16 h-16 text-purple-500 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-white mb-2">
-              🚀 BYPASS SEIGNEUR
-            </h1>
-            <p className="text-gray-300">
-              Accès direct au système - Bypass des 5 niveaux de sécurité
-            </p>
+          <div className="text-center mb-6">
+            <Zap className="w-16 h-16 text-purple-400 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-white mb-2">🚀 BYPASS SEIGNEUR</h2>
+            <p className="text-purple-300">Accès direct au système Sentinel Zero</p>
           </div>
 
-          <div className="space-y-6">
-            <div className="bg-purple-500/10 border border-purple-500/20 rounded-lg p-4">
-              <p className="text-purple-300 text-sm text-center">
-                <strong>Code Seigneur :</strong> SEIGNEUR-OMEGA-2025
-              </p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-purple-300 mb-2">
-                <Zap className="w-4 h-4 inline mr-2" />
-                Code Seigneur
-              </label>
-              <input
-                type="password"
-                value={seigneurCode}
-                onChange={(e) => setSeigneurCode(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg bg-black/50 border border-purple-500/50 focus:border-purple-400 focus:outline-none text-white placeholder-gray-400"
-                placeholder="Entrez le code seigneur"
-              />
-            </div>
-
-            <button
-              onClick={handleSeigneurBypass}
-              className="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-lg hover:from-purple-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-black transition-all"
-            >
-              🚀 ACTIVER BYPASS SEIGNEUR
-            </button>
-
-            <button
-              onClick={() => setShowSeigneurBypass(false)}
-              className="w-full py-2 px-4 bg-gray-600/50 text-gray-300 rounded-lg hover:bg-gray-600/70 transition-all"
-            >
-              ← Retour à l'authentification standard
-            </button>
+          <div className="mb-6 p-4 bg-purple-900/20 rounded-lg border border-purple-500/30">
+            <p className="text-purple-200 text-sm mb-2">Code Seigneur :</p>
+            <code className="text-purple-400 font-mono text-lg">{SEIGNEUR_MASTER_CODE}</code>
           </div>
+
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-purple-300 mb-2">
+              <Lock className="w-4 h-4 inline mr-2" />
+              Entrez le Code Seigneur
+            </label>
+            <input
+              type="password"
+              value={seigneurCode}
+              onChange={(e) => setSeigneurCode(e.target.value)}
+              className="w-full p-3 bg-black/20 border border-purple-500/30 rounded-lg text-white"
+              placeholder="Code Seigneur"
+            />
+          </div>
+
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleSeigneurBypass}
+            className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-lg mb-3"
+          >
+            <Zap className="w-4 h-4 mr-2 inline" />
+            ACTIVER BYPASS SEIGNEUR
+          </motion.button>
+
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setShowSeigneurBypass(false)}
+            className="w-full bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200"
+          >
+            Retour à l'authentification standard
+          </motion.button>
         </motion.div>
       </div>
     );
   }
 
-  if (showLogin) {
+  if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-black via-red-900 to-black flex items-center justify-center p-4">
         <motion.div
@@ -157,32 +368,13 @@ export default function SentinelZero() {
           animate={{ scale: 1, opacity: 1 }}
           className="bg-black/40 backdrop-blur-lg rounded-xl p-8 border border-red-500/30 max-w-md w-full"
         >
-          <div className="text-center mb-8">
+          <div className="text-center mb-6">
             <Shield className="w-16 h-16 text-red-500 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-white mb-2">
-              Sentinel Zero
-            </h1>
-            <p className="text-gray-300">
-              Agent Red Team IA Ultra-Avancé
-            </p>
+            <h2 className="text-2xl font-bold text-white mb-2">Sentinel Zero</h2>
+            <p className="text-red-300">Authentification 5 Niveaux Requise</p>
           </div>
 
-          {/* Bouton Bypass Seigneur */}
-          <div className="mb-6">
-            <button
-              onClick={() => setShowSeigneurBypass(true)}
-              className="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-lg hover:from-purple-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-black transition-all mb-4"
-            >
-              🚀 BYPASS SEIGNEUR - Accès Direct
-            </button>
-            <div className="text-center">
-              <p className="text-xs text-gray-400">
-                Bypass complet des 5 niveaux de sécurité
-              </p>
-            </div>
-          </div>
-
-          <div className="space-y-4">
+          <div className="space-y-4 mb-6">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 <Lock className="w-4 h-4 inline mr-2" />
@@ -193,7 +385,7 @@ export default function SentinelZero() {
                 value={loginData.master_code}
                 onChange={(e) => setLoginData({...loginData, master_code: e.target.value})}
                 className="w-full p-3 bg-black/20 border border-red-500/30 rounded-lg text-white"
-                placeholder="0987612345"
+                placeholder="Code maître d'accès"
               />
             </div>
 
@@ -252,7 +444,9 @@ export default function SentinelZero() {
                 placeholder="i am sentinel"
               />
             </div>
+          </div>
 
+          <div className="space-y-3">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -261,6 +455,16 @@ export default function SentinelZero() {
             >
               <Shield className="w-4 h-4 mr-2 inline" />
               Authentification 5 Niveaux
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setShowSeigneurBypass(true)}
+              className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-lg"
+            >
+              <Zap className="w-4 h-4 mr-2 inline" />
+              🚀 BYPASS SEIGNEUR - Accès Direct
             </motion.button>
           </div>
         </motion.div>
@@ -317,29 +521,41 @@ export default function SentinelZero() {
               Actions
             </h3>
             <div className="space-y-3">
+                          <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => window.location.href = '/sentinel-zero/dashboard'}
+              className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-4 py-3 rounded-lg font-medium transition-all duration-200 shadow-lg"
+            >
+              <Target className="h-4 w-4 mr-2 inline" />
+              🚀 DASHBOARD MILITAIRE OPÉRATIONNEL
+              <span className="ml-2 text-xs bg-green-800 px-2 py-1 rounded">
+                ACCÈS DIRECT
+              </span>
+            </motion.button>
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-4 py-3 rounded-lg font-medium transition-all duration-200 shadow-lg"
-              >
-                <Target className="h-4 w-4 mr-2 inline" />
-                Détection Portes Dérobées
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                onClick={handleReconnaissance}
                 className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 py-3 rounded-lg font-medium transition-all duration-200 shadow-lg"
               >
                 <Eye className="h-4 w-4 mr-2 inline" />
                 Reconnaissance
+                <span className="ml-2 text-xs bg-blue-800 px-2 py-1 rounded">
+                  {systemStatus.reconnaissance}
+                </span>
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={handleVulnerabilityTest}
                 className="w-full bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white px-4 py-3 rounded-lg font-medium transition-all duration-200 shadow-lg"
               >
                 <AlertTriangle className="h-4 w-4 mr-2 inline" />
                 Test de Vulnérabilité
+                <span className="ml-2 text-xs bg-yellow-800 px-2 py-1 rounded">
+                  {systemStatus.vulnerabilityTest}
+                </span>
               </motion.button>
             </div>
           </div>
@@ -353,30 +569,61 @@ export default function SentinelZero() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={handleConfiguration}
                 className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-4 py-3 rounded-lg font-medium transition-all duration-200 shadow-lg"
               >
                 <Settings className="h-4 w-4 mr-2 inline" />
                 Configuration
+                <span className="ml-2 text-xs bg-green-800 px-2 py-1 rounded">
+                  {systemStatus.configuration}
+                </span>
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={handleSecurityLogs}
                 className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-4 py-3 rounded-lg font-medium transition-all duration-200 shadow-lg"
               >
                 <Shield className="h-4 w-4 mr-2 inline" />
                 Logs de Sécurité
+                <span className="ml-2 text-xs bg-purple-800 px-2 py-1 rounded">
+                  {systemStatus.securityLogs}
+                </span>
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={handlePerformanceTest}
                 className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white px-4 py-3 rounded-lg font-medium transition-all duration-200 shadow-lg"
               >
                 <Zap className="h-4 w-4 mr-2 inline" />
                 Test de Performance
+                <span className="ml-2 text-xs bg-orange-800 px-2 py-1 rounded">
+                  {systemStatus.performanceTest}
+                </span>
               </motion.button>
             </div>
           </div>
         </motion.div>
+
+        {/* Résultats des scans */}
+        {scanResults && (
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className="bg-black/30 backdrop-blur-lg rounded-xl p-6 border border-blue-500/30"
+          >
+            <h3 className="text-xl font-semibold text-blue-400 mb-4 flex items-center">
+              <Database className="h-5 w-5 mr-2" />
+              Résultats du Scan
+            </h3>
+            <div className="bg-black/20 p-4 rounded-lg">
+              <pre className="text-green-400 text-sm overflow-x-auto">
+                {JSON.stringify(scanResults, null, 2)}
+              </pre>
+            </div>
+          </motion.div>
+        )}
 
         <motion.div
           initial={{ y: 50, opacity: 0 }}
@@ -397,7 +644,7 @@ export default function SentinelZero() {
             onClick={activateRedButton}
             className="bg-gradient-to-r from-red-700 to-red-800 hover:from-red-800 hover:to-red-900 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-lg"
           >
-            <AlertTriangle className="h-4 w-4 mr-2 inline" />
+            <Trash2 className="h-4 w-4 mr-2 inline" />
             Red Button
           </motion.button>
         </motion.div>

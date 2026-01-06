@@ -11,21 +11,18 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "next": "14.2.0",
+    "next": "14.2.35",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "@types/node": "^20.0.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.0.0",
-    
     "@novaia/shared": "workspace:*",
     "@novaia/protocols": "workspace:*",
-    
     "tailwindcss": "^3.4.0",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.32",
-    
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",
@@ -47,20 +44,16 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.7",
-    
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "tailwind-merge": "^2.0.0",
     "lucide-react": "^0.294.0",
-    
     "framer-motion": "^10.16.16",
     "react-hook-form": "^7.48.2",
     "@hookform/resolvers": "^3.3.2",
     "zod": "^3.22.4",
-    
     "axios": "^1.6.2",
     "swr": "^2.2.4",
-    
     "date-fns": "^2.30.0",
     "react-markdown": "^9.0.1",
     "remark-gfm": "^4.0.0"
@@ -71,4 +64,4 @@
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0"
   }
-} 
+}
